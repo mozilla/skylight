@@ -382,10 +382,10 @@ function getExperimentInfo(experiment, target) {
     const { id } = value;
     return (
       <>
-        <li key={branch.slug}>{branch.slug}</li>
-        <ol>
+        <li key={branch.slug}>{branch.slug}:</li>
+        <ol className="ml-8">
           <p style={{ fontWeight: 600 }}>
-            Message ID: <a href={`#devtools-hackathon-${btoa(id)}`}>{id}</a>
+            Message ID: <a className="text-blue underline" href={`#devtools-hackathon-${btoa(id)}`}>{id}</a>
           </p>
           {id === target ? Group2(experiment.targeting) : null}
           {Group3(id)}
@@ -472,18 +472,18 @@ function Group1({ asrouter, view }) {
 
       <h1>GROUP 1: Nimbus Live Experiments</h1>
 
-      <table>
-        <tr style={{ "borderTop": "1px solid black" }}>
-          <th>Experiments</th>
-          <th>Description</th>
-          <th>Branches</th>
+      <table className="table table-fixed">
+        <tr>
+          <th className="w-1/3">Experiments</th>
+          <th className="w-1/3">Description</th>
+          <th className="w-1/10">Branches</th>
         </tr>
         {experiments}
       </table>
 
       <h1>GROUP 1: ASROUTER Messages</h1>
-      <table>
-        <tr style={{ "borderTop": "1px solid black" }}>
+      <table className="table">
+        <tr>
           <th>Messages</th>
           <th>Template</th>
           <th>Screens</th>
@@ -492,8 +492,8 @@ function Group1({ asrouter, view }) {
       </table>
 
       <h1>Other Messages</h1>
-      <table>
-        <tr style={{ "borderTop": "1px solid black" }}></tr>
+      <table className="table">
+        <tr></tr>
       </table>
     </>
   );
@@ -510,12 +510,13 @@ function Group3(id) {
   const href = `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${id?.toUpperCase()}%25`;
 
   return (
-    <a href={href} target="_blank" rel="noreferrer">
-      Results
+    <a href={href} target="_blank" rel="noreferrer"
+      className="text-blue-700 underline">
+      Performance
       <svg
         fill="none"
         viewBox="0 0 8 8"
-        className="sidebar-icon-external-link"
+        className="inline mb-1 ml-1"
         aria-hidden="true"
         style={iconStyle}
       >
