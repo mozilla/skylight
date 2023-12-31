@@ -25,5 +25,8 @@
 
 -- later
 
+* update README.md re font & vercel verbiage
+
+
 * prototype taskcluster ASRouter extraction
 * draft strategy for data loading -- just check into tree on each version?
