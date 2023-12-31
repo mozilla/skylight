@@ -6,6 +6,9 @@
 
 import { useEffect, useState } from "react";
 
+import  Link from "next/link"
+import { buttonVariants } from "@/components/ui/button"
+
 // import { AboutWelcomeDefaults } from "aboutwelcome/lib/AboutWelcomeDefaults.jsm";
 
 // Test messages added at the end of file
@@ -377,9 +380,16 @@ export default function Home(props) {
 }
 
 function getExperimentInfo(experiment, target) {
+ let previewLink = "about:messagepreview?json=eyJpZCI6ImJldHRlci1pbnRlcm5ldC1waW4tY2FzdWFsLWVjbzIyMDUtZW46dHJlYXRtZW50LWEiLCJ0YXJnZXRpbmciOiJzb3VyY2UgPT0gJ3N0YXJ0dXAnICYmICFpc01ham9yVXBncmFkZSAmJiAhYWN0aXZlTm90aWZpY2F0aW9ucyIsImdyb3VwcyI6WyJlY28iXSwidHJpZ2dlciI6eyJpZCI6ImRlZmF1bHRCcm93c2VyQ2hlY2sifSwiZnJlcXVlbmN5Ijp7ImxpZmV0aW1lIjoxfSwicHJpb3JpdHkiOjEsIm9yZGVyIjowLCJ0ZW1wbGF0ZSI6InNwb3RsaWdodCIsImNvbnRlbnQiOnsidGVtcGxhdGUiOiJtdWx0aXN0YWdlIiwibW9kYWwiOiJ0YWIiLCJzY3JlZW5zIjpbeyJpZCI6IlBJTiIsImNvbnRlbnQiOnsibG9nbyI6eyJpbWFnZVVSTCI6Imh0dHBzOi8vZmlyZWZveC1zZXR0aW5ncy1hdHRhY2htZW50cy5jZG4ubW96aWxsYS5uZXQvbWFpbi13b3Jrc3BhY2UvbXMtaW1hZ2VzL2M0ZTRmNzM5LTY2YTktNDBhMS04YjFiLTA0ZWY5ZGNlZGY3My5hdmlmIiwiaGVpZ2h0IjoiMjE3cHgifSwidGl0bGUiOnsicmF3IjoiSm9pbiB1cyBpbiBidWlsZGluZyBhIGJldHRlciBpbnRlcm5ldCIsInBhZGRpbmdCbG9jayI6IjhweCJ9LCJwcmltYXJ5X2J1dHRvbiI6eyJsYWJlbCI6eyJzdHJpbmdfaWQiOiJmeDEwMC10aGFuay15b3UtcGluLXByaW1hcnktYnV0dG9uLWxhYmVsIn0sImFjdGlvbiI6eyJuYXZpZ2F0ZSI6dHJ1ZSwidHlwZSI6IlBJTl9GSVJFRk9YX1RPX1RBU0tCQVIifX0sInN1YnRpdGxlIjp7InN0cmluZ19pZCI6InNwb3RsaWdodC1iZXR0ZXItaW50ZXJuZXQtYm9keSIsImZvbnRTaXplIjoiMTVweCIsImZvbnRXZWlnaHQiOjQwMCwibGV0dGVyU3BhY2luZyI6MCwibGluZUhlaWdodCI6IjEuMzMiLCJtYXJnaW5CbG9jayI6IjRweCAxMnB4IiwicGFkZGluZ0lubGluZSI6IjE2cHgifSwic2Vjb25kYXJ5X2J1dHRvbiI6eyJsYWJlbCI6eyJzdHJpbmdfaWQiOiJtcjEtb25ib2FyZGluZy1zZXQtZGVmYXVsdC1zZWNvbmRhcnktYnV0dG9uLWxhYmVsIn0sImFjdGlvbiI6eyJuYXZpZ2F0ZSI6dHJ1ZX19fX1dLCJ0cmFuc2l0aW9ucyI6dHJ1ZSwiYmFja2Ryb3AiOiJ0cmFuc3BhcmVudCJ9fQ==";
+
+  // previewLink = "about:blank";  // works
+  // previewLink = "about:logo"; // works
+
   let branchSlugs = experiment.branches.map(branch => {
     const { value } = branch?.features[0];
     const { id } = value;
+
+
     return (
       <>
         <li key={branch.slug}>{branch.slug}:</li>
@@ -387,7 +397,7 @@ function getExperimentInfo(experiment, target) {
           <p style={{ fontWeight: 600 }}>
             Message ID: <a className="text-blue underline" href={`#devtools-hackathon-${btoa(id)}`}>{id}</a>
           </p>
-          {id === target ? Group2(experiment.targeting) : null}
+          <Link href={previewLink} className={buttonVariants({ variant: "outline" })}>Preview</Link>
           {Group3(id)}
           {id === target ? Group4(value) : null}
         </ol>
