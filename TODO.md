@@ -9,24 +9,23 @@
 
 -- required for feedback
 
-* land MAKE_LINKABLE in nightly
-  * research original MAKE_LINKABLE in nightly landing
-  * get re-review & land
-
 * finish columns.tsx for simple messaging data
 * finish DataTable prototype using simple messaging data
 * style prototype
 
--- next step for feedback
+-- next steps for feedback
 
-* implement experiment columns
-* implement experiment layout
-* style experiment layout
+* land MAKE_LINKABLE in nightly
+  * research original MAKE_LINKABLE in nightly landing
+  * get re-review & land
+
+* implement experiment table
+  * implement experiment columns
+  * implement experiment layout
+  * style experiment layout
 
 -- later
 
-* update README.md re font & vercel verbiage
-
-
-* prototype taskcluster ASRouter extraction
 * draft strategy for data loading -- just check into tree on each version?
+* update README.md re font & vercel verbiage
+* prototype taskcluster ASRouter extraction
