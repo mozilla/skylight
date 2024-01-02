@@ -1,31 +1,59 @@
 import { Message, columns } from "./columns"
-import { MsgTable } from "./message-table.tsx"
+import { MessageTable } from "./message-table"
+
+function getMessageColumnFromJSON(messsageDef: any) : Message {
+  return {
+    product: 'Desktop',
+    release: 'Fx 123',
+    id: messsageDef.id,
+    topic: messsageDef.provider,
+    surface: messsageDef.template,
+    segment: 'some segment',
+    metrics: 'some metrics',
+    ctrPercent: .5, // getMeFromLooker
+    ctrPercentChange: 2, // getMeFromLooker
+    ctrDashboardLink: "http://localhost/derive-from-alex-dboard",
+    previewLink: "about:message-preview?JSON=derive-from-json"
+  };
+}
 
 async function getData(): Promise<Message[]> {
-  // Fetch data from your API here.
-  return [
-    {
-      product: 'Desktop',
-      id: 'MONKEYS_MESSAGE',
-      release: 'Fx 123',
-      topic: "Some topic",
-      surface: "Some surface",
-      segment: "Some segment",
-      ctrPercent: "0.5",
-      ctrPercentChange: "2",
-      ctrDashboard: "http://localhost:3000/",
-      previewLink: "http://localhost:3000/"
-    },
-    // ...
-  ]
+  const fs = require("fs");
+
+  let data = fs.readFileSync(
+    "lib/asrouter-local-prod-messages/123-nightly-in-progress.json",
+    "utf8");
+  let json_data = JSON.parse(data);
+  let messages : Message[] =
+    json_data.map((messageDef : any) : Message => getMessageColumnFromJSON(messageDef));
+
+  return messages;
 }
+
+  // // Fetch data from your API here.
+  // return [
+  //   {
+  //     product: 'Desktop',
+  //     id: 'MONKEYS_MESSAGE',
+  //     release: 'Fx 123',
+  //     topic: "Some topic",
+  //     surface: "Some surface",
+  //     segment: "Some segment",
+  //     ctrPercent: 0.5,
+  //     ctrPercentChange: 2,
+  //     ctrDashboardLink: "http://localhost:3000/",
+  //     previewLink: "http://localhost:3000/",
+  //   },
+  //   // ...
+  // ]
+
 
 export default async function DemoPage() {
   const data = await getData()
 
   return (
     <div className="container mx-auto py-10">
-      <MsgTable columns={columns} data={data} />
+      <MessageTable columns={columns} data={data} />
     </div>
   )
 }

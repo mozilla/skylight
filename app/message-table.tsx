@@ -21,7 +21,7 @@ interface MessageTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function MsgTable<TData, TValue>({
+export function MessageTable<TData, TValue>({
   columns,
   data,
 }: MessageTableProps<TData, TValue>) {
