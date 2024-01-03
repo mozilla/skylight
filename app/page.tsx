@@ -1,26 +1,26 @@
 import { Message, columns } from "./columns"
 import { MessageTable } from "./message-table"
 
-function getMessageColumnFromJSON(messsageDef: any) : Message {
+function getMessageColumnFromJSON(messageDef: any) : Message {
   return {
     product: 'Desktop',
     release: 'Fx 123',
-    id: messsageDef.id,
-    topic: messsageDef.provider,
-    surface: messsageDef.template,
+    id: messageDef.id,
+    topic: messageDef.provider,
+    surface: messageDef.template,
     segment: 'some segment',
     metrics: 'some metrics',
     ctrPercent: .5, // getMeFromLooker
     ctrPercentChange: 2, // getMeFromLooker
     ctrDashboardLink: "http://localhost/derive-from-alex-dboard",
-    previewLink: "about:message-preview?JSON=derive-from-json"
-  };
+    previewLink: `about:messagepreview?json=${btoa(JSON.stringify(messageDef))}`,
+  }
 }
 
 async function getData(): Promise<Message[]> {
   const fs = require("fs");
 
-  let data = fs.readFileSync(
+  let data =   fs.readFileSync(
     "lib/asrouter-local-prod-messages/123-nightly-in-progress.json",
     "utf8");
   let json_data = JSON.parse(data);

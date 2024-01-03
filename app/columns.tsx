@@ -2,6 +2,7 @@
 
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 const columnHelper = createColumnHelper<Message>();
 
@@ -68,14 +69,31 @@ export const columns: ColumnDef<Message>[] = [
     accessorKey: "surface",
     header: "Surface",
   }, {
-    accessorKey: "segment",
-    header: "Segment",
-  }, {
+  //   accessorKey: "segment",
+  //   header: "Segment",
+  // }, {
     accessorKey: "metrics",
     header: "Metrics",
     cell: props => {
-      // console.log(props)
-      return Group3("FOX_DOODLE_SET_DEFAULT");
-    },
+      // console.log(props);
+      const messageId = props.row.original.id;
+      return Group3(messageId);
+    }
+  }, {
+    accessorKey: "previewLink",
+    header: "",
+    cell: props => {
+      if (props.row.original.surface !== 'infobar'
+          && props.row.original.surface !== 'spotlight') {
+          return ( <div/> );
+      }
+
+      return (
+        <Link className={"h-0 " + buttonVariants({ variant: "outline" })}
+          href={props.row.original.previewLink}
+          target="_blank">
+          Preview
+        </Link> );
+    }
   },
 ]
