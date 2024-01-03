@@ -89,7 +89,8 @@ export const columns: ColumnDef<Message>[] = [
       }
 
       return (
-        <Link className={"h-0 " + buttonVariants({ variant: "outline" })}
+        <Link
+          className={"h-0 " + buttonVariants({ variant: "outline" }) + " py-0"}
           href={props.row.original.previewLink}
           target="_blank">
           Preview
