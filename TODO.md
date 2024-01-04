@@ -41,7 +41,7 @@
 * clean up (DONE)
   * title for clarity (DONE)
 
-* deploy to GCP (or vercel or netlify or ...)
+* deploy
   * Request netlify access (IN PROGRESS)
     * reached out to #sre
     * Push to netlify
