@@ -38,10 +38,8 @@
 
 -- required for doorknob twisting
 
-* clean up (IN PROGRESS)
-  * UI framing
-  * README
-  * licensing
+* clean up (DONE)
+  * title for clarity (DONE)
 
 * deploy to GCP (or vercel or netlify or ...)
   * Request netlify access (IN PROGRESS)
