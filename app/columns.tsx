@@ -21,7 +21,7 @@ function Group3(id : string) {
       <svg
         fill="none"
         viewBox="0 0 8 8"
-        className="inlinesidebar-icon-external-link"
+        className="inline sidebar-icon-external-link"
         aria-hidden="true"
         style={iconStyle}
       >
@@ -90,7 +90,7 @@ export const columns: ColumnDef<Message>[] = [
 
       return (
         <Link
-          className={"h-0 " + buttonVariants({ variant: "outline" }) + " py-0"}
+          className={buttonVariants({ variant: "outline", size: "sm" })}
           href={props.row.original.previewLink}
           target="_blank">
           Preview
