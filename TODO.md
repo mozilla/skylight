@@ -41,18 +41,24 @@
 * clean up (DONE)
   * title for clarity (DONE)
 
-* deploy
+* deploy (IN PROGRESS)
   * Get netlify access (IN PROGRESS)
     * reached out to #sre, filed [SE-3787](https://mozilla-hub.atlassian.net/browse/SE-3787)
   * Push
 
 -- required for something functional & feedback
 
-* land MAKE_LINKABLE in nightly
-  * research original MAKE_LINKABLE in nightly landing
-  * get re-review & land
+* Make preview affordance usable (one or both of):
+  * switch preview button to copy-paste button
+  * land MAKE_LINKABLE in nightly
+    * research original MAKE_LINKABLE in nightly landing
+    * get re-review & land
 
-* make CTR numbers visible on dashboard
+* make CTR numbers visible on dashboard (IN PROGRESS)
+  * get client API key and Looker APIExplorer installed (DONE)
+  * find right query call using explorer
+  * fetch query results server-side (only)
+  * render into table
 
 -- next steps for experiments
 
