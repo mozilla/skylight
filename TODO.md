@@ -42,20 +42,17 @@
   * title for clarity (DONE)
 
 * deploy
-  * Request netlify access (IN PROGRESS)
-    * reached out to #sre
-    * Push to netlify
+  * Get netlify access (IN PROGRESS)
+    * reached out to #sre, filed [SE-3787](https://mozilla-hub.atlassian.net/browse/SE-3787)
+  * Push
 
 -- required for something functional & feedback
-
-* file request for Looker APIExplorer
-* file request for Looker API creds
 
 * land MAKE_LINKABLE in nightly
   * research original MAKE_LINKABLE in nightly landing
   * get re-review & land
 
-* make CTR trends visible on dashboard
+* make CTR numbers visible on dashboard
 
 -- next steps for experiments
 
