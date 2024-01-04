@@ -38,16 +38,15 @@
 
 -- required for doorknob twisting
 
+* clean up (IN PROGRESS)
+  * UI framing
+  * README
+  * licensing
+
 * deploy to GCP (or vercel or netlify or ...)
   * Request netlify access (IN PROGRESS)
-    * reached out to jbuck
-
-* add caveats
-  * empty dashboards
-  * numbers not entirely correct (in-tree can overlap with experiments & rollouts; only sometimes desirable)
-
-  * Push to netlify
-
+    * reached out to #sre
+    * Push to netlify
 
 -- required for something functional & feedback
 
@@ -60,7 +59,7 @@
 
 * make CTR trends visible on dashboard
 
--- required for experiments
+-- next steps for experiments
 
 * add sortability
 * style prototype
@@ -71,19 +70,8 @@
   * add sortability
   * style experiment layout
 
--- next steps for feedback
-
--- next steps for planning
-
-
-
-
-* draft basic plans
-
 -- later
 
-* draft details around handle mutally excluding experiments & production, when we want that, so we can remove caveats
-
-* draft strategy for data loading -- just check into tree on each version?
+* figure out if there are cases with inaccuracies because of      message-ids getting reused concurrently in different contexts (eg experiments, in-tree like about:welcome, ...).  Does this everf
 * update README.md re font & vercel verbiage
 * prototype taskcluster ASRouter extraction

@@ -21,7 +21,7 @@ function Group3(id : string) {
       <svg
         fill="none"
         viewBox="0 0 8 8"
-        className="sidebar-icon-external-link"
+        className="inlinesidebar-icon-external-link"
         aria-hidden="true"
         style={iconStyle}
       >
