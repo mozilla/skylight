@@ -2,7 +2,7 @@
 
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 const columnHelper = createColumnHelper<Message>();
 
@@ -88,7 +88,17 @@ export const columns: ColumnDef<Message>[] = [
           return ( <div/> );
       }
 
+      // unless / until we get MAKE_LINKABLE landed
+      const copyPreviewLink = () => {
+        return navigator.clipboard.writeText(props.row.original.previewLink);
+      }
+
       return (
+        copyPreviewLink ?
+        <Button className="active:bg-gray-400" onClick={copyPreviewLink}>
+          Copy Preview Link
+        </Button>
+        :
         <Link
           className={buttonVariants({ variant: "outline", size: "sm" })}
           href={props.row.original.previewLink}

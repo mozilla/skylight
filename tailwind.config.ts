@@ -75,6 +75,7 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
+  variants: ['active', 'hover', 'focus'],
 } satisfies Config
 
 export default config
