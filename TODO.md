@@ -55,10 +55,7 @@
 -- required for something functional & feedback
 
 * Make preview affordance usable (one or both of):
-  * switch preview button to copy-paste button
-  * land MAKE_LINKABLE in nightly
-    * propose mitigations/limitations for good security
-    * get re-review & land
+  * switch preview button to copy-paste button (DONE)
 
 * make CTR numbers visible on dashboard (IN PROGRESS)
   * get client API key and Looker APIExplorer installed (DONE)
@@ -90,7 +87,9 @@
     * Users expected to user current versions of Firefox
     * See how often this problem crops up in reality
 * How do we handle mobile messages?
-* Is it important that we
+* When is it worth making a case for making about:messagepreview linkable
+  in some circumstances?
+    * propose mitigations/limitations for good security
 
 -- later
 
