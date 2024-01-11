@@ -42,16 +42,16 @@ export default async function Dashboard() {
 
         <ul className="mx-20 text-sm">
           <li>
-          This is a prototype, not a commitment to a future direction.
+            This is a prototype, not a commitment to future direction.
           </li>
 
           <li>
             <Link
-          href="https://github.com/mozilla/protolight/blob/main/TODO.md">Rationale & tentative todo-list for the prototype</Link>
+          href="https://github.com/mozilla/protolight/blob/main/TODO.md">Rationale & tentative todo-list for this prototype</Link>
           </li>
 
           <li>
-            Feedback of all kinds accepted in <Link href="#">TBD</Link>
+          Feedback of all kinds accepted in <Link href="https://mozilla.slack.com/archives/C05N15KHCLC">#skylight-messaging-system</Link>
           </li>
         </ul>
 
