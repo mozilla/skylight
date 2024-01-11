@@ -1,5 +1,6 @@
 import { Message, columns } from "./columns"
 import { MessageTable } from "./message-table"
+import Link from "next/link";
 
 function getMessageColumnFromJSON(messageDef: any) : Message {
   return {
@@ -38,6 +39,21 @@ export default async function Dashboard() {
       <h4 className="scroll-m-20 text-xl font-semibold text-center py-4">
         Nightly 123 in-tree Production ASRouter messages
       </h4>
+
+        <ul className="mx-20">
+          <li className="text-sm">
+          This is a prototype, not a commitment to a future direction.
+          </li>
+
+          <li>
+            <Link className="text-sm"
+          href="https://github.com/mozilla/protolight/blob/main/TODO.md">Rationale & tentative todo-list for the prototype</Link>
+          </li>
+
+          <li className="text-sm">
+            Feedback of all kinds accepted in <Link href="#">TBD</Link>
+          </li>
+        </ul>
 
       <div className="container mx-auto py-10">
         <MessageTable columns={columns} data={data} />
