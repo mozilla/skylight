@@ -42,7 +42,7 @@ export default async function Dashboard() {
 
         <ul className="list-disc mx-20 text-sm">
           <li>
-            This is a prototype, not a commitment to future direction.
+            This is a prototype for learning & feedback, not a commitment to future direction.
           </li>
 
           <li>
