@@ -7,12 +7,6 @@ import { Button, buttonVariants } from "@/components/ui/button";
 const columnHelper = createColumnHelper<Message>();
 
 function Group3(id : string) {
-  const iconStyle = {
-    paddingTop: "3px",
-    width: "1em",
-    height: "1em",
-  };
-
   const href = `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${id?.toUpperCase()}%25`;
 
   return (
@@ -21,9 +15,8 @@ function Group3(id : string) {
       <svg
         fill="none"
         viewBox="0 0 8 8"
-        className="inline sidebar-icon-external-link"
+        className="inline h-3 w-3 px-1"
         aria-hidden="true"
-        style={iconStyle}
       >
         <path
           clipRule="evenodd"

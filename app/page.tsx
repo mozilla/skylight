@@ -40,17 +40,17 @@ export default async function Dashboard() {
         Nightly 123 in-tree Production ASRouter messages
       </h4>
 
-        <ul className="mx-20">
-          <li className="text-sm">
+        <ul className="mx-20 text-sm">
+          <li>
           This is a prototype, not a commitment to a future direction.
           </li>
 
           <li>
-            <Link className="text-sm"
+            <Link
           href="https://github.com/mozilla/protolight/blob/main/TODO.md">Rationale & tentative todo-list for the prototype</Link>
           </li>
 
-          <li className="text-sm">
+          <li>
             Feedback of all kinds accepted in <Link href="#">TBD</Link>
           </li>
         </ul>
