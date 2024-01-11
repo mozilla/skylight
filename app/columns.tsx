@@ -15,7 +15,7 @@ function Group3(id : string) {
       <svg
         fill="none"
         viewBox="0 0 8 8"
-        className="inline h-3 w-3 px-1"
+        className="inline h-5 w-5 px-1"
         aria-hidden="true"
       >
         <path

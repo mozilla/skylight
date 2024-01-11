@@ -40,7 +40,7 @@ export default async function Dashboard() {
         Nightly 123 in-tree Production ASRouter messages
       </h4>
 
-        <ul className="mx-20 text-sm">
+        <ul className="list-disc mx-20 text-sm">
           <li>
             This is a prototype, not a commitment to future direction.
           </li>
