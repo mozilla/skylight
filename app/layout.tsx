@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      Site currently under maintenance; please try again later
+      Site currently under maintenance; please try again later.
     </html>
   )
 }
