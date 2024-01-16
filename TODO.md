@@ -1,3 +1,5 @@
+## Prototype rationale & overview
+
 * point of prototype: momentum, answer questions, get user feedback
   * keep recent momentum up to maximize chances of lift-off
   * Answer key questions
@@ -29,15 +31,13 @@
     * other learnings
       * experiences with the (fairly standard) tech stack used in prototype?
 
--- required for prototype: displays some data (DONE)
-
 * prototype ASRouter data extraction
   * write test that dumps data from mozilla-central to JSON file (DONE)
   * compare JSON file to data in providers (DONE)-ish
   * check to see if it has all platforms & targeting (DONE)-ish
   * (MOSTLY VALIDATED)
 
--- required for demo: links to dashboards (DONE)
+### milestone: required for prototype: displays some data (DONE)
 
 * finish columns.tsx for simple messaging data (DONE)
 * finish DataTable prototype using simple messaging data (DONE)
@@ -45,7 +45,7 @@
 * generalize alex dashboard link (DONE)
 * make preview links visible in app (DONE)
 
--- required for doorknob twisting: first cut explorable (but not necessarily useful) for PMs and UX
+### milestone: required for demo: links to dashboards (DONE)
 
 * Make preview affordance usable (one or both of):
   * switch preview button to copy-paste button (DONE)
@@ -57,11 +57,13 @@
   * Get netlify access (IN PROGRESS)
     * reached out to #sre, filed [SE-3787](https://mozilla-hub.atlassian.net/browse/SE-3787) (DONE)
   * Configure & Push (DONE)
-  * Replace with site-maintenance page until after RSA (DONE)
-  * File Rapid Security Assessment bugzilla ticket
+  * Replace with site-maintenance page until after RRA (DONE)
+  * Rapid Risk Assessment
+    * File bugzilla ticket [(DONE)](https://bugzilla.mozilla.org/show_bug.cgi?id=1874503)
+    * Complete RRA
   * Remove site-maintenance page.
 
--- milestone: test messaging experiment data access & UX
+### milestone: ready for doorknob twisting: first cut explorable (but not necessarily useful) for PMs and UX
 
 * see if desired experimenter data is public (check Hackathon prototype)
   * if not, research minimum amount of access we need & easiest way to get it
@@ -70,7 +72,7 @@
 * add sortability
 * style experiment layout
 
--- milestone: test mocked UI features
+### milestone: test messaging experiment data access & UX
 
 * make CTR numbers visible on dashboard (IN PROGRESS)
   * get client API key and Looker APIExplorer installed (DONE)
@@ -82,7 +84,14 @@
 * add sortability
 * style prototype
 
--- open questions for the future
+### milestone: test mocked UI features
+
+### misc/later:
+
+* update README.md re font & vercel verbiage
+* prototype taskcluster ASRouter extraction
+
+## open questions for the future
 
 * Are there cases of message-ids getting reused concurrently in different contexts that would need to be handled to get the numbers right?
   * eg experiment branches, rollouts, in-tree -- such as for onboarding messages
@@ -96,10 +105,5 @@
 * How do we handle mobile messages?
 * When is it worth making a case for making about:messagepreview linkable
   in some circumstances?
-    * propose mitigations/limitations for good security
-
--- later
-
-* update README.md re font & vercel verbiage
-* prototype taskcluster ASRouter extraction
+  * propose mitigations/limitations for good security
 
