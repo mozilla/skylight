@@ -3,10 +3,12 @@
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 
 const columnHelper = createColumnHelper<Message>();
 
-function getDashboardLinkForMessageId(id : string) {
+
+function renderDashboardLinkForMessageId(id: string) {
   const href = `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${id?.toUpperCase()}%25`;
 
   return (
@@ -26,6 +28,72 @@ function getDashboardLinkForMessageId(id : string) {
         ></path>
       </svg>
     </Link>
+  );
+}
+
+function renderExperimentInfo(experiment: any, target:any) {
+  let branchSlugs = experiment.branches.map((branch: any) => {
+    const { value } = branch?.features[0];
+    const { id } = value;
+    return (
+      <>
+        <li key={branch.slug}>{branch.slug}</li>
+        <ol>
+          <p style={{ fontWeight: 600 }}>
+            Message ID: <a href={`#devtools-hackathon-${btoa(id)}`}>{id}</a>
+          </p>
+          {renderDashboardLinkForMessageId(id)}
+        </ol>
+      </>
+    );
+  });
+  return (
+    <>
+      <tr style={{ "borderTop": "1px solid black" }}>
+        <td>{experiment.userFacingName}</td>
+        <td>{experiment.userFacingDescription}</td>
+        <td>
+          <ul>{branchSlugs}</ul>
+        </td>
+      </tr>
+    </>
+  );
+}
+
+function getAndRenderExperiments({ view: any }) {
+  const [nimbus, setNimbus] = useState([]);
+  useEffect(() => {
+    fetch(
+      "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/nimbus-desktop-experiments/records",
+      {
+        credentials: "omit",
+      }
+    )
+      .then(r => r.json())
+      .then(j => setNimbus(j.data));
+  }, []);
+
+  const experiments = nimbus.map(experiment => {
+    let id = "";
+    try {
+      id = atob(view);
+    } catch (ex) { }
+    return renderExperimentInfo(experiment, id);
+  });
+
+  return (
+    <>
+      <h1>Nimbus Live Experiments</h1>
+
+      <table>
+        <tr style={{ "borderTop": "1px solid black" }}>
+          <th>Experiments</th>
+          <th>Description</th>
+          <th>Branches</th>
+        </tr>
+        {experiments}
+      </table>
+    </>
   );
 }
 
@@ -67,15 +135,15 @@ export const columns: ColumnDef<Message>[] = [
   // }, {
     accessorKey: "metrics",
     header: "Metrics",
-    cell: props => {
+    cell: (props: any) => {
       // console.log(props);
       const messageId = props.row.original.id;
-      return getDashboardLinkForMessageId(messageId);
+      return renderDashboardLinkForMessageId(messageId);
     }
   }, {
     accessorKey: "previewLink",
     header: "",
-    cell: props => {
+    cell: (props: any) => {
       if (props.row.original.surface !== 'infobar'
           && props.row.original.surface !== 'spotlight') {
           return ( <div/> );
