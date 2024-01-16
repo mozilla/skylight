@@ -6,7 +6,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 
 const columnHelper = createColumnHelper<Message>();
 
-function Group3(id : string) {
+function getDashboardLinkForMessageId(id : string) {
   const href = `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${id?.toUpperCase()}%25`;
 
   return (
@@ -70,7 +70,7 @@ export const columns: ColumnDef<Message>[] = [
     cell: props => {
       // console.log(props);
       const messageId = props.row.original.id;
-      return Group3(messageId);
+      return getDashboardLinkForMessageId(messageId);
     }
   }, {
     accessorKey: "previewLink",
