@@ -7,8 +7,7 @@ import { useState, useEffect } from "react";
 
 const columnHelper = createColumnHelper<Message>();
 
-
-function renderDashboardLinkForMessageId(id: string) {
+function DashboardLinkForMessageId(id: string) {
   const href = `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${id?.toUpperCase()}%25`;
 
   return (
@@ -31,7 +30,7 @@ function renderDashboardLinkForMessageId(id: string) {
   );
 }
 
-function renderExperimentInfo(experiment: any, target:any) {
+function ExperimentInfo(experiment: any, target:any) {
   let branchSlugs = experiment.branches.map((branch: any) => {
     const { value } = branch?.features[0];
     const { id } = value;
@@ -42,7 +41,7 @@ function renderExperimentInfo(experiment: any, target:any) {
           <p style={{ fontWeight: 600 }}>
             Message ID: <a href={`#devtools-hackathon-${btoa(id)}`}>{id}</a>
           </p>
-          {renderDashboardLinkForMessageId(id)}
+          {DashboardLinkForMessageId(id)}
         </ol>
       </>
     );
@@ -60,7 +59,7 @@ function renderExperimentInfo(experiment: any, target:any) {
   );
 }
 
-function getAndRenderExperiments({ view: any }) {
+function Experiments({ view }) {
   const [nimbus, setNimbus] = useState([]);
   useEffect(() => {
     fetch(
@@ -78,7 +77,7 @@ function getAndRenderExperiments({ view: any }) {
     try {
       id = atob(view);
     } catch (ex) { }
-    return renderExperimentInfo(experiment, id);
+    return ExperimentInfo(experiment, id);
   });
 
   return (
@@ -138,7 +137,7 @@ export const columns: ColumnDef<Message>[] = [
     cell: (props: any) => {
       // console.log(props);
       const messageId = props.row.original.id;
-      return renderDashboardLinkForMessageId(messageId);
+      return DashboardLinkForMessageId(messageId);
     }
   }, {
     accessorKey: "previewLink",
