@@ -5,6 +5,13 @@ import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { Copy } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
 
 const columnHelper = createColumnHelper<Message>();
 
@@ -156,10 +163,20 @@ export const columns: ColumnDef<Message>[] = [
 
       return (
         copyPreviewLink ?
-        <Button className="active:bg-gray-400" onClick={copyPreviewLink}>
-          <Copy className="me-2" />
-          Copy Preview URL
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button className="active:bg-gray-400" onClick={copyPreviewLink}>
+                <Copy className="me-2" />
+                Copy Preview URL
+              </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>After clicking to copy, paste in URL bar for message preview</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
         :
         <Link
           className={buttonVariants({ variant: "outline", size: "sm" })}
