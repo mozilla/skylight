@@ -2,7 +2,7 @@ import { Message, columns } from "./columns"
 import { MessageTable } from "./message-table"
 import Link from "next/link";
 
-function getMessageColumnFromJSON(messageDef: any) : Message {
+function getASRouterLocalColumnFromJSON(messageDef: any) : Message {
   return {
     product: 'Desktop',
     release: 'Fx 123',
@@ -26,21 +26,27 @@ async function getASRouterLocalMessages(): Promise<Message[]> {
     "utf8");
   let json_data = JSON.parse(data);
   let messages : Message[] =
-    json_data.map((messageDef : any) : Message => getMessageColumnFromJSON(messageDef));
+    json_data.map((messageDef : any) : Message => getASRouterLocalColumnFromJSON(messageDef));
 
   return messages;
 }
 
 export default async function Dashboard() {
+  // XXX useEffect
   const data = await getASRouterLocalMessages()
 
   return (
     <div>
-      <h4 className="scroll-m-20 text-xl font-semibold text-center py-4">
-        Nightly 123 in-tree Production ASRouter messages
-      </h4>
+      <div>
+        <h4 className="scroll-m-20 text-xl font-semibold text-center py-4">
+          Nightly 123 in-tree Production ASRouter messages
+        </h4>
 
         <ul className="list-disc mx-20 text-sm">
+          <li>
+            To make the preview links work, set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code> in <code>about:config</code>.
+          </li>
+
           <li>
             This is a prototype for learning & feedback, not a commitment to future direction.
           </li>
@@ -54,6 +60,7 @@ export default async function Dashboard() {
           Feedback of all kinds accepted in <Link href="https://mozilla.slack.com/archives/C05N15KHCLC">#skylight-messaging-system</Link>
           </li>
         </ul>
+      </div>
 
       <div className="container mx-auto py-10">
         <MessageTable columns={columns} data={data} />
