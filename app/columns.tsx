@@ -59,7 +59,7 @@ function ExperimentInfo(experiment: any, target:any) {
   );
 }
 
-function Experiments({ view }) {
+function Experiments({view} : {view: any}) {
   const [nimbus, setNimbus] = useState([]);
   useEffect(() => {
     fetch(
