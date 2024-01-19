@@ -4,6 +4,7 @@ import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+import { Copy } from "lucide-react";
 
 const columnHelper = createColumnHelper<Message>();
 
@@ -156,7 +157,8 @@ export const columns: ColumnDef<Message>[] = [
       return (
         copyPreviewLink ?
         <Button className="active:bg-gray-400" onClick={copyPreviewLink}>
-          Copy Preview Link
+          <Copy className="me-2" />
+          Copy Preview URL
         </Button>
         :
         <Link
