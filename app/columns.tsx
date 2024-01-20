@@ -166,7 +166,8 @@ export const columns: ColumnDef<Message>[] = [
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button className="active:bg-gray-400" onClick={copyPreviewLink}>
+                <Button
+                  className={buttonVariants({ variant: "secondary", size: "sm" })}onClick={copyPreviewLink}>
                 <Copy className="me-2" />
                 Copy Preview URL
               </Button>
