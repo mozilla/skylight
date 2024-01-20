@@ -171,7 +171,7 @@ export const columns: ColumnDef<Message>[] = [
                     buttonVariants({
                         variant: "secondary",
                         size: "sm",
-                        className: "active:bg-slate-500"
+                        className: "active:bg-slate-500 font-normal border  border-slate-700"
                     })
                   }
                   onClick={copyPreviewLink}>
