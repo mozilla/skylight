@@ -44,7 +44,7 @@ export default async function Dashboard() {
 
         <ul className="list-disc mx-20 text-sm">
           <li>
-            To make the preview links work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>
+            To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>
           </li>
 
           <li>
