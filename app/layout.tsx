@@ -5,8 +5,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Skylight Messaging Prototype',
-  description: 'Prototype for learning & feedback',
+  title: 'Skylight (FxMS tool)',
+  description: 'Tool for Firefox Messaging System'
 }
 
 export default function RootLayout({

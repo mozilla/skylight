@@ -44,16 +44,7 @@ export default async function Dashboard() {
 
         <ul className="list-disc mx-20 text-sm">
           <li>
-            To make the preview links work, set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code> in <code>about:config</code>.
-          </li>
-
-          <li>
-            This is a prototype for learning & feedback, not a commitment to future direction.
-          </li>
-
-          <li>
-            <Link
-          href="https://github.com/mozilla/protolight/blob/main/TODO.md">Rationale & tentative todo-list for this prototype</Link>
+            To make the preview links work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>
           </li>
 
           <li>
@@ -65,6 +56,11 @@ export default async function Dashboard() {
       <div className="container mx-auto py-10">
         <MessageTable columns={columns} data={data} />
       </div>
+
+      {/* <div className="container mx-auto py-10">
+        <MessageTable columns={experimentColumns} data={data} />
+      </div> */}
+
     </div>
   )
 }
