@@ -1,6 +1,6 @@
-## Prototype rationale & overview
+## Rationale & overview
 
-* point of prototype: momentum, answer questions, get user feedback
+* momentum, answer questions, get user feedback
   * keep recent momentum up to maximize chances of lift-off
   * Answer key questions
     * Implementable as web app? pros & cons?
@@ -19,7 +19,6 @@
           * use SQL in redash (has been done before, unsure of details)
         * next step:
           * collaborate with SRE to learn how tightly/easily we can limit service account access to Looker, BigQuery, and Redash (this only needs a small amount of data)
-
   * validate usefulness/usability to PMs as monitoring tool.
     * collect feedback & learnings about:
       * looking at live messages from asrouter/experiments in this form?
@@ -37,7 +36,7 @@
   * check to see if it has all platforms & targeting (DONE)-ish
   * (MOSTLY VALIDATED)
 
-### milestone: required for prototype: displays some data (DONE)
+### milestone 0: something to look at: displays some data (DONE)
 
 * finish columns.tsx for simple messaging data (DONE)
 * finish DataTable prototype using simple messaging data (DONE)
@@ -45,7 +44,7 @@
 * generalize alex dashboard link (DONE)
 * make preview links visible in app (DONE)
 
-### milestone: required for demo: links to dashboards (DONE)
+### milestone 1: required for demo: links to dashboards (DONE)
 
 * Make preview affordance usable (one or both of):
   * switch preview button to copy-paste button (DONE)
@@ -61,9 +60,9 @@
   * Rapid Risk Assessment
     * File bugzilla ticket [(DONE)](https://bugzilla.mozilla.org/show_bug.cgi?id=1874503)
     * Complete RRA
-  * Remove site-maintenance page.
+  * Remove site-maintenance page. (DONE)
 
-### milestone: ready for doorknob twisting: first cut explorable (but not necessarily useful) for PMs and UX
+### milestone 2: ready for doorknob twisting: first cut explorable (but not necessarily useful) for PMs and UX
 
 * see if desired experimenter data is public (check Hackathon prototype)
   * if not, research minimum amount of access we need & easiest way to get it
@@ -76,7 +75,7 @@
 
 * make CTR numbers visible on dashboard (IN PROGRESS)
   * get client API key and Looker APIExplorer installed (DONE)
-  * find right query call using explorer
+  * find right query call using$$ explorer
   * fetch query results server-side (only)
   * render into table
   * use secrets manager to handle key (before landing)
@@ -106,4 +105,13 @@
 * When is it worth making a case for making about:messagepreview linkable
   in some circumstances?
   * propose mitigations/limitations for good security
-
+* Is it worth having a component library?
+  * If not:
+  * If so:
+    * Is ShadCN the right one
+      * how accessible is ShadCN?
+      * How mature/well-supported is it?
+      * How well-tested?
+      * How broadly communitized used?  (eg stack overflow answers)
+        * not SUPER broadly used
+    * Should we ditch the tailwindy stuff and just use Protocol (default for Moz websites that uses sass)
