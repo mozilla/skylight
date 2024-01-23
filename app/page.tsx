@@ -32,7 +32,6 @@ async function getASRouterLocalMessages(): Promise<Message[]> {
 }
 
 export default async function Dashboard() {
-  // XXX useEffect
   const data = await getASRouterLocalMessages()
 
   return (
