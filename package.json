@@ -1,5 +1,5 @@
 {
-  "name": "skylight",
+  "name": "@mozilla/skylight",
   "version": "0.1.0",
   "private": true,
   "scripts": {
