@@ -19,7 +19,7 @@ function DashboardLinkForMessageId(id: string) {
   const href = `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${id?.toUpperCase()}%25`;
 
   return (
-    <Link href={href} target="_blank" rel="noreferrer">
+    <a href={href} target="_blank" rel="noreferrer">
       Results
       <svg
         fill="none"
@@ -34,7 +34,7 @@ function DashboardLinkForMessageId(id: string) {
           fillRule="evenodd"
         ></path>
       </svg>
-    </Link>
+    </a>
   );
 }
 
@@ -186,12 +186,12 @@ export const columns: ColumnDef<Message>[] = [
           </TooltipProvider>
 
         :
-        <Link
+        <a
           className={buttonVariants({ variant: "outline", size: "sm" })}
           href={props.row.original.previewLink}
           target="_blank">
           Preview
-        </Link> );
+        </a> );
     }
   },
 ]
