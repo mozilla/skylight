@@ -1,9 +1,7 @@
 "use client"
-
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import Link from "next/link";
+import { types } from "@mozilla/nimbus-shared"
+import { ColumnDef } from "@tanstack/react-table";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { useState, useEffect } from "react";
 import { Copy } from "lucide-react";
 import {
   Tooltip,
@@ -12,15 +10,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-
-const columnHelper = createColumnHelper<Message>();
-
-function DashboardLinkForMessageId(id: string) {
-  const href = `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${id?.toUpperCase()}%25`;
-
+function OffsiteLink(href: string, linkText: string) {
   return (
     <a href={href} target="_blank" rel="noreferrer">
-      Results
+      {linkText}
       <svg
         fill="none"
         viewBox="0 0 8 8"
@@ -38,78 +31,12 @@ function DashboardLinkForMessageId(id: string) {
   );
 }
 
-function ExperimentInfo(experiment: any, target:any) {
-  let branchSlugs = experiment.branches.map((branch: any) => {
-    const { value } = branch?.features[0];
-    const { id } = value;
-    return (
-      <>
-        <li key={branch.slug}>{branch.slug}</li>
-        <ol>
-          <p style={{ fontWeight: 600 }}>
-            Message ID: <a href={`#devtools-hackathon-${btoa(id)}`}>{id}</a>
-          </p>
-          {DashboardLinkForMessageId(id)}
-        </ol>
-      </>
-    );
-  });
-  return (
-    <>
-      <tr style={{ "borderTop": "1px solid black" }}>
-        <td>{experiment.userFacingName}</td>
-        <td>{experiment.userFacingDescription}</td>
-        <td>
-          <ul>{branchSlugs}</ul>
-        </td>
-      </tr>
-    </>
-  );
-}
-
-function Experiments({view} : {view: any}) {
-  const [nimbus, setNimbus] = useState([]);
-  useEffect(() => {
-    fetch(
-      "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/nimbus-desktop-experiments/records",
-      {
-        credentials: "omit",
-      }
-    )
-      .then(r => r.json())
-      .then(j => setNimbus(j.data));
-  }, []);
-
-  const experiments = nimbus.map(experiment => {
-    let id = "";
-    try {
-      id = atob(view);
-    } catch (ex) { }
-    return ExperimentInfo(experiment, id);
-  });
-
-  return (
-    <>
-      <h1>Nimbus Live Experiments</h1>
-
-      <table>
-        <tr style={{ "borderTop": "1px solid black" }}>
-          <th>Experiments</th>
-          <th>Description</th>
-          <th>Branches</th>
-        </tr>
-        {experiments}
-      </table>
-    </>
-  );
-}
-
 // This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Message = {
+export type FxMSMessageInfo = {
   product: 'Desktop' | 'Android'
   release: string
   id: string
+  template: string
   topic: string
   surface: string
   segment: string
@@ -120,7 +47,52 @@ export type Message = {
   metrics: string
 }
 
-export const columns: ColumnDef<Message>[] = [
+type NimbusExperiment = types.experiments.NimbusExperiment;
+
+export type ExperimentInfo = {
+  product: 'Desktop' | 'Android'
+  release?: string
+  id: string
+  template?: string
+  topic?: string
+  surface?: string
+  segment?: string
+  ctrPercent?: number
+  ctrPercentChange?: number
+  ctrDashboardLink?: string
+  previewLink?: string
+  metrics?: string
+  experimenterLink?: string
+  startDate?: string
+  endDate?: string
+  userFacingName?: string
+  recipe?: NimbusExperiment
+  isBranch?: boolean
+} | []
+
+export type BranchInfo = {
+  product: 'Desktop' | 'Android'
+  release?: string
+  id: string
+  topic?: string
+  surface?: string
+  segment?: string
+  ctrPercent?: number
+  ctrPercentChange?: number
+  ctrDashboardLink?: string
+  previewLink?: string
+  metrics?: string
+  experimenterLink?: string
+  startDate?: string
+  endDate?: string
+  userFacingName?: string
+  recipe?: NimbusExperiment
+  isBranch?: boolean
+} | []
+
+export type ExperimentAndBranchInfo = ExperimentInfo | BranchInfo;
+
+export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   {
     accessorKey: "release",
     header: "Release",
@@ -143,20 +115,124 @@ export const columns: ColumnDef<Message>[] = [
     accessorKey: "metrics",
     header: "Metrics",
     cell: (props: any) => {
-      // console.log(props);
-      const messageId = props.row.original.id;
-      return DashboardLinkForMessageId(messageId);
+      return OffsiteLink(props.row.original.ctrDashboardLink, "Results");
     }
   }, {
     accessorKey: "previewLink",
     header: "",
     cell: (props: any) => {
-      if (props.row.original.surface !== 'infobar'
-          && props.row.original.surface !== 'spotlight') {
+      if (props.row.original.template !== 'infobar'
+          && props.row.original.template !== 'spotlight') {
           return ( <div/> );
       }
 
       // unless / until we get MAKE_LINKABLE landed
+      const copyPreviewLink = () => {
+        return navigator.clipboard.writeText(props.row.original.previewLink);
+      }
+
+      return (
+        copyPreviewLink ?
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+                <Button
+                  className={
+                    buttonVariants({
+                        variant: "secondary",
+                        size: "sm",
+                        className: "active:bg-slate-500 font-normal border  border-slate-700"
+                    })
+                  }
+                  onClick={copyPreviewLink}>
+                <Copy className="me-2" />
+                Copy Preview URL
+              </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>After clicking to copy, paste in URL bar for message preview</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+        :
+        <a
+          className={buttonVariants({ variant: "outline", size: "sm" })}
+          href={props.row.original.previewLink}
+          target="_blank">
+          Preview
+        </a> );
+    }
+  },
+]
+
+function Dates(startDate : string, endDate: string) {
+  if (startDate || endDate) {
+    return (
+      <>
+        {startDate} - {endDate}
+      </>
+    );
+  }
+  return ( <></>)
+}
+
+export const experimentColumns: ColumnDef<ExperimentInfo>[] = [
+  {
+    accessorKey: "dates",
+    header: "Dates",
+    cell: (props: any) => {
+      return Dates(props.row.original.startDate, props.row.original.endDate);
+    }
+  },
+  {
+    accessorKey: "exp_or_branch",
+    header: "",
+    cell: (props: any) => {
+      return (
+        <>
+          {props.row.original.userFacingName || props.row.original.id}
+        </>
+      );
+    }
+  },
+  // {
+  //   accessorKey: "topic",
+  //   header: "Topic",
+  // },
+  {
+    accessorKey: "surface",
+    header: "Surface",
+  }, {
+  //   accessorKey: "segment",
+  //   header: "Segment",
+  // }, {
+    accessorKey: "metrics",
+    header: "Metrics",
+    cell: (props: any) => {
+      if (props.row.original.ctrDashboardLink) {
+        return OffsiteLink(props.row.original.ctrDashboardLink, "Results");
+      }
+      return ( <></> );
+    }
+  }, {
+    accessorKey: "other",
+    header: "",
+    cell: (props: any) => {
+      if (props.row.original.experimenterLink) {
+        return (
+          OffsiteLink(props.row.original.experimenterLink, "Experiment")
+        );
+      }
+
+      return ( <></> );
+
+      if (props.row.original.surface !== 'infobar'
+          && props.row.original.surface !== 'spotlight') {
+          return ( <></> );
+      }
+
+      // unless / until we expose via UITour (or MAKE_LINKABLE?)
       const copyPreviewLink = () => {
         return navigator.clipboard.writeText(props.row.original.previewLink);
       }

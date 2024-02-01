@@ -16,6 +16,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+import { BranchInfo } from "./columns.tsx"
+
 interface MessageTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -30,6 +32,15 @@ export function MessageTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
+
+  function getRowSpanForCell(cell : any) {
+    // XXX is an experiment & the dates column
+    // if (cell.row.original.recipe && cell.column.id == 'dates') {
+    //   return cell.row.original.recipe.branches.length
+    // }
+
+    return 1;
+  }
 
   return (
     <div className="rounded-md border">
@@ -59,11 +70,16 @@ export function MessageTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell className="py-2" key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+                {row.getVisibleCells().map((cell) => {
+                  // if ((cell.row.original as any).isBranch)
+                  //   return ( <></> );
+                  return (
+                      <TableCell className="py-2" key={cell.id} rowSpan=
+                        {getRowSpanForCell(cell)}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                      );
+                  })}
               </TableRow>
             ))
           ) : (
