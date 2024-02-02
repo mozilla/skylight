@@ -1,8 +1,9 @@
 "use client"
-import { types } from "@mozilla/nimbus-shared"
+import { types } from "@mozilla/nimbus-shared";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Copy } from "lucide-react";
+import { Dates} from "./dates";
 import {
   Tooltip,
   TooltipContent,
@@ -165,17 +166,6 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     }
   },
 ]
-
-function Dates(startDate : string, endDate: string) {
-  if (startDate || endDate) {
-    return (
-      <>
-        {startDate} - {endDate}
-      </>
-    );
-  }
-  return ( <></>)
-}
 
 export const experimentColumns: ColumnDef<ExperimentInfo>[] = [
   {
