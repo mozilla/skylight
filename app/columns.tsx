@@ -172,7 +172,10 @@ export const experimentColumns: ColumnDef<ExperimentInfo>[] = [
     accessorKey: "dates",
     header: "Dates",
     cell: (props: any) => {
-      return Dates(props.row.original.startDate, props.row.original.endDate);
+      return (
+        <Dates startDate={props.row.original.startDate}
+          endDate={props.row.original.endDate} />
+      );
     }
   },
   {

@@ -1,6 +1,6 @@
 type DatesProps = {
-  startDate : string;
-  endDate: string;
+  startDate?: string
+  endDate?: string
 }
 
 export function Dates({startDate, endDate} : DatesProps) {
@@ -9,7 +9,7 @@ export function Dates({startDate, endDate} : DatesProps) {
       <>
         {startDate} - {endDate}
       </>
-    );
+    )
   }
   return ( <></>)
 }
