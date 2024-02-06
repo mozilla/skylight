@@ -78,6 +78,7 @@ export type BranchInfo = {
   id: string
   topic?: string
   surface?: string
+  template?: string
   segment?: string
   ctrPercent?: number
   ctrPercentChange?: number
@@ -129,7 +130,7 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
       }
 
       // unless / until we get MAKE_LINKABLE landed
-     const copyPreviewLink : boolean = true;
+      const copyPreviewLink : boolean = true;
 
       return (
         copyPreviewLink
@@ -193,13 +194,18 @@ export const experimentColumns: ColumnDef<ExperimentInfo>[] = [
       if (props.row.original.experimenterLink) {
         return (
           OffsiteLink(props.row.original.experimenterLink, "Experiment")
-        );
+        )
       }
 
-      return ( <></> );
+      // XXX check for branch too?
+      if (!props.row.original.previewLink) {
+        return ( <></> );
+      }
 
-      if (props.row.original.surface !== 'infobar'
-          && props.row.original.surface !== 'spotlight') {
+      // XXX collapse with above? // XXX link to origin
+      const previewable = ['infobar', 'spotlight', 'feature_callout', 'cfr_doorhanger'];
+      console.log("template: ", props.row.original.template);
+      if (!previewable.includes(props.row.original.template)) {
           return ( <></> );
       }
 
