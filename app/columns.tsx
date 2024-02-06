@@ -3,7 +3,8 @@ import { types } from "@mozilla/nimbus-shared";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Copy } from "lucide-react";
-import { Dates} from "./dates";
+import { Dates } from "./dates"
+import { PreviewLink } from './preview-link'
 import {
   Tooltip,
   TooltipContent,
@@ -128,41 +129,18 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
       }
 
       // unless / until we get MAKE_LINKABLE landed
-      const copyPreviewLink = () => {
-        return navigator.clipboard.writeText(props.row.original.previewLink);
-      }
+     const copyPreviewLink : boolean = true;
 
       return (
-        copyPreviewLink ?
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-                <Button
-                  className={
-                    buttonVariants({
-                        variant: "secondary",
-                        size: "sm",
-                        className: "active:bg-slate-500 font-normal border  border-slate-700"
-                    })
-                  }
-                  onClick={copyPreviewLink}>
-                <Copy className="me-2" />
-                Copy Preview URL
-              </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>After clicking to copy, paste in URL bar for message preview</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-        :
-        <a
-          className={buttonVariants({ variant: "outline", size: "sm" })}
-          href={props.row.original.previewLink}
-          target="_blank">
-          Preview
-        </a> );
+        copyPreviewLink
+          ? <PreviewLink linkUrl={props.row.original.previewLink}/>
+          : <a
+              className={buttonVariants({ variant: "outline", size: "sm" })}
+              href={props.row.original.previewLink}
+              target="_blank">
+              Preview
+            </a>
+      );
     }
   },
 ]
@@ -226,41 +204,17 @@ export const experimentColumns: ColumnDef<ExperimentInfo>[] = [
       }
 
       // unless / until we expose via UITour (or MAKE_LINKABLE?)
-      const copyPreviewLink = () => {
-        return navigator.clipboard.writeText(props.row.original.previewLink);
-      }
-
+      const copyPreviewLink = true;
       return (
-        copyPreviewLink ?
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-                <Button
-                  className={
-                    buttonVariants({
-                        variant: "secondary",
-                        size: "sm",
-                        className: "active:bg-slate-500 font-normal border  border-slate-700"
-                    })
-                  }
-                  onClick={copyPreviewLink}>
-                <Copy className="me-2" />
-                Copy Preview URL
-              </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>After clicking to copy, paste in URL bar for message preview</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-        :
-        <a
-          className={buttonVariants({ variant: "outline", size: "sm" })}
-          href={props.row.original.previewLink}
-          target="_blank">
-          Preview
-        </a> );
+        copyPreviewLink
+          ? <PreviewLink linkUrl={props.row.original.previewLink} />
+          : <a
+              className={buttonVariants({ variant: "outline", size: "sm" })}
+              href={props.row.original.previewLink}
+              target="_blank">
+              Preview
+            </a>
+      );
     }
   },
 ]
