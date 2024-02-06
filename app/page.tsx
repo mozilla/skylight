@@ -1,6 +1,7 @@
 import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo,ExperimentAndBranchInfo, ExperimentInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDisplayNameForTemplate, getTemplateFromMessage } from "../lib/messageUtils.ts";
+import { Base64 } from 'js-base64';
 
 import { MessageTable } from "./message-table";
 import { usesMessagingFeatures } from "../lib/experimentUtils.ts";
@@ -66,25 +67,6 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         // branchInfo.id = screen0.id
         const message0 : any = value.messages[0];
 
-        function b64EncodeUnicode(str) {
-          // first we use encodeURIComponent to get percent-encoded Unicode,
-          // then we convert the percent encodings into raw bytes which
-          // can be fed into btoa.
-          return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-              function toSolidBytes(match, p1) {
-                  return String.fromCharCode('0x' + p1);
-          }));
-      }
-
-        // // XXX from https://stackoverflow.com/a/61454823
-        // const universalBtoa = (str : string) : string => {
-        //   try {
-        //     return btoa(str);
-        //   } catch (err) {
-        //     return Buffer.from(str, "binary").toString('base64');
-        //   }
-        // };
-
         // XXX don't assume spotlight in multi -- problemw ith mluti layer templates (multi, spotlight, multistage)
         branchInfo.template = 'spotlight';
 
@@ -93,7 +75,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         let message0Json = JSON.stringify(message0, null, 2);
         console.log("message0Json");
         branchInfo.previewLink =
-          `about:messagepreview?json=${b64EncodeUnicode(message0Json)}`
+          `about:messagepreview?json=${Base64.encode(message0Json)}`
         break
 
       case 'momentsUpdate':
