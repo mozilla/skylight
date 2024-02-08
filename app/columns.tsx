@@ -183,9 +183,9 @@ export const experimentColumns: ColumnDef<ExperimentInfo>[] = [
     header: "",
     cell: (props: any) => {
       return (
-        <>
+        <div className="font-semibold">
           {props.row.original.userFacingName || props.row.original.id}
-        </>
+        </div>
       );
     }
   },
