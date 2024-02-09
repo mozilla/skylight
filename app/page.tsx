@@ -1,5 +1,5 @@
 import { types } from "@mozilla/nimbus-shared";
-import { BranchInfo,ExperimentAndBranchInfo, ExperimentInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
+import { BranchInfo, ExperimentAndBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDisplayNameForTemplate, getTemplateFromMessage } from "../lib/messageUtils.ts";
 
 import { MessageTable } from "./message-table";
@@ -74,7 +74,8 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
 
       default:
         if (!value?.messages) {
-          console.log ("v.messages is null, v= ", value);
+          console.log("v.messages is null")
+          console.log(", v= ", value);
           return branchInfo;
         }
         branchInfo.id = value.messages[0].id;
@@ -90,12 +91,13 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
     }
 
     if (!value.content) {
-      console.log ("v.content is null, v= ", value);
-      return branchInfo;
+      console.log("v.content is null")
+      // console.log("v= ", value)
+      return branchInfo
     }
 
-    console.log("branchInfo = ");
-    console.log(branchInfo);
+    // console.log("branchInfo = ");
+    // console.log(branchInfo);
     return branchInfo;
   });
 
@@ -109,7 +111,7 @@ function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment) : Experi
     return [];
   };
 
-  let experimentInfo : ExperimentInfo[] = [{
+  let experimentInfo : ExperimentAndBranchInfo[] = [{
     startDate: recipe.startDate || undefined,
     endDate: recipe.endDate || undefined, // XXX use proposed duration instead
     product: 'Desktop',
@@ -178,7 +180,7 @@ async function getDesktopExperimentAndBranchInfo(experiments : NimbusExperiment[
   return info
 }
 
-async function getExperimentAndBranchInfoFromServer(): Promise<ExperimentInfo[]> {
+async function getExperimentAndBranchInfoFromServer(): Promise<ExperimentAndBranchInfo[]> {
 
   const info : ExperimentAndBranchInfo[] =
     await getDesktopExperimentAndBranchInfo(
