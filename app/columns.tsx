@@ -167,7 +167,7 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   },
 ]
 
-export const experimentColumns: ColumnDef<ExperimentInfo>[] = [
+export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
   {
     accessorKey: "dates",
     header: "Dates",

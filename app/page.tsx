@@ -1,5 +1,5 @@
 import { types } from "@mozilla/nimbus-shared";
-import { BranchInfo, ExperimentAndBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
+import { BranchInfo, ExperimentAndBranchInfo, ExperimentInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDisplayNameForTemplate, getTemplateFromMessage } from "../lib/messageUtils.ts";
 
 import { MessageTable } from "./message-table";
@@ -111,7 +111,7 @@ function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment) : Experi
     return [];
   };
 
-  let experimentInfo : ExperimentAndBranchInfo[] = [{
+  let experimentInfo : ExperimentInfo = {
     startDate: recipe.startDate || undefined,
     endDate: recipe.endDate || undefined, // XXX use proposed duration instead
     product: 'Desktop',
@@ -125,13 +125,16 @@ function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment) : Experi
     experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${recipe.slug}`,
     userFacingName: recipe.userFacingName,
     recipe: recipe
-  }];
+  }
 
   let branchInfos : BranchInfo[] = getBranchInfosFromExperiment(recipe);
   // console.log("branchInfos[] = ");
   // console.log(branchInfos);
 
-  let experimentAndBranchInfos : ExperimentAndBranchInfo[] = experimentInfo.concat(branchInfos);
+  let experimentAndBranchInfos : ExperimentAndBranchInfo[] = [];
+  experimentAndBranchInfos =
+    ([experimentInfo] as ExperimentAndBranchInfo[])
+    .concat(branchInfos);
 
   // console.log("expAndBranchInfos: ");
   // console.table(experimentAndBranchInfos);
