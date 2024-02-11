@@ -1,5 +1,5 @@
 import { types } from "@mozilla/nimbus-shared";
-import { BranchInfo, ExperimentAndBranchInfo, ExperimentInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
+import { BranchInfo, RecipeOrBranchInfo, ExperimentInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
@@ -50,7 +50,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
     const template = getTemplateFromMessage(value);
     branch.template = template;
     branchInfo.template = template;
-    branchInfo.surface = getDisplayNameForTemplate(template); 
+    branchInfo.surface = getDisplayNameForTemplate(template);
 
     switch(template) {
       case 'feature_callout':
@@ -76,7 +76,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         branchInfo.id = value.content.tag;
         break;
 
-      case 'spotlight': 
+      case 'spotlight':
         branchInfo.id = value.id;
         // Localize the recipe if necessary.
         let localizedSpotlight = _substituteLocalizations(value, recipe.localizations?.[Object.keys(recipe.localizations)[0]]);
@@ -95,7 +95,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         branchInfo.id = firstMessage.content.screens[0].id
         // Localize the recipe if necessary.
         let localizedMulti = _substituteLocalizations(value.messages[0], recipe.localizations?.[Object.keys(recipe.localizations)[0]]);
-        // XXX assumes previewable message (currently spotlight or infobar) 
+        // XXX assumes previewable message (currently spotlight or infobar)
         branchInfo.previewLink = getPreviewLink(localizedMulti);
         break;
 
@@ -129,7 +129,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
   return branchInfos;
 }
 
-function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment): ExperimentAndBranchInfo[] {
+function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment) : RecipeOrBranchInfo[] {
 
   // console.log("in gECFJ");
   // there are no non-rollout spotlights right now, we can comment this out to test them
@@ -159,9 +159,9 @@ function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment): Experim
   // console.log("branchInfos[] = ");
   // console.log(branchInfos);
 
-  let experimentAndBranchInfos : ExperimentAndBranchInfo[] = [];
+  let experimentAndBranchInfos : RecipeOrBranchInfo[] = [];
   experimentAndBranchInfos =
-    ([experimentInfo] as ExperimentAndBranchInfo[])
+    ([experimentInfo] as RecipeOrBranchInfo[])
     .concat(branchInfos);
 
   // console.log("expAndBranchInfos: ");
@@ -178,7 +178,7 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
     "utf8");
   let json_data = JSON.parse(data);
 
-  let messages : FxMSMessageInfo[] = 
+  let messages : FxMSMessageInfo[] =
     json_data.map((messageDef : any) : FxMSMessageInfo => getASRouterLocalColumnFromJSON(messageDef));
 
   return messages;
@@ -197,21 +197,23 @@ async function getDesktopExperimentsFromServer(): Promise<NimbusExperiment[]> {
   return experiments;
 }
 
-async function getDesktopExperimentAndBranchInfo(experiments: NimbusExperiment[]): Promise<ExperimentAndBranchInfo[]> {
-  const messagingExperiments = (experiments as Array<NimbusExperiment>).filter(
-    recipe => usesMessagingFeatures(recipe));
+async function getDesktopExperimentAndBranchInfo(experiments : NimbusExperiment[]): Promise<RecipeOrBranchInfo[]> {
 
-  let info : ExperimentAndBranchInfo[] =
+  const messagingExperiments =
+    (experiments as Array<NimbusExperiment>).filter(
+      recipe => usesMessagingFeatures(recipe));
+
+  let info : RecipeOrBranchInfo[] =
     messagingExperiments.map(
-      (experimentDef : NimbusExperiment) : ExperimentAndBranchInfo[] =>
-      getExperimentAndBranchInfoFromRecipe(experimentDef)).flat(1);
+      (experimentDef : NimbusExperiment) :  RecipeOrBranchInfo[] =>
+        getExperimentAndBranchInfoFromRecipe(experimentDef)).flat(1);
 
   return info
 }
 
-async function getExperimentAndBranchInfoFromServer(): Promise<ExperimentAndBranchInfo[]> {
+async function getExperimentAndBranchInfoFromServer(): Promise<RecipeOrBranchInfo[]> {
 
-  const info : ExperimentAndBranchInfo[] =
+  const info : RecipeOrBranchInfo[] =
     await getDesktopExperimentAndBranchInfo(
       await getDesktopExperimentsFromServer());
 

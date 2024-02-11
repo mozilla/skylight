@@ -52,7 +52,7 @@ export type FxMSMessageInfo = {
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
-export type ExperimentInfo = {
+export type RecipeInfo = {
   product: 'Desktop' | 'Android'
   release?: string
   id: string
@@ -95,7 +95,7 @@ export type BranchInfo = {
   template?: string
 } | []
 
-export type ExperimentAndBranchInfo = ExperimentInfo | BranchInfo;
+export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
 
 export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   {
@@ -153,7 +153,7 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   },
 ]
 
-export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
+export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
   {
     accessorKey: "dates",
     header: "Dates",
