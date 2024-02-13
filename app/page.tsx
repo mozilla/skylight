@@ -1,8 +1,9 @@
 import { types } from "@mozilla/nimbus-shared";
-import { BranchInfo, RecipeOrBranchInfo, ExperimentInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
+import { BranchInfo, RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
+import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
 import { MessageTable } from "./message-table";
 import { getProposedEndDate, usesMessagingFeatures } from "../lib/experimentUtils.ts";
 import Link from "next/link";
@@ -31,144 +32,6 @@ let columnsShown = false;
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
-function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
-  // console.log(`-in gBCFE for experiment ${recipe.slug}, branches = `);
-  // console.table(recipe.branches);
-  let branchInfos : BranchInfo[] = recipe.branches.map((branch: any) => {
-    let branchInfo : BranchInfo = {
-      product : 'Desktop',
-      id : branch.slug,
-      isBranch: true,
-      recipe: recipe,
-      slug: branch.slug
-    };
-
-    // XXX should look at all the messages
-    const value = branch.features[0].value;
-
-    // XXX in this case we're really passing a feature value. Hmm....
-    const template = getTemplateFromMessage(value);
-    branch.template = template;
-    branchInfo.template = template;
-    branchInfo.surface = getDisplayNameForTemplate(template);
-
-    switch(template) {
-      case 'feature_callout':
-        // XXX should iterate over all screens
-        branchInfo.id = value.content.screens[0].id;
-        break;
-
-      case 'infobar':
-        branchInfo.id = value.messages[0].id
-        branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id)
-        // Localize the recipe if necessary.
-        // XXX [Object.keys(recipe.localizations)[0]] accesses the first locale inside the localization object.
-        // We'll probably want to add a dropdown component that allows us to choose a locale from the available ones, to pass to this function.
-        let localizedInfobar = _substituteLocalizations(value.content, recipe.localizations?.[Object.keys(recipe.localizations)[0]]);
-        branchInfo.previewLink = getPreviewLink(localizedInfobar);
-        break;
-
-      case 'toast_notification':
-        if (!value?.id) {
-          console.warn("value.id, v = ", value);
-          return branchInfo;
-        }
-        branchInfo.id = value.content.tag;
-        break;
-
-      case 'spotlight':
-        branchInfo.id = value.id;
-        // Localize the recipe if necessary.
-        let localizedSpotlight = _substituteLocalizations(value, recipe.localizations?.[Object.keys(recipe.localizations)[0]]);
-        branchInfo.previewLink = getPreviewLink(localizedSpotlight);
-        break;
-
-      case 'multi':
-        // XXX only does first message
-        const firstMessage = value.messages[0]
-        if (!('content' in firstMessage)) {
-          console.warn('template "multi" first message does not contain content key; details not rendered')
-          return branchInfo
-        }
-
-        // XXX only does first screen
-        branchInfo.id = firstMessage.content.screens[0].id
-        // Localize the recipe if necessary.
-        let localizedMulti = _substituteLocalizations(value.messages[0], recipe.localizations?.[Object.keys(recipe.localizations)[0]]);
-        // XXX assumes previewable message (currently spotlight or infobar)
-        branchInfo.previewLink = getPreviewLink(localizedMulti);
-        break;
-
-      case 'momentsUpdate':
-        console.warn(`we don't fully support ${template} messages yet`);
-        return branchInfo;
-
-      default:
-        if (!value?.messages) {
-          console.log("v.messages is null")
-          console.log(", v= ", value);
-          return branchInfo;
-        }
-        branchInfo.id = value.messages[0].id;
-        break;
-    };
-
-    branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id)
-
-    if (!value.content) {
-      console.log("v.content is null")
-      // console.log("v= ", value)
-      return branchInfo
-    }
-
-    // console.log("branchInfo = ");
-    // console.log(branchInfo);
-    return branchInfo;
-  });
-
-  return branchInfos;
-}
-
-function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment) : RecipeOrBranchInfo[] {
-
-  // console.log("in gECFJ");
-  // there are no non-rollout spotlights right now, we can comment this out to test them
-  if (recipe.isRollout) {
-    return [];
-  };
-
-  let experimentInfo : ExperimentInfo = {
-    startDate: recipe.startDate || null,
-    endDate:
-      recipe.endDate ||
-      getProposedEndDate(recipe.startDate, recipe.proposedDuration) || null,
-    product: 'Desktop',
-    release: 'Fx Something',
-    id: recipe.slug,
-    topic: 'some topic',
-    segment: 'some segment',
-    ctrPercent: .5, // get me from BigQuery
-    ctrPercentChange: 2, // get me from BigQuery
-    metrics: 'some metrics',
-    experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${recipe.slug}`,
-    userFacingName: recipe.userFacingName,
-    recipe: recipe
-  }
-
-  let branchInfos : BranchInfo[] = getBranchInfosFromExperiment(recipe);
-  // console.log("branchInfos[] = ");
-  // console.log(branchInfos);
-
-  let experimentAndBranchInfos : RecipeOrBranchInfo[] = [];
-  experimentAndBranchInfos =
-    ([experimentInfo] as RecipeOrBranchInfo[])
-    .concat(branchInfos);
-
-  // console.log("expAndBranchInfos: ");
-  // console.table(experimentAndBranchInfos);
-
-  return experimentAndBranchInfos;
-}
 
 async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]> {
   const fs = require("fs");
@@ -203,10 +66,11 @@ async function getDesktopExperimentAndBranchInfo(experiments : NimbusExperiment[
     (experiments as Array<NimbusExperiment>).filter(
       recipe => usesMessagingFeatures(recipe));
 
-  let info : RecipeOrBranchInfo[] =
-    messagingExperiments.map(
-      (experimentDef : NimbusExperiment) :  RecipeOrBranchInfo[] =>
-        getExperimentAndBranchInfoFromRecipe(experimentDef)).flat(1);
+    let info : any =
+      messagingExperiments.map(
+        (experimentDef : NimbusExperiment) :  RecipeOrBranchInfo[] =>
+        new NimbusRecipe(experimentDef).getRecipeOrBranchInfos().flat(1)).flat(1)
+        // getExperimentAndBranchInfoFromRecipe(experimentDef)).flat(1)
 
   return info
 }
