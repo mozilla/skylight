@@ -15,5 +15,6 @@ Limelight is released under the terms of the [Mozilla Public License 2.0](LICENS
 ## Code of Conduct
 
 This repository follows a [code of conduct](CODE_OF_CONDUCT.md).
+
 [1]: https://experimenter.info/messaging/experiments-and-user-messaging
 [2]: https://firefox-source-docs.mozilla.org/browser/components/newtab/content-src/asrouter/docs/index.html
