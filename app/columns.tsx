@@ -43,7 +43,7 @@ export type FxMSMessageInfo = {
   segment: string
   ctrPercent: number
   ctrPercentChange: number
-  ctrDashboardLink: string
+  ctrDashboardLink?: string
   previewLink: string
   metrics: string
 }
@@ -116,7 +116,10 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     accessorKey: "metrics",
     header: "Metrics",
     cell: (props: any) => {
-      return OffsiteLink(props.row.original.ctrDashboardLink, "Results");
+      if (props.row.original.ctrDashboardLink) {
+        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
+      }
+      return ( <></> );
     }
   }, {
     accessorKey: "previewLink",

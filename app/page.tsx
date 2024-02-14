@@ -1,13 +1,13 @@
 import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, ExperimentAndBranchInfo, ExperimentInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
-import { getDisplayNameForTemplate, getTemplateFromMessage } from "../lib/messageUtils.ts";
+import { getDisplayNameForTemplate, getTemplateFromMessage, isAboutWelcomeTemplate } from "../lib/messageUtils.ts";
 
 import { MessageTable } from "./message-table";
 import { usesMessagingFeatures } from "../lib/experimentUtils.ts";
 import Link from "next/link";
 
 function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
-  return {
+  let fxmsMsgInfo : FxMSMessageInfo = {
     product: 'Desktop',
     release: 'Fx 123',
     id: messageDef.id,
@@ -18,9 +18,15 @@ function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
     metrics: 'some metrics',
     ctrPercent: .5, // getMeFromLooker
     ctrPercentChange: 2, // getMeFromLooker
-    ctrDashboardLink: `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${messageDef.id?.toUpperCase()}%25`,
     previewLink: `about:messagepreview?json=${btoa(JSON.stringify(messageDef))}`,
   }
+
+  if (isAboutWelcomeTemplate(messageDef.template)) {
+    fxmsMsgInfo.ctrDashboardLink =
+      `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${messageDef.id?.toUpperCase()}%25`
+  }
+
+  return fxmsMsgInfo
 }
 
 let columnsShown = false;
@@ -83,7 +89,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
       };
 
     // XXX we don't support dashboards for these yet
-    if (template != 'toast_notification' ) {
+    if (isAboutWelcomeTemplate(branch.template)) {
       // XXX currently doesn't filter to only get experiment and branch
       // so problems can happen if message ID reused
       branchInfo.ctrDashboardLink =
@@ -177,7 +183,7 @@ async function getDesktopExperimentAndBranchInfo(experiments : NimbusExperiment[
 
   let info : ExperimentAndBranchInfo[] =
     messagingExperiments.map(
-      (experimentDef : NimbusExperiment) :  ExperimentAndBranchInfo[] =>
+      (experimentDef : NimbusExperiment) : ExperimentAndBranchInfo[] =>
         getExperimentAndBranchInfoFromRecipe(experimentDef)).flat(1);
 
   return info

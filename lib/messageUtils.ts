@@ -27,3 +27,11 @@ export function getTemplateFromMessage(msg : any) : string {
 
   return msg.template;
 }
+
+export function isAboutWelcomeTemplate( template : string ) : boolean {
+  // XXX multi shouldn't really be here, but for now, we're going to assume
+  // it's a spotlight
+  const aboutWelcomeSurfaces = ['feature_callout', 'multi', 'spotlight']
+
+  return aboutWelcomeSurfaces.includes(template);
+}
