@@ -40,7 +40,29 @@ export function usesMessagingFeatures(recipe : NimbusExperiment): boolean {
   // XXX figure out how to better handle the ?
   let featureId : string = (recipe as any)?.featureIds[0];
   if (MESSAGING_EXPERIMENTS_DEFAULT_FEATURES.includes(featureId)) {
-      return true;
+    return true;
   }
   return false;
+}
+
+/**
+ *
+ * @param startDate - may be null, as NimbusExperiment types allow this.
+ *                    returns null in this case.
+ * @param proposedDuration - may be undefined as NimbusExperiment types
+ *                    allow this.  returns null in this case.
+ */
+export function getProposedEndDate (startDate : string | null, proposedDuration : number | undefined) : string | null {
+
+  if (startDate === null || proposedDuration === undefined) {
+    return null
+  }
+
+  // XXX need to verify that experimenter actually uses UTC here
+  const jsDate = new Date(startDate)
+
+  jsDate.setUTCDate(jsDate.getUTCDate() + proposedDuration)
+  const formattedDate = jsDate.toISOString().slice(0, 10)
+
+  return formattedDate
 }
