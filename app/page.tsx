@@ -3,7 +3,7 @@ import { BranchInfo, ExperimentAndBranchInfo, ExperimentInfo, experimentColumns,
 import { getDisplayNameForTemplate, getTemplateFromMessage, isAboutWelcomeTemplate } from "../lib/messageUtils.ts";
 
 import { MessageTable } from "./message-table";
-import { usesMessagingFeatures } from "../lib/experimentUtils.ts";
+import { getProposedEndDate, usesMessagingFeatures } from "../lib/experimentUtils.ts";
 import Link from "next/link";
 
 function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
@@ -119,7 +119,9 @@ function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment) : Experi
 
   let experimentInfo : ExperimentInfo = {
     startDate: recipe.startDate || undefined,
-    endDate: recipe.endDate || undefined, // XXX use proposed duration instead
+    endDate:
+      recipe.endDate ||
+      getProposedEndDate(recipe.startDate, recipe.proposedDuration) || undefined,
     product: 'Desktop',
     release: 'Fx Something',
     id: recipe.slug,
