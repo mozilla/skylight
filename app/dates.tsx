@@ -1,15 +1,32 @@
 type DatesProps = {
-  startDate?: string
-  endDate?: string
+  startDate: string | null
+  endDate: string | null
 }
 
-export function Dates({startDate, endDate} : DatesProps) {
+function toPrettyDate(dateString : string | null) : string | null {
+    if (!dateString) {
+      return null;
+    }
+
+    let dateObj = new Date(dateString);
+
+    return dateObj.toLocaleDateString("en-US", {
+      month: "short", day: "numeric", timeZone: "UTC"
+    });
+}
+
+export function PrettyDateRange({startDate, endDate} : DatesProps) {
   if (startDate || endDate) {
     return (
       <>
-        {startDate} - {endDate}
+        <div className="font-normal text-stone-600 text-base">
+          {toPrettyDate(startDate)}-
+        </div>
+        <div className="font-normal text-stone-600 text-base">
+          {toPrettyDate(endDate)}
+        </div>
       </>
     )
   }
-  return ( <></>)
+  return ( <></> )
 }
