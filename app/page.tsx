@@ -48,7 +48,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
     const template = getTemplateFromMessage(value);
     branch.template = template;
     if (feature0.featureId === "aboutwelcome") {
-      branchInfo.surface = "about:welcome"
+      branchInfo.surface = "First-run Wizard"
     } else {
       branchInfo.surface = getDisplayNameForTemplate(template);
     }
