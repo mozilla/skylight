@@ -41,12 +41,17 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
     };
 
     // XXX should look at all the messages
-    const value = branch.features[0].value;
+    const feature0 = branch.features[0]
+    const value = feature0.value;
 
     // XXX in this case we're really passing a feature value. Hmm....
     const template = getTemplateFromMessage(value);
     branch.template = template;
-    branchInfo.surface = getDisplayNameForTemplate(template);
+    if (feature0.featureId === "aboutwelcome") {
+      branchInfo.surface = "about:welcome"
+    } else {
+      branchInfo.surface = getDisplayNameForTemplate(template);
+    }
 
     switch(template) {
       case 'feature_callout':
@@ -91,7 +96,17 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         break;
       };
 
-    branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id)
+    // XXX we don't support dashboards for these yet
+    if (_isAboutWelcomeTemplate(branch.template) ||
+
+        // XXX doesn't work - about:welcome currently returns early in this
+        // function
+
+        branch.features[0].featureId == "aboutwelcome") {
+      // XXX currently doesn't filter to only get experiment and branch
+      // so problems can happen if message ID reused
+      branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id)
+    }
 
     if (!value.content) {
       console.log("v.content is null")

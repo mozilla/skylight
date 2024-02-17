@@ -12,7 +12,8 @@
  * @see FeatureManifest.yaml
  */
 export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
-  "backgroundTaskMessage", // XXX need to backport this to tree
+  "aboutwelcome", // XXX not in the list in tree; should it be?
+  "backgroundTaskMessage", // XXX need to backport this to tree?
   "cfr",
   "fxms-message-1",
   "fxms-message-2",
