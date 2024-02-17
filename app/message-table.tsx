@@ -50,7 +50,7 @@ export function MessageTable<TData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead className="bg-stone-100 text-slate-400" key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(

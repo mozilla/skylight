@@ -13,12 +13,12 @@ import {
 
 function OffsiteLink(href: string, linkText: string) {
   return (
-    <a href={href} target="_blank" rel="noreferrer">
+    <a href={href} className="text-xs/[180%]" target="_blank" rel="noreferrer">
       {linkText}
       <svg
         fill="none"
         viewBox="0 0 8 8"
-        className="inline h-5 w-5 px-1"
+        className="inline h-[1.1rem] w-[1.1rem] px-1"
         aria-hidden="true"
       >
         <path
@@ -97,18 +97,30 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   {
     accessorKey: "release",
     header: "Release",
+    cell: (props: any) => {
+      return <div className="text-base">{props.row.original.release}</div>
+    }
   },
   {
     accessorKey: "id",
     header: "Message ID",
+    cell: (props: any) => {
+      return <div className="font-mono text-xs">{props.row.original.id}</div>
+    }
   },
   {
     accessorKey: "topic",
     header: "Topic",
+    cell: (props: any) => {
+      return <div className="text-xs/[180%]">{props.row.original.topic}</div>
+    }
   },
   {
     accessorKey: "surface",
     header: "Surface",
+    cell: (props: any) => {
+      return <div className="text-xs/[180%]">{props.row.original.surface}</div>
+    }
   }, {
   //   accessorKey: "segment",
   //   header: "Segment",
@@ -145,11 +157,11 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
                     buttonVariants({
                         variant: "secondary",
                         size: "sm",
-                        className: "active:bg-slate-500 font-normal border  border-slate-700"
+                        className: "active:bg-slate-500 font-normal border  border-slate-700 text-2xs px-4 py-1 h-6"
                     })
                   }
                   onClick={copyPreviewLink}>
-                <Copy className="me-2" />
+                <Copy className="me-2" size={11} />
                 Copy Preview URL
               </Button>
               </TooltipTrigger>
@@ -185,10 +197,23 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
     accessorKey: "exp_or_branch",
     header: "",
     cell: (props: any) => {
+      if (props.row.original.userFacingName) {
+        return (
+          <>
+            <div className="font-semibold text-sm">
+              {props.row.original.userFacingName || props.row.original.id}
+            </div>
+            <div className="font-mono text-3xs">
+              {props.row.original.id}
+            </div>
+          </>
+        );
+      }
+
       return (
-        <div className="font-semibold">
-          {props.row.original.userFacingName || props.row.original.id}
-        </div>
+          <div className="font-mono text-xs">
+            {props.row.original.id}
+          </div>
       );
     }
   },
@@ -199,6 +224,9 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
   {
     accessorKey: "surface",
     header: "Surface",
+    cell: (props: any) => {
+      return <div className="text-xs/[180%]">{props.row.original.surface}</div>
+    }
   }, {
   //   accessorKey: "segment",
   //   header: "Segment",
@@ -207,7 +235,7 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
     header: "Metrics",
     cell: (props: any) => {
       if (props.row.original.ctrDashboardLink) {
-        return OffsiteLink(props.row.original.ctrDashboardLink, "Results");
+        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
       }
       return ( <></> );
     }

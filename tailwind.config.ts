@@ -72,6 +72,16 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+    fontSize: {
+      // XXX switch to rems
+      '3xs': ['10px', '150%'],
+      '2xs': ['11px', '150%'],
+      xs: ['13px', '150%'], // or use with text-xs/[180%]
+      sm: ['15px', '150%'],
+      base: ['16px', '150%'],
+      '2xl': ['22px', '140%'],
+      '3xl': ['26px', '140%']
+    },
     },
   },
   plugins: [require("tailwindcss-animate")],
