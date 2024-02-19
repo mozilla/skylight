@@ -69,7 +69,7 @@ export type ExperimentInfo = {
   userFacingName?: string
   recipe?: NimbusExperiment
   isBranch?: boolean
-} | []
+}
 
 export type BranchInfo = {
   product: 'Desktop' | 'Android'
@@ -89,7 +89,7 @@ export type BranchInfo = {
   userFacingName?: string
   recipe?: NimbusExperiment
   isBranch?: boolean
-} | []
+}
 
 export type ExperimentAndBranchInfo = ExperimentInfo | BranchInfo;
 
@@ -115,7 +115,7 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   // }, {
     accessorKey: "metrics",
     header: "Metrics",
-    cell: (props: any) => {
+    cell: (props) => {
       if (props.row.original.ctrDashboardLink) {
         return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
       }
@@ -124,7 +124,7 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   }, {
     accessorKey: "previewLink",
     header: "",
-    cell: (props: any) => {
+    cell: (props) => {
       if (props.row.original.template !== 'infobar'
           && props.row.original.template !== 'spotlight') {
           return ( <div/> );
@@ -174,7 +174,7 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
   {
     accessorKey: "dates",
     header: "Dates",
-    cell: (props: any) => {
+    cell: (props) => {
       return (
         <Dates startDate={props.row.original.startDate}
           endDate={props.row.original.endDate} />
@@ -184,7 +184,7 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
   {
     accessorKey: "exp_or_branch",
     header: "",
-    cell: (props: any) => {
+    cell: (props) => {
       return (
         <div className="font-semibold">
           {props.row.original.userFacingName || props.row.original.id}
@@ -205,7 +205,7 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
   // }, {
     accessorKey: "metrics",
     header: "Metrics",
-    cell: (props: any) => {
+    cell: (props) => {
       if (props.row.original.ctrDashboardLink) {
         return OffsiteLink(props.row.original.ctrDashboardLink, "Results");
       }
@@ -214,13 +214,12 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
   }, {
     accessorKey: "other",
     header: "",
-    cell: (props: any) => {
+    cell: (props) => {
       if (props.row.original.experimenterLink) {
         return (
           OffsiteLink(props.row.original.experimenterLink, "Experiment")
         );
       }
-
       return ( <></> );
 
       if (props.row.original.surface !== 'infobar'
