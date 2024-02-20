@@ -118,10 +118,10 @@ function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment) : Experi
   };
 
   let experimentInfo : ExperimentInfo = {
-    startDate: recipe.startDate || undefined,
+    startDate: recipe.startDate || null,
     endDate:
       recipe.endDate ||
-      getProposedEndDate(recipe.startDate, recipe.proposedDuration) || undefined,
+      getProposedEndDate(recipe.startDate, recipe.proposedDuration) || null,
     product: 'Desktop',
     release: 'Fx Something',
     id: recipe.slug,

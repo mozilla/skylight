@@ -3,7 +3,7 @@ import { types } from "@mozilla/nimbus-shared";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Copy } from "lucide-react";
-import { Dates} from "./dates";
+import { PrettyDateRange } from "./dates";
 import {
   Tooltip,
   TooltipContent,
@@ -64,8 +64,8 @@ export type ExperimentInfo = {
   previewLink?: string
   metrics?: string
   experimenterLink?: string
-  startDate?: string
-  endDate?: string
+  startDate: string | null
+  endDate: string | null
   userFacingName?: string
   recipe?: NimbusExperiment
   isBranch?: boolean
@@ -176,7 +176,7 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
     header: "Dates",
     cell: (props: any) => {
       return (
-        <Dates startDate={props.row.original.startDate}
+        <PrettyDateRange startDate={props.row.original.startDate}
           endDate={props.row.original.endDate} />
       );
     }
