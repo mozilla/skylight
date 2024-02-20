@@ -31,9 +31,16 @@ export function getTemplateFromMessage(msg : any) : string {
 export function _isAboutWelcomeTemplate( template : string ) : boolean {
   // XXX multi shouldn't really be here, but for now, we're going to assume
   // it's a spotlight
-  const aboutWelcomeSurfaces = ['feature_callout', 'multi', 'spotlight']
+  const aboutWelcomeSurfaces = [
+    'aboutwelcome', // pseudo template, a:w template currently anonymous
+    'feature_callout',
+    // pseudo-template, a (sometimes correct) assumption to stand something up
+    'multi',
+    'multistage',
+    'spotlight'
+  ]
 
-  return aboutWelcomeSurfaces.includes(template);
+  return aboutWelcomeSurfaces.includes(template)
 }
 
 export function getDashboard( template: string, msgId: string ) : string | undefined {

@@ -49,6 +49,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
     branch.template = template;
     if (feature0.featureId === "aboutwelcome") {
       branchInfo.surface = "First-run Wizard"
+      branchInfo.ctrDashboardLink = getDashboard("aboutwelcome", branchInfo.id)
     } else {
       branchInfo.surface = getDisplayNameForTemplate(template);
     }
@@ -96,17 +97,10 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         break;
       };
 
-    // XXX we don't support dashboards for these yet
-    if (_isAboutWelcomeTemplate(branch.template) ||
 
-        // XXX doesn't work - about:welcome currently returns early in this
-        // function
-
-        branch.features[0].featureId == "aboutwelcome") {
       // XXX currently doesn't filter to only get experiment and branch
       // so problems can happen if message ID reused
       branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id)
-    }
 
     if (!value.content) {
       console.log("v.content is null")
