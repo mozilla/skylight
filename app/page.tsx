@@ -1,6 +1,6 @@
 import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, ExperimentAndBranchInfo, ExperimentInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
-import { getDisplayNameForTemplate, getTemplateFromMessage, isAboutWelcomeTemplate } from "../lib/messageUtils.ts";
+import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate } from "../lib/messageUtils.ts";
 
 import { MessageTable } from "./message-table";
 import { getProposedEndDate, usesMessagingFeatures } from "../lib/experimentUtils.ts";
@@ -21,10 +21,7 @@ function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
     previewLink: `about:messagepreview?json=${btoa(JSON.stringify(messageDef))}`,
   }
 
-  if (isAboutWelcomeTemplate(messageDef.template)) {
-    fxmsMsgInfo.ctrDashboardLink =
-      `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${messageDef.id?.toUpperCase()}%25`
-  }
+  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id)
 
   return fxmsMsgInfo
 }
@@ -56,6 +53,12 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         // XXX should iterate over all screens
         branchInfo.id = value.content.screens[0].id;
         break;
+
+      case 'infobar':
+        branchInfo.id = value.messages[0].id
+        branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id)
+        break
+
       case 'toast_notification':
         if (!value?.id) {
           console.warn("value.id, v = ", value);
@@ -75,7 +78,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         break;
 
       case 'momentsUpdate':
-        console.warn(`we don't fully support ${template} messages yet"`);
+        console.warn(`we don't fully support ${template} messages yet`);
         return branchInfo;
 
       default:
@@ -88,13 +91,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         break;
       };
 
-    // XXX we don't support dashboards for these yet
-    if (isAboutWelcomeTemplate(branch.template)) {
-      // XXX currently doesn't filter to only get experiment and branch
-      // so problems can happen if message ID reused
-      branchInfo.ctrDashboardLink =
-        `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${branchInfo.id?.toUpperCase()}%25`;
-    }
+    branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id)
 
     if (!value.content) {
       console.log("v.content is null")
