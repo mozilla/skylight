@@ -209,7 +209,7 @@ export default async function Dashboard() {
   return (
     <div>
       <div>
-        <h4 className="scroll-m-20 text-xl font-semibold text-center py-4">
+        <h4 className="scroll-m-20 text-3xl font-semibold text-center py-4">
           Skylight
         </h4>
 
