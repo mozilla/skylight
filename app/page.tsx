@@ -68,10 +68,17 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         break;
 
       case 'multi':
-        // XXX only does first messages
-        branchInfo.id = value.messages[0].content.screens[0].id;
+        // XXX only does first message
+	const firstMessage = value.messages[0]
+        if (!('content' in firstMessage)) {
+	  console.warn('template "multi" first message does not contain content key; details not rendered')
+	  return branchInfo
+        }
 
-        // XXX assumes previewable message (spotight?)
+	// XXX only does first screen
+        branchInfo.id = firstMessage.content.screens[0].id
+
+        // XXX assumes previewable message (currently spotlight or infobar) 
         // branchInfo.previewLink =
         //   `about:messagepreview?json=${btoa(JSON.stringify(value.messages[0].content.screens[0].content))}`;
 
