@@ -66,8 +66,6 @@ export function getProposedEndDate (startDate : string | null, proposedDuration 
 
   return formattedDate
 }
-<<<<<<< Updated upstream
-=======
 
 /**
  * 
@@ -101,4 +99,3 @@ export function _substituteLocalizations(values: any, localizations: object | nu
 
   return substituted;
 }
->>>>>>> Stashed changes

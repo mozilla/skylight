@@ -262,24 +262,14 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
     header: "",
     cell: (props: any) => {
       if (props.row.original.previewLink == undefined) {
-<<<<<<< Updated upstream
-          return ( <div/> );
-=======
         return ( <div/> );
       }
 
       // unless / until we expose via UITour (or MAKE_LINKABLE?)
       const copyPreviewLink = () => {
         return navigator.clipboard.writeText(props.row.original.previewLink);
->>>>>>> Stashed changes
       }
 
-    // unless / until we expose via UITour (or MAKE_LINKABLE?)
-    const copyPreviewLink = () => {
-      return navigator.clipboard.writeText(props.row.original.previewLink);
-    }
-
-<<<<<<< Updated upstream
     return (
       copyPreviewLink ?
       <TooltipProvider>
@@ -303,12 +293,7 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      :
-      null );
-=======
-        :
-        null );
->>>>>>> Stashed changes
+      : null );
     }
   },
 ]

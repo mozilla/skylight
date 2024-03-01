@@ -1,24 +1,7 @@
 import { types } from "@mozilla/nimbus-shared";
-<<<<<<< Updated upstream
-import {
-  BranchInfo,
-  ExperimentAndBranchInfo,
-  ExperimentInfo,
-  experimentColumns,
-  FxMSMessageInfo,
-  fxmsMessageColumns,
-} from "./columns";
-import {
-  getDashboard,
-  getDisplayNameForTemplate,
-  getTemplateFromMessage,
-  _isAboutWelcomeTemplate,
-} from "../lib/messageUtils.ts";
-=======
 import { BranchInfo, ExperimentAndBranchInfo, ExperimentInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate } from "../lib/messageUtils.ts";
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
->>>>>>> Stashed changes
 
 import { MessageTable } from "./message-table";
 import {
@@ -71,21 +54,18 @@ function getASRouterLocalColumnFromJSON(messageDef: any): FxMSMessageInfo {
     template: messageDef.template,
     topic: messageDef.provider,
     surface: getDisplayNameForTemplate(getTemplateFromMessage(messageDef)),
-    segment: "some segment",
-    metrics: "some metrics",
-    ctrPercent: 0.5, // getMeFromLooker
+    segment: 'some segment',
+    metrics: 'some metrics',
+    ctrPercent: .5, // getMeFromLooker
     ctrPercentChange: 2, // getMeFromLooker
-    previewLink: `about:messagepreview?json=${btoa(
+    previewLink: `about:messagepreview?json=${encodeURIComponent(btoa(
       JSON.stringify(messageDef),
-    )}`,
+    ))}`,
   };
 
-  fxmsMsgInfo.ctrDashboardLink = getDashboard(
-    messageDef.template,
-    messageDef.id,
-  );
+  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id);
 
-  return fxmsMsgInfo;
+  return fxmsMsgInfo
 }
 
 let columnsShown = false;
@@ -93,13 +73,13 @@ let columnsShown = false;
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
 function getBranchInfosFromExperiment(recipe: NimbusExperiment): BranchInfo[] {
-  console.log(`-in gBCFE for experiment ${recipe.slug}, branches = `);
-  console.table(recipe.branches);
+  // console.log(`-in gBCFE for experiment ${recipe.slug}, branches = `);
+  // console.table(recipe.branches);
   let branchInfos: BranchInfo[] = recipe.branches.map((branch: any) => {
     let branchInfo: BranchInfo = {
-      product: "Desktop",
+      product: 'Desktop',
       id: branch.slug,
-      isBranch: true,
+      isBranch: true
     };
 
     // XXX should look at all the messages
@@ -110,31 +90,21 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment): BranchInfo[] {
     branch.template = template;
     branchInfo.template = template;
     branchInfo.surface = getDisplayNameForTemplate(template);
+
     switch (template) {
       case "feature_callout":
         // XXX should iterate over all screens
         branchInfo.id = value.content.screens[0].id;
         break;
 
-<<<<<<< Updated upstream
-      case "infobar":
-        branchInfo.id = value.messages[0].id;
-        branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id);
-        branchInfo.previewLink = `about:messagepreview?json=${btoa(
-          JSON.stringify(
-            _substituteLocalizations(value.content, recipe.localizations),
-          ),
-        )}`;
-=======
       case 'infobar':
         branchInfo.id = value.messages[0].id;
         branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id);
         branchInfo.previewLink = `about:messagepreview?json=${encodeURIComponent(btoa(
           JSON.stringify(_substituteLocalizations(value.content, recipe.localizations))))}`;
->>>>>>> Stashed changes
         break;
 
-      case "toast_notification":
+      case 'toast_notification':
         if (!value?.id) {
           console.warn("value.id, v = ", value);
           return branchInfo;
@@ -142,39 +112,6 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment): BranchInfo[] {
         branchInfo.id = value.content.tag;
         break;
 
-<<<<<<< Updated upstream
-      case "spotlight":
-        branchInfo.id = value.id;
-        branchInfo.previewLink = `about:messagepreview?json=${encodeURIComponent(
-          btoa(
-            JSON.stringify(
-              _substituteLocalizations(value, recipe.localizations),
-            ),
-          ),
-        )}`;
-        break;
-      case "multi":
-        // XXX only does first message
-        const firstMessage = value.messages[0];
-        if (!("content" in firstMessage)) {
-          console.warn(
-            'template "multi" first message does not contain content key; details not rendered',
-          );
-          return branchInfo;
-        }
-
-        // XXX only does first screen
-        branchInfo.id = firstMessage.content.screens[0].id;
-
-        // XXX assumes previewable message (currently spotlight or infobar)
-        branchInfo.previewLink = `about:messagepreview?json=${encodeURIComponent(
-          btoa(
-            JSON.stringify(
-              _substituteLocalizations(value.messages[0], recipe.localizations),
-            ),
-          ),
-        )}`;
-=======
       case 'spotlight':
         branchInfo.id = value.id;
         branchInfo.previewLink = `about:messagepreview?json=${encodeURIComponent(btoa(
@@ -198,16 +135,15 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment): BranchInfo[] {
           `about:messagepreview?json=${encodeURIComponent(btoa(
             JSON.stringify(_substituteLocalizations(value.messages[0], recipe.localizations))
           ))}`;
->>>>>>> Stashed changes
         break;
 
-      case "momentsUpdate":
+      case 'momentsUpdate':
         console.warn(`we don't fully support ${template} messages yet`);
         return branchInfo;
 
       default:
         if (!value?.messages) {
-          console.log("v.messages is null");
+          console.log("v.messages is null")
           console.log(", v= ", value);
           return branchInfo;
         }
@@ -215,12 +151,12 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment): BranchInfo[] {
         break;
     }
 
-    branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id);
+    branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id)
 
     if (!value.content) {
-      console.log("v.content is null");
+      console.log("v.content is null")
       // console.log("v= ", value)
-      return branchInfo;
+      return branchInfo
     }
 
     // console.log("branchInfo = ");
@@ -231,17 +167,11 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment): BranchInfo[] {
   return branchInfos;
 }
 
-function getExperimentAndBranchInfoFromRecipe(
-  recipe: NimbusExperiment,
-): ExperimentAndBranchInfo[] {
+function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment): ExperimentAndBranchInfo[] {
   // console.log("in gECFJ");
-  // if (recipe.isRollout) {
-  //   return [];
-<<<<<<< Updated upstream
-  // }
-=======
-  // };
->>>>>>> Stashed changes
+  if (recipe.isRollout) {
+    return [];
+  };
 
   let experimentInfo: ExperimentInfo = {
     startDate: recipe.startDate || null,
@@ -249,27 +179,27 @@ function getExperimentAndBranchInfoFromRecipe(
       recipe.endDate ||
       getProposedEndDate(recipe.startDate, recipe.proposedDuration) ||
       null,
-    product: "Desktop",
-    release: "Fx Something",
+    product: 'Desktop',
+    release: 'Fx Something',
     id: recipe.slug,
-    topic: "some topic",
-    segment: "some segment",
-    ctrPercent: 0.5, // get me from BigQuery
+    topic: 'some topic',
+    segment: 'some segment',
+    ctrPercent: .5, // get me from BigQuery
     ctrPercentChange: 2, // get me from BigQuery
-    metrics: "some metrics",
+    metrics: 'some metrics',
     experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${recipe.slug}`,
     userFacingName: recipe.userFacingName,
-    recipe: recipe,
-  };
+    recipe: recipe
+  }
 
   let branchInfos: BranchInfo[] = getBranchInfosFromExperiment(recipe);
   // console.log("branchInfos[] = ");
   // console.log(branchInfos);
 
   let experimentAndBranchInfos: ExperimentAndBranchInfo[] = [];
-  experimentAndBranchInfos = (
-    [experimentInfo] as ExperimentAndBranchInfo[]
-  ).concat(branchInfos);
+  experimentAndBranchInfos = 
+    ([experimentInfo] as ExperimentAndBranchInfo[])
+    .concat(branchInfos);
 
   // console.log("expAndBranchInfos: ");
   // console.table(experimentAndBranchInfos);
@@ -277,21 +207,16 @@ function getExperimentAndBranchInfoFromRecipe(
   return experimentAndBranchInfos;
 }
 
-async function getASRouterLocalMessageInfoFromFile(): Promise<
-  FxMSMessageInfo[]
-> {
+async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]> {
   const fs = require("fs");
 
   let data = fs.readFileSync(
     "lib/asrouter-local-prod-messages/123-nightly-in-progress.json",
-    "utf8",
-  );
+    "utf8");
   let json_data = JSON.parse(data);
 
-  let messages: FxMSMessageInfo[] = json_data.map(
-    (messageDef: any): FxMSMessageInfo =>
-      getASRouterLocalColumnFromJSON(messageDef),
-  );
+  let messages: FxMSMessageInfo[] = 
+    json_data.map((messageDef: any): FxMSMessageInfo => getASRouterLocalColumnFromJSON(messageDef));
 
   return messages;
 }
@@ -309,28 +234,22 @@ async function getDesktopExperimentsFromServer(): Promise<NimbusExperiment[]> {
   return experiments;
 }
 
-async function getDesktopExperimentAndBranchInfo(
-  experiments: NimbusExperiment[],
-): Promise<ExperimentAndBranchInfo[]> {
+async function getDesktopExperimentAndBranchInfo(experiments: NimbusExperiment[]): Promise<ExperimentAndBranchInfo[]> {
   const messagingExperiments = (experiments as Array<NimbusExperiment>).filter(
-    (recipe) => usesMessagingFeatures(recipe),
-  );
+    recipe => usesMessagingFeatures(recipe));
 
-  let info: ExperimentAndBranchInfo[] = messagingExperiments
+  let info : ExperimentAndBranchInfo[] = messagingExperiments
     .map((experimentDef: NimbusExperiment): ExperimentAndBranchInfo[] =>
-      getExperimentAndBranchInfoFromRecipe(experimentDef),
-    )
+      getExperimentAndBranchInfoFromRecipe(experimentDef))
     .flat(1);
 
-  return info;
+  return info
 }
 
-async function getExperimentAndBranchInfoFromServer(): Promise<
-  ExperimentAndBranchInfo[]
-> {
-  const info: ExperimentAndBranchInfo[] =
+async function getExperimentAndBranchInfoFromServer(): Promise<ExperimentAndBranchInfo[]> {
+  const info : ExperimentAndBranchInfo[] =
     await getDesktopExperimentAndBranchInfo(
-      await getDesktopExperimentsFromServer(),
+      await getDesktopExperimentsFromServer()
     );
 
   // console.table(info);
@@ -339,7 +258,7 @@ async function getExperimentAndBranchInfoFromServer(): Promise<
 
 export default async function Dashboard() {
   // XXX await Promise.all for both loads concurrently
-  const localData = await getASRouterLocalMessageInfoFromFile();
+  const localData = await getASRouterLocalMessageInfoFromFile()
   const experimentAndBranchInfo = await getExperimentAndBranchInfoFromServer();
 
   return (
@@ -351,19 +270,11 @@ export default async function Dashboard() {
 
         <ul className="list-disc mx-20 text-sm">
           <li>
-            To make the preview URLs work: load <code>about:config</code> in
-            Firefox, and set{" "}
-            <code>
-              browser.newtabpage.activity-stream.asrouter.devtoolsEnabled
-            </code>{" "}
-            to <code>true</code>
+            To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>
           </li>
 
           <li>
-            Feedback of all kinds accepted in{" "}
-            <Link href="https://mozilla.slack.com/archives/C05N15KHCLC">
-              #skylight-messaging-system
-            </Link>
+            Feedback of all kinds accepted in <Link href="https://mozilla.slack.com/archives/C05N15KHCLC">#skylight-messaging-system</Link>
           </li>
         </ul>
       </div>
