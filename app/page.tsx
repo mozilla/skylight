@@ -1,4 +1,5 @@
 import { types } from "@mozilla/nimbus-shared";
+<<<<<<< Updated upstream
 import {
   BranchInfo,
   ExperimentAndBranchInfo,
@@ -13,6 +14,11 @@ import {
   getTemplateFromMessage,
   _isAboutWelcomeTemplate,
 } from "../lib/messageUtils.ts";
+=======
+import { BranchInfo, ExperimentAndBranchInfo, ExperimentInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
+import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate } from "../lib/messageUtils.ts";
+import { _substituteLocalizations } from "../lib/experimentUtils.ts";
+>>>>>>> Stashed changes
 
 import { MessageTable } from "./message-table";
 import {
@@ -110,6 +116,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment): BranchInfo[] {
         branchInfo.id = value.content.screens[0].id;
         break;
 
+<<<<<<< Updated upstream
       case "infobar":
         branchInfo.id = value.messages[0].id;
         branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id);
@@ -118,6 +125,13 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment): BranchInfo[] {
             _substituteLocalizations(value.content, recipe.localizations),
           ),
         )}`;
+=======
+      case 'infobar':
+        branchInfo.id = value.messages[0].id;
+        branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id);
+        branchInfo.previewLink = `about:messagepreview?json=${encodeURIComponent(btoa(
+          JSON.stringify(_substituteLocalizations(value.content, recipe.localizations))))}`;
+>>>>>>> Stashed changes
         break;
 
       case "toast_notification":
@@ -128,6 +142,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment): BranchInfo[] {
         branchInfo.id = value.content.tag;
         break;
 
+<<<<<<< Updated upstream
       case "spotlight":
         branchInfo.id = value.id;
         branchInfo.previewLink = `about:messagepreview?json=${encodeURIComponent(
@@ -159,6 +174,31 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment): BranchInfo[] {
             ),
           ),
         )}`;
+=======
+      case 'spotlight':
+        branchInfo.id = value.id;
+        branchInfo.previewLink = `about:messagepreview?json=${encodeURIComponent(btoa(
+          JSON.stringify(_substituteLocalizations(value, recipe.localizations))
+        ))}`;
+        break;
+
+      case 'multi':
+        // XXX only does first message
+	    const firstMessage = value.messages[0]
+        if (!('content' in firstMessage)) {
+      	  console.warn('template "multi" first message does not contain content key; details not rendered')
+      	  return branchInfo
+        }
+
+	      // XXX only does first screen
+        branchInfo.id = firstMessage.content.screens[0].id
+
+        // XXX assumes previewable message (currently spotlight or infobar) 
+        branchInfo.previewLink =
+          `about:messagepreview?json=${encodeURIComponent(btoa(
+            JSON.stringify(_substituteLocalizations(value.messages[0], recipe.localizations))
+          ))}`;
+>>>>>>> Stashed changes
         break;
 
       case "momentsUpdate":
@@ -197,7 +237,11 @@ function getExperimentAndBranchInfoFromRecipe(
   // console.log("in gECFJ");
   // if (recipe.isRollout) {
   //   return [];
+<<<<<<< Updated upstream
   // }
+=======
+  // };
+>>>>>>> Stashed changes
 
   let experimentInfo: ExperimentInfo = {
     startDate: recipe.startDate || null,

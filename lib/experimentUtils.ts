@@ -66,3 +66,39 @@ export function getProposedEndDate (startDate : string | null, proposedDuration 
 
   return formattedDate
 }
+<<<<<<< Updated upstream
+=======
+
+/**
+ * 
+ * @param values - the message contents
+ * 
+ * @param localizations - the localization object contained in the 
+ *                        experiment recipe. May be null.
+ */
+
+export function _substituteLocalizations(values: any, localizations: object | null) : object {
+  // If the recipe is not localized, we don't need to do anything.
+  // Likewise, if the value we are attempting to localize is not an 
+  // object, there is nothing to localize.
+  if ( typeof localizations === "undefined" || typeof values !== "object" || values === null ) {
+    return values;
+  }
+
+  if (Array.isArray(values)) {
+    return values.map((value) => _substituteLocalizations(value, localizations));
+  }
+
+  const substituted = Object.assign({}, values);
+
+  for (const [key, value] of Object.entries(values)) {
+    if ( key === "$l10n" && typeof value === "object" && value !== null && value?.id) {
+      return localizations[value.id];
+    }
+
+    substituted[key] = _substituteLocalizations(value, localizations);
+  }
+
+  return substituted;
+}
+>>>>>>> Stashed changes
