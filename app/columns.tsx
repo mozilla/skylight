@@ -89,6 +89,7 @@ export type BranchInfo = {
   userFacingName?: string
   recipe?: NimbusExperiment
   isBranch?: boolean
+  template?: string
 } | []
 
 export type ExperimentAndBranchInfo = ExperimentInfo | BranchInfo;
@@ -255,43 +256,45 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
           && props.row.original.surface !== 'spotlight') {
           return ( <></> );
       }
-
-      // unless / until we expose via UITour (or MAKE_LINKABLE?)
-      const copyPreviewLink = () => {
-        return navigator.clipboard.writeText(props.row.original.previewLink);
+    }
+  }, {
+    accessorKey: "previewLink",
+    header: "",
+    cell: (props: any) => {
+      if (props.row.original.previewLink == undefined) {
+          return ( <div/> );
       }
 
-      return (
-        copyPreviewLink ?
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-                <Button
-                  className={
-                    buttonVariants({
-                        variant: "secondary",
-                        size: "sm",
-                        className: "active:bg-slate-500 font-normal border  border-slate-700"
-                    })
-                  }
-                  onClick={copyPreviewLink}>
-                <Copy className="me-2" />
-                Copy Preview URL
-              </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>After clicking to copy, paste in URL bar for message preview</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+    // unless / until we expose via UITour (or MAKE_LINKABLE?)
+    const copyPreviewLink = () => {
+      return navigator.clipboard.writeText(props.row.original.previewLink);
+    }
 
-        :
-        <a
-          className={buttonVariants({ variant: "outline", size: "sm" })}
-          href={props.row.original.previewLink}
-          target="_blank">
-          Preview
-        </a> );
+    return (
+      copyPreviewLink ?
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+              <Button
+                className={
+                  buttonVariants({
+                      variant: "secondary",
+                      size: "sm",
+                      className: "active:bg-slate-500 font-normal border  border-slate-700"
+                  })
+                }
+                onClick={copyPreviewLink}>
+              <Copy className="me-2" />
+              Copy Preview URL
+            </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>After clicking to copy, paste in URL bar for message preview</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      :
+      null );
     }
   },
 ]
