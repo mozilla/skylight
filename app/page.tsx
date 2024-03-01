@@ -10,42 +10,6 @@ import {
 } from "../lib/experimentUtils.ts";
 import Link from "next/link";
 
-function _substituteLocalizations(values, localizations) {
-  // If the recipe is not localized, we don't need to do anything.
-  // Likewise, if the value we are attempting to localize is not an object,
-  // there is nothing to localize.
-  if (
-    typeof localizations === "undefined" ||
-    typeof values !== "object" ||
-    values === null
-  ) {
-    return values;
-  }
-
-  if (Array.isArray(values)) {
-    return values.map((value) =>
-      _substituteLocalizations(value, localizations),
-    );
-  }
-
-  const substituted = Object.assign({}, values);
-
-  for (const [key, value] of Object.entries(values)) {
-    if (
-      key === "$l10n" &&
-      typeof value === "object" &&
-      value !== null &&
-      value?.id
-    ) {
-      return localizations[value.id];
-    }
-
-    substituted[key] = _substituteLocalizations(value, localizations);
-  }
-
-  return substituted;
-}
-
 function getASRouterLocalColumnFromJSON(messageDef: any): FxMSMessageInfo {
   let fxmsMsgInfo: FxMSMessageInfo = {
     product: "Desktop",
@@ -169,9 +133,9 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment): BranchInfo[] {
 
 function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment): ExperimentAndBranchInfo[] {
   // console.log("in gECFJ");
-  if (recipe.isRollout) {
-    return [];
-  };
+  // if (recipe.isRollout) {
+  //   return [];
+  // };
 
   let experimentInfo: ExperimentInfo = {
     startDate: recipe.startDate || null,
