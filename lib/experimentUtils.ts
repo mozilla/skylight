@@ -46,6 +46,14 @@ export function usesMessagingFeatures(recipe : NimbusExperiment): boolean {
 }
 
 /**
+ * Given a nimbus recipe and a branch slug, return a link to the
+ * summary section of the Experimenter page for that branch.
+ */
+export function getBranchLink(recipe : NimbusExperiment, branchSlug: string): string {
+  return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(recipe.slug)}/summary#${encodeURIComponent(branchSlug)}`
+}
+
+/**
  *
  * @param startDate - may be null, as NimbusExperiment types allow this.
  *                    returns null in this case.
