@@ -13,7 +13,7 @@ import {
 
 function OffsiteLink(href: string, linkText: string) {
   return (
-    <a href={href} className="text-xs/[180%]" target="_blank" rel="noreferrer">
+    <a href={href} className="text-xs/[180%] whitespace-nowrap" target="_blank" rel="noreferrer">
       {linkText}
       <svg
         fill="none"
