@@ -70,11 +70,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         branchInfo.id = value.content.tag;
         break;
 
-      case 'spotlight':
-
-        console.log("values: ", value);
-        console.log("localizations: ", recipe.localizations?.[Object.keys(recipe.localizations)[0]]);  
-
+      case 'spotlight': 
         branchInfo.id = value.id;
         branchInfo.previewLink = getPreviewLink(_substituteLocalizations(value, recipe.localizations?.[Object.keys(recipe.localizations)[0]]));
         break;
