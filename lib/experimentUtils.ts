@@ -68,11 +68,19 @@ export function getProposedEndDate (startDate : string | null, proposedDuration 
 }
 
 /**
- * 
- * @param values - the message contents
- * 
- * @param localizations - the localization object contained in the 
- *                        experiment recipe. May be null.
+ * Do recursive locale substitution on the values, if applicable.
+ *
+ * If there are no localizations provided, the value will be returned as-is.
+ *
+ * If the value is an object containing an $l10n key, its substitution will be
+ * returned.
+ *
+ * Otherwise, the value will be recursively substituted.
+ *
+ * @param values - The values to perform substitutions upon; message contents
+ * @param localizations - The localization object from the recipe, contains
+ *        substitutions for a specific locale. May be null.
+ * @returns {any} The values, potentially locale substituted.
  */
 
 export function _substituteLocalizations(values: any, localizations: object | null) : object {
@@ -89,6 +97,8 @@ export function _substituteLocalizations(values: any, localizations: object | nu
 
   const substituted = Object.assign({}, values);
 
+  // Loop over "$l10n" objects in the recipe and assign the appropriate string IDs from the 
+  // localizations object
   for (const [key, value] of Object.entries(values)) {
     if ( key === "$l10n" && typeof value === "object" && value !== null && value?.id) {
       return localizations[value.id];
