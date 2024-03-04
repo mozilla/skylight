@@ -1,6 +1,6 @@
 import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, ExperimentAndBranchInfo, ExperimentInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
-import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate } from "../lib/messageUtils.ts";
+import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
 import { MessageTable } from "./message-table";
@@ -19,9 +19,7 @@ function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
     metrics: 'some metrics',
     ctrPercent: .5, // getMeFromLooker
     ctrPercentChange: 2, // getMeFromLooker
-    previewLink: `about:messagepreview?json=${encodeURIComponent(btoa(
-      JSON.stringify(messageDef),
-    ))}`,
+    previewLink: getPreviewLink(messageDef),
   };
 
   fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id)
@@ -50,7 +48,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
     const template = getTemplateFromMessage(value);
     branch.template = template;
     branchInfo.template = template;
-    branchInfo.surface = getDisplayNameForTemplate(template);
+    branchInfo.surface = getDisplayNameForTemplate(template); 
 
     switch(template) {
       case 'feature_callout':
@@ -61,8 +59,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
       case 'infobar':
         branchInfo.id = value.messages[0].id
         branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id)
-        branchInfo.previewLink = `about:messagepreview?json=${encodeURIComponent(btoa(
-          JSON.stringify(_substituteLocalizations(value.content, recipe.localizations))))}`;
+        branchInfo.previewLink = getPreviewLink(_substituteLocalizations(value.content, recipe.localizations?.[Object.keys(recipe.localizations)[0]]));
         break;
 
       case 'toast_notification':
@@ -74,10 +71,12 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         break;
 
       case 'spotlight':
+
+        console.log("values: ", value);
+        console.log("localizations: ", recipe.localizations?.[Object.keys(recipe.localizations)[0]]);  
+
         branchInfo.id = value.id;
-        branchInfo.previewLink = `about:messagepreview?json=${encodeURIComponent(btoa(
-          JSON.stringify(_substituteLocalizations(value, recipe.localizations))
-        ))}`;
+        branchInfo.previewLink = getPreviewLink(_substituteLocalizations(value, recipe.localizations?.[Object.keys(recipe.localizations)[0]]));
         break;
 
       case 'multi':
@@ -93,9 +92,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
 
         // XXX assumes previewable message (currently spotlight or infobar) 
         branchInfo.previewLink =
-          `about:messagepreview?json=${encodeURIComponent(btoa(
-            JSON.stringify(_substituteLocalizations(value.messages[0], recipe.localizations))
-          ))}`;
+          getPreviewLink(_substituteLocalizations(value.messages[0], recipe.localizations?.[Object.keys(recipe.localizations)[0]]));
         break;
 
       case 'momentsUpdate':

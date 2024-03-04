@@ -76,6 +76,9 @@ export function getProposedEndDate (startDate : string | null, proposedDuration 
  * returned.
  *
  * Otherwise, the value will be recursively substituted.
+ * 
+ * Right now, we are manually passing the first locale out of the localization object.
+ * Eventually we'll want to select a locale on the dashboard (probably with a dropdown.)
  *
  * @param values - The values to perform substitutions upon; message contents
  * @param localizations - The localization object from the recipe, contains

@@ -50,3 +50,11 @@ export function getDashboard( template: string, msgId: string ) : string | undef
 
   return undefined
 }
+
+export function getPreviewLink( message: any ) : string | undefined {
+  let previewLink = `about:messagepreview?json=${encodeURIComponent(btoa(
+      JSON.stringify(message),
+    ))}`
+
+  return previewLink;
+}
