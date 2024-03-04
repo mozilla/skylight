@@ -45,7 +45,7 @@ export type FxMSMessageInfo = {
   ctrPercent: number
   ctrPercentChange: number
   ctrDashboardLink?: string
-  previewLink: string
+  previewLink?: string
   metrics: string
 }
 

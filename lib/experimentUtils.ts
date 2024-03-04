@@ -86,7 +86,7 @@ export function getProposedEndDate (startDate : string | null, proposedDuration 
  * @returns {any} The values, potentially locale substituted.
  */
 
-export function _substituteLocalizations(values: any, localizations: object | null) : object {
+export function _substituteLocalizations(values: any, localizations: any) : object {
   // If the recipe is not localized, we don't need to do anything.
   // Likewise, if the value we are attempting to localize is not an 
   // object, there is nothing to localize.
@@ -103,8 +103,8 @@ export function _substituteLocalizations(values: any, localizations: object | nu
   // Loop over "$l10n" objects in the recipe and assign the appropriate string IDs from the 
   // localizations object
   for (const [key, value] of Object.entries(values)) {
-    if ( key === "$l10n" && typeof value === "object" && value !== null && value?.id) {
-      return localizations[value.id];
+    if ( key === "$l10n" && typeof value === "object" && value !== null && (value as any)?.id) {
+      return localizations[(value as any).id];
     }
 
     substituted[key] = _substituteLocalizations(value, localizations);

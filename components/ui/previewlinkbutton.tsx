@@ -10,7 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-export function PreviewLinkButton(linkObject) {
+export function PreviewLinkButton( linkObject: any ) {
   
   const copyPreviewLink = () => {
     return navigator.clipboard.writeText(linkObject.previewLink);
