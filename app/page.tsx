@@ -131,9 +131,9 @@ function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment): Experim
 
   // console.log("in gECFJ");
   // there are no non-rollout spotlights right now, we can comment this out to test them
-  // if (recipe.isRollout) {
-  //   return [];
-  // };
+  if (recipe.isRollout) {
+    return [];
+  };
 
   let experimentInfo : ExperimentInfo = {
     startDate: recipe.startDate || null,
