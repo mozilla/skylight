@@ -59,7 +59,11 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
       case 'infobar':
         branchInfo.id = value.messages[0].id
         branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id)
-        branchInfo.previewLink = getPreviewLink(_substituteLocalizations(value.content, recipe.localizations?.[Object.keys(recipe.localizations)[0]]));
+        // Localize the recipe if necessary.
+        // XXX [Object.keys(recipe.localizations)[0]] accesses the first locale inside the localization object.
+        // We'll probably want to add a dropdown component that allows us to choose a locale from the available ones, to pass to this function.
+        let localizedInfobar = _substituteLocalizations(value.content, recipe.localizations?.[Object.keys(recipe.localizations)[0]]);
+        branchInfo.previewLink = getPreviewLink(localizedInfobar);
         break;
 
       case 'toast_notification':
@@ -72,23 +76,25 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
 
       case 'spotlight': 
         branchInfo.id = value.id;
-        branchInfo.previewLink = getPreviewLink(_substituteLocalizations(value, recipe.localizations?.[Object.keys(recipe.localizations)[0]]));
+        // Localize the recipe if necessary.
+        let localizedSpotlight = _substituteLocalizations(value, recipe.localizations?.[Object.keys(recipe.localizations)[0]]);
+        branchInfo.previewLink = getPreviewLink(localizedSpotlight);
         break;
 
       case 'multi':
         // XXX only does first message
-	    const firstMessage = value.messages[0]
+        const firstMessage = value.messages[0]
         if (!('content' in firstMessage)) {
-      	  console.warn('template "multi" first message does not contain content key; details not rendered')
-      	  return branchInfo
+          console.warn('template "multi" first message does not contain content key; details not rendered')
+          return branchInfo
         }
 
-	      // XXX only does first screen
+        // XXX only does first screen
         branchInfo.id = firstMessage.content.screens[0].id
-
+        // Localize the recipe if necessary.
+        let localizedMulti = _substituteLocalizations(value.messages[0], recipe.localizations?.[Object.keys(recipe.localizations)[0]]);
         // XXX assumes previewable message (currently spotlight or infobar) 
-        branchInfo.previewLink =
-          getPreviewLink(_substituteLocalizations(value.messages[0], recipe.localizations?.[Object.keys(recipe.localizations)[0]]));
+        branchInfo.previewLink = getPreviewLink(localizedMulti);
         break;
 
       case 'momentsUpdate':
