@@ -1,4 +1,66 @@
-import { getProposedEndDate } from '../../lib/experimentUtils.ts'
+import { getProposedEndDate, _substituteLocalizations } from '../../lib/experimentUtils.ts'
+
+const LOCALIZATIONS = {
+  foo: "localized foo text",
+  qux: "localized qux text",
+  grault: "localized grault text",
+  waldo: "localized waldo text",
+};
+
+const DEEPLY_NESTED_VALUE = {
+  foo: {
+    $l10n: {
+      id: "foo",
+      comment: "foo comment",
+      text: "original foo text",
+    },
+  },
+  bar: {
+    qux: {
+      $l10n: {
+        id: "qux",
+        comment: "qux comment",
+        text: "original qux text",
+      },
+    },
+    quux: {
+      grault: {
+        $l10n: {
+          id: "grault",
+          comment: "grault comment",
+          text: "orginal grault text",
+        },
+      },
+      garply: "original garply text",
+    },
+    corge: "original corge text",
+  },
+  baz: "original baz text",
+  waldo: [
+    {
+      $l10n: {
+        id: "waldo",
+        comment: "waldo comment",
+        text: "original waldo text",
+      },
+    },
+  ],
+};
+
+const LOCALIZED_DEEPLY_NESTED_VALUE = {
+  foo: "localized foo text",
+  bar: {
+    qux: "localized qux text",
+    quux: {
+      grault: "localized grault text",
+      garply: "original garply text",
+    },
+    corge: "original corge text",
+  },
+  baz: "original baz text",
+  waldo: ["localized waldo text"],
+};
+
 
 describe('getProposedEndDate', () => {
   it('returns the same date if the proposed duration is 0', () => {
@@ -44,5 +106,19 @@ describe('getProposedEndDate', () => {
     const result = getProposedEndDate(startDate, proposedDuration)
 
     expect(result).toBeNull()
+  })
+})
+
+describe('_substituteLocalizations', () => {
+  it('returns the values unchanged if there are no localizations', () => {
+    const result = _substituteLocalizations(DEEPLY_NESTED_VALUE);
+
+    expect(result).toEqual(DEEPLY_NESTED_VALUE);
+  })
+
+  it('returns a localized recipe if there are localizations', () => {
+    const result = _substituteLocalizations(DEEPLY_NESTED_VALUE, LOCALIZATIONS);
+
+    expect(result).toEqual(LOCALIZED_DEEPLY_NESTED_VALUE);  
   })
 })
