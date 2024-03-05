@@ -1,6 +1,7 @@
 import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, ExperimentAndBranchInfo, ExperimentInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
-import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate } from "../lib/messageUtils.ts";
+import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
+import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
 import { MessageTable } from "./message-table";
 import { getProposedEndDate, usesMessagingFeatures } from "../lib/experimentUtils.ts";
@@ -18,8 +19,8 @@ function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
     metrics: 'some metrics',
     ctrPercent: .5, // getMeFromLooker
     ctrPercentChange: 2, // getMeFromLooker
-    previewLink: `about:messagepreview?json=${btoa(JSON.stringify(messageDef))}`,
-  }
+    previewLink: getPreviewLink(messageDef),
+  };
 
   fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id)
 
@@ -46,7 +47,8 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
     // XXX in this case we're really passing a feature value. Hmm....
     const template = getTemplateFromMessage(value);
     branch.template = template;
-    branchInfo.surface = getDisplayNameForTemplate(template);
+    branchInfo.template = template;
+    branchInfo.surface = getDisplayNameForTemplate(template); 
 
     switch(template) {
       case 'feature_callout':
@@ -57,7 +59,12 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
       case 'infobar':
         branchInfo.id = value.messages[0].id
         branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id)
-        break
+        // Localize the recipe if necessary.
+        // XXX [Object.keys(recipe.localizations)[0]] accesses the first locale inside the localization object.
+        // We'll probably want to add a dropdown component that allows us to choose a locale from the available ones, to pass to this function.
+        let localizedInfobar = _substituteLocalizations(value.content, recipe.localizations?.[Object.keys(recipe.localizations)[0]]);
+        branchInfo.previewLink = getPreviewLink(localizedInfobar);
+        break;
 
       case 'toast_notification':
         if (!value?.id) {
@@ -67,21 +74,27 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         branchInfo.id = value.content.tag;
         break;
 
+      case 'spotlight': 
+        branchInfo.id = value.id;
+        // Localize the recipe if necessary.
+        let localizedSpotlight = _substituteLocalizations(value, recipe.localizations?.[Object.keys(recipe.localizations)[0]]);
+        branchInfo.previewLink = getPreviewLink(localizedSpotlight);
+        break;
+
       case 'multi':
         // XXX only does first message
-	const firstMessage = value.messages[0]
+        const firstMessage = value.messages[0]
         if (!('content' in firstMessage)) {
-	  console.warn('template "multi" first message does not contain content key; details not rendered')
-	  return branchInfo
+          console.warn('template "multi" first message does not contain content key; details not rendered')
+          return branchInfo
         }
 
-	// XXX only does first screen
+        // XXX only does first screen
         branchInfo.id = firstMessage.content.screens[0].id
-
+        // Localize the recipe if necessary.
+        let localizedMulti = _substituteLocalizations(value.messages[0], recipe.localizations?.[Object.keys(recipe.localizations)[0]]);
         // XXX assumes previewable message (currently spotlight or infobar) 
-        // branchInfo.previewLink =
-        //   `about:messagepreview?json=${btoa(JSON.stringify(value.messages[0].content.screens[0].content))}`;
-
+        branchInfo.previewLink = getPreviewLink(localizedMulti);
         break;
 
       case 'momentsUpdate':
@@ -96,7 +109,7 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
         }
         branchInfo.id = value.messages[0].id;
         break;
-      };
+    };
 
     branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id)
 
@@ -114,9 +127,10 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
   return branchInfos;
 }
 
-function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment) : ExperimentAndBranchInfo[] {
+function getExperimentAndBranchInfoFromRecipe(recipe: NimbusExperiment): ExperimentAndBranchInfo[] {
 
   // console.log("in gECFJ");
+  // there are no non-rollout spotlights right now, we can comment this out to test them
   if (recipe.isRollout) {
     return [];
   };
@@ -162,7 +176,7 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
     "utf8");
   let json_data = JSON.parse(data);
 
-  let messages : FxMSMessageInfo[] =
+  let messages : FxMSMessageInfo[] = 
     json_data.map((messageDef : any) : FxMSMessageInfo => getASRouterLocalColumnFromJSON(messageDef));
 
   return messages;
@@ -170,27 +184,25 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
 
 async function getDesktopExperimentsFromServer(): Promise<NimbusExperiment[]> {
   const response = await fetch(
-      "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/nimbus-desktop-experiments/records",
-      {
-        credentials: "omit",
-      }
-    );
+    "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/nimbus-desktop-experiments/records",
+    {
+      credentials: "omit",
+    }
+  );
   const responseJSON = await response.json();
   const experiments : NimbusExperiment[] = await responseJSON.data;
 
   return experiments;
 }
 
-async function getDesktopExperimentAndBranchInfo(experiments : NimbusExperiment[]): Promise<ExperimentAndBranchInfo[]> {
-
-  const messagingExperiments =
-    (experiments as Array<NimbusExperiment>).filter(
-      recipe => usesMessagingFeatures(recipe));
+async function getDesktopExperimentAndBranchInfo(experiments: NimbusExperiment[]): Promise<ExperimentAndBranchInfo[]> {
+  const messagingExperiments = (experiments as Array<NimbusExperiment>).filter(
+    recipe => usesMessagingFeatures(recipe));
 
   let info : ExperimentAndBranchInfo[] =
     messagingExperiments.map(
       (experimentDef : NimbusExperiment) : ExperimentAndBranchInfo[] =>
-        getExperimentAndBranchInfoFromRecipe(experimentDef)).flat(1);
+      getExperimentAndBranchInfoFromRecipe(experimentDef)).flat(1);
 
   return info
 }
@@ -199,7 +211,7 @@ async function getExperimentAndBranchInfoFromServer(): Promise<ExperimentAndBran
 
   const info : ExperimentAndBranchInfo[] =
     await getDesktopExperimentAndBranchInfo(
-        await getDesktopExperimentsFromServer());
+      await getDesktopExperimentsFromServer());
 
   // console.table(info);
   return info;
@@ -229,7 +241,7 @@ export default async function Dashboard() {
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
-          123 in-tree Production ASRouter messages
+        123 in-tree Production ASRouter messages
       </h5>
 
       <div className="container mx-auto py-10">
@@ -237,13 +249,12 @@ export default async function Dashboard() {
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
-          Desktop Messaging Experiments
+        Desktop Messaging Experiments
       </h5>
 
       <div className="container mx-auto py-10">
         <MessageTable columns={experimentColumns} data={experimentAndBranchInfo} />
       </div>
-
     </div>
-  )
+  );
 }
