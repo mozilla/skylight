@@ -19,10 +19,10 @@ export function PrettyDateRange({startDate, endDate} : DatesProps) {
   if (startDate || endDate) {
     return (
       <>
-        <div className="font-normal text-stone-600 text-base">
+        <div className="font-normal text-stone-600 text-base whitespace-nowrap">
           {toPrettyDate(startDate)}-
         </div>
-        <div className="font-normal text-stone-600 text-base">
+        <div className="font-normal text-stone-600 text-base whitespace-nowrap">
           {toPrettyDate(endDate)}
         </div>
       </>
