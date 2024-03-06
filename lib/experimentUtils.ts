@@ -46,11 +46,14 @@ export function usesMessagingFeatures(recipe : NimbusExperiment): boolean {
 }
 
 /**
- * Given a nimbus recipe and a branch slug, return a link to the
- * summary section of the Experimenter page for that branch.
+ * Given a Nimbus recipe and a branch slug, return a link to the
+ * Screenshots section of the Experimenter page for that branch.
  */
-export function getBranchLink(recipe : NimbusExperiment, branchSlug: string): string {
-  return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(recipe.slug)}/summary#${encodeURIComponent(branchSlug)}`
+export function getBranchScreenshotsLink(recipe : NimbusExperiment, branchSlug: string): string {
+  const screenshotsAnchorId =
+    `branch-${encodeURIComponent(branchSlug)}-screenshots`
+
+  return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(recipe.slug)}/summary#${screenshotsAnchorId}`
 }
 
 /**

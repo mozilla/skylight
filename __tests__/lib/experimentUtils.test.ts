@@ -1,4 +1,4 @@
-import { getBranchLink, getProposedEndDate, _substituteLocalizations } from '../../lib/experimentUtils.ts'
+import { getBranchScreenshotsLink, getProposedEndDate, _substituteLocalizations } from '../../lib/experimentUtils.ts'
 
 import { types } from "@mozilla/nimbus-shared"
 type NimbusExperiment = types.experiments.NimbusExperiment;
@@ -125,15 +125,20 @@ describe('_substituteLocalizations', () => {
   })
 })
 
-describe('getBranchLink', () => {
+describe('getBranchScreenshotsLink', () => {
   it('returns a link to the branch summary in experimenter', () => {
     const recipe = {
       slug: "goat shearing`test"
     }
 
+    // having a weird char in the branch slug helps test that the code
+    // is calling encodeURIComponent
     const branchSlug : string = "treatment`a"
-    const result = getBranchLink(recipe as NimbusExperiment, branchSlug)
+    const screenshotsAnchorId =
+      `branch-${encodeURIComponent(branchSlug)}-screenshots`
 
-    expect(result).toBe(`https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(recipe.slug)}/summary#${encodeURIComponent(branchSlug)}`)
+    const result = getBranchScreenshotsLink(recipe as NimbusExperiment, branchSlug)
+
+    expect(result).toBe(`https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(recipe.slug)}/summary#${screenshotsAnchorId}`)
   })
 })
