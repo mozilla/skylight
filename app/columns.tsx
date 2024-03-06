@@ -180,7 +180,7 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
       }
 
       return (
-          <div className="font-mono text-xs">
+          <div className="font-mono text-xs ps-6">
             {props.row.original.id}
           </div>
       );
