@@ -19,6 +19,10 @@ export class NimbusRecipe implements NimbusRecipeType {
     this.rawRecipe = recipe
   }
 
+  /**
+   *
+   * @returns an array of BranchInfo objects, one per branch in this recipe
+   */
   getBranchInfos() : BranchInfo[] {
     // console.log(`-in gBCFE for experiment ${recipe.slug}, branches = `);
     // console.table(recipe.branches);
@@ -45,7 +49,6 @@ export class NimbusRecipe implements NimbusRecipeType {
           // XXX should iterate over all screens
           branchInfo.id = value.content.screens[0].id;
           break;
-
 
         case 'infobar':
           branchInfo.id = value.messages[0].id
@@ -117,6 +120,10 @@ export class NimbusRecipe implements NimbusRecipeType {
     return branchInfos;
   }
 
+  /**
+   * @returns an array of RecipeInfo and Branch info objects, ordered like this:
+   * [RecipeInfo, BranchInfo, BranchInfo, BranchInfo, ...]
+   */
   getRecipeOrBranchInfos() : RecipeOrBranchInfo[] {
     if (this.rawRecipe.isRollout) {
       return [];
@@ -144,15 +151,15 @@ export class NimbusRecipe implements NimbusRecipeType {
     // console.log("branchInfos[] = ");
     // console.log(branchInfos);
 
-    let experimentAndBranchInfos : RecipeOrBranchInfo[] = [];
-    experimentAndBranchInfos =
+    let expAndBranchInfos : RecipeOrBranchInfo[] = [];
+    expAndBranchInfos =
       ([recipeInfo] as RecipeOrBranchInfo[])
       .concat(branchInfos);
 
     // console.log("expAndBranchInfos: ");
     // console.table(experimentAndBranchInfos);
 
-    return experimentAndBranchInfos;
+    return expAndBranchInfos;
 
   }
 }

@@ -35,6 +35,7 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
 import { types, typeGuards } from "@mozilla/nimbus-shared"
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
+// XXX this should really be a method on NimbusRecipe
 export function usesMessagingFeatures(recipe : NimbusExperiment): boolean {
   // XXX iterate through all features instead of just checking the first
   // XXX figure out how to better handle the ?
@@ -45,6 +46,7 @@ export function usesMessagingFeatures(recipe : NimbusExperiment): boolean {
   return false;
 }
 
+// XXX this should really be a method on NimbusRecipe
 /**
  * Given a Nimbus recipe and a branch slug, return a link to the
  * Screenshots section of the Experimenter page for that branch.
@@ -78,6 +80,8 @@ export function getProposedEndDate (startDate : string | null, proposedDuration 
   return formattedDate
 }
 
+// XXX this should really be a method on NimbusRecipe, though it'll need some
+// refactoring to get there.
 /**
  * Do recursive locale substitution on the values, if applicable.
  *
