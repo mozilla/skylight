@@ -20,7 +20,6 @@ export class NimbusRecipe implements NimbusRecipeType {
   }
 
   /**
-   *
    * @returns an array of BranchInfo objects, one per branch in this recipe
    */
   getBranchInfos() : BranchInfo[] {
@@ -121,15 +120,10 @@ export class NimbusRecipe implements NimbusRecipeType {
   }
 
   /**
-   * @returns an array of RecipeInfo and Branch info objects, ordered like this:
-   * [RecipeInfo, BranchInfo, BranchInfo, BranchInfo, ...]
+   * @returns a RecipeInfo object, for display in the experiments table
    */
-  getRecipeOrBranchInfos() : RecipeOrBranchInfo[] {
-    if (this.rawRecipe.isRollout) {
-      return [];
-    };
-
-    let recipeInfo : RecipeInfo = {
+  getRecipeInfo() : RecipeInfo {
+    return {
       startDate: this.rawRecipe.startDate || null,
       endDate:
         this.rawRecipe.endDate ||
@@ -146,6 +140,18 @@ export class NimbusRecipe implements NimbusRecipeType {
       userFacingName: this.rawRecipe.userFacingName,
       recipe: this.rawRecipe
     }
+  }
+
+  /**
+   * @returns an array of RecipeInfo and BranchInfo objects for this recipe,
+   * ordered like this: [RecipeInfo, BranchInfo, BranchInfo, BranchInfo, ...]
+   */
+  getRecipeOrBranchInfos() : RecipeOrBranchInfo[] {
+    if (this.rawRecipe.isRollout) {
+      return [];
+    };
+
+    let recipeInfo = this.getRecipeInfo();
 
     let branchInfos : BranchInfo[] = this.getBranchInfos()
     // console.log("branchInfos[] = ");
