@@ -62,17 +62,16 @@ async function getDesktopExperimentsFromServer(): Promise<NimbusExperiment[]> {
 
 async function getDesktopExperimentAndBranchInfo(experiments : NimbusExperiment[]): Promise<RecipeOrBranchInfo[]> {
 
-  const messagingExperiments =
-    (experiments as Array<NimbusExperiment>).filter(
-      recipe => usesMessagingFeatures(recipe));
+  const messagingExperiments = experiments.filter(
+      recipe => usesMessagingFeatures(recipe))
 
-    let info : any =
-      messagingExperiments.map(
-        (experimentDef : NimbusExperiment) :  RecipeOrBranchInfo[] =>
-        new NimbusRecipe(experimentDef).getRecipeOrBranchInfos().flat(1)).flat(1)
-        // getExperimentAndBranchInfoFromRecipe(experimentDef)).flat(1)
+  const msgExpRecipes = messagingExperiments.map(
+    (experimentDef : NimbusExperiment) => new NimbusRecipe(experimentDef))
 
-  return info
+  const recipeOrBranchInfos : RecipeOrBranchInfo[] = msgExpRecipes.map(
+    (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1);
+
+  return recipeOrBranchInfos
 }
 
 async function getExperimentAndBranchInfoFromServer(): Promise<RecipeOrBranchInfo[]> {
