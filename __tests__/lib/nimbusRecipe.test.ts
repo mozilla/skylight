@@ -36,7 +36,7 @@ describe('NimbusRecipe', () => {
         experimenterLink: `https://experimenter.services.mozilla.com/nimbus/test-recipe`,
         userFacingName: rawRecipe.userFacingName,
         recipe: rawRecipe
-      } as RecipeInfo);
+      });
     })
   })
 })
