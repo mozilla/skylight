@@ -11,6 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { getBranchScreenshotsLink } from "@/lib/experimentUtils"
 
 function OffsiteLink(href: string, linkText: string) {
   return (
@@ -76,6 +77,7 @@ export type BranchInfo = {
   product: 'Desktop' | 'Android'
   release?: string
   id: string
+  slug: string
   topic?: string
   surface?: string
   segment?: string
@@ -218,19 +220,11 @@ export const experimentColumns: ColumnDef<ExperimentAndBranchInfo>[] = [
         );
       }
 
-      return ( <></> );
-
-      if (props.row.original.surface !== 'infobar'
-          && props.row.original.surface !== 'spotlight') {
-          return ( <></> );
-      }
-    }
-  }, {
-    accessorKey: "previewLink",
-    header: "",
-    cell: (props: any) => {
       if (props.row.original.previewLink == undefined) {
-        return ( <div/> );
+        const branchLink = getBranchScreenshotsLink(props.row.original.recipe, props.row.original.slug);
+        return (
+          OffsiteLink(branchLink, "Screenshots")
+        )
       }
 
       return (

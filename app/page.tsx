@@ -38,7 +38,9 @@ function getBranchInfosFromExperiment(recipe: NimbusExperiment) : BranchInfo[] {
     let branchInfo : BranchInfo = {
       product : 'Desktop',
       id : branch.slug,
-      isBranch: true
+      isBranch: true,
+      recipe: recipe,
+      slug: branch.slug
     };
 
     // XXX should look at all the messages

@@ -46,6 +46,17 @@ export function usesMessagingFeatures(recipe : NimbusExperiment): boolean {
 }
 
 /**
+ * Given a Nimbus recipe and a branch slug, return a link to the
+ * Screenshots section of the Experimenter page for that branch.
+ */
+export function getBranchScreenshotsLink(recipe : NimbusExperiment, branchSlug: string): string {
+  const screenshotsAnchorId =
+    `branch-${encodeURIComponent(branchSlug)}-screenshots`
+
+  return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(recipe.slug)}/summary#${screenshotsAnchorId}`
+}
+
+/**
  *
  * @param startDate - may be null, as NimbusExperiment types allow this.
  *                    returns null in this case.
