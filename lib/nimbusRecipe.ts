@@ -7,7 +7,7 @@ type NimbusExperiment = types.experiments.NimbusExperiment
 
 type NimbusRecipeType = {
   rawRecipe : NimbusExperiment
-  // getRecipeInfo() : RecipeInfo[]
+  getRecipeInfo() : RecipeInfo
   getRecipeOrBranchInfos() : RecipeOrBranchInfo[];
   getBranchInfos() : BranchInfo[]
 }
@@ -109,7 +109,6 @@ export class NimbusRecipe implements NimbusRecipeType {
       if (!value.content) {
         console.log("v.content is null")
         // console.log("v= ", value)
-        return branchInfo
       }
 
       // console.log("branchInfo = ");
