@@ -9,7 +9,7 @@ describe('NimbusRecipe', () => {
 
     const nimbusRecipe = new NimbusRecipe(rawRecipe)
 
-    expect(nimbusRecipe.rawRecipe).toEqual(rawRecipe)
+    expect(nimbusRecipe._rawRecipe).toEqual(rawRecipe)
   })
 
   describe('getRecipeInfo', () => {

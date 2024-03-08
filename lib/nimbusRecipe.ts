@@ -6,17 +6,17 @@ import { getProposedEndDate, _substituteLocalizations } from "../lib/experimentU
 type NimbusExperiment = types.experiments.NimbusExperiment
 
 type NimbusRecipeType = {
-  rawRecipe : NimbusExperiment
+  _rawRecipe : NimbusExperiment
   getRecipeInfo() : RecipeInfo
   getRecipeOrBranchInfos() : RecipeOrBranchInfo[];
   getBranchInfos() : BranchInfo[]
 }
 
 export class NimbusRecipe implements NimbusRecipeType {
-  rawRecipe
+  _rawRecipe
 
   constructor(recipe : NimbusExperiment) {
-    this.rawRecipe = recipe
+    this._rawRecipe = recipe
   }
 
   /**
@@ -25,12 +25,12 @@ export class NimbusRecipe implements NimbusRecipeType {
   getBranchInfos() : BranchInfo[] {
     // console.log(`-in gBCFE for experiment ${recipe.slug}, branches = `);
     // console.table(recipe.branches);
-    let branchInfos : BranchInfo[] = this.rawRecipe.branches.map((branch: any) => {
+    let branchInfos : BranchInfo[] = this._rawRecipe.branches.map((branch: any) => {
       let branchInfo : BranchInfo = {
         product : 'Desktop',
         id : branch.slug,
         isBranch: true,
-        recipe: this.rawRecipe,
+        recipe: this._rawRecipe,
         slug: branch.slug
       };
 
@@ -55,7 +55,7 @@ export class NimbusRecipe implements NimbusRecipeType {
           // Localize the recipe if necessary.
           // XXX [Object.keys(recipe.localizations)[0]] accesses the first locale inside the localization object.
           // We'll probably want to add a dropdown component that allows us to choose a locale from the available ones, to pass to this function.
-          let localizedInfobar = _substituteLocalizations(value.content, this.rawRecipe.localizations?.[Object.keys(this.rawRecipe.localizations)[0]]);
+          let localizedInfobar = _substituteLocalizations(value.content, this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]]);
           branchInfo.previewLink = getPreviewLink(localizedInfobar);
           break;
 
@@ -70,7 +70,7 @@ export class NimbusRecipe implements NimbusRecipeType {
         case 'spotlight':
           branchInfo.id = value.id;
           // Localize the recipe if necessary.
-          let localizedSpotlight = _substituteLocalizations(value, this.rawRecipe.localizations?.[Object.keys(this.rawRecipe.localizations)[0]]);
+          let localizedSpotlight = _substituteLocalizations(value, this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]]);
           branchInfo.previewLink = getPreviewLink(localizedSpotlight);
           break;
 
@@ -85,7 +85,7 @@ export class NimbusRecipe implements NimbusRecipeType {
           // XXX only does first screen
           branchInfo.id = firstMessage.content.screens[0].id
           // Localize the recipe if necessary.
-          let localizedMulti = _substituteLocalizations(value.messages[0], this.rawRecipe.localizations?.[Object.keys(this.rawRecipe.localizations)[0]]);
+          let localizedMulti = _substituteLocalizations(value.messages[0], this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]]);
           // XXX assumes previewable message (spotight?)
           branchInfo.previewLink = getPreviewLink(localizedMulti);
           break;
@@ -123,21 +123,21 @@ export class NimbusRecipe implements NimbusRecipeType {
    */
   getRecipeInfo() : RecipeInfo {
     return {
-      startDate: this.rawRecipe.startDate || null,
+      startDate: this._rawRecipe.startDate || null,
       endDate:
-        this.rawRecipe.endDate ||
-        getProposedEndDate(this.rawRecipe.startDate, this.rawRecipe.proposedDuration) || null,
+        this._rawRecipe.endDate ||
+        getProposedEndDate(this._rawRecipe.startDate, this._rawRecipe.proposedDuration) || null,
       product: 'Desktop',
       release: 'Fx Something',
-      id: this.rawRecipe.slug,
+      id: this._rawRecipe.slug,
       topic: 'some topic',
       segment: 'some segment',
       ctrPercent: .5, // get me from BigQuery
       ctrPercentChange: 2, // get me from BigQuery
       metrics: 'some metrics',
-      experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${this.rawRecipe.slug}`,
-      userFacingName: this.rawRecipe.userFacingName,
-      recipe: this.rawRecipe
+      experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${this._rawRecipe.slug}`,
+      userFacingName: this._rawRecipe.userFacingName,
+      recipe: this._rawRecipe
     }
   }
 
@@ -146,7 +146,7 @@ export class NimbusRecipe implements NimbusRecipeType {
    * ordered like this: [RecipeInfo, BranchInfo, BranchInfo, BranchInfo, ...]
    */
   getRecipeOrBranchInfos() : RecipeOrBranchInfo[] {
-    if (this.rawRecipe.isRollout) {
+    if (this._rawRecipe.isRollout) {
       return [];
     };
 
