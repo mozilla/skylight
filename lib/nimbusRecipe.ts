@@ -27,11 +27,11 @@ export class NimbusRecipe implements NimbusRecipeType {
     // console.table(recipe.branches);
     let branchInfos : BranchInfo[] = this.rawRecipe.branches.map((branch: any) => {
       let branchInfo : BranchInfo = {
-      product : 'Desktop',
-      id : branch.slug,
-      isBranch: true,
-      recipe: this.rawRecipe,
-      slug: branch.slug
+        product : 'Desktop',
+        id : branch.slug,
+        isBranch: true,
+        recipe: this.rawRecipe,
+        slug: branch.slug
       };
 
       // XXX should look at all the messages
