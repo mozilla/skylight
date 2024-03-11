@@ -2,62 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// This file forked from https://searchfox.org/mozilla-central/source/toolkit/components/nimbus/test/NimbusTestUtils.sys.mjs
-
+// ExperimentFakes forked from https://searchfox.org/mozilla-central/source/toolkit/components/nimbus/test/NimbusTestUtils.sys.mjs
+// XXX need permalink
+// That file may have other code that will one day be useful here. Newer
+// versions are likely to have fakes with properties from newer Nimbus schema
+// versions.
 export const ExperimentFakes = {
-  experiment(slug, props = {}) {
-    return {
-      slug,
-      active: true,
-      branch: {
-        slug: "treatment",
-        features: [
-          {
-            featureId: "testFeature",
-            value: { testInt: 123, enabled: true },
-          },
-        ],
-        ...props,
-      },
-      source: "NimbusTestUtils",
-      isEnrollmentPaused: true,
-      experimentType: "NimbusTestUtils",
-      userFacingName: "NimbusTestUtils",
-      userFacingDescription: "NimbusTestUtils",
-      lastSeen: new Date().toJSON(),
-      featureIds: props?.branch?.features?.map(f => f.featureId) || [
-        "testFeature",
-      ],
-      ...props,
-    };
-  },
-  rollout(slug, props = {}) {
-    return {
-      slug,
-      active: true,
-      isRollout: true,
-      branch: {
-        slug: "treatment",
-        features: [
-          {
-            featureId: "testFeature",
-            value: { testInt: 123, enabled: true },
-          },
-        ],
-        ...props,
-      },
-      source: "NimbusTestUtils",
-      isEnrollmentPaused: true,
-      experimentType: "rollout",
-      userFacingName: "NimbusTestUtils",
-      userFacingDescription: "NimbusTestUtils",
-      lastSeen: new Date().toJSON(),
-      featureIds: (props?.branch?.features || props?.features)?.map(
-        f => f.featureId
-      ) || ["testFeature"],
-      ...props,
-    };
-  },
   recipe(slug, props = {}) {
     return {
       // This field is required for populating remote settings
@@ -117,7 +67,12 @@ Object.defineProperty(ExperimentFakes.recipe, "branches", {
         features: [
           {
             featureId: "testFeature",
-            value: { testInt: 123, enabled: true },
+            value: {
+              id: "TEST_MESSAGE_ID",
+              testInt: 123,
+              enabled: true,
+              template: "testTemplate"
+            },
           },
         ],
       },
