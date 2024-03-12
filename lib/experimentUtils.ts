@@ -1,8 +1,5 @@
-/*
- * Copied from https://searchfox.org/mozilla-central/source/browser/components/newtab/lib/MessagingExperimentConstants.sys.mjs
- *
- * Currently needs to be manually kept up to date.
- */
+import { types } from "@mozilla/nimbus-shared"
+type NimbusExperiment = types.experiments.NimbusExperiment;
 
 /**
  * These are the Nimbus feature IDs that correspond to messaging experiments.
@@ -10,6 +7,10 @@
  * FeatureManifest.yaml. Conversely, messaging experiment features contain
  * actual messages, with the usual message keys like `template` and `targeting`.
  * @see FeatureManifest.yaml
+ *
+ * Copied from @see https://searchfox.org/mozilla-central/source/browser/components/newtab/lib/MessagingExperimentConstants.sys.mjs
+ *
+ * Should be manually update when that file changes.
  */
 export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
   "backgroundTaskMessage", // XXX need to backport this to tree
@@ -31,9 +32,6 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
   "spotlight",
   "featureCallout",
 ];
-
-import { types, typeGuards } from "@mozilla/nimbus-shared"
-type NimbusExperiment = types.experiments.NimbusExperiment;
 
 // XXX this should really be a method on NimbusRecipe
 export function usesMessagingFeatures(recipe : NimbusExperiment): boolean {
