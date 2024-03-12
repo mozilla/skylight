@@ -35,7 +35,7 @@ describe('NimbusRecipe', () => {
         metrics: 'some metrics',
         experimenterLink: `https://experimenter.services.mozilla.com/nimbus/test-recipe`,
         userFacingName: rawRecipe.userFacingName,
-        recipe: rawRecipe
+        nimbusExperiment: rawRecipe
       });
     })
   })
@@ -55,11 +55,11 @@ describe('NimbusRecipe', () => {
         product: 'Desktop',
         id: branch.slug,
         isBranch: true,
-        recipe: rawRecipe,
+        nimbusExperiment: rawRecipe,
         slug: branch.slug,
         surface: "testTemplate",
         template: "testTemplate"
-      });
+      })
     })
   })
 
@@ -74,21 +74,21 @@ describe('NimbusRecipe', () => {
         product: 'Desktop',
         id: 'control',
         isBranch: true,
-        recipe: rawRecipe,
+        nimbusExperiment: rawRecipe,
         slug: 'control',
         surface: "none",
         template: "none"
-      });
+      })
 
       expect(branchInfos[1]).toEqual({
         product: 'Desktop',
         id: 'treatment',
         isBranch: true,
-        recipe: rawRecipe,
+        nimbusExperiment: rawRecipe,
         slug: 'treatment',
         surface: "testTemplate",
         template: "testTemplate"
-      });
+      })
     })
   })
 
@@ -110,6 +110,5 @@ describe('NimbusRecipe', () => {
       expect(result).toBe(`https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(rawRecipe.slug)}/summary#${screenshotsAnchorId}`)
     })
   })
-
 
 })
