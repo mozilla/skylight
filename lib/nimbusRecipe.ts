@@ -30,9 +30,9 @@ export class NimbusRecipe implements NimbusRecipeType {
         product: 'Desktop',
         id: branch.slug,
         isBranch: true,
-        // NimbusRecipe can't be passed from server to client, so we
-        // pass the raw experiment and instantiate NimbusRecipe when
-        // needed. There must be some better way to do this...
+        // The raw experiment data can be automatically serialized to
+        // the client by NextJS (but classes can't), and any
+        // needed NimbusRecipe class rewrapping can be done there.
         nimbusExperiment: this._rawRecipe,
         slug: branch.slug
       }

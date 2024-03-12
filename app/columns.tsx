@@ -221,6 +221,8 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       }
 
       if (props.row.original.previewLink == undefined) {
+        // XXX should figure out how to do this NimbusRecipe instantiation
+        // once per row (maybe useState?)
         const recipe = new NimbusRecipe(props.row.original.nimbusExperiment)
         const branchLink = recipe.getBranchScreenshotsLink(
             props.row.original.slug);
