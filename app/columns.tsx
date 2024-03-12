@@ -2,6 +2,7 @@
 import { types } from "@mozilla/nimbus-shared";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
 import { Copy } from "lucide-react";
 import { PrettyDateRange } from "./dates";
@@ -220,8 +221,8 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       }
 
       if (props.row.original.previewLink == undefined) {
-        const branchLink =
-          props.row.original.recipe.getBranchScreenshotsLink(
+        const recipe = new NimbusRecipe(props.row.original.nimbusExperiment)
+        const branchLink = recipe.getBranchScreenshotsLink(
             props.row.original.slug);
         return (
           OffsiteLink(branchLink, "Screenshots")

@@ -12,6 +12,7 @@ type NimbusRecipeType = {
   getRecipeOrBranchInfos() : RecipeOrBranchInfo[]
   getBranchInfo(branch: any): BranchInfo
   getBranchInfos() : BranchInfo[]
+  getBranchScreenshotsLink(branchSlug: string) : string
 }
 
 export class NimbusRecipe implements NimbusRecipeType {
@@ -29,6 +30,9 @@ export class NimbusRecipe implements NimbusRecipeType {
         product: 'Desktop',
         id: branch.slug,
         isBranch: true,
+        // NimbusRecipe can't be passed from server to client, so we
+        // pass the raw experiment and instantiate NimbusRecipe when
+        // needed. There must be some better way to do this...
         nimbusExperiment: this._rawRecipe,
         slug: branch.slug
       }
@@ -177,7 +181,7 @@ export class NimbusRecipe implements NimbusRecipeType {
  * Given a branch slug, return a link to the Screenshots section of the
  * Experimenter page for that branch.
  */
- getBranchScreenshotsLink(branchSlug: string): string {
+getBranchScreenshotsLink(branchSlug: string): string {
   const screenshotsAnchorId =
     `branch-${encodeURIComponent(branchSlug)}-screenshots`
 
