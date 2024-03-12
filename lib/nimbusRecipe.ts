@@ -172,4 +172,15 @@ export class NimbusRecipe implements NimbusRecipeType {
 
     return expAndBranchInfos
   }
+
+/**
+ * Given a branch slug, return a link to the Screenshots section of the
+ * Experimenter page for that branch.
+ */
+ getBranchScreenshotsLink(branchSlug: string): string {
+  const screenshotsAnchorId =
+    `branch-${encodeURIComponent(branchSlug)}-screenshots`
+
+  return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(this._rawRecipe.slug)}/summary#${screenshotsAnchorId}`
+}
 }

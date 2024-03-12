@@ -11,7 +11,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { getBranchScreenshotsLink } from "@/lib/experimentUtils"
 
 function OffsiteLink(href: string, linkText: string) {
   return (
@@ -221,7 +220,9 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       }
 
       if (props.row.original.previewLink == undefined) {
-        const branchLink = getBranchScreenshotsLink(props.row.original.recipe, props.row.original.slug);
+        const branchLink =
+          props.row.original.recipe.getBranchScreenshotsLink(
+            props.row.original.slug);
         return (
           OffsiteLink(branchLink, "Screenshots")
         )
