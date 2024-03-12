@@ -29,7 +29,7 @@ export class NimbusRecipe implements NimbusRecipeType {
         product: 'Desktop',
         id: branch.slug,
         isBranch: true,
-        recipe: this._rawRecipe,
+        nimbusExperiment: this._rawRecipe,
         slug: branch.slug
       }
 
@@ -143,7 +143,7 @@ export class NimbusRecipe implements NimbusRecipeType {
       metrics: 'some metrics',
       experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${this._rawRecipe.slug}`,
       userFacingName: this._rawRecipe.userFacingName,
-      recipe: this._rawRecipe
+      nimbusExperiment: this._rawRecipe
     }
   }
 

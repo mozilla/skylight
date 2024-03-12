@@ -68,7 +68,7 @@ export type RecipeInfo = {
   startDate: string | null
   endDate: string | null
   userFacingName?: string
-  recipe?: NimbusExperiment
+  nimbusExperiment?: NimbusExperiment
   isBranch?: boolean
 } | []
 
@@ -89,7 +89,7 @@ export type BranchInfo = {
   startDate?: string
   endDate?: string
   userFacingName?: string
-  recipe?: NimbusExperiment
+  nimbusExperiment?: NimbusExperiment
   isBranch?: boolean
   template?: string
 } | []
