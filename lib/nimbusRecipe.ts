@@ -120,7 +120,7 @@ export class NimbusRecipe implements NimbusRecipeType {
   getBranchInfos() : BranchInfo[] {
       // console.log(`in gBI for recipe ${recipe.slug}, branches = `)
       // console.table(recipe.branches)
-      let branchInfos : BranchInfo[] = this._rawRecipe.branches.map(this.getBranchInfo)
+      let branchInfos : BranchInfo[] = this._rawRecipe.branches.map(this.getBranchInfo, this)
     return branchInfos
   }
 

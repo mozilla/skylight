@@ -1,6 +1,6 @@
 import { NimbusRecipe } from '@/lib/nimbusRecipe'
 import { ExperimentFakes } from '@/__tests__/ExperimentFakes.mjs'
-import { RecipeInfo } from "@/app/columns.jsx"
+import { BranchInfo } from "@/app/columns.jsx"
 
 describe('NimbusRecipe', () => {
 
@@ -45,7 +45,7 @@ describe('NimbusRecipe', () => {
       const rawRecipe = ExperimentFakes.recipe("test-recipe");
       const nimbusRecipe = new NimbusRecipe(rawRecipe)
       // XXX should add a method to NimbusRecipe and call the getter instead of
-      // violating encapsulation like this.  Or, actually, should retrieve
+      // violating encapsulation like this.  Or, alternately, should retrieve
       // branch info by slug.
       const branch = rawRecipe.branches[1]
 
@@ -53,11 +53,39 @@ describe('NimbusRecipe', () => {
 
       expect(branchInfo).toEqual({
         product: 'Desktop',
-        id: branch.slug, // default if not overridden by template
-        // experimenterLink: `https://experimenter.services.mozilla.com/nimbus/test-recipe`,
+        id: branch.slug,
         isBranch: true,
         recipe: rawRecipe,
         slug: branch.slug,
+        surface: "testTemplate",
+        template: "testTemplate"
+      });
+    })
+  })
+
+  describe('getBranchInfos', () => {
+    it('returns an array of BranchInfo objects, one per branch', () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe");
+      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+
+      const branchInfos: BranchInfo[] = nimbusRecipe.getBranchInfos()
+
+      expect(branchInfos[0]).toEqual({
+        product: 'Desktop',
+        id: 'control',
+        isBranch: true,
+        recipe: rawRecipe,
+        slug: 'control',
+        surface: "none",
+        template: "none"
+      });
+
+      expect(branchInfos[1]).toEqual({
+        product: 'Desktop',
+        id: 'treatment',
+        isBranch: true,
+        recipe: rawRecipe,
+        slug: 'treatment',
         surface: "testTemplate",
         template: "testTemplate"
       });
