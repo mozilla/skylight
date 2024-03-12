@@ -89,7 +89,7 @@ export function getProposedEndDate (startDate : string | null, proposedDuration 
 
 // XXX there are some existing issues with looping over && assigning object keys in Typescript;
 // using the "any" type here is a workaround for those issues.
-export function _substituteLocalizations(values: any, localizations: any) : object {
+export function _substituteLocalizations(values: any, localizations?: any) : object {
   // If the recipe is not localized, we don't need to do anything.
   // Likewise, if the value we are attempting to localize is not an 
   // object, there is nothing to localize.
