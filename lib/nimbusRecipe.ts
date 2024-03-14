@@ -10,7 +10,9 @@ type NimbusRecipeType = {
 
   getRecipeInfo() : RecipeInfo
   getRecipeOrBranchInfos() : RecipeOrBranchInfo[]
+  getBranchInfo(branch: any): BranchInfo
   getBranchInfos() : BranchInfo[]
+  getBranchScreenshotsLink(branchSlug: string) : string
 }
 
 export class NimbusRecipe implements NimbusRecipeType {
@@ -23,99 +25,106 @@ export class NimbusRecipe implements NimbusRecipeType {
   /**
    * @returns an array of BranchInfo objects, one per branch in this recipe
    */
-  getBranchInfos() : BranchInfo[] {
-    // console.log(`in gBI for recipe ${recipe.slug}, branches = `)
-    // console.table(recipe.branches)
-    let branchInfos : BranchInfo[] = this._rawRecipe.branches.map((branch: any) => {
-      let branchInfo : BranchInfo = {
-        product : 'Desktop',
-        id : branch.slug,
+  getBranchInfo(branch: any): BranchInfo{
+    let branchInfo: BranchInfo = {
+        product: 'Desktop',
+        id: branch.slug,
         isBranch: true,
-        recipe: this._rawRecipe,
+        // The raw experiment data can be automatically serialized to
+        // the client by NextJS (but classes can't), and any
+        // needed NimbusRecipe class rewrapping can be done there.
+        nimbusExperiment: this._rawRecipe,
         slug: branch.slug
       }
 
-      // XXX should look at all the messages
-      const value = branch.features[0].value
+    // XXX should look at all the messages
+    const featureValue = branch.features[0].value
 
-      // XXX in this case we're really passing a feature value. Hmm....
-      const template = getTemplateFromMessage(value)
-      branch.template = template
-      branchInfo.template = template
-      branchInfo.surface = getDisplayNameForTemplate(template)
+    // XXX in this case we're really passing a feature value. Hmm....
+    const template = getTemplateFromMessage(featureValue)
+    branch.template = template
+    branchInfo.template = template
+    branchInfo.surface = getDisplayNameForTemplate(template)
 
-      switch(template) {
-        case 'feature_callout':
-          // XXX should iterate over all screens
-          branchInfo.id = value.content.screens[0].id
-          break
+    switch(template) {
+      case 'feature_callout':
+        // XXX should iterate over all screens
+        branchInfo.id = featureValue.content.screens[0].id
+        break
 
-        case 'infobar':
-          branchInfo.id = value.messages[0].id
-          branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id)
-          // Localize the recipe if necessary.
-          // XXX [Object.keys(recipe.localizations)[0]] accesses the first locale inside the localization object.
-          // We'll probably want to add a dropdown component that allows us to choose a locale from the available ones, to pass to this function.
-          let localizedInfobar = _substituteLocalizations(value.content, this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
-          branchInfo.previewLink = getPreviewLink(localizedInfobar)
-          break
+      case 'infobar':
+        branchInfo.id = featureValue.messages[0].id
+        branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id)
+        // Localize the recipe if necessary.
+        // XXX [Object.keys(recipe.localizations)[0]] accesses the first locale inside the localization object.
+        // We'll probably want to add a dropdown component that allows us to choose a locale from the available ones, to pass to this function.
+        let localizedInfobar = _substituteLocalizations(featureValue.content, this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
+        branchInfo.previewLink = getPreviewLink(localizedInfobar)
+        break
 
-        case 'toast_notification':
-          if (!value?.id) {
-            console.warn("value.id, v = ", value)
-            return branchInfo
-          }
-          branchInfo.id = value.content.tag
-          break
-
-        case 'spotlight':
-          branchInfo.id = value.id
-          // Localize the recipe if necessary.
-          let localizedSpotlight = _substituteLocalizations(value, this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
-          branchInfo.previewLink = getPreviewLink(localizedSpotlight)
-          break
-
-        case 'multi':
-          // XXX only does first messages
-          const firstMessage = value.messages[0]
-          if (!('content' in firstMessage)) {
-            console.warn('template "multi" first message does not contain content key details not rendered')
-            return branchInfo
-          }
-
-          // XXX only does first screen
-          branchInfo.id = firstMessage.content.screens[0].id
-          // Localize the recipe if necessary.
-          let localizedMulti = _substituteLocalizations(value.messages[0], this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
-          // XXX assumes previewable message (spotight?)
-          branchInfo.previewLink = getPreviewLink(localizedMulti)
-          break
-
-        case 'momentsUpdate':
-          console.warn(`we don't fully support ${template} messages yet`)
+      case 'toast_notification':
+        if (!featureValue?.id) {
+          console.warn("value.id, v = ", featureValue)
           return branchInfo
+        }
+        branchInfo.id = featureValue.content.tag
+        break
 
-        default:
-          if (!value?.messages) {
-            console.log("v.messages is null")
-            console.log(", v= ", value)
-            return branchInfo
-          }
-          branchInfo.id = value.messages[0].id
-          break
-      }
+      case 'spotlight':
+        branchInfo.id = featureValue.id
+        // Localize the recipe if necessary.
+        let localizedSpotlight = _substituteLocalizations(featureValue, this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
+        branchInfo.previewLink = getPreviewLink(localizedSpotlight)
+        break
 
-      branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id)
+      case 'multi':
+        // XXX only does first messages
+        const firstMessage = featureValue.messages[0]
+        if (!('content' in firstMessage)) {
+          console.warn('template "multi" first message does not contain content key details not rendered')
+          return branchInfo
+        }
 
-      if (!value.content) {
-        console.log("v.content is null")
-        // console.log("v= ", value)
-      }
+        // XXX only does first screen
+        branchInfo.id = firstMessage.content.screens[0].id
+        // Localize the recipe if necessary.
+        let localizedMulti = _substituteLocalizations(featureValue.messages[0], this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
+        // XXX assumes previewable message (spotight?)
+        branchInfo.previewLink = getPreviewLink(localizedMulti)
+        break
 
-      // console.log("branchInfo = ")
-      // console.log(branchInfo)
-      return branchInfo
-      })
+      case 'momentsUpdate':
+        console.warn(`we don't fully support  messages yet`)
+        return branchInfo
+
+      default:
+        console.log("branchInfo.template = ", branch.template)
+
+        if (!featureValue?.messages) {
+          console.log("v.messages is null")
+          console.log(", v= ", featureValue)
+          return branchInfo
+        }
+        branchInfo.id = featureValue.messages[0].id
+        break
+    }
+
+    branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id)
+
+    if (!featureValue.content) {
+      console.log("v.content is null")
+      // console.log("v= ", value)
+    }
+
+    // console.log("branchInfo = ")
+    // console.log(branchInfo)
+    return branchInfo
+  }
+
+  getBranchInfos() : BranchInfo[] {
+      // console.log(`in gBI for recipe ${recipe.slug}, branches = `)
+      // console.table(recipe.branches)
+      let branchInfos : BranchInfo[] = this._rawRecipe.branches.map(this.getBranchInfo, this)
     return branchInfos
   }
 
@@ -138,7 +147,7 @@ export class NimbusRecipe implements NimbusRecipeType {
       metrics: 'some metrics',
       experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${this._rawRecipe.slug}`,
       userFacingName: this._rawRecipe.userFacingName,
-      recipe: this._rawRecipe
+      nimbusExperiment: this._rawRecipe
     }
   }
 
@@ -167,4 +176,15 @@ export class NimbusRecipe implements NimbusRecipeType {
 
     return expAndBranchInfos
   }
+
+/**
+ * Given a branch slug, return a link to the Screenshots section of the
+ * Experimenter page for that branch.
+ */
+getBranchScreenshotsLink(branchSlug: string): string {
+  const screenshotsAnchorId =
+    `branch-${encodeURIComponent(branchSlug)}-screenshots`
+
+  return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(this._rawRecipe.slug)}/summary#${screenshotsAnchorId}`
+}
 }

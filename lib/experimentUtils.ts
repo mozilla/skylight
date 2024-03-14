@@ -1,8 +1,5 @@
-/*
- * Copied from https://searchfox.org/mozilla-central/source/browser/components/newtab/lib/MessagingExperimentConstants.sys.mjs
- *
- * Currently needs to be manually kept up to date.
- */
+import { types } from "@mozilla/nimbus-shared"
+type NimbusExperiment = types.experiments.NimbusExperiment;
 
 /**
  * These are the Nimbus feature IDs that correspond to messaging experiments.
@@ -10,6 +7,10 @@
  * FeatureManifest.yaml. Conversely, messaging experiment features contain
  * actual messages, with the usual message keys like `template` and `targeting`.
  * @see FeatureManifest.yaml
+ *
+ * Copied from @see https://searchfox.org/mozilla-central/source/browser/components/newtab/lib/MessagingExperimentConstants.sys.mjs
+ *
+ * Should be manually update when that file changes.
  */
 export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
   "backgroundTaskMessage", // XXX need to backport this to tree
@@ -32,9 +33,6 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
   "featureCallout",
 ];
 
-import { types, typeGuards } from "@mozilla/nimbus-shared"
-type NimbusExperiment = types.experiments.NimbusExperiment;
-
 // XXX this should really be a method on NimbusRecipe
 export function usesMessagingFeatures(recipe : NimbusExperiment): boolean {
   // XXX iterate through all features instead of just checking the first
@@ -44,18 +42,6 @@ export function usesMessagingFeatures(recipe : NimbusExperiment): boolean {
     return true;
   }
   return false;
-}
-
-// XXX this should really be a method on NimbusRecipe
-/**
- * Given a Nimbus recipe and a branch slug, return a link to the
- * Screenshots section of the Experimenter page for that branch.
- */
-export function getBranchScreenshotsLink(recipe : NimbusExperiment, branchSlug: string): string {
-  const screenshotsAnchorId =
-    `branch-${encodeURIComponent(branchSlug)}-screenshots`
-
-  return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(recipe.slug)}/summary#${screenshotsAnchorId}`
 }
 
 /**
@@ -103,7 +89,7 @@ export function getProposedEndDate (startDate : string | null, proposedDuration 
 
 // XXX there are some existing issues with looping over && assigning object keys in Typescript;
 // using the "any" type here is a workaround for those issues.
-export function _substituteLocalizations(values: any, localizations: any) : object {
+export function _substituteLocalizations(values: any, localizations?: any) : object {
   // If the recipe is not localized, we don't need to do anything.
   // Likewise, if the value we are attempting to localize is not an 
   // object, there is nothing to localize.

@@ -2,6 +2,7 @@
 import { types } from "@mozilla/nimbus-shared";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
 import { Copy } from "lucide-react";
 import { PrettyDateRange } from "./dates";
@@ -11,7 +12,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { getBranchScreenshotsLink } from "@/lib/experimentUtils"
 
 function OffsiteLink(href: string, linkText: string) {
   return (
@@ -69,7 +69,7 @@ export type RecipeInfo = {
   startDate: string | null
   endDate: string | null
   userFacingName?: string
-  recipe?: NimbusExperiment
+  nimbusExperiment?: NimbusExperiment
   isBranch?: boolean
 } | []
 
@@ -90,7 +90,7 @@ export type BranchInfo = {
   startDate?: string
   endDate?: string
   userFacingName?: string
-  recipe?: NimbusExperiment
+  nimbusExperiment?: NimbusExperiment
   isBranch?: boolean
   template?: string
 } | []
@@ -221,7 +221,11 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       }
 
       if (props.row.original.previewLink == undefined) {
-        const branchLink = getBranchScreenshotsLink(props.row.original.recipe, props.row.original.slug);
+        // XXX should figure out how to do this NimbusRecipe instantiation
+        // once per row (maybe useState?)
+        const recipe = new NimbusRecipe(props.row.original.nimbusExperiment)
+        const branchLink = recipe.getBranchScreenshotsLink(
+            props.row.original.slug);
         return (
           OffsiteLink(branchLink, "Screenshots")
         )
