@@ -27,7 +27,7 @@
     "react-dom": "^18",
     "remark": "^15.0.1",
     "save": "^2.9.0",
-    "tailwind-merge": "^2.2.1",
+    "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
