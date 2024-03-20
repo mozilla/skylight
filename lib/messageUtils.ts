@@ -12,7 +12,7 @@ export function getDisplayNameForTemplate(template: string): string {
     'toolbar_badge': 'Toolbar Badge',
     'spotlight': 'Spotlight Modal Dialog',
     'update_action': 'Moments Page',
-
+    'aboutwelcome': 'About:Welcome Page',
   };
   if (template in displayNames) {
     return displayNames[template];
