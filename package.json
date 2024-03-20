@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@google-cloud/bigquery": "^7.5.1",
+    "@looker/sdk-node": "^24.2.0",
     "@mozilla/nimbus-shared": "^2.5.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.7",
