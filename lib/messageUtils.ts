@@ -12,6 +12,7 @@ export function getDisplayNameForTemplate(template: string): string {
     'toolbar_badge': 'Toolbar Badge',
     'spotlight': 'Spotlight Modal Dialog',
     'update_action': 'Moments Page',
+
   };
   if (template in displayNames) {
     return displayNames[template];
@@ -31,7 +32,7 @@ export function getTemplateFromMessage(msg : any) : string {
 export function _isAboutWelcomeTemplate( template : string ) : boolean {
   // XXX multi shouldn't really be here, but for now, we're going to assume
   // it's a spotlight
-  const aboutWelcomeSurfaces = ['feature_callout', 'multi', 'spotlight']
+  const aboutWelcomeSurfaces = ['feature_callout', 'multi', 'spotlight', 'aboutwelcome']
 
   return aboutWelcomeSurfaces.includes(template);
 }

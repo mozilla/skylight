@@ -61,7 +61,7 @@ async function getDesktopExperimentsFromServer(): Promise<NimbusExperiment[]> {
 }
 
 async function getDesktopExperimentAndBranchInfo(experiments : NimbusExperiment[]): Promise<RecipeOrBranchInfo[]> {
-
+  
   const messagingExperiments = experiments.filter(
       recipe => usesMessagingFeatures(recipe))
 

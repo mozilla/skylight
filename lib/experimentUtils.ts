@@ -31,6 +31,7 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
   "pbNewtab",
   "spotlight",
   "featureCallout",
+  "aboutwelcome",
 ];
 
 // XXX this should really be a method on NimbusRecipe
