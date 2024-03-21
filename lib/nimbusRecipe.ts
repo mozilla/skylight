@@ -51,7 +51,7 @@ export class NimbusRecipe implements NimbusRecipeType {
     // XXX in this case we're really passing a feature value. Hmm....
     // XXX about:welcome is special, so we have to account for it
     let template;
-    branch.features[0].featureID === "aboutwelcome"
+    (branch.features[0].featureId === "aboutwelcome" && branch.slug != 'control')
       ? (template = "aboutwelcome")
       : (template = getTemplateFromMessage(featureValue));
 
@@ -72,8 +72,7 @@ export class NimbusRecipe implements NimbusRecipeType {
         spotlightFake.content.modal = "tab";
         spotlightFake.content.backdrop =
           "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
-        console.log("MULTI RECIPE: ", spotlightFake);
-        // // Localize the recipe if necessary.
+        // Localize the recipe if necessary.
         let localizedWelcome = _substituteLocalizations(
           spotlightFake,
           this._rawRecipe.localizations?.[
@@ -121,6 +120,7 @@ export class NimbusRecipe implements NimbusRecipeType {
             Object.keys(this._rawRecipe.localizations)[0]
           ],
         );
+        console.log(localizedSpotlight);
         branchInfo.previewLink = getPreviewLink(localizedSpotlight);
         break;
 
@@ -152,11 +152,9 @@ export class NimbusRecipe implements NimbusRecipeType {
         return branchInfo;
 
       default:
-        console.log("branchInfo.template = ", branch.template);
-
         if (!featureValue?.messages) {
-          console.log("v.messages is null");
-          console.log(", v= ", featureValue);
+          // console.log("v.messages is null");
+          // console.log(", v= ", featureValue);
           return branchInfo;
         }
         branchInfo.id = featureValue.messages[0].id;
