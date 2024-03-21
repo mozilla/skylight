@@ -32,6 +32,7 @@ let columnsShown = false;
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
+
 async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]> {
   const fs = require("fs");
 
@@ -60,7 +61,7 @@ async function getDesktopExperimentsFromServer(): Promise<NimbusExperiment[]> {
 }
 
 async function getDesktopExperimentAndBranchInfo(experiments : NimbusExperiment[]): Promise<RecipeOrBranchInfo[]> {
-  
+
   const messagingExperiments = experiments.filter(
       recipe => usesMessagingFeatures(recipe))
 
