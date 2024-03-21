@@ -66,7 +66,7 @@ function toBinary(string: string): string {
   for (let i = 0; i < codeUnits.length; i++) {
     codeUnits[i] = string.charCodeAt(i);
   }
-  return btoa(String.fromCharCode(...new Uint8Array(codeUnits.buffer)));
+  return btoa(String.fromCharCode(...Array.from(new Uint8Array(codeUnits.buffer))));
 }
 
 export function getPreviewLink(message: any): string {
