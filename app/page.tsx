@@ -1,4 +1,5 @@
 import { types } from "@mozilla/nimbus-shared";
+import { getAWDashboardElement0, runEventCountQuery } from "@/lib/looker.ts";
 import { BranchInfo, RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
@@ -11,7 +12,7 @@ import Link from "next/link";
 
 import { MenuButton } from "@/components/ui/menubutton.tsx";
 
-function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
+async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMessageInfo> {
   let fxmsMsgInfo : FxMSMessageInfo = {
     product: 'Desktop',
     id: messageDef.id,
@@ -24,8 +25,23 @@ function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
     previewLink: getPreviewLink(messageDef),
   };
 
-  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id,
-    "release")
+  let dbElement = await getAWDashboardElement0();
+
+  // console.log("dbElement.query: ", dbElement.query)
+  console.log("dbElement.query.filters: ", dbElement.query.filters)
+  console.log("dbElement.query.model: ", dbElement.query.model)
+  console.log("dbElement.query.filter_expression: ",
+    dbElement.query.filter_expression)
+
+  const queryResult = await runEventCountQuery(
+    { 'event_counts.message_id':  '%' + messageDef.id + '%' }
+  )
+
+  fxmsMsgInfo.ctrPercent = queryResult.primary_rate * 100
+  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id, "release")
+
+  // dashboard link -> dashboard id -> query id -> query -> ctr_percent_from_lastish_day
+
 
   return fxmsMsgInfo
 }
@@ -44,7 +60,11 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
   let json_data = JSON.parse(data);
 
   let messages : FxMSMessageInfo[] =
-    json_data.map((messageDef : any) : FxMSMessageInfo => getASRouterLocalColumnFromJSON(messageDef));
+    json_data.map(
+      async (messageDef : any): Promise<FxMSMessageInfo> => {
+        return await getASRouterLocalColumnFromJSON(messageDef)
+      }
+    );
 
   return messages;
 }
