@@ -64,10 +64,11 @@ export class NimbusRecipe implements NimbusRecipeType {
           targeting: true,
           content: featureValue,
         };
-        // Add the modal and backdrop properties to the spotlight to mimic about:welcome
+        // Add the modal property to the spotlight to mimic about:welcome
         spotlightFake.content.modal = "tab";
-        spotlightFake.content.backdrop =
-          "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
+        // The recipe might have a backdrop, but if not, fall back to the default
+        spotlightFake.content.backdrop = featureValue.backdrop || 
+        "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
         // Localize the recipe if necessary.
         let localizedWelcome = _substituteLocalizations(
           spotlightFake,

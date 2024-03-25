@@ -61,7 +61,7 @@ export function getDashboard(
 
 // convert a UTF-8 string to a string in which each 16-bit unit occupies
 // only one byte. This is necessary for non-latin characters.
-function toBinary(string: string): string {
+export function toBinary(string: string): string {
   const codeUnits = new Uint16Array(string.length);
   for (let i = 0; i < codeUnits.length; i++) {
     codeUnits[i] = string.charCodeAt(i);
