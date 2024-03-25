@@ -42,11 +42,14 @@ export class NimbusRecipe implements NimbusRecipeType {
     const featureValue = branch.features[0].value
 
     // XXX in this case we're really passing a feature value. Hmm....
-    // XXX about:welcome is special, so we have to account for it
+    // about:welcome is special and doesn't use the template property,
+    // so we have to assign it directly to treatment branches
     let template;
-    (branch.features[0].featureId === "aboutwelcome" && branch.slug != 'control')
-      ? (template = "aboutwelcome")
-      : (template = getTemplateFromMessage(featureValue));
+    if (branch.features[0].featureId === "aboutwelcome" && branch.slug != 'control') {
+      template = "aboutwelcome";
+    } else {
+      template = getTemplateFromMessage(featureValue)
+    }
 
     branch.template = template;
     branchInfo.template = template;
@@ -72,7 +75,7 @@ export class NimbusRecipe implements NimbusRecipeType {
             Object.keys(this._rawRecipe.localizations)[0]
           ],
         );
-        // XXX assumes previewable message (spotlight?)
+
         branchInfo.previewLink = getPreviewLink(localizedWelcome);
         break;
 

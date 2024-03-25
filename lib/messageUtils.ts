@@ -1,5 +1,6 @@
 export function getDisplayNameForTemplate(template: string): string {
   const displayNames: any = {
+    aboutwelcome: "About:Welcome Page",
     feature_callout: "Feature Callout (screen 0)",
     infobar: "InfoBar",
     milestone_message: "Milestone Messages",
@@ -10,7 +11,6 @@ export function getDisplayNameForTemplate(template: string): string {
     toolbar_badge: "Toolbar Badge",
     spotlight: "Spotlight Modal Dialog",
     update_action: "Moments Page",
-    aboutwelcome: "About:Welcome Page",
   };
 
   if (template in displayNames) {
@@ -32,10 +32,10 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
   // XXX multi shouldn't really be here, but for now, we're going to assume
   // it's a spotlight
   const aboutWelcomeSurfaces = [
+    "aboutwelcome",
     "feature_callout",
     "multi",
     "spotlight",
-    "aboutwelcome",
   ];
 
   return aboutWelcomeSurfaces.includes(template);
