@@ -129,8 +129,6 @@ describe('NimbusRecipe', () => {
         slug: branch.slug,
         surface: "About:Welcome Page",
         template: "aboutwelcome",
-        ctrDashboardLink:
-          "https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25TREATMENT-A%25",
         previewLink: "about:messagepreview?json=ewAiAGkAZAAiADoAIgBhAGIAbwB1AHQAdwBlAGwAYwBvAG0AZQAtAHQAZQBzAHQALQByAGUAYwBpAHAAZQAiACwAIgB0AGUAbQBwAGwAYQB0AGUAIgA6ACIAcwBwAG8AdABsAGkAZwBoAHQAIgAsACIAdABhAHIAZwBlAHQAaQBuAGcAIgA6AHQAcgB1AGUALAAiAGMAbwBuAHQAZQBuAHQAIgA6AHsAIgBiAGEAYwBrAGQAcgBvAHAAIgA6ACIAdABlAHMAdAAtAGIAYQBjAGsAZAByAG8AcAAiACwAIgBpAGQAIgA6ACIAdAByAGUAYQB0AG0AZQBuAHQALQBhACIALAAiAG0AbwBkAGEAbAAiADoAIgB0AGEAYgAiAH0AfQA%3D",
       })
     })
