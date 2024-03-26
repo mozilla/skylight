@@ -207,8 +207,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     cell: (props: any) => {
       // XXX We need to handle similarly named branches and filter by experiment slug
       if (props.row.original.ctrDashboardLink) {
-        //return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
-        return <div className="text-xs/[180%]">Dashboard coming soon</div>
+        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
       }
       return ( <></> );
     }

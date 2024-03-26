@@ -32,7 +32,6 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
   // XXX multi shouldn't really be here, but for now, we're going to assume
   // it's a spotlight
   const aboutWelcomeSurfaces = [
-    "aboutwelcome",
     "feature_callout",
     "multi",
     "spotlight",
@@ -49,6 +48,8 @@ export function getDashboard(
   const encodedTemplate = encodeURIComponent(template);
 
   if (_isAboutWelcomeTemplate(template)) {
+    //XXX we need to return something different for the actual about:welcome experiments, due to
+    // branches having names in common (i.e. 'treatment-a')
     return `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${encodedMsgId?.toUpperCase()}%25`;
   }
 
