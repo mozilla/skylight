@@ -38,3 +38,7 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# looker.ini stuff; probably will end up in environment vars
+looker.ini
+
