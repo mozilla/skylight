@@ -139,8 +139,8 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         return ( <></> );
       }
 
-      if (props.row.original.ctrDashboardLink) {
-        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
+      if (props.row.original.ctrDashboardLink && props.row.original.template !== 'infobar') {
+        return OffsiteLink(props.row.original.ctrDashboardLink, props.row.original.ctrPercent + "% CTR");
       }
       return ( <></> );
     }
@@ -320,7 +320,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         // XXX should figure out how to do this NimbusRecipe instantiation
         // once per row (maybe useState?)
         const recipe = new NimbusRecipe(props.row.original.nimbusExperiment)
-        
+
         if (props.row.original.screenshots && props.row.original.screenshots.length > 0) {
           const branchLink = recipe.getBranchScreenshotsLink(props.row.original.slug)
           return OffsiteLink(branchLink, "Screenshots")

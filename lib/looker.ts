@@ -1,9 +1,5 @@
-// taken from MIT-licensed: https://github.com/looker-open-source/sdk-examples/blob/master/typescript/downloadTile.ts
-
 import { NodeSettingsIniFile, NodeSession } from "@looker/sdk-node"
 import { Looker40SDK as LookerSDK, IDashboardElement, IWriteQuery } from "@looker/sdk"
-import { SDKResponse } from "@looker/sdk-rtl"
-import { run } from "node:test";
 
 /**
  *
@@ -21,27 +17,16 @@ export async function getAWDashboardElement0(): Promise<IDashboardElement> {
   return elements[0];
 }
 
-
-
-export async function getLastPrimaryRate(): Promise<number> {
-  // run query with filtering on only 2 days data
-
-  // return from primary_rate * 100 from response object from yesterday
-}run
-
-
-// run looker query 802168
 export async function runEventCountQuery(filters): Promise<any>{
-  const queryId = "802168";
-  const result = await SDK.ok(SDK.run_query({query_id: queryId, result_format: "json"}))
-
-  // console.log("origQuery result: ", result)
 
   const element0 = await getAWDashboardElement0()
   const origQuery = element0.query as IWriteQuery
 
   // take the query from the original dashboard
   const newQueryBody = structuredClone(origQuery)
+  delete newQueryBody.client_id // must be unique per-query
+
+  // override the filters
   newQueryBody.filters = Object.assign(
     {
       'event_counts.message_id': '%FAKESPOT_OPTIN_DEFAULT%',
@@ -53,20 +38,22 @@ export async function runEventCountQuery(filters): Promise<any>{
   console.log("filters: ", filters)
   console.log("newQueryBody.filters: ", newQueryBody.filters)
 
-  delete newQueryBody.client_id // must be unique per-query
 
-  const newQuery = await SDK.ok(SDK.create_query(newQueryBody))
+  const newQuery = await SDK.ok(SDK.create_query(newQueryBody));
+  const result = await SDK.ok(SDK.run_query({
+      query_id: newQuery.id,
+      result_format: "json"
+    }))
 
-  //const result2 = await SDK.ok(SDK.run_query({query_id: newQuery.id, result_format: "json"}))
-
-  //console.log("newQuery response: ", result2)
+  console.log("newQueryBody.filters: ", newQueryBody.filters)
+  console.log(" newQuery result: ", result)
   return result
 }
 
-
-
-
 function getAuthenticatedLookerSDK(): LookerSDK {
+
+  // taken from MIT-licensed: https://github.com/looker-open-source/sdk-examples/blob/master/typescript/downloadTile.ts
+
   /**
    *
    * @type {NodeSettingsIniFile} Settings retrieved from the configuration file
