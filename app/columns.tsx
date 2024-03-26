@@ -132,8 +132,8 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     accessorKey: "metrics",
     header: "Metrics",
     cell: (props: any) => {
-      if (props.row.original.ctrDashboardLink) {
-        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
+      if (props.row.original.ctrDashboardLink && props.row.original.template !== 'infobar') {
+        return OffsiteLink(props.row.original.ctrDashboardLink, props.row.original.ctrPercent + "% CTR");
       }
       return ( <></> );
     }

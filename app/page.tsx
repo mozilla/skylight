@@ -20,7 +20,7 @@ async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMes
     surface: getDisplayNameForTemplate(getTemplateFromMessage(messageDef)),
     segment: 'some segment',
     metrics: 'some metrics',
-    ctrPercent: .5, // getMeFromLooker
+    ctrPercent: 0, // getMeFromLooker
     ctrPercentChange: 2, // getMeFromLooker
     previewLink: getPreviewLink(messageDef),
   };
@@ -37,11 +37,15 @@ async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMes
     { 'event_counts.message_id':  '%' + messageDef.id + '%' }
   )
 
-  fxmsMsgInfo.ctrPercent = queryResult.primary_rate * 100
+  console.log("queryResult: ", queryResult)
+  if (queryResult.length > 0 && fxmsMsgInfo.template !== 'infobar') {
+    fxmsMsgInfo.ctrPercent = Number(Number(queryResult[0].primary_rate * 100).toFixed(1))
+  }
   fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id)
 
   // dashboard link -> dashboard id -> query id -> query -> ctr_percent_from_lastish_day
 
+  // console.log("fxmsMsgInfo: ", fxmsMsgInfo)
 
   return fxmsMsgInfo
 }
@@ -59,14 +63,14 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
     "utf8");
   let json_data = JSON.parse(data);
 
-  let messages : FxMSMessageInfo[] =
-    json_data.map(
+  let messages =
+    await Promise.all(json_data.map(
       async (messageDef : any): Promise<FxMSMessageInfo> => {
         return await getASRouterLocalColumnFromJSON(messageDef)
       }
-    );
+    ))
 
-  return messages;
+    return messages;
 }
 
 async function getDesktopExperimentsFromServer(): Promise<NimbusExperiment[]> {
