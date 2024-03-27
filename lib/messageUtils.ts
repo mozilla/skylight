@@ -60,8 +60,8 @@ export function getDashboard(
   return undefined;
 }
 
-// convert a UTF-8 string to a string in which each 16-bit unit occupies
-// only one byte. This is necessary for non-latin characters.
+// Convert a UTF-8 string to a string in which only one byte of each 
+// 16-bit unit is occupied. This is necessary to comply with `btoa` API constraints.
 export function toBinary(string: string): string {
   const codeUnits = new Uint16Array(string.length);
   for (let i = 0; i < codeUnits.length; i++) {

@@ -43,7 +43,9 @@ export class NimbusRecipe implements NimbusRecipeType {
 
     // XXX in this case we're really passing a feature value. Hmm....
     // about:welcome is special and doesn't use the template property,
-    // so we have to assign it directly to treatment branches
+    // so we have to assign it directly to treatment branches. The 
+    // control branch doesn't have a message, so we don't want to assign 
+    // a surface to it.
     let template;
     if (branch.features[0].featureId === "aboutwelcome" && branch.slug != 'control') {
       template = "aboutwelcome";
