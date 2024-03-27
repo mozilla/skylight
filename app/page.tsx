@@ -1,6 +1,7 @@
 import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
+import { NimbusRecipeCollection } from '@/lib/nimbusRecipeCollection'
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
 import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
@@ -47,41 +48,22 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
   return messages;
 }
 
-async function getDesktopExperimentsFromServer(): Promise<NimbusExperiment[]> {
-  const response = await fetch(
-    "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/nimbus-desktop-experiments/records",
-    {
-      credentials: "omit",
-    }
-  );
-  const responseJSON = await response.json();
-  const experiments : NimbusExperiment[] = await responseJSON.data;
-
-  return experiments;
-}
-
-async function getDesktopExperimentAndBranchInfo(experiments : NimbusExperiment[]): Promise<RecipeOrBranchInfo[]> {
-
-  const messagingExperiments = experiments.filter(
-      recipe => usesMessagingFeatures(recipe))
-
-  const msgExpRecipes = messagingExperiments.map(
-    (experimentDef : NimbusExperiment) => new NimbusRecipe(experimentDef))
-
-  const recipeOrBranchInfos : RecipeOrBranchInfo[] = msgExpRecipes.map(
-    (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1);
-
-  return recipeOrBranchInfos
-}
-
 async function getExperimentAndBranchInfoFromServer(): Promise<RecipeOrBranchInfo[]> {
 
-  const info : RecipeOrBranchInfo[] =
-    await getDesktopExperimentAndBranchInfo(
-      await getDesktopExperimentsFromServer());
+  // fetch the recipes
+  const recipeCollection = new NimbusRecipeCollection()
+  await recipeCollection.fetchRecipes()
 
-  // console.table(info);
-  return info;
+  // filter for messaging recipes only
+  const messagingCollection = new NimbusRecipeCollection()
+  messagingCollection.recipes = recipeCollection.recipes.filter(
+      recipe => usesMessagingFeatures(recipe._rawRecipe))
+
+  // get in format useable by MessageTable
+  const recipeOrBranchInfos : RecipeOrBranchInfo[] = messagingCollection.recipes.map(
+    (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1)
+
+  return recipeOrBranchInfos
 }
 
 export default async function Dashboard() {
@@ -116,7 +98,7 @@ export default async function Dashboard() {
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
-        Desktop Messaging Experiments
+        Live Desktop Messaging Experiments ()
       </h5>
 
       <div className="container mx-auto py-10">
