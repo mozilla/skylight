@@ -1,9 +1,10 @@
-import { types } from "@mozilla/nimbus-shared"
-import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "../app/columns.jsx"
-import { getDashboard, getDisplayNameForTemplate, getPreviewLink,getTemplateFromMessage } from "../lib/messageUtils.ts"
-import { getProposedEndDate, _substituteLocalizations } from "../lib/experimentUtils.ts"
+import { types } from "@mozilla/nimbus-shared";
+import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "../app/columns.jsx";
+import { getDashboard, getDisplayNameForTemplate, getPreviewLink, getTemplateFromMessage }
+from "../lib/messageUtils.ts";
+import { getProposedEndDate, _substituteLocalizations } from "../lib/experimentUtils.ts";
 
-type NimbusExperiment = types.experiments.NimbusExperiment
+type NimbusExperiment = types.experiments.NimbusExperiment;
 
 type NimbusRecipeType = {
   _rawRecipe : NimbusExperiment
@@ -13,7 +14,7 @@ type NimbusRecipeType = {
   getBranchInfo(branch: any): BranchInfo
   getBranchInfos() : BranchInfo[]
   getBranchScreenshotsLink(branchSlug: string) : string
-}
+};
 
 export class NimbusRecipe implements NimbusRecipeType {
   _rawRecipe
@@ -25,7 +26,7 @@ export class NimbusRecipe implements NimbusRecipeType {
   /**
    * @returns an array of BranchInfo objects, one per branch in this recipe
    */
-  getBranchInfo(branch: any): BranchInfo{
+  getBranchInfo(branch: any): BranchInfo {
     let branchInfo: BranchInfo = {
         product: 'Desktop',
         id: branch.slug,
@@ -41,12 +42,50 @@ export class NimbusRecipe implements NimbusRecipeType {
     const featureValue = branch.features[0].value
 
     // XXX in this case we're really passing a feature value. Hmm....
-    const template = getTemplateFromMessage(featureValue)
-    branch.template = template
-    branchInfo.template = template
-    branchInfo.surface = getDisplayNameForTemplate(template)
+    // about:welcome is special and doesn't use the template property,
+    // so we have to assign it directly to treatment branches. The 
+    // control branch doesn't have a message, so we don't want to assign 
+    // a surface to it.
+    let template;
+    if (branch.features[0].featureId === "aboutwelcome" && branch.slug != 'control') {
+      template = "aboutwelcome";
+    } else {
+      template = getTemplateFromMessage(featureValue)
+    }
 
-    switch(template) {
+    branch.template = template;
+    branchInfo.template = template;
+    branchInfo.surface = getDisplayNameForTemplate(template);
+
+    switch (template) {
+      case "aboutwelcome":
+        // Make sure there's a message to preview, bail out early otherwise
+        if (!featureValue.screens) {
+          break;
+        }
+        // featureValue will become the "content" object in a spotlight JSON
+        let spotlightFake = {
+          id: this._rawRecipe.id,
+          template: "spotlight",
+          targeting: true,
+          content: featureValue,
+        };
+        // Add the modal property to the spotlight to mimic about:welcome
+        spotlightFake.content.modal = "tab";
+        // The recipe might have a backdrop, but if not, fall back to the default
+        spotlightFake.content.backdrop = featureValue.backdrop || 
+        "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
+        // Localize the recipe if necessary.
+        let localizedWelcome = _substituteLocalizations(
+          spotlightFake,
+          this._rawRecipe.localizations?.[
+            Object.keys(this._rawRecipe.localizations)[0]
+          ],
+        );
+
+        branchInfo.previewLink = getPreviewLink(localizedWelcome);
+        break;
+
       case 'feature_callout':
         // XXX should iterate over all screens
         branchInfo.id = featureValue.content.screens[0].id
@@ -58,7 +97,8 @@ export class NimbusRecipe implements NimbusRecipeType {
         // Localize the recipe if necessary.
         // XXX [Object.keys(recipe.localizations)[0]] accesses the first locale inside the localization object.
         // We'll probably want to add a dropdown component that allows us to choose a locale from the available ones, to pass to this function.
-        let localizedInfobar = _substituteLocalizations(featureValue.content, this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
+        let localizedInfobar = _substituteLocalizations(featureValue.content,
+this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         branchInfo.previewLink = getPreviewLink(localizedInfobar)
         break
 
@@ -73,24 +113,26 @@ export class NimbusRecipe implements NimbusRecipeType {
       case 'spotlight':
         branchInfo.id = featureValue.id
         // Localize the recipe if necessary.
-        let localizedSpotlight = _substituteLocalizations(featureValue, this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
+        let localizedSpotlight = _substituteLocalizations(featureValue,
+this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         branchInfo.previewLink = getPreviewLink(localizedSpotlight)
         break
 
       case 'multi':
         // XXX only does first messages
         const firstMessage = featureValue.messages[0]
-        if (!('content' in firstMessage)) {
-          console.warn('template "multi" first message does not contain content key details not rendered')
+        if (!("content" in firstMessage)) {
+          console.warn('template "multi" first message does not contain content key details not rendered');
           return branchInfo
         }
 
         // XXX only does first screen
         branchInfo.id = firstMessage.content.screens[0].id
         // Localize the recipe if necessary.
-        let localizedMulti = _substituteLocalizations(featureValue.messages[0], this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
+        let localizedMulti = _substituteLocalizations(featureValue.messages[0],
+this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         // XXX assumes previewable message (spotight?)
-        branchInfo.previewLink = getPreviewLink(localizedMulti)
+        branchInfo.previewLink = getPreviewLink(localizedMulti);
         break
 
       case 'momentsUpdate':
@@ -98,8 +140,6 @@ export class NimbusRecipe implements NimbusRecipeType {
         return branchInfo
 
       default:
-        console.log("branchInfo.template = ", branch.template)
-
         if (!featureValue?.messages) {
           console.log("v.messages is null")
           console.log(", v= ", featureValue)
@@ -121,10 +161,11 @@ export class NimbusRecipe implements NimbusRecipeType {
     return branchInfo
   }
 
-  getBranchInfos() : BranchInfo[] {
-      // console.log(`in gBI for recipe ${recipe.slug}, branches = `)
-      // console.table(recipe.branches)
-      let branchInfos : BranchInfo[] = this._rawRecipe.branches.map(this.getBranchInfo, this)
+  getBranchInfos(): BranchInfo[] {
+    // console.log(`in gBI for recipe ${recipe.slug}, branches = `)
+    // console.table(recipe.branches)
+    let branchInfos : BranchInfo[] = this._rawRecipe.branches.map(this.getBranchInfo,
+this)
     return branchInfos
   }
 
@@ -136,19 +177,20 @@ export class NimbusRecipe implements NimbusRecipeType {
       startDate: this._rawRecipe.startDate || null,
       endDate:
         this._rawRecipe.endDate ||
-        getProposedEndDate(this._rawRecipe.startDate, this._rawRecipe.proposedDuration) || null,
+        getProposedEndDate(this._rawRecipe.startDate, this._rawRecipe.proposedDuration) ||
+null,
       product: 'Desktop',
       release: 'Fx Something',
       id: this._rawRecipe.slug,
       topic: 'some topic',
       segment: 'some segment',
-      ctrPercent: .5, // get me from BigQuery
+      ctrPercent: 0.5, // get me from BigQuery
       ctrPercentChange: 2, // get me from BigQuery
       metrics: 'some metrics',
       experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${this._rawRecipe.slug}`,
       userFacingName: this._rawRecipe.userFacingName,
       nimbusExperiment: this._rawRecipe
-    }
+    };
   }
 
   /**
@@ -167,7 +209,7 @@ export class NimbusRecipe implements NimbusRecipeType {
     // console.log(branchInfos)
 
     let expAndBranchInfos : RecipeOrBranchInfo[] = []
-    expAndBranchInfos =
+    expAndBranchInfos = 
       ([recipeInfo] as RecipeOrBranchInfo[])
       .concat(branchInfos)
 
@@ -177,14 +219,14 @@ export class NimbusRecipe implements NimbusRecipeType {
     return expAndBranchInfos
   }
 
-/**
- * Given a branch slug, return a link to the Screenshots section of the
- * Experimenter page for that branch.
- */
-getBranchScreenshotsLink(branchSlug: string): string {
-  const screenshotsAnchorId =
-    `branch-${encodeURIComponent(branchSlug)}-screenshots`
+  /**
+   * Given a branch slug, return a link to the Screenshots section of the
+   * Experimenter page for that branch.
+   */
+  getBranchScreenshotsLink(branchSlug: string): string {
+    const screenshotsAnchorId =
+      `branch-${encodeURIComponent(branchSlug)}-screenshots`
 
-  return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(this._rawRecipe.slug)}/summary#${screenshotsAnchorId}`
-}
+    return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(this._rawRecipe.slug)}/summary#${screenshotsAnchorId}`
+  }
 }

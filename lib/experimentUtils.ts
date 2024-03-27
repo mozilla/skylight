@@ -13,8 +13,10 @@ type NimbusExperiment = types.experiments.NimbusExperiment;
  * Should be manually update when that file changes.
  */
 export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
+  "aboutwelcome",
   "backgroundTaskMessage", // XXX need to backport this to tree
   "cfr",
+  "featureCallout",
   "fxms-message-1",
   "fxms-message-2",
   "fxms-message-3",
@@ -30,7 +32,6 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
   "moments-page",
   "pbNewtab",
   "spotlight",
-  "featureCallout",
 ];
 
 // XXX this should really be a method on NimbusRecipe
