@@ -214,7 +214,7 @@ null,
       .concat(branchInfos)
 
     // console.log("expAndBranchInfos: ")
-    // console.table(experimentAndBranchInfos)
+    // console.table(expAndBranchInfos)
 
     return expAndBranchInfos
   }
