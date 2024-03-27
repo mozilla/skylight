@@ -14,8 +14,8 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
     this.recipes = []
   }
 
-  async fetchRecipes() {
-    const response = await fetch(
+  async fetchRecipes() : Promise<Array<NimbusRecipe>> {
+      const response = await fetch(
       "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/nimbus-desktop-experiments/records",
       {
         credentials: "omit",
@@ -25,7 +25,9 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
     const experiments : NimbusExperiment[] = await responseJSON.data;
 
     this.recipes = experiments.map(
-      (experimentDef : NimbusExperiment) => new NimbusRecipe(experimentDef)
+      (nimbusExp : NimbusExperiment) => new NimbusRecipe(nimbusExp)
     )
+
+    return this.recipes
   }
 }

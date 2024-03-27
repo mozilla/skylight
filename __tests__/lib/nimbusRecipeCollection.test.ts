@@ -1,3 +1,4 @@
+import { NimbusRecipe } from '@/lib/nimbusRecipe'
 import { NimbusRecipeCollection } from '@/lib/nimbusRecipeCollection'
 import { ExperimentFakes } from '@/__tests__/ExperimentFakes.mjs'
 
@@ -14,6 +15,14 @@ describe('NimbusRecipeCollection', () => {
 
     expect (nimbusRecipeCollection.recipes.length).toEqual(0)
   })
-})
 
-// expect(nimbusRecipeCollection.recipes).toEqual(new NimbusRecipe(fakeFetchData// [0]))
+  describe('fetchRecipes', () => {
+    it('fetches recipes from the server', async () => {
+      const nimbusRecipeCollection = new NimbusRecipeCollection()
+
+      const recipes = await nimbusRecipeCollection.fetchRecipes()
+
+      expect(recipes).toEqual([new NimbusRecipe(fakeFetchData[0])])
+    })
+  })
+})
