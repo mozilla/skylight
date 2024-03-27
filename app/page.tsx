@@ -48,7 +48,7 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
   return messages;
 }
 
-async function getExperimentAndBranchInfoFromServer(): Promise<RecipeOrBranchInfo[]> {
+async function getMessagingRecipeCollection(): Promise<NimbusRecipeCollection> {
 
   // fetch the recipes
   const recipeCollection = new NimbusRecipeCollection()
@@ -59,17 +59,18 @@ async function getExperimentAndBranchInfoFromServer(): Promise<RecipeOrBranchInf
   messagingCollection.recipes = recipeCollection.recipes.filter(
       recipe => usesMessagingFeatures(recipe._rawRecipe))
 
-  // get in format useable by MessageTable
-  const recipeOrBranchInfos : RecipeOrBranchInfo[] = messagingCollection.recipes.map(
-    (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1)
-
-  return recipeOrBranchInfos
+  return messagingCollection
 }
 
 export default async function Dashboard() {
   // XXX await Promise.all for both loads concurrently
   const localData = await getASRouterLocalMessageInfoFromFile()
-  const experimentAndBranchInfo = await getExperimentAndBranchInfoFromServer();
+  const messagingCollection = await getMessagingRecipeCollection()
+
+  // get in format useable by MessageTable
+  const experimentAndBranchInfo : RecipeOrBranchInfo[] =
+    messagingCollection.recipes.map(
+      (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1)
 
   return (
     <div>
