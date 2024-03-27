@@ -59,27 +59,30 @@ export class NimbusRecipe implements NimbusRecipeType {
 
     switch (template) {
       case "aboutwelcome":
-        // featureValue will become the "content" object in a spotlight JSON
-        let spotlightFake = {
-          id: this._rawRecipe.id,
-          template: "spotlight",
-          targeting: true,
-          content: featureValue,
-        };
-        // Add the modal property to the spotlight to mimic about:welcome
-        spotlightFake.content.modal = "tab";
-        // The recipe might have a backdrop, but if not, fall back to the default
-        spotlightFake.content.backdrop = featureValue.backdrop || 
-        "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
-        // Localize the recipe if necessary.
-        let localizedWelcome = _substituteLocalizations(
-          spotlightFake,
-          this._rawRecipe.localizations?.[
-            Object.keys(this._rawRecipe.localizations)[0]
-          ],
-        );
+        // Make sure there's a message to preview
+        if (featureValue.screens) {
+          // featureValue will become the "content" object in a spotlight JSON
+          let spotlightFake = {
+            id: this._rawRecipe.id,
+            template: "spotlight",
+            targeting: true,
+            content: featureValue,
+          };
+          // Add the modal property to the spotlight to mimic about:welcome
+          spotlightFake.content.modal = "tab";
+          // The recipe might have a backdrop, but if not, fall back to the default
+          spotlightFake.content.backdrop = featureValue.backdrop || 
+          "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
+          // Localize the recipe if necessary.
+          let localizedWelcome = _substituteLocalizations(
+            spotlightFake,
+            this._rawRecipe.localizations?.[
+              Object.keys(this._rawRecipe.localizations)[0]
+            ],
+          );
 
-        branchInfo.previewLink = getPreviewLink(localizedWelcome);
+          branchInfo.previewLink = getPreviewLink(localizedWelcome);
+        }
         break;
 
       case 'feature_callout':

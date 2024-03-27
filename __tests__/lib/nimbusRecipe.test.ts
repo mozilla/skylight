@@ -44,6 +44,7 @@ const AW_RECIPE = {
       value: {
         backdrop: "test-backdrop",
         id: "treatment-a",
+        screens: [],
       },
     }],
     ratio: 1,
@@ -123,13 +124,14 @@ describe('NimbusRecipe', () => {
       // use deepEqual and check for the existence of object properties instead.
       expect(branchInfo).toEqual({
         product: 'Desktop',
+        ctrDashboardLink: undefined,
         id: branch.slug,
         isBranch: true,
         nimbusExperiment: AW_RECIPE,
         slug: branch.slug,
         surface: "About:Welcome Page",
         template: "aboutwelcome",
-        previewLink: "about:messagepreview?json=ewAiAGkAZAAiADoAIgBhAGIAbwB1AHQAdwBlAGwAYwBvAG0AZQAtAHQAZQBzAHQALQByAGUAYwBpAHAAZQAiACwAIgB0AGUAbQBwAGwAYQB0AGUAIgA6ACIAcwBwAG8AdABsAGkAZwBoAHQAIgAsACIAdABhAHIAZwBlAHQAaQBuAGcAIgA6AHQAcgB1AGUALAAiAGMAbwBuAHQAZQBuAHQAIgA6AHsAIgBiAGEAYwBrAGQAcgBvAHAAIgA6ACIAdABlAHMAdAAtAGIAYQBjAGsAZAByAG8AcAAiACwAIgBpAGQAIgA6ACIAdAByAGUAYQB0AG0AZQBuAHQALQBhACIALAAiAG0AbwBkAGEAbAAiADoAIgB0AGEAYgAiAH0AfQA%3D",
+        previewLink: "about:messagepreview?json=ewAiAGkAZAAiADoAIgBhAGIAbwB1AHQAdwBlAGwAYwBvAG0AZQAtAHQAZQBzAHQALQByAGUAYwBpAHAAZQAiACwAIgB0AGUAbQBwAGwAYQB0AGUAIgA6ACIAcwBwAG8AdABsAGkAZwBoAHQAIgAsACIAdABhAHIAZwBlAHQAaQBuAGcAIgA6AHQAcgB1AGUALAAiAGMAbwBuAHQAZQBuAHQAIgA6AHsAIgBiAGEAYwBrAGQAcgBvAHAAIgA6ACIAdABlAHMAdAAtAGIAYQBjAGsAZAByAG8AcAAiACwAIgBpAGQAIgA6ACIAdAByAGUAYQB0AG0AZQBuAHQALQBhACIALAAiAHMAYwByAGUAZQBuAHMAIgA6AFsAXQAsACIAbQBvAGQAYQBsACIAOgAiAHQAYQBiACIAfQB9AA%3D%3D",
       })
     })
   })
