@@ -89,8 +89,6 @@ export default async function Dashboard() {
 
 
   const totalExperiments = msgExpRecipeCollection.recipes.length
-  const shownExperiments = '?'
-  const hiddenExperiments = '?'
 
   return (
     <div>
@@ -120,7 +118,7 @@ export default async function Dashboard() {
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
         Live Desktop Messaging Experiments:&nbsp;
-          {totalExperiments} total: {shownExperiments} shown; {hiddenExperiments} hidden (not yet supported)
+          {totalExperiments} total
       </h5>
 
       <div className="container mx-auto py-10">
