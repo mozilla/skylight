@@ -37,7 +37,6 @@ function OffsiteLink(href: string, linkText: string) {
 // This type is used to define the shape of our data.
 export type FxMSMessageInfo = {
   product: 'Desktop' | 'Android'
-  release: string
   id: string
   template: string
   topic: string
@@ -54,7 +53,6 @@ type NimbusExperiment = types.experiments.NimbusExperiment;
 
 export type RecipeInfo = {
   product: 'Desktop' | 'Android'
-  release?: string
   id: string
   template?: string
   topic?: string
@@ -75,7 +73,6 @@ export type RecipeInfo = {
 
 export type BranchInfo = {
   product: 'Desktop' | 'Android'
-  release?: string
   id: string
   slug: string
   topic?: string
@@ -98,13 +95,6 @@ export type BranchInfo = {
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
 
 export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
-  {
-    accessorKey: "release",
-    header: "Release",
-    cell: (props: any) => {
-      return <div className="text-base">{props.row.original.release}</div>
-    }
-  },
   {
     accessorKey: "id",
     header: "Message ID",

@@ -11,7 +11,6 @@ import Link from "next/link";
 function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
   let fxmsMsgInfo : FxMSMessageInfo = {
     product: 'Desktop',
-    release: 'Fx 123',
     id: messageDef.id,
     template: messageDef.template,
     topic: messageDef.provider,
@@ -109,7 +108,7 @@ export default async function Dashboard() {
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
-        123 in-tree Production ASRouter messages
+        Partial list of ASRouter messages landed in Firefox
       </h5>
 
       <div className="container mx-auto py-10">
