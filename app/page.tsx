@@ -1,11 +1,11 @@
 import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
+import { NimbusRecipeCollection } from '@/lib/nimbusRecipeCollection'
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
 import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
 import { MessageTable } from "./message-table";
-import { getProposedEndDate, usesMessagingFeatures } from "../lib/experimentUtils.ts";
 import Link from "next/link";
 
 function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
@@ -47,47 +47,48 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
   return messages;
 }
 
-async function getDesktopExperimentsFromServer(): Promise<NimbusExperiment[]> {
-  const response = await fetch(
-    "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/nimbus-desktop-experiments/records",
-    {
-      credentials: "omit",
-    }
-  );
-  const responseJSON = await response.json();
-  const experiments : NimbusExperiment[] = await responseJSON.data;
+async function getMsgExpRecipeCollection(): Promise<NimbusRecipeCollection> {
 
-  return experiments;
-}
+  const recipeCollection = new NimbusRecipeCollection()
+  await recipeCollection.fetchRecipes()
+  console.log('recipeCollection.length = ', recipeCollection.recipes.length)
 
-async function getDesktopExperimentAndBranchInfo(experiments : NimbusExperiment[]): Promise<RecipeOrBranchInfo[]> {
 
-  const messagingExperiments = experiments.filter(
-      recipe => usesMessagingFeatures(recipe))
+  // XXX should move to nimbusRecipe
+  function isExpRecipe(recipe : NimbusRecipe) : boolean {
+    return !recipe._rawRecipe.isRollout
+  }
 
-  const msgExpRecipes = messagingExperiments.map(
-    (experimentDef : NimbusExperiment) => new NimbusRecipe(experimentDef))
+  const expOnlyCollection = new NimbusRecipeCollection()
+  expOnlyCollection.recipes = recipeCollection.recipes.filter(isExpRecipe)
+  console.log('expOnlyCollection.length = ', expOnlyCollection.recipes.length)
 
-  const recipeOrBranchInfos : RecipeOrBranchInfo[] = msgExpRecipes.map(
-    (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1);
 
-  return recipeOrBranchInfos
-}
+  // XXX should move to nimbusRecipe
+  function isMsgRecipe(recipe : NimbusRecipe) : boolean {
+    return recipe.usesMessagingFeatures()
+  }
 
-async function getExperimentAndBranchInfoFromServer(): Promise<RecipeOrBranchInfo[]> {
+  const msgExpRecipeCollection = new NimbusRecipeCollection()
+  msgExpRecipeCollection.recipes =
+    expOnlyCollection.recipes.filter(isMsgRecipe)
+  console.log('msgExpRecipeCollection.length = ', msgExpRecipeCollection.recipes.length)
 
-  const info : RecipeOrBranchInfo[] =
-    await getDesktopExperimentAndBranchInfo(
-      await getDesktopExperimentsFromServer());
-
-  // console.table(info);
-  return info;
+  return msgExpRecipeCollection
 }
 
 export default async function Dashboard() {
   // XXX await Promise.all for both loads concurrently
   const localData = await getASRouterLocalMessageInfoFromFile()
-  const experimentAndBranchInfo = await getExperimentAndBranchInfoFromServer();
+  const msgExpRecipeCollection = await getMsgExpRecipeCollection()
+
+  // get in format useable by MessageTable
+  const experimentAndBranchInfo : RecipeOrBranchInfo[] =
+    msgExpRecipeCollection.recipes.map(
+      (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1)
+
+
+  const totalExperiments = msgExpRecipeCollection.recipes.length
 
   return (
     <div>
@@ -116,7 +117,8 @@ export default async function Dashboard() {
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
-        Desktop Messaging Experiments
+        Live Desktop Messaging Experiments:&nbsp;
+          {totalExperiments} total
       </h5>
 
       <div className="container mx-auto py-10">

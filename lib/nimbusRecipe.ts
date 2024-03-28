@@ -2,9 +2,22 @@ import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "../app/columns.jsx";
 import { getDashboard, getDisplayNameForTemplate, getPreviewLink, getTemplateFromMessage }
 from "../lib/messageUtils.ts";
-import { getProposedEndDate, _substituteLocalizations } from "../lib/experimentUtils.ts";
+import { getProposedEndDate, MESSAGING_EXPERIMENTS_DEFAULT_FEATURES,_substituteLocalizations } from "../lib/experimentUtils.ts";
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
+
+function isMessagingFeature(featureId: string): boolean {
+  return MESSAGING_EXPERIMENTS_DEFAULT_FEATURES.includes(featureId)
+}
+
+// Get the first messaging feature object in a branch.
+// XXX should handle the cases where there are none
+function getFirstMessagingFeature(branch: any): any {
+  const index = branch.features.findIndex(
+    (feature: any) => isMessagingFeature(feature.featureId))
+
+  return branch.features[index]
+}
 
 type NimbusRecipeType = {
   _rawRecipe : NimbusExperiment
@@ -14,7 +27,8 @@ type NimbusRecipeType = {
   getBranchInfo(branch: any): BranchInfo
   getBranchInfos() : BranchInfo[]
   getBranchScreenshotsLink(branchSlug: string) : string
-};
+  usesMessagingFeatures() : boolean
+}
 
 export class NimbusRecipe implements NimbusRecipeType {
   _rawRecipe
@@ -38,19 +52,19 @@ export class NimbusRecipe implements NimbusRecipeType {
         slug: branch.slug
       }
 
-    // XXX should look at all the messages
-    const featureValue = branch.features[0].value
+    // XXX right now we don't support more than one messaging feature
+    const feature = getFirstMessagingFeature(branch)
 
     // XXX in this case we're really passing a feature value. Hmm....
     // about:welcome is special and doesn't use the template property,
-    // so we have to assign it directly to treatment branches. The 
-    // control branch doesn't have a message, so we don't want to assign 
+    // so we have to assign it directly to treatment branches. The
+    // control branch doesn't have a message, so we don't want to assign
     // a surface to it.
     let template;
-    if (branch.features[0].featureId === "aboutwelcome" && branch.slug != 'control') {
+    if (feature.featureId === "aboutwelcome" && branch.slug != 'control') {
       template = "aboutwelcome";
     } else {
-      template = getTemplateFromMessage(featureValue)
+      template = getTemplateFromMessage(feature.value)
     }
 
     branch.template = template;
@@ -60,7 +74,7 @@ export class NimbusRecipe implements NimbusRecipeType {
     switch (template) {
       case "aboutwelcome":
         // Make sure there's a message to preview, bail out early otherwise
-        if (!featureValue.screens) {
+        if (!feature.value.screens) {
           break;
         }
         // featureValue will become the "content" object in a spotlight JSON
@@ -68,12 +82,12 @@ export class NimbusRecipe implements NimbusRecipeType {
           id: this._rawRecipe.id,
           template: "spotlight",
           targeting: true,
-          content: featureValue,
+          content: feature.value,
         };
         // Add the modal property to the spotlight to mimic about:welcome
         spotlightFake.content.modal = "tab";
         // The recipe might have a backdrop, but if not, fall back to the default
-        spotlightFake.content.backdrop = featureValue.backdrop || 
+        spotlightFake.content.backdrop = feature.value.backdrop ||
         "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
         // Localize the recipe if necessary.
         let localizedWelcome = _substituteLocalizations(
@@ -88,39 +102,40 @@ export class NimbusRecipe implements NimbusRecipeType {
 
       case 'feature_callout':
         // XXX should iterate over all screens
-        branchInfo.id = featureValue.content.screens[0].id
+        branchInfo.id = feature.value.content.screens[0].id
         break
 
       case 'infobar':
-        branchInfo.id = featureValue.messages[0].id
+        branchInfo.id = feature.value.messages[0].id
         branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id)
         // Localize the recipe if necessary.
         // XXX [Object.keys(recipe.localizations)[0]] accesses the first locale inside the localization object.
         // We'll probably want to add a dropdown component that allows us to choose a locale from the available ones, to pass to this function.
-        let localizedInfobar = _substituteLocalizations(featureValue.content,
-this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
+        let localizedInfobar =
+          _substituteLocalizations(feature.value.content,
+            this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         branchInfo.previewLink = getPreviewLink(localizedInfobar)
         break
 
       case 'toast_notification':
-        if (!featureValue?.id) {
-          console.warn("value.id, v = ", featureValue)
+        if (!feature.value?.id) {
+          console.warn("value.id, v = ", feature.value)
           return branchInfo
         }
-        branchInfo.id = featureValue.content.tag
+        branchInfo.id = feature.value.content.tag
         break
 
       case 'spotlight':
-        branchInfo.id = featureValue.id
+        branchInfo.id = feature.value.id
         // Localize the recipe if necessary.
-        let localizedSpotlight = _substituteLocalizations(featureValue,
+        let localizedSpotlight = _substituteLocalizations(feature.value,
 this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         branchInfo.previewLink = getPreviewLink(localizedSpotlight)
         break
 
       case 'multi':
         // XXX only does first messages
-        const firstMessage = featureValue.messages[0]
+        const firstMessage = feature.value.messages[0]
         if (!("content" in firstMessage)) {
           console.warn('template "multi" first message does not contain content key details not rendered');
           return branchInfo
@@ -129,7 +144,7 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         // XXX only does first screen
         branchInfo.id = firstMessage.content.screens[0].id
         // Localize the recipe if necessary.
-        let localizedMulti = _substituteLocalizations(featureValue.messages[0],
+        let localizedMulti = _substituteLocalizations(feature.value.messages[0],
 this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         // XXX assumes previewable message (spotight?)
         branchInfo.previewLink = getPreviewLink(localizedMulti);
@@ -140,18 +155,18 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         return branchInfo
 
       default:
-        if (!featureValue?.messages) {
+        if (!feature.value?.messages) {
           console.log("v.messages is null")
-          console.log(", v= ", featureValue)
+          console.log(", feature.value = ", feature.value)
           return branchInfo
         }
-        branchInfo.id = featureValue.messages[0].id
+        branchInfo.id = feature.value.messages[0].id
         break
     }
 
     branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id)
 
-    if (!featureValue.content) {
+    if (!feature.value.content) {
       console.log("v.content is null")
       // console.log("v= ", value)
     }
@@ -198,10 +213,6 @@ null,
    * ordered like this: [RecipeInfo, BranchInfo, BranchInfo, BranchInfo, ...]
    */
   getRecipeOrBranchInfos() : RecipeOrBranchInfo[] {
-    if (this._rawRecipe.isRollout) {
-      return []
-    }
-
     let recipeInfo = this.getRecipeInfo()
 
     let branchInfos : BranchInfo[] = this.getBranchInfos()
@@ -209,14 +220,26 @@ null,
     // console.log(branchInfos)
 
     let expAndBranchInfos : RecipeOrBranchInfo[] = []
-    expAndBranchInfos = 
+    expAndBranchInfos =
       ([recipeInfo] as RecipeOrBranchInfo[])
       .concat(branchInfos)
 
     // console.log("expAndBranchInfos: ")
-    // console.table(experimentAndBranchInfos)
+    // console.table(expAndBranchInfos)
 
     return expAndBranchInfos
+  }
+
+  /**
+   *
+   */
+  usesMessagingFeatures(): boolean {
+    const featureIds = this._rawRecipe?.featureIds
+    if (!featureIds) {
+      return false
+    }
+
+    return featureIds.some(isMessagingFeature)
   }
 
   /**
