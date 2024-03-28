@@ -50,15 +50,29 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
 
 async function getMsgExpRecipeCollection(): Promise<NimbusRecipeCollection> {
 
-  // fetch the recipes
   const recipeCollection = new NimbusRecipeCollection()
   await recipeCollection.fetchRecipes()
   console.log('recipeCollection.length = ', recipeCollection.recipes.length)
 
-  // filter for messaging recipes only
+
+  // XXX should move to nimbusRecipe
+  function isExpRecipe(recipe : NimbusRecipe) : boolean {
+    return !recipe._rawRecipe.isRollout
+  }
+
+  const expOnlyCollection = new NimbusRecipeCollection()
+  expOnlyCollection.recipes = recipeCollection.recipes.filter(isExpRecipe)
+  console.log('expOnlyCollection.length = ', expOnlyCollection.recipes.length)
+
+
+  // XXX should move to nimbusRecipe
+  function isMsgRecipe(recipe : NimbusRecipe) : boolean {
+    return usesMessagingFeatures(recipe._rawRecipe)
+  }
+
   const msgExpRecipeCollection = new NimbusRecipeCollection()
-  msgExpRecipeCollection.recipes = recipeCollection.recipes.filter(
-      recipe => usesMessagingFeatures(recipe._rawRecipe))
+  msgExpRecipeCollection.recipes =
+    expOnlyCollection.recipes.filter(isMsgRecipe)
   console.log('msgExpRecipeCollection.length = ', msgExpRecipeCollection.recipes.length)
 
   return msgExpRecipeCollection
@@ -73,6 +87,11 @@ export default async function Dashboard() {
   const experimentAndBranchInfo : RecipeOrBranchInfo[] =
     msgExpRecipeCollection.recipes.map(
       (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1)
+
+
+  const totalExperiments = msgExpRecipeCollection.recipes.length
+  const shownExperiments = '?'
+  const hiddenExperiments = '?'
 
   return (
     <div>
@@ -101,7 +120,8 @@ export default async function Dashboard() {
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
-        Live Desktop Messaging Experiments ()
+        Live Desktop Messaging Experiments:&nbsp;
+          {totalExperiments} total: {shownExperiments} shown; {hiddenExperiments} hidden (not yet supported)
       </h5>
 
       <div className="container mx-auto py-10">

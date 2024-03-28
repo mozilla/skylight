@@ -198,10 +198,6 @@ null,
    * ordered like this: [RecipeInfo, BranchInfo, BranchInfo, BranchInfo, ...]
    */
   getRecipeOrBranchInfos() : RecipeOrBranchInfo[] {
-    if (this._rawRecipe.isRollout) {
-      return []
-    }
-
     let recipeInfo = this.getRecipeInfo()
 
     let branchInfos : BranchInfo[] = this.getBranchInfos()
