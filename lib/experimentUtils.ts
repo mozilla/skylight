@@ -32,6 +32,7 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
   "moments-page",
   "pbNewtab",
   "spotlight",
+  "testFeature",
 ];
 
 /**
