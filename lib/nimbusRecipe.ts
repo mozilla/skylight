@@ -2,7 +2,7 @@ import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "../app/columns.jsx";
 import { getDashboard, getDisplayNameForTemplate, getPreviewLink, getTemplateFromMessage }
 from "../lib/messageUtils.ts";
-import { getProposedEndDate, _substituteLocalizations } from "../lib/experimentUtils.ts";
+import { getProposedEndDate, MESSAGING_EXPERIMENTS_DEFAULT_FEATURES,_substituteLocalizations } from "../lib/experimentUtils.ts";
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
@@ -14,7 +14,8 @@ type NimbusRecipeType = {
   getBranchInfo(branch: any): BranchInfo
   getBranchInfos() : BranchInfo[]
   getBranchScreenshotsLink(branchSlug: string) : string
-};
+  usesMessagingFeatures() : boolean
+}
 
 export class NimbusRecipe implements NimbusRecipeType {
   _rawRecipe
@@ -43,8 +44,8 @@ export class NimbusRecipe implements NimbusRecipeType {
 
     // XXX in this case we're really passing a feature value. Hmm....
     // about:welcome is special and doesn't use the template property,
-    // so we have to assign it directly to treatment branches. The 
-    // control branch doesn't have a message, so we don't want to assign 
+    // so we have to assign it directly to treatment branches. The
+    // control branch doesn't have a message, so we don't want to assign
     // a surface to it.
     let template;
     if (branch.features[0].featureId === "aboutwelcome" && branch.slug != 'control') {
@@ -73,7 +74,7 @@ export class NimbusRecipe implements NimbusRecipeType {
         // Add the modal property to the spotlight to mimic about:welcome
         spotlightFake.content.modal = "tab";
         // The recipe might have a backdrop, but if not, fall back to the default
-        spotlightFake.content.backdrop = featureValue.backdrop || 
+        spotlightFake.content.backdrop = featureValue.backdrop ||
         "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
         // Localize the recipe if necessary.
         let localizedWelcome = _substituteLocalizations(
@@ -205,7 +206,7 @@ null,
     // console.log(branchInfos)
 
     let expAndBranchInfos : RecipeOrBranchInfo[] = []
-    expAndBranchInfos = 
+    expAndBranchInfos =
       ([recipeInfo] as RecipeOrBranchInfo[])
       .concat(branchInfos)
 
@@ -213,6 +214,22 @@ null,
     // console.table(expAndBranchInfos)
 
     return expAndBranchInfos
+  }
+
+  /**
+   *
+   */
+  usesMessagingFeatures(): boolean {
+    function isMessagingFeature(featureId: string): boolean {
+      return MESSAGING_EXPERIMENTS_DEFAULT_FEATURES.includes(featureId)
+    }
+
+    const featureIds = this._rawRecipe?.featureIds
+    if (!featureIds) {
+      return false
+    }
+
+    return featureIds.some(isMessagingFeature)
   }
 
   /**

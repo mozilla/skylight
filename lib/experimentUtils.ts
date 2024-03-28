@@ -34,17 +34,6 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
   "spotlight",
 ];
 
-// XXX this should really be a method on NimbusRecipe
-export function usesMessagingFeatures(recipe : NimbusExperiment): boolean {
-  // XXX iterate through all features instead of just checking the first
-  // XXX figure out how to better handle the ?
-  let featureId : string = (recipe as any)?.featureIds[0];
-  if (MESSAGING_EXPERIMENTS_DEFAULT_FEATURES.includes(featureId)) {
-    return true;
-  }
-  return false;
-}
-
 /**
  *
  * @param startDate - may be null, as NimbusExperiment types allow this.

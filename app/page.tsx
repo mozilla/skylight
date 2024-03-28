@@ -6,7 +6,6 @@ import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
 import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
 import { MessageTable } from "./message-table";
-import { getProposedEndDate, usesMessagingFeatures } from "../lib/experimentUtils.ts";
 import Link from "next/link";
 
 function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
@@ -67,7 +66,7 @@ async function getMsgExpRecipeCollection(): Promise<NimbusRecipeCollection> {
 
   // XXX should move to nimbusRecipe
   function isMsgRecipe(recipe : NimbusRecipe) : boolean {
-    return usesMessagingFeatures(recipe._rawRecipe)
+    return recipe.usesMessagingFeatures()
   }
 
   const msgExpRecipeCollection = new NimbusRecipeCollection()

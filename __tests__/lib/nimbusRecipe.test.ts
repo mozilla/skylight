@@ -184,4 +184,39 @@ describe('NimbusRecipe', () => {
     })
   })
 
+  describe('usesMessagingFeatures', () => {
+    it('returns true if the recipe uses messaging features', () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        featureIds: ["fxms-message-1"]
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+
+      const result = nimbusRecipe.usesMessagingFeatures()
+
+      expect(result).toBe(true)
+    })
+
+    it('returns false if the recipe does not use messaging features', () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        featureIds: ["monkeys-1"]
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+
+      const result = nimbusRecipe.usesMessagingFeatures()
+
+      expect(result).toBe(false)
+    })
+
+    it('returns true if featureIds[1] is a messaging feature', () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        featureIds: ["monkeys-1", "fxms-message-1"]
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+
+      const result = nimbusRecipe.usesMessagingFeatures()
+
+      expect(result).toBe(true)
+
+    })
+  })
 })
