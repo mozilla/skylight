@@ -30,11 +30,11 @@ export function PreviewLinkButton( linkObject: any ) {
             }
             onClick={copyPreviewLink}>
             <Copy className="me-2" size={11} />
-              Copy Preview URL (Fx 126 >= March 29 only)
+              Copy Preview URL
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>After clicking to copy, paste in URL bar for message preview</p>
+          <p>After clicking to copy, paste in (Fx 126+ &gt;= March 29 only) URL bar for message preview</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
