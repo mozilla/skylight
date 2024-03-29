@@ -22,7 +22,8 @@ function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
     previewLink: getPreviewLink(messageDef),
   };
 
-  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id)
+  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id,
+    "release")
 
   return fxmsMsgInfo
 }
