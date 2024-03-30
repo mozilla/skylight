@@ -32,6 +32,7 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
   // XXX multi shouldn't really be here, but for now, we're going to assume
   // it's a spotlight
   const aboutWelcomeSurfaces = [
+    "aboutwelcome",
     "feature_callout",
     "multi",
     "spotlight",

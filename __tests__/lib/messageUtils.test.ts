@@ -57,6 +57,7 @@ describe('toBinary', () => {
   })
 })
 
+// XXX check encodedness of channel and experimentSlug
 describe('getDashboard', () => {
   it('returns a correct infobar dashboard link', () => {
     const template = "infobar"
