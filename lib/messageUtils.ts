@@ -56,7 +56,7 @@ export function getDashboard(
   const encodedBranchSlug = branchSlug ? (encodeURIComponent(branchSlug)) : "";
 
   if (_isAboutWelcomeTemplate(template)) {
-    return `https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`
+    return `https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25${encodedMsgId}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`
   }
 
   if (template === "infobar") {

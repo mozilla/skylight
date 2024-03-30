@@ -73,7 +73,7 @@ describe('getDashboard', () => {
 
   it('returns a correct featureCallout dashboard link', () => {
     const template = "feature_callout"
-    const msgId = "1:23" // weird chars to test URI encoding
+    const msgId = "test1:23" // weird chars to test URI encoding
 
     const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
 
