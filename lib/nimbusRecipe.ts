@@ -151,7 +151,7 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         break
 
       case 'momentsUpdate':
-        console.warn(`we don't fully support  messages yet`)
+        console.warn(`we don't fully support moments messages yet`)
         return branchInfo
 
       default:
@@ -164,7 +164,7 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         break
     }
 
-    branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id, undefined,  branchInfo.nimbusExperiment.slug)
+    branchInfo.ctrDashboardLink = getDashboard(branchInfo.template, branchInfo.id, undefined, branchInfo.nimbusExperiment.slug)
 
     if (!feature.value.content) {
       console.log("v.content is null")

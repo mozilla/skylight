@@ -123,7 +123,7 @@ describe('NimbusRecipe', () => {
       // use deepEqual and check for the existence of object properties instead.
       expect(branchInfo).toEqual({
         product: 'Desktop',
-        ctrDashboardLink: undefined,
+        ctrDashboardLink: `https://mozilla.cloud.looker.com/dashboards/1672?Message+ID=%25treatment-a%25&Normalized+Channel=&Experiment=`,
         id: branch.slug,
         isBranch: true,
         nimbusExperiment: AW_RECIPE,
