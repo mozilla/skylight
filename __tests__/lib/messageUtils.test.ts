@@ -62,10 +62,11 @@ describe('getDashboard', () => {
     const template = "infobar"
     const msgId = "123"
     const channel = "rel:ease" // weird chars test URI encoding
+    const experimentSlug = "monkeys"
 
-    const result = getDashboard(template, msgId, channel)
+    const result = getDashboard(template, msgId, channel, experimentSlug)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1622?Messaging+System+Ping+Type=${encodeURIComponent(template)}&Submission+Date=30+days&Messaging+System+Message+Id=${encodeURIComponent(msgId)}&Normalized+Channel=${encodeURIComponent(channel)}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1622?Messaging+System+Ping+Type=${encodeURIComponent(template)}&Submission+Date=30+days&Messaging+System+Message+Id=${encodeURIComponent(msgId)}&Normalized+Channel=${encodeURIComponent(channel)}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${experimentSlug ? experimentSlug : ''}`
     expect(result).toEqual(expectedLink)
   })
 
@@ -73,10 +74,23 @@ describe('getDashboard', () => {
     const template = "feature_callout"
     const msgId = "1:23" // weird chars to test URI encoding
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1672?Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=`
 
     const result = getDashboard(template, msgId)
     expect(result).toEqual(expectedLink)
   });
 
+  // Test that get dashboard returns correct dashboards links for a given
+  // for a given messageId and template === "featureCallout" and
+  // experiment_slug
+  it('returns a correct featureCallout experiment dashboard link', () => {
+    const template = "feature_callout"
+    const msgId = "123"
+    const experimentSlug = "monkeys"
+
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1672?Message+ID=%25123%25&Normalized+Channel=&Experiment=${experimentSlug}`
+
+    const result = getDashboard(template, msgId, undefined, experimentSlug)
+    expect(result).toEqual(expectedLink)
+  });
 })

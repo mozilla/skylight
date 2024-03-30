@@ -87,7 +87,7 @@ export type BranchInfo = {
   startDate?: string
   endDate?: string
   userFacingName?: string
-  nimbusExperiment?: NimbusExperiment
+  nimbusExperiment: NimbusExperiment
   isBranch?: boolean
   template?: string
 } | []

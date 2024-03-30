@@ -107,7 +107,7 @@ export class NimbusRecipe implements NimbusRecipeType {
 
       case 'infobar':
         branchInfo.id = feature.value.messages[0].id
-        branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id)
+        branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id, undefined, branchInfo.nimbusExperiment.slug)
         // Localize the recipe if necessary.
         // XXX [Object.keys(recipe.localizations)[0]] accesses the first locale inside the localization object.
         // We'll probably want to add a dropdown component that allows us to choose a locale from the available ones, to pass to this function.
@@ -164,7 +164,7 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         break
     }
 
-    branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id)
+    branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id, undefined,  branchInfo.nimbusExperiment.slug)
 
     if (!feature.value.content) {
       console.log("v.content is null")
