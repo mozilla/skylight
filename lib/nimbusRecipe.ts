@@ -195,7 +195,6 @@ this)
         getProposedEndDate(this._rawRecipe.startDate, this._rawRecipe.proposedDuration) ||
 null,
       product: 'Desktop',
-      release: 'Fx Something',
       id: this._rawRecipe.slug,
       topic: 'some topic',
       segment: 'some segment',

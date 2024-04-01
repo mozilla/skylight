@@ -1,4 +1,4 @@
-import { _isAboutWelcomeTemplate, toBinary } from '../../lib/messageUtils'
+import { getDashboard, _isAboutWelcomeTemplate, toBinary } from '@/lib/messageUtils'
 
 describe('isAboutWelcomeTemplate', () => {
   it('returns true if a feature_callout', () => {
@@ -55,4 +55,28 @@ describe('toBinary', () => {
 
     expect(decodedResult).toEqual(nonLatinString);
   })
+})
+
+describe('getDashboard', () => {
+  it('returns a correct infobar dashboard link', () => {
+    const template = "infobar"
+    const msgId = "123"
+    const channel = "rel:ease" // weird chars test URI encoding
+
+    const result = getDashboard(template, msgId, channel)
+
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1622?Messaging+System+Ping+Type=${encodeURIComponent(template)}&Submission+Date=30+days&Messaging+System+Message+Id=${encodeURIComponent(msgId)}&Normalized+Channel=${encodeURIComponent(channel)}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=`
+    expect(result).toEqual(expectedLink)
+  })
+
+  it('returns a correct featureCallout dashboard link', () => {
+    const template = "feature_callout"
+    const msgId = "1:23" // weird chars to test URI encoding
+
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=`
+
+    const result = getDashboard(template, msgId)
+    expect(result).toEqual(expectedLink)
+  });
+
 })

@@ -76,7 +76,6 @@ describe('NimbusRecipe', () => {
         endDate:
           rawRecipe.endDate,
         product: 'Desktop',
-        release: 'Fx Something',
         id: "test-recipe",
         topic: 'some topic',
         segment: 'some segment',
