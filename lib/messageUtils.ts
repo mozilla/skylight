@@ -1,7 +1,7 @@
 export function getDisplayNameForTemplate(template: string): string {
   const displayNames: any = {
-    aboutwelcome: "About:Welcome Page",
-    feature_callout: "Feature Callout (screen 0)",
+    aboutwelcome: "About:Welcome (first screen)",
+    feature_callout: "Feature callout (first screen)",
     infobar: "InfoBar",
     milestone_message: "Milestone Messages",
     multi: "1st of Multiple Messages",
@@ -9,7 +9,7 @@ export function getDisplayNameForTemplate(template: string): string {
     protections_panel: "Protections Dropdown Panel",
     toast_notification: "Toast Notification",
     toolbar_badge: "Toolbar Badge",
-    spotlight: "Spotlight Modal Dialog",
+    spotlight: "Spotlight modal dialog (first screen)",
     update_action: "Moments Page",
   };
 

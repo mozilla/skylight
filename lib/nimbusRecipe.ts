@@ -96,6 +96,7 @@ export class NimbusRecipe implements NimbusRecipeType {
             Object.keys(this._rawRecipe.localizations)[0]
           ],
         );
+        branchInfo.id = feature.value.screens[0].id
 
         branchInfo.previewLink = getPreviewLink(localizedWelcome);
         break;
@@ -107,7 +108,6 @@ export class NimbusRecipe implements NimbusRecipeType {
 
       case 'infobar':
         branchInfo.id = feature.value.messages[0].id
-        branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id, undefined, branchInfo.nimbusExperiment.slug)
         // Localize the recipe if necessary.
         // XXX [Object.keys(recipe.localizations)[0]] accesses the first locale inside the localization object.
         // We'll probably want to add a dropdown component that allows us to choose a locale from the available ones, to pass to this function.

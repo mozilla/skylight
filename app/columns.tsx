@@ -87,7 +87,7 @@ export type BranchInfo = {
   startDate?: string
   endDate?: string
   userFacingName?: string
-  nimbusExperiment: NimbusExperiment
+  nimbusExperiment?: NimbusExperiment
   isBranch?: boolean
   template?: string
 } | []
@@ -185,7 +185,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
 
       return (
           <div className="font-mono text-xs ps-6">
-            {props.row.original.id}
+            {props.row.original.slug}
           </div>
       );
     }
@@ -220,7 +220,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
 
       // XXX We need to handle similarly named branches and filter by experiment slug
       if (props.row.original.ctrDashboardLink) {
-        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
+        return OffsiteLink(props.row.original.ctrDashboardLink, `${props.row.original.id}`);
       }
       return ( <></> );
     }
