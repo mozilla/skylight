@@ -122,6 +122,18 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     accessorKey: "metrics",
     header: "Metrics",
     cell: (props: any) => {
+
+      // XXX these dashboards are currently (incorrectly) empty.
+      // Until we debug and fix, we'll hide them
+      const hideDashboardMessages = [
+        "PDFJS_FEATURE_TOUR_A",
+        "PDFJS_FEATURE_TOUR_B"
+      ]
+      if (hideDashboardMessages.includes(
+          props.row.original.id)) {
+        return ( <></> );
+      }
+
       if (props.row.original.ctrDashboardLink) {
         return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
       }
@@ -195,6 +207,17 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     accessorKey: "metrics",
     header: "Metrics",
     cell: (props: any) => {
+
+      // XXX these dashboards are currently (incorrectly) empty.
+      // Until we fix the upcase bug, we'll hide them
+      const hideDashboardExperiments = [
+        "recommend-media-addons-feature-existing-users",
+        "recommend-media-addons-feature-callout"
+      ]
+      if (hideDashboardExperiments.includes(props.row.original?.nimbusExperiment?.slug)) {
+        return ( <></> );
+      }
+
       // XXX We need to handle similarly named branches and filter by experiment slug
       if (props.row.original.ctrDashboardLink) {
         return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
