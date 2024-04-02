@@ -122,6 +122,18 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     accessorKey: "metrics",
     header: "Metrics",
     cell: (props: any) => {
+
+      // XXX these dashboards are currently (incorrectly) empty.
+      // Until we debug and fix, we'll hide them
+      const hideDashboardMessages = [
+        "PDFJS_FEATURE_TOUR_A",
+        "PDFJS_FEATURE_TOUR_B"
+      ]
+      if (hideDashboardMessages.includes(
+          props.row.original.id)) {
+        return ( <></> );
+      }
+
       if (props.row.original.ctrDashboardLink) {
         return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
       }
