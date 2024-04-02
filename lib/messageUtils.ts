@@ -40,27 +40,29 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
   return aboutWelcomeSurfaces.includes(template);
 }
 
+
 export function getDashboard(
   template: string,
   msgId: string,
-): string | undefined {
+  channel?: string): string | undefined {
   const encodedMsgId = encodeURIComponent(msgId);
   const encodedTemplate = encodeURIComponent(template);
+  const encodedChannel = channel ? (encodeURIComponent(channel)) : "";
 
   if (_isAboutWelcomeTemplate(template)) {
     //XXX we need to return something different for the actual about:welcome experiments, due to
     // branches having names in common (i.e. 'treatment-a')
-    return `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${encodedMsgId?.toUpperCase()}%25`;
+    return `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}`;
   }
 
   if (template === "infobar") {
-    return `https://mozilla.cloud.looker.com/dashboards/1622?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=30+days&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=release&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=`;
+    return `https://mozilla.cloud.looker.com/dashboards/1622?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=30+days&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=${encodedChannel}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=`;
   }
 
   return undefined;
 }
 
-// Convert a UTF-8 string to a string in which only one byte of each 
+// Convert a UTF-8 string to a string in which only one byte of each
 // 16-bit unit is occupied. This is necessary to comply with `btoa` API constraints.
 export function toBinary(string: string): string {
   const codeUnits = new Uint16Array(string.length);

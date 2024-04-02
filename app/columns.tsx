@@ -37,7 +37,6 @@ function OffsiteLink(href: string, linkText: string) {
 // This type is used to define the shape of our data.
 export type FxMSMessageInfo = {
   product: 'Desktop' | 'Android'
-  release: string
   id: string
   template: string
   topic: string
@@ -54,7 +53,6 @@ type NimbusExperiment = types.experiments.NimbusExperiment;
 
 export type RecipeInfo = {
   product: 'Desktop' | 'Android'
-  release?: string
   id: string
   template?: string
   topic?: string
@@ -75,7 +73,6 @@ export type RecipeInfo = {
 
 export type BranchInfo = {
   product: 'Desktop' | 'Android'
-  release?: string
   id: string
   slug: string
   topic?: string
@@ -98,13 +95,6 @@ export type BranchInfo = {
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
 
 export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
-  {
-    accessorKey: "release",
-    header: "Release",
-    cell: (props: any) => {
-      return <div className="text-base">{props.row.original.release}</div>
-    }
-  },
   {
     accessorKey: "id",
     header: "Message ID",
@@ -132,6 +122,18 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     accessorKey: "metrics",
     header: "Metrics",
     cell: (props: any) => {
+
+      // XXX these dashboards are currently (incorrectly) empty.
+      // Until we debug and fix, we'll hide them
+      const hideDashboardMessages = [
+        "PDFJS_FEATURE_TOUR_A",
+        "PDFJS_FEATURE_TOUR_B"
+      ]
+      if (hideDashboardMessages.includes(
+          props.row.original.id)) {
+        return ( <></> );
+      }
+
       if (props.row.original.ctrDashboardLink) {
         return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
       }
@@ -205,6 +207,17 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     accessorKey: "metrics",
     header: "Metrics",
     cell: (props: any) => {
+
+      // XXX these dashboards are currently (incorrectly) empty.
+      // Until we fix the upcase bug, we'll hide them
+      const hideDashboardExperiments = [
+        "recommend-media-addons-feature-existing-users",
+        "recommend-media-addons-feature-callout"
+      ]
+      if (hideDashboardExperiments.includes(props.row.original?.nimbusExperiment?.slug)) {
+        return ( <></> );
+      }
+
       // XXX We need to handle similarly named branches and filter by experiment slug
       if (props.row.original.ctrDashboardLink) {
         return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");

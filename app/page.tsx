@@ -11,7 +11,6 @@ import Link from "next/link";
 function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
   let fxmsMsgInfo : FxMSMessageInfo = {
     product: 'Desktop',
-    release: 'Fx 123',
     id: messageDef.id,
     template: messageDef.template,
     topic: messageDef.provider,
@@ -23,7 +22,8 @@ function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
     previewLink: getPreviewLink(messageDef),
   };
 
-  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id)
+  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id,
+    "release")
 
   return fxmsMsgInfo
 }
@@ -97,19 +97,23 @@ export default async function Dashboard() {
           Skylight
         </h4>
 
-        <ul className="list-disc mx-20 text-sm">
+        <ul className='list-[circle] mx-20 text-sm'>
           <li>
-            To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>
+            To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>; <b>a Firefox 126 build from March 29 or newer</b> is required.
           </li>
 
           <li>
           Feedback of all kinds accepted in <Link href="https://mozilla.slack.com/archives/C05N15KHCLC">#skylight-messaging-system</Link>
           </li>
+
+          <li>
+            <b>(*)</b> Production Messages - Release Channel is currently a partial list. Nimbus rollouts, remote-settings messages, and a small number of others are planned.
+          </li>
         </ul>
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
-        123 in-tree Production ASRouter messages
+        Production Messages - Release Channel (*)
       </h5>
 
       <div className="container mx-auto py-10">
@@ -117,7 +121,7 @@ export default async function Dashboard() {
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
-        Live Desktop Messaging Experiments:&nbsp;
+        Live Message Experiments: &nbsp;
           {totalExperiments} total
       </h5>
 
