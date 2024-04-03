@@ -58,14 +58,16 @@ describe('toBinary', () => {
 })
 
 describe('getDashboard', () => {
-  it('returns a correct infobar dashboard link', () => {
+  it('returns a correct infobar dashboard link w/exp & branch', () => {
     const template = "infobar"
-    const msgId = "123"
-    const channel = "rel:ease" // weird chars test URI encoding
+    const msgId = "12`3" // weird chars to test URI encoding
+    const channel = "release"
+    const experiment = "experiment:test"
+    const branchSlug = "treatment:a"
 
-    const result = getDashboard(template, msgId, channel)
+    const result = getDashboard(template, msgId, channel, experiment, branchSlug)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1622?Messaging+System+Ping+Type=${encodeURIComponent(template)}&Submission+Date=30+days&Messaging+System+Message+Id=${encodeURIComponent(msgId)}&Normalized+Channel=${encodeURIComponent(channel)}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1682?Messaging+System+Ping+Type=${encodeURIComponent(template)}&Submission+Date=30+days&Messaging+System+Message+Id=${encodeURIComponent(msgId)}&Normalized+Channel=${encodeURIComponent(channel)}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodeURIComponent(experiment)}&Experiment+Branch=${encodeURIComponent(branchSlug)}`
     expect(result).toEqual(expectedLink)
   })
 
@@ -73,9 +75,22 @@ describe('getDashboard', () => {
     const template = "feature_callout"
     const msgId = "1:23" // weird chars to test URI encoding
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
 
     const result = getDashboard(template, msgId)
+    expect(result).toEqual(expectedLink)
+  });
+
+  // XXX should this be "about:welcome" to be consistent with featureIds?
+  it('returns a correct aboutwelcome dashboard link w/exp & branch', () => {
+    const template = "aboutwelcome"
+    const msgId = "1:23" // weird chars to test URI encoding
+    const experiment = "experiment:test"
+    const branchSlug = "treatment:a"
+
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25${encodeURIComponent(msgId.toUpperCase())}%25&Normalized+Channel=&Experiment=${encodeURIComponent(experiment)}&Branch=${encodeURIComponent(branchSlug)}`
+
+    const result = getDashboard(template, msgId, undefined, experiment, branchSlug)
     expect(result).toEqual(expectedLink)
   });
 

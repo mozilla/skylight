@@ -1,3 +1,15 @@
+## Monday, April 8th, 2024
+
+### Added
+
+* about:welcome dashboards turned on for experiments
+
+### Fixed
+
+* Fixed all about:welcome-based surface experiment dashboards
+  incorrectly showing data for everything with the given message id
+  instead of just the correct branch & experiment.
+
 ## Monday, April 1st, 2024
 
 ### Added

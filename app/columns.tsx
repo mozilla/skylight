@@ -67,7 +67,7 @@ export type RecipeInfo = {
   startDate: string | null
   endDate: string | null
   userFacingName?: string
-  nimbusExperiment?: NimbusExperiment
+  nimbusExperiment: NimbusExperiment
   isBranch?: boolean
 } | []
 
@@ -87,7 +87,7 @@ export type BranchInfo = {
   startDate?: string
   endDate?: string
   userFacingName?: string
-  nimbusExperiment?: NimbusExperiment
+  nimbusExperiment: NimbusExperiment
   isBranch?: boolean
   template?: string
 } | []
@@ -221,8 +221,11 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         return ( <></> );
       }
 
-      // XXX We need to handle similarly named branches and filter by experiment slug
-      if (props.row.original.ctrDashboardLink) {
+
+      // XXX see https://bugzilla.mozilla.org/show_bug.cgi?id=1890055 for
+      // re-enabling infobar code.
+      if (props.row.original.ctrDashboardLink &&
+          props.row.original.template !== 'infobar') {
         return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
       }
       return ( <></> );
