@@ -124,10 +124,13 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     cell: (props: any) => {
 
       // XXX these dashboards are currently (incorrectly) empty.
-      // Until we debug and fix, we'll hide them
+      // Until we debug and fix, we'll hide them.
+      //
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1889497
       const hideDashboardMessages = [
         "PDFJS_FEATURE_TOUR_A",
-        "PDFJS_FEATURE_TOUR_B"
+        "PDFJS_FEATURE_TOUR_B",
+        "FIREFOX_VIEW_SPOTLIGHT",
       ]
       if (hideDashboardMessages.includes(
           props.row.original.id)) {
