@@ -32,6 +32,7 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
   // XXX multi shouldn't really be here, but for now, we're going to assume
   // it's a spotlight
   const aboutWelcomeSurfaces = [
+    "aboutwelcome",
     "feature_callout",
     "multi",
     "spotlight",
@@ -44,19 +45,22 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
 export function getDashboard(
   template: string,
   msgId: string,
-  channel?: string): string | undefined {
+  channel?: string,
+  experiment?: string,
+  branchSlug?: string): string | undefined {
+
   const encodedMsgId = encodeURIComponent(msgId);
   const encodedTemplate = encodeURIComponent(template);
   const encodedChannel = channel ? (encodeURIComponent(channel)) : "";
+  const encodedExperiment = experiment ? (encodeURIComponent(experiment)) : "";
+  const encodedBranchSlug = branchSlug ? (encodeURIComponent(branchSlug)) : "";
 
   if (_isAboutWelcomeTemplate(template)) {
-    //XXX we need to return something different for the actual about:welcome experiments, due to
-    // branches having names in common (i.e. 'treatment-a')
-    return `https://mozilla.cloud.looker.com/dashboards/1471?Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}`;
+    return `https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`
   }
 
   if (template === "infobar") {
-    return `https://mozilla.cloud.looker.com/dashboards/1622?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=30+days&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=${encodedChannel}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=`;
+    return `https://mozilla.cloud.looker.com/dashboards/1682?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=30+days&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=${encodedChannel}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodedExperiment}&Experiment+Branch=${encodedBranchSlug}`;
   }
 
   return undefined;
