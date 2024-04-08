@@ -73,10 +73,9 @@ export class NimbusRecipe implements NimbusRecipeType {
 
     switch (template) {
       case "aboutwelcome":
-        // Make sure there's a message to preview, bail out early otherwise
-        if (!feature.value.screens) {
-          break;
-        }
+
+        branchInfo.id = feature.value.id
+
         // featureValue will become the "content" object in a spotlight JSON
         let spotlightFake = {
           id: this._rawRecipe.id,
@@ -106,8 +105,7 @@ export class NimbusRecipe implements NimbusRecipeType {
         break
 
       case 'infobar':
-        branchInfo.id = feature.value.messages[0].id
-        branchInfo.ctrDashboardLink = getDashboard(template, branchInfo.id)
+        branchInfo.id = feature.value.id
         // Localize the recipe if necessary.
         // XXX [Object.keys(recipe.localizations)[0]] accesses the first locale inside the localization object.
         // We'll probably want to add a dropdown component that allows us to choose a locale from the available ones, to pass to this function.
@@ -164,7 +162,8 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         break
     }
 
-    branchInfo.ctrDashboardLink = getDashboard(branch.template, branchInfo.id)
+    branchInfo.ctrDashboardLink =
+      getDashboard(branch.template, branchInfo.id, undefined, branchInfo.nimbusExperiment.slug, branch.slug)
 
     if (!feature.value.content) {
       console.log("v.content is null")

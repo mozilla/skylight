@@ -7,6 +7,8 @@ import { BranchInfo } from "@/app/columns.jsx"
 // the API a little to work better with these deeply nested cases.
 const AW_RECIPE = {
   id: "aboutwelcome-test-recipe",
+  slug: "aboutwelcome-test-recipe",
+  schemaVersion: "1.12.0",
   appId: "firefox-desktop",
   appName: "firefox_desktop",
   application: "firefox-desktop",
@@ -31,7 +33,7 @@ const AW_RECIPE = {
       enabled: true,
       featureId: "aboutwelcome",
       value: {
-        id: "control",
+        id: "something:control",
       }
     }],
     ratio: 1,
@@ -43,8 +45,12 @@ const AW_RECIPE = {
       featureId: "aboutwelcome",
       value: {
         backdrop: "test-backdrop",
-        id: "treatment-a",
-        screens: [],
+        id: "feature_value_id:treatment-a",
+        screens: [
+          {
+            id: "TEST_SCREEN_ID_A_0",
+          }
+        ],
       },
     }],
     ratio: 1,
@@ -111,26 +117,53 @@ describe('NimbusRecipe', () => {
       })
     })
 
-    it('returns a specialized BranchInfo object if the recipe is from about:welcome', () => {
+    it('returns a specialized BranchInfo object if the recipe is from about:welcome and has screens', () => {
       const nimbusRecipe = new NimbusRecipe(AW_RECIPE)
-
       const branch = AW_RECIPE.branches[1]
 
       const branchInfo = nimbusRecipe.getBranchInfo(branch)
 
       // XXX getBranchInfo is actually going to return a previewLink, which
-      // makes this test kind of brittle. We could refactor this to no longer 
+      // makes this test kind of brittle. We could refactor this to no longer
       // use deepEqual and check for the existence of object properties instead.
       expect(branchInfo).toEqual({
         product: 'Desktop',
-        ctrDashboardLink: undefined,
-        id: branch.slug,
+        ctrDashboardLink: `https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25${"feature_value_id%3Atreatment-a".toUpperCase()}%25&Normalized+Channel=&Experiment=aboutwelcome-test-recipe&Branch=treatment-a`,
+        id: "feature_value_id:treatment-a",
         isBranch: true,
         nimbusExperiment: AW_RECIPE,
         slug: branch.slug,
         surface: "About:Welcome Page",
         template: "aboutwelcome",
-        previewLink: "about:messagepreview?json=ewAiAGkAZAAiADoAIgBhAGIAbwB1AHQAdwBlAGwAYwBvAG0AZQAtAHQAZQBzAHQALQByAGUAYwBpAHAAZQAiACwAIgB0AGUAbQBwAGwAYQB0AGUAIgA6ACIAcwBwAG8AdABsAGkAZwBoAHQAIgAsACIAdABhAHIAZwBlAHQAaQBuAGcAIgA6AHQAcgB1AGUALAAiAGMAbwBuAHQAZQBuAHQAIgA6AHsAIgBiAGEAYwBrAGQAcgBvAHAAIgA6ACIAdABlAHMAdAAtAGIAYQBjAGsAZAByAG8AcAAiACwAIgBpAGQAIgA6ACIAdAByAGUAYQB0AG0AZQBuAHQALQBhACIALAAiAHMAYwByAGUAZQBuAHMAIgA6AFsAXQAsACIAbQBvAGQAYQBsACIAOgAiAHQAYQBiACIAfQB9AA%3D%3D",
+        previewLink: "about:messagepreview?json=ewAiAGkAZAAiADoAIgBhAGIAbwB1AHQAdwBlAGwAYwBvAG0AZQAtAHQAZQBzAHQALQByAGUAYwBpAHAAZQAiACwAIgB0AGUAbQBwAGwAYQB0AGUAIgA6ACIAcwBwAG8AdABsAGkAZwBoAHQAIgAsACIAdABhAHIAZwBlAHQAaQBuAGcAIgA6AHQAcgB1AGUALAAiAGMAbwBuAHQAZQBuAHQAIgA6AHsAIgBiAGEAYwBrAGQAcgBvAHAAIgA6ACIAdABlAHMAdAAtAGIAYQBjAGsAZAByAG8AcAAiACwAIgBpAGQAIgA6ACIAZgBlAGEAdAB1AHIAZQBfAHYAYQBsAHUAZQBfAGkAZAA6AHQAcgBlAGEAdABtAGUAbgB0AC0AYQAiACwAIgBzAGMAcgBlAGUAbgBzACIAOgBbAHsAIgBpAGQAIgA6ACIAVABFAFMAVABfAFMAQwBSAEUARQBOAF8ASQBEAF8AQQBfADAAIgB9AF0ALAAiAG0AbwBkAGEAbAAiADoAIgB0AGEAYgAiAH0AfQA%3D"
+      })
+    })
+
+    it("returns a BranchInfo that uses the message id if no screens exist", () => {
+      // https://github.com/jsdom/jsdom/issues/3363 is why we're using
+      // a JSON hack rather than structuredClone
+      const AW_RECIPE_NO_SCREENS = JSON.parse(JSON.stringify(AW_RECIPE))
+      AW_RECIPE_NO_SCREENS.branches[1].features[0].value =
+        { id: "feature_value_id:treatment-a", }
+
+      const nimbusRecipe = new NimbusRecipe(AW_RECIPE_NO_SCREENS)
+      const branch = AW_RECIPE_NO_SCREENS.branches[1]
+
+      const branchInfo = nimbusRecipe.getBranchInfo(branch)
+
+      // XXX getBranchInfo is actually going to return a previewLink, which
+      // makes this test kind of brittle. We could refactor this to no longer
+      // use deepEqual and check for the existence of object properties instead.
+      expect(branchInfo).toEqual({
+        product: 'Desktop',
+        ctrDashboardLink: "https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25FEATURE_VALUE_ID%3ATREATMENT-A%25&Normalized+Channel=&Experiment=aboutwelcome-test-recipe&Branch=treatment-a",
+        id: "feature_value_id:treatment-a",
+        isBranch: true,
+        nimbusExperiment: AW_RECIPE_NO_SCREENS,
+        slug: branch.slug,
+        surface: "About:Welcome Page",
+        template: "aboutwelcome",
+        previewLink: "about:messagepreview?json=ewAiAGkAZAAiADoAIgBhAGIAbwB1AHQAdwBlAGwAYwBvAG0AZQAtAHQAZQBzAHQALQByAGUAYwBpAHAAZQAiACwAIgB0AGUAbQBwAGwAYQB0AGUAIgA6ACIAcwBwAG8AdABsAGkAZwBoAHQAIgAsACIAdABhAHIAZwBlAHQAaQBuAGcAIgA6AHQAcgB1AGUALAAiAGMAbwBuAHQAZQBuAHQAIgA6AHsAIgBpAGQAIgA6ACIAZgBlAGEAdAB1AHIAZQBfAHYAYQBsAHUAZQBfAGkAZAA6AHQAcgBlAGEAdABtAGUAbgB0AC0AYQAiACwAIgBtAG8AZABhAGwAIgA6ACIAdABhAGIAIgAsACIAYgBhAGMAawBkAHIAbwBwACIAOgAiAHYAYQByACgALQAtAG0AcgAtAHcAZQBsAGMAbwBtAGUALQBiAGEAYwBrAGcAcgBvAHUAbgBkAC0AYwBvAGwAbwByACkAIAB2AGEAcgAoAC0ALQBtAHIALQB3AGUAbABjAG8AbQBlAC0AYgBhAGMAawBnAHIAbwB1AG4AZAAtAGcAcgBhAGQAaQBlAG4AdAApACIAfQB9AA%3D%3D"
       })
     })
   })
