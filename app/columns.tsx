@@ -210,18 +210,6 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     accessorKey: "metrics",
     header: "Metrics",
     cell: (props: any) => {
-
-      // XXX these dashboards are currently (incorrectly) empty.
-      // Until we fix the upcase bug, we'll hide them
-      const hideDashboardExperiments = [
-        "recommend-media-addons-feature-existing-users",
-        "recommend-media-addons-feature-callout"
-      ]
-      if (hideDashboardExperiments.includes(props.row.original?.nimbusExperiment?.slug)) {
-        return ( <></> );
-      }
-
-
       // XXX see https://bugzilla.mozilla.org/show_bug.cgi?id=1890055 for
       // re-enabling infobar code.
       if (props.row.original.ctrDashboardLink &&
