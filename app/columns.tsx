@@ -224,8 +224,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
 
       // XXX see https://bugzilla.mozilla.org/show_bug.cgi?id=1890055 for
       // re-enabling infobar code.
-      if (props.row.original.ctrDashboardLink &&
-          props.row.original.template !== 'infobar') {
+      if (props.row.original.ctrDashboardLink) {
         return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
       }
       return ( <></> );
