@@ -16,7 +16,9 @@ npm run dev
 1. Modify variables in .env.local, e.g.
 
     EXPERIMENTER_API_KEY=someSecretAPIKey
-    
+
+To set the experiment recipe collection, uncomment the appropriate line in env.local.
+
 ## License
 
 Limelight is released under the terms of the [Mozilla Public License 2.0](LICENSE).
