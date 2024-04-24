@@ -1,3 +1,9 @@
+## Wednesday, April 24th, 2024
+
+### Added
+
+* support for a local .env file 
+
 ## Monday, April 8th, 2024
 
 ### Added

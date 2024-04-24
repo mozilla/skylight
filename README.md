@@ -7,7 +7,16 @@ A bunch of the code, ideas, and links come from the OMC team's work week Hackath
 ```bash
 npm run dev
 ```
+## Setting local environment variables
 
+1. Copy the sample env file
+
+    cp .env.sample .env.local
+
+1. Modify variables in .env.local, e.g.
+
+    EXPERIMENTER_API_KEY=someSecretAPIKey
+    
 ## License
 
 Limelight is released under the terms of the [Mozilla Public License 2.0](LICENSE).
