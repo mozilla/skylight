@@ -2,7 +2,8 @@
 
 ### Added
 
-* support for a local .env file 
+* Support for getting configurables from the environment
+* Added a sample .env file which can be copied for local development 
 
 ## Monday, April 8th, 2024
 
