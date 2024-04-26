@@ -16,7 +16,7 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
 
   async fetchRecipes() : Promise<Array<NimbusRecipe>> {
       const response = await fetch(
-      process.env.RECORDS_URL as string,
+      `${process.env.RECORDS_URL}${process.env.COLLECTION}`,
       {
         credentials: "omit",
       }

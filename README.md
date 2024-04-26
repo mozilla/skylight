@@ -10,9 +10,9 @@ A bunch of the code, ideas, and links come from the OMC team's work week Hackath
 
 1. Modify variables in .env.local, e.g.
 
-    EXPERIMENTER_API_KEY=someSecretAPIKey
+    COLLECTION="nimbus-desktop-experiments/records"
 
-To set the experiment recipe collection, uncomment the appropriate line in env.local. Defaults to the prod (live) collection.
+To switch between the prod and preview collections, uncomment the appropriate line in .env.local.
 
 ## Running the development server
 
