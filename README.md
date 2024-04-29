@@ -2,12 +2,23 @@ Skylight is a tool to help manage, streamline, and support the Firefox Messaging
 
 A bunch of the code, ideas, and links come from the OMC team's work week Hackathon and follow-on thinking/mockups; thanks to everyone who contributed!
 
+## Setting local environment variables
+
+1. Copy the sample env file
+
+    cp .env.sample .env.local
+
+1. Modify variables in .env.local, e.g.
+
+    COLLECTION="nimbus-desktop-experiments/records"
+
+To switch between the prod and preview collections, uncomment the appropriate line in .env.local.
+
 ## Running the development server
 
 ```bash
 npm run dev
 ```
-
 ## License
 
 Limelight is released under the terms of the [Mozilla Public License 2.0](LICENSE).

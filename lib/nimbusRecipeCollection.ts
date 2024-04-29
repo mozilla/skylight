@@ -16,7 +16,7 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
 
   async fetchRecipes() : Promise<Array<NimbusRecipe>> {
       const response = await fetch(
-      "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/nimbus-desktop-experiments/records",
+      `${process.env.RECORDS_URL}${process.env.COLLECTION}`,
       {
         credentials: "omit",
       }
