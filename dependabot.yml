@@ -18,3 +18,11 @@ updates:
             update-types:
             - "minor"
             - "patch"
+          react:
+            applies-to: version-updates
+            patterns:
+            - "react"
+            - "react-dom"
+            update-types:
+            - "minor"
+            - "patch"         
