@@ -2,6 +2,7 @@ version: 2
 updates:
 - package-ecosystem: "npm" # See documentation for possible values
   directory: "/" # Location of package manifests
+  open-pull-requests-limit: 10
   schedule:
     interval: "daily"
     # group the main nextjs packages group as one PR, since they're
@@ -18,3 +19,11 @@ updates:
             update-types:
             - "minor"
             - "patch"
+          react:
+            applies-to: version-updates
+            patterns:
+            - "react"
+            - "react-dom"
+            update-types:
+            - "minor"
+            - "patch"         
