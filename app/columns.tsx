@@ -39,7 +39,6 @@ export type FxMSMessageInfo = {
   product: 'Desktop' | 'Android'
   id: string
   template: string
-  topic: string
   surface: string
   segment: string
   ctrPercent: number
@@ -55,7 +54,6 @@ export type RecipeInfo = {
   product: 'Desktop' | 'Android'
   id: string
   template?: string
-  topic?: string
   surface?: string
   segment?: string
   ctrPercent?: number
@@ -75,7 +73,6 @@ export type BranchInfo = {
   product: 'Desktop' | 'Android'
   id: string
   slug: string
-  topic?: string
   surface?: string
   segment?: string
   ctrPercent?: number
@@ -100,13 +97,6 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     header: "Message ID",
     cell: (props: any) => {
       return <div className="font-mono text-xs">{props.row.original.id}</div>
-    }
-  },
-  {
-    accessorKey: "topic",
-    header: "Topic",
-    cell: (props: any) => {
-      return <div className="text-xs/[180%]">{props.row.original.topic}</div>
     }
   },
   {
@@ -193,10 +183,6 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       );
     }
   },
-  // {
-  //   accessorKey: "topic",
-  //   header: "Topic",
-  // },
   {
     accessorKey: "surface",
     header: "Surface",

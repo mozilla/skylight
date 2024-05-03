@@ -195,7 +195,6 @@ this)
 null,
       product: 'Desktop',
       id: this._rawRecipe.slug,
-      topic: 'some topic',
       segment: 'some segment',
       ctrPercent: 0.5, // get me from BigQuery
       ctrPercentChange: 2, // get me from BigQuery
