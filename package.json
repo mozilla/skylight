@@ -15,6 +15,7 @@
     "npm": "10.5.*"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^3.5.0",
     "@mozilla/nimbus-shared": "^2.5.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.7",
