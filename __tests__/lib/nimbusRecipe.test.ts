@@ -83,7 +83,6 @@ describe('NimbusRecipe', () => {
           rawRecipe.endDate,
         product: 'Desktop',
         id: "test-recipe",
-        topic: 'some topic',
         segment: 'some segment',
         ctrPercent: .5,
         ctrPercentChange: 2,

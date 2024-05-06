@@ -13,7 +13,6 @@ function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
     product: 'Desktop',
     id: messageDef.id,
     template: messageDef.template,
-    topic: messageDef.provider,
     surface: getDisplayNameForTemplate(getTemplateFromMessage(messageDef)),
     segment: 'some segment',
     metrics: 'some metrics',
