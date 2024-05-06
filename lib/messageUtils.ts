@@ -1,6 +1,6 @@
 export function getDisplayNameForTemplate(template: string): string {
   const displayNames: any = {
-    aboutwelcome: "About:Welcome Page",
+    aboutwelcome: "About:Welcome Page (1st screen)",
     feature_callout: "Feature Callout (1st screen)",
     infobar: "InfoBar",
     milestone_message: "Milestone Messages",
