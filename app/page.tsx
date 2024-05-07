@@ -1,7 +1,7 @@
 import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
-import { NimbusRecipeCollection } from '@/lib/nimbusRecipeCollection'
+import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
 import { NimbusRecipe } from "../lib/nimbusRecipe.ts"

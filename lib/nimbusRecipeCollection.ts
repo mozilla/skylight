@@ -1,5 +1,5 @@
 import { types } from "@mozilla/nimbus-shared"
-import { NimbusRecipe } from '@/lib/nimbusRecipe'
+import { NimbusRecipe } from "../lib/nimbusRecipe"
 type NimbusExperiment = types.experiments.NimbusExperiment
 
 type NimbusRecipeCollectionType = {
@@ -15,15 +15,18 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
   }
 
   async fetchRecipes() : Promise<Array<NimbusRecipe>> {
-      const response = await fetch(
-      `${process.env.RECORDS_URL}${process.env.COLLECTION}`,
+    const experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL}`
+
+    // console.log("experimenterURL = ", experimenterUrl)
+    const response = await fetch(experimenterUrl,
       {
         credentials: "omit",
       }
-    );
-    const responseJSON = await response.json();
-    const experiments : NimbusExperiment[] = await responseJSON.data;
+    )
+    // console.log("response = ", response)
+    const experiments : NimbusExperiment[] = await response.json()
 
+    // console.log('returned experiments', experiments)
     this.recipes = experiments.map(
       (nimbusExp : NimbusExperiment) => new NimbusRecipe(nimbusExp)
     )

@@ -5,7 +5,7 @@ import { ExperimentFakes } from '@/__tests__/ExperimentFakes.mjs'
 const fakeFetchData = [ExperimentFakes.recipe()]
 global.fetch = jest.fn(() =>
   Promise.resolve({
-    json: () => Promise.resolve({ data: fakeFetchData }),
+    json: () => Promise.resolve(fakeFetchData),
   }),
 ) as jest.Mock;
 
