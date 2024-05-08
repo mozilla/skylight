@@ -87,6 +87,7 @@ export type BranchInfo = {
   nimbusExperiment: NimbusExperiment
   isBranch?: boolean
   template?: string
+  screenshots?: string[]
 } | []
 
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
@@ -229,11 +230,11 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         // XXX should figure out how to do this NimbusRecipe instantiation
         // once per row (maybe useState?)
         const recipe = new NimbusRecipe(props.row.original.nimbusExperiment)
-        const branchLink = recipe.getBranchScreenshotsLink(
-            props.row.original.slug);
-        return (
-          OffsiteLink(branchLink, "Screenshots")
-        )
+        const branchLink =
+          props.row.original.screenshots.length > 0
+            ? recipe.getBranchScreenshotsLink(props.row.original.slug)
+            : null;
+        return branchLink ? OffsiteLink(branchLink, "Screenshots") : null;
       }
 
       return (

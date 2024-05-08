@@ -49,7 +49,8 @@ export class NimbusRecipe implements NimbusRecipeType {
         // the client by NextJS (but classes can't), and any
         // needed NimbusRecipe class rewrapping can be done there.
         nimbusExperiment: this._rawRecipe,
-        slug: branch.slug
+        slug: branch.slug,
+        screenshots: branch.screenshots
       }
 
     // XXX right now we don't support more than one messaging feature
