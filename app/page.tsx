@@ -4,6 +4,7 @@ import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAbo
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
+import { InfoButton } from "@/components/ui/infobutton.tsx";
 import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
 import { MessageTable } from "./message-table";
 import Link from "next/link";
@@ -111,17 +112,23 @@ export default async function Dashboard() {
         </ul>
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
-        Production Messages - Release Channel (*)
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+        Messages Released on Firefox
+      </h5>
+      <h5 className="scroll-m-20 text-lg font-semibold text-center">
+        (Partial List) 
+        <InfoButton />
       </h5>
 
       <div className="container mx-auto py-10">
         <MessageTable columns={fxmsMessageColumns} data={localData} />
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
-        Live Message Experiments: &nbsp;
-          {totalExperiments} total
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+        Current Message Experiments
+      </h5>
+      <h5 className="scroll-m-20 text-lg font-semibold text-center">
+        Total: {totalExperiments}
       </h5>
 
       <div className="container mx-auto py-10">
