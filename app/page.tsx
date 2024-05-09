@@ -4,7 +4,7 @@ import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAbo
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
-import { InfoButton } from "@/components/ui/infobutton.tsx";
+import { InfoIcon } from "@/components/ui/infoicon.tsx";
 import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
 import { MessageTable } from "./message-table";
 import Link from "next/link";
@@ -114,10 +114,13 @@ export default async function Dashboard() {
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Messages Released on Firefox
+        <InfoIcon
+          iconSize={16}
+          content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
+        />
       </h5>
       <h5 className="scroll-m-20 text-lg font-semibold text-center">
         (Partial List) 
-        <InfoButton />
       </h5>
 
       <div className="container mx-auto py-10">

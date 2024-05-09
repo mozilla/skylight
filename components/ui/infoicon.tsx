@@ -10,7 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-export function InfoButton() {
+export function InfoIcon( infoObject: any ) {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -19,17 +19,15 @@ export function InfoButton() {
             className={buttonVariants({
               variant: "secondary",
               size: "sm",
-              className: "bg-background p-1 hover:text-primary/70 hover:bg-background",
+              className:
+                "bg-background p-1 hover:text-primary/70 hover:bg-background",
             })}
           >
-            <Info size={16} />
+            <Info size={infoObject.iconSize} />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p className="font-normal">
-            All messages listed in this table are in the release channel and are
-            either currently live or have been live on Firefox at one time.
-          </p>
+          <p className="font-normal">{infoObject.content}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
