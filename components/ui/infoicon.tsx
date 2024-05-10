@@ -10,7 +10,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-export function InfoIcon( infoObject: any ) {
+type InfoProps = {
+  iconSize: number
+  content: string
+}
+
+export function InfoIcon( {iconSize, content}: InfoProps ) {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -20,14 +25,14 @@ export function InfoIcon( infoObject: any ) {
               variant: "secondary",
               size: "sm",
               className:
-                "bg-background p-1 hover:text-primary/70 hover:bg-background",
+                "bg-background p-2 hover:text-primary/70 hover:bg-background",
             })}
           >
-            <Info size={infoObject.iconSize} />
+            <Info size={iconSize} />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p className="font-normal">{infoObject.content}</p>
+          <p className="font-normal">{content}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
