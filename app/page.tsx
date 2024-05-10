@@ -8,8 +8,6 @@ import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
 import { MessageTable } from "./message-table";
 import Link from "next/link";
 
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
-
 function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
   let fxmsMsgInfo : FxMSMessageInfo = {
     product: 'Desktop',
@@ -78,7 +76,7 @@ async function getMsgExpRecipeCollection(): Promise<NimbusRecipeCollection> {
   return msgExpRecipeCollection
 }
 
-export default withPageAuthRequired(async function Dashboard() {
+export default async function Dashboard() {
   // XXX await Promise.all for both loads concurrently
   const localData = await getASRouterLocalMessageInfoFromFile()
   const msgExpRecipeCollection = await getMsgExpRecipeCollection()
@@ -130,4 +128,4 @@ export default withPageAuthRequired(async function Dashboard() {
       </div>
     </div>
   );
-}, { returnTo: '/' });
+};
