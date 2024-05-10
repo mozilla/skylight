@@ -94,7 +94,6 @@ export default async function Dashboard() {
         <h4 className="scroll-m-20 text-3xl font-semibold text-center py-4">
           Skylight
         </h4>
-        <a className="scroll-m-20 mx-20 text-m" href="/api/auth/logout">Logout</a>
         <ul className='list-[circle] mx-20 text-sm'>
           <li>
             To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>; <b>a Firefox 126 build from March 29 or newer</b> is required.
@@ -125,6 +124,7 @@ export default async function Dashboard() {
 
       <div className="container mx-auto py-10">
         <MessageTable columns={experimentColumns} data={experimentAndBranchInfo} />
+        <a className="scroll-m-20 text-s" href="/api/auth/logout">Logout</a>
       </div>
     </div>
   );
