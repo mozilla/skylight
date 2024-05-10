@@ -11,11 +11,11 @@ import {
 } from "@/components/ui/tooltip";
 
 type InfoProps = {
-  iconSize: number
-  content: string
-}
+  iconSize: number;
+  content: string;
+};
 
-export function InfoIcon( {iconSize, content}: InfoProps ) {
+export function InfoIcon({ iconSize, content }: InfoProps) {
   return (
     <TooltipProvider>
       <Tooltip>
