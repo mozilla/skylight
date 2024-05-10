@@ -7,6 +7,7 @@ describe("InfoIcon", () => {
 
   it("renders an InfoIcon button", () => {
     render(<InfoIcon iconSize={iconSize} content={content} />);
+    
     const infoIconButton = screen.getByRole("button");
     expect(infoIconButton).toBeInTheDocument();
   });
@@ -14,7 +15,9 @@ describe("InfoIcon", () => {
   it("displays tooltip content on focus", () => {
     render(<InfoIcon iconSize={iconSize} content={content} />);
     const infoIconButton = screen.getByRole("button");
+
     fireEvent.focus(infoIconButton)
+
     expect(screen.getByRole("tooltip")).toBeInTheDocument();
   })
 });
