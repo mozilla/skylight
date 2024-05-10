@@ -181,7 +181,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       return (
           <div className="ps-6">
             <p className="text-xs">
-              {props.row.original.description}
+              {props.row.original.description || props.row.original.id}
             </p>
             <p className="font-mono text-3xs">
               {props.row.original.slug}
