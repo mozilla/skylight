@@ -53,17 +53,6 @@ async function getMsgExpRecipeCollection(): Promise<NimbusRecipeCollection> {
   await recipeCollection.fetchRecipes()
   console.log('recipeCollection.length = ', recipeCollection.recipes.length)
 
-
-  // XXX should move to nimbusRecipe
-  function isExpRecipe(recipe : NimbusRecipe) : boolean {
-    return !recipe._rawRecipe.isRollout
-  }
-
-  const expOnlyCollection = new NimbusRecipeCollection()
-  expOnlyCollection.recipes = recipeCollection.recipes.filter(isExpRecipe)
-  console.log('expOnlyCollection.length = ', expOnlyCollection.recipes.length)
-
-
   // XXX should move to nimbusRecipe
   function isMsgRecipe(recipe : NimbusRecipe) : boolean {
     return recipe.usesMessagingFeatures()
@@ -71,7 +60,7 @@ async function getMsgExpRecipeCollection(): Promise<NimbusRecipeCollection> {
 
   const msgExpRecipeCollection = new NimbusRecipeCollection()
   msgExpRecipeCollection.recipes =
-    expOnlyCollection.recipes.filter(isMsgRecipe)
+    recipeCollection.recipes.filter(isMsgRecipe)
   console.log('msgExpRecipeCollection.length = ', msgExpRecipeCollection.recipes.length)
 
   return msgExpRecipeCollection

@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
-import { Copy } from "lucide-react";
+import { Copy, MonitorUp } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import {
   Tooltip,
@@ -12,6 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Badge } from "@/components/ui/badge"
 
 function OffsiteLink(href: string, linkText: string) {
   return (
@@ -167,8 +168,13 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       if (props.row.original.userFacingName) {
         return (
           <>
-            <div className="font-semibold text-sm">
+            <div className="font-semibold text-sm inline-flex items-center gap-x-2">
               {props.row.original.userFacingName || props.row.original.id}
+              {props.row.original.nimbusExperiment.isRollout ? (
+                <Badge variant="secondary">
+                  <MonitorUp className="mr-1" size={12} /> Rollout
+                </Badge>
+              ) : null}            
             </div>
             <div className="font-mono text-3xs">
               {props.row.original.id}
