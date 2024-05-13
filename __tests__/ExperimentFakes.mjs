@@ -60,6 +60,8 @@ Object.defineProperty(ExperimentFakes.recipe, "branches", {
             value: { testInt: 123, enabled: true },
           },
         ],
+        screenshots: [],
+        description: "control description",
       },
       {
         slug: "treatment",
@@ -75,6 +77,8 @@ Object.defineProperty(ExperimentFakes.recipe, "branches", {
             },
           },
         ],
+        screenshots: ["screenshotURI"],
+        description: "test description",
       },
     ];
   },
