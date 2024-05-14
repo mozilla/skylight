@@ -9,9 +9,8 @@ describe("MessageTable", () => {
     it("renders the branch description and slug", () => {
       const rawRecipe = ExperimentFakes.recipe("test-recipe");
       const nimbusRecipe = new NimbusRecipe(rawRecipe);
-      const messageTableData: RecipeOrBranchInfo[] = nimbusRecipe
-        .getRecipeOrBranchInfos()
-        .flat(1);
+      const messageTableData: RecipeOrBranchInfo[] =
+        nimbusRecipe.getRecipeOrBranchInfos();
 
       render(
         <MessageTable columns={experimentColumns} data={messageTableData} />
