@@ -54,30 +54,74 @@ async function getMsgExpRecipeCollection(): Promise<NimbusRecipeCollection> {
   console.log('recipeCollection.length = ', recipeCollection.recipes.length)
 
   // XXX should move to nimbusRecipe
+  function isExpRecipe(recipe : NimbusRecipe) : boolean {
+    return !recipe._rawRecipe.isRollout
+  }
+
+  const expOnlyCollection = new NimbusRecipeCollection()
+  expOnlyCollection.recipes = recipeCollection.recipes.filter(isExpRecipe)
+  console.log('expOnlyCollection.length = ', expOnlyCollection.recipes.length)
+
+  // XXX should move to nimbusRecipe
   function isMsgRecipe(recipe : NimbusRecipe) : boolean {
     return recipe.usesMessagingFeatures()
   }
 
   const msgExpRecipeCollection = new NimbusRecipeCollection()
   msgExpRecipeCollection.recipes =
-    recipeCollection.recipes.filter(isMsgRecipe)
+    expOnlyCollection.recipes.filter(isMsgRecipe)
   console.log('msgExpRecipeCollection.length = ', msgExpRecipeCollection.recipes.length)
 
   return msgExpRecipeCollection
+}
+
+async function getRolloutMsgCollection(): Promise<NimbusRecipeCollection> {
+
+  const recipeCollection = new NimbusRecipeCollection()
+  await recipeCollection.fetchRecipes()
+  console.log('recipeCollection.length = ', recipeCollection.recipes.length)
+
+  // XXX should move to nimbusRecipe
+  function isRolloutRecipe(recipe : NimbusRecipe) : boolean | undefined {
+    return recipe._rawRecipe.isRollout
+  }
+
+  const rolloutOnlyCollection = new NimbusRecipeCollection()
+  rolloutOnlyCollection.recipes = recipeCollection.recipes.filter(isRolloutRecipe)
+  console.log('rolloutOnlyCollection.length = ', rolloutOnlyCollection.recipes.length)
+
+  // XXX should move to nimbusRecipe
+  function isMsgRecipe(recipe : NimbusRecipe) : boolean {
+    return recipe.usesMessagingFeatures()
+  }
+
+  const rolloutMsgRecipeCollection = new NimbusRecipeCollection()
+  rolloutMsgRecipeCollection.recipes =
+  rolloutOnlyCollection.recipes.filter(isMsgRecipe)
+  console.log('msgExpRecipeCollection.length = ', rolloutMsgRecipeCollection.recipes.length)
+
+  return rolloutMsgRecipeCollection
 }
 
 export default async function Dashboard() {
   // XXX await Promise.all for both loads concurrently
   const localData = await getASRouterLocalMessageInfoFromFile()
   const msgExpRecipeCollection = await getMsgExpRecipeCollection()
+  const rolloutMsgRecipeCollection = await getRolloutMsgCollection()
 
   // get in format useable by MessageTable
   const experimentAndBranchInfo : RecipeOrBranchInfo[] =
     msgExpRecipeCollection.recipes.map(
       (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1)
 
-
   const totalExperiments = msgExpRecipeCollection.recipes.length
+
+  const rolloutMsgInfo : RecipeOrBranchInfo[] = 
+  rolloutMsgRecipeCollection.recipes.map(
+    // XXX needing the `.flat(1)` here is a bug
+    (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1)
+  
+  const totalRolloutExperiments = rolloutMsgRecipeCollection.recipes.length
 
   return (
     <div>
@@ -114,6 +158,16 @@ export default async function Dashboard() {
 
       <div className="container mx-auto py-10">
         <MessageTable columns={fxmsMessageColumns} data={localData} />
+      </div>
+
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+        Nimbus Rollouts
+      </h5>
+      <h5 className="scroll-m-20 text-lg font-semibold text-center">
+        Total: {totalRolloutExperiments}
+      </h5>
+      <div className="container mx-auto py-10">
+        <MessageTable columns={experimentColumns} data={rolloutMsgInfo} />
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
