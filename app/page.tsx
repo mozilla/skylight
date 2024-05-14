@@ -85,6 +85,7 @@ export default async function Dashboard() {
   // get in format useable by MessageTable
   const experimentAndBranchInfo : RecipeOrBranchInfo[] =
     msgExpRecipeCollection.recipes.map(
+      // XXX needing the `.flat(1)` here is a bug
       (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1)
 
 

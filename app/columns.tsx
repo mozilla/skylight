@@ -88,6 +88,7 @@ export type BranchInfo = {
   isBranch?: boolean
   template?: string
   screenshots?: string[]
+  description?: string
 } | []
 
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
@@ -178,9 +179,15 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       }
 
       return (
-          <div className="font-mono text-xs ps-6">
-            {props.row.original.id}
+          <div className="ps-6">
+            <p className="text-xs">
+              {props.row.original.description || props.row.original.id}
+            </p>
+            <p className="font-mono text-3xs">
+              {props.row.original.slug}
+            </p>
           </div>
+          
       );
     }
   },

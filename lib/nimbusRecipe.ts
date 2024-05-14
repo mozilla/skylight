@@ -50,7 +50,8 @@ export class NimbusRecipe implements NimbusRecipeType {
         // needed NimbusRecipe class rewrapping can be done there.
         nimbusExperiment: this._rawRecipe,
         slug: branch.slug,
-        screenshots: branch.screenshots
+        screenshots: branch.screenshots,
+        description: branch.description
       }
 
     // XXX right now we don't support more than one messaging feature
