@@ -168,12 +168,15 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       if (props.row.original.userFacingName) {
         return (
           <>
-            <a href={props.row.original.experimenterLink} className="font-semibold text-sm text-primary visited:text-inherit hover:text-blue-800 no-underline" target="_blank" rel="noreferrer">
+            <a
+              href={props.row.original.experimenterLink}
+              className="font-semibold text-sm text-primary visited:text-inherit hover:text-blue-800 no-underline"
+              target="_blank"
+              rel="noreferrer"
+            >
               {props.row.original.userFacingName || props.row.original.id}
             </a>
-            <div className="font-mono text-3xs">
-              {props.row.original.id}
-            </div>
+            <div className="font-mono text-3xs">{props.row.original.id}</div>
           </>
         );
       }
@@ -181,15 +184,17 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       const recipe = new NimbusRecipe(props.row.original.nimbusExperiment)
 
       return (
-          <div className="ps-6">
-            <a href={recipe.getBranchRecipeLink(props.row.original.slug)} className="text-xs text-primary visited:text-inherit hover:text-blue-800 no-underline" target="_blank" rel="noreferrer">
-              {props.row.original.description || props.row.original.id}
-            </a>
-            <p className="font-mono text-3xs">
-              {props.row.original.slug}
-            </p>
-          </div>
-          
+        <div className="ps-6">
+          <a
+            href={recipe.getBranchRecipeLink(props.row.original.slug)}
+            className="text-xs text-primary visited:text-inherit hover:text-blue-800 no-underline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {props.row.original.description || props.row.original.id}
+          </a>
+          <p className="font-mono text-3xs">{props.row.original.slug}</p>
+        </div>
       );
     }
   },

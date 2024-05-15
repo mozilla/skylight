@@ -265,6 +265,8 @@ null,
    * @returns a link to recipe section of the Experimenter page for that branch.
    */
   getBranchRecipeLink(branchSlug: string): string {
-    return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(this._rawRecipe.slug)}/summary#${branchSlug}`
+    return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(
+      this._rawRecipe.slug
+    )}/summary#${branchSlug}`;
   }
 }

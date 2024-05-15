@@ -265,42 +265,46 @@ describe('NimbusRecipe', () => {
     })
   })
 
-  describe('isExpRecipe', () => {
-    it('returns true if the recipe is an experiment recipe not in rollout', () => {
+  describe("isExpRecipe", () => {
+    it("returns true if the recipe is an experiment recipe not in rollout", () => {
       const rawRecipe = ExperimentFakes.recipe("test-recipe");
-      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
 
-      const result = nimbusRecipe.isExpRecipe()
+      const result = nimbusRecipe.isExpRecipe();
 
-      expect(result).toBe(true)
-    })
+      expect(result).toBe(true);
+    });
 
-    it('returns false if the recipe is a message rollout', () => {
+    it("returns false if the recipe is a message rollout", () => {
       const rawRecipe = ExperimentFakes.recipe("test-recipe", {
-        isRollout: true
+        isRollout: true,
       });
-      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
 
-      const result = nimbusRecipe.isExpRecipe()
+      const result = nimbusRecipe.isExpRecipe();
 
-      expect(result).toBe(false)
-    })
-  })
+      expect(result).toBe(false);
+    });
+  });
 
-  describe('getBranchRecipeLink', () => {
-    it('returns a link to the branch recipe in experimenter', () => {
+  describe("getBranchRecipeLink", () => {
+    it("returns a link to the branch recipe in experimenter", () => {
       const rawRecipe = ExperimentFakes.recipe("test-recipe", {
-        slug: "goat shearing`test"
+        slug: "goat shearing`test",
       });
-      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
 
       // having a weird char in the branch slug helps test that the code
       // is calling encodeURIComponent
-      const branchSlug : string = "treatment`a"
+      const branchSlug: string = "treatment`a";
 
-      const result = nimbusRecipe.getBranchRecipeLink(branchSlug)
+      const result = nimbusRecipe.getBranchRecipeLink(branchSlug);
 
-      expect(result).toBe(`https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(rawRecipe.slug)}/summary#${branchSlug}`)
-    })
-  })
+      expect(result).toBe(
+        `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(
+          rawRecipe.slug
+        )}/summary#${branchSlug}`
+      );
+    });
+  });
 })
