@@ -286,4 +286,21 @@ describe('NimbusRecipe', () => {
       expect(result).toBe(false)
     })
   })
+
+  describe('getBranchRecipeLink', () => {
+    it('returns a link to the branch recipe in experimenter', () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        slug: "goat shearing`test"
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+
+      // having a weird char in the branch slug helps test that the code
+      // is calling encodeURIComponent
+      const branchSlug : string = "treatment`a"
+
+      const result = nimbusRecipe.getBranchRecipeLink(branchSlug)
+
+      expect(result).toBe(`https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(rawRecipe.slug)}/summary#${branchSlug}`)
+    })
+  })
 })
