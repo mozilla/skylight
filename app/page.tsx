@@ -54,27 +54,34 @@ async function getMsgExpRecipeCollection(): Promise<NimbusRecipeCollection> {
   console.log('recipeCollection.length = ', recipeCollection.recipes.length)
 
   const expOnlyCollection = new NimbusRecipeCollection()
-  expOnlyCollection.recipes = recipeCollection.recipes.filter((recipe) => recipe.isExpRecipe())
+  expOnlyCollection.recipes = recipeCollection.recipes.filter((recipe) =>
+    recipe.isExpRecipe()
+  );
   console.log('expOnlyCollection.length = ', expOnlyCollection.recipes.length)
 
   const msgExpRecipeCollection = new NimbusRecipeCollection()
-  msgExpRecipeCollection.recipes =
-    expOnlyCollection.recipes.filter((recipe) => recipe.isMsgRecipe())
+  msgExpRecipeCollection.recipes = expOnlyCollection.recipes.filter((recipe) =>
+    recipe.isMsgRecipe()
+  );
   console.log('msgExpRecipeCollection.length = ', msgExpRecipeCollection.recipes.length)
 
   return msgExpRecipeCollection
 }
 
 async function getMsgRolloutCollection(): Promise<NimbusRecipeCollection> {
+  const recipeCollection = new NimbusRecipeCollection();
+  await recipeCollection.fetchRecipes();
 
-  const recipeCollection = new NimbusRecipeCollection()
-  await recipeCollection.fetchRecipes()
+  const msgRolloutRecipeCollection = new NimbusRecipeCollection();
+  msgRolloutRecipeCollection.recipes = recipeCollection.recipes.filter(
+    (recipe) => recipe.isMsgRolloutRecipe()
+  );
+  console.log(
+    "msgRolloutRecipeCollection.length = ",
+    msgRolloutRecipeCollection.recipes.length
+  );
 
-  const msgRolloutRecipeCollection = new NimbusRecipeCollection()
-  msgRolloutRecipeCollection.recipes = recipeCollection.recipes.filter((recipe) => recipe.isMsgRolloutRecipe())
-  console.log('msgRolloutRecipeCollection.length = ', msgRolloutRecipeCollection.recipes.length)
-
-  return msgRolloutRecipeCollection
+  return msgRolloutRecipeCollection;
 }
 
 export default async function Dashboard() {
@@ -90,12 +97,15 @@ export default async function Dashboard() {
 
   const totalExperiments = msgExpRecipeCollection.recipes.length
 
-  const msgRolloutInfo : RecipeOrBranchInfo[] = 
-  msgRolloutRecipeCollection.recipes.map(
-    // XXX needing the `.flat(1)` here is a bug
-    (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1)
-  
-  const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length
+  const msgRolloutInfo: RecipeOrBranchInfo[] =
+    msgRolloutRecipeCollection.recipes
+      .map(
+        // XXX needing the `.flat(1)` here is a bug
+        (recipe: NimbusRecipe) => recipe.getRecipeOrBranchInfos()
+      )
+      .flat(1);
+
+  const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
 
   return (
     <div>

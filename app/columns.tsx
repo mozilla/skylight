@@ -167,7 +167,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       if (props.row.original.userFacingName) {
         return (
           <>
-            <div className="font-semibold text-sm inline-flex items-center gap-x-2">
+            <div className="font-semibold text-sm">
               {props.row.original.userFacingName || props.row.original.id}
             </div>
             <div className="font-mono text-3xs">
