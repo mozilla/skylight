@@ -250,4 +250,63 @@ describe('NimbusRecipe', () => {
 
     })
   })
+
+  describe('isExpRecipe', () => {
+    it('returns true if the recipe is an experiment recipe not in rollout', () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe");
+      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+
+      const result = nimbusRecipe.isExpRecipe()
+
+      expect(result).toBe(true)
+    })
+
+    it('returns false if the recipe is a message rollout experiment', () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        isRollout: true
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+
+      const result = nimbusRecipe.isExpRecipe()
+
+      expect(result).toBe(false)
+    })
+  })
+
+  describe('isRolloutRecipe', () => {
+    it('returns true if the recipe is a message rollout experiment', () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        featureIds: ["fxms-message-1"],
+        isRollout: true
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+
+      const result = nimbusRecipe.isMsgRolloutRecipe()
+
+      expect(result).toBe(true)
+    })
+
+    it('returns false if the recipe is not a message rollout experiment', () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        featureIds: ["fxms-message-1"],
+        isRollout: false
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+
+      const result = nimbusRecipe.isMsgRolloutRecipe()
+
+      expect(result).toBe(false)
+    })
+
+    it('returns false if the recipe does not use messaging features', () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        featureIds: ["monkeys-1"]
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+
+      const result = nimbusRecipe.isMsgRolloutRecipe()
+
+      expect(result).toBe(false)
+    })
+  })
 })
