@@ -28,7 +28,6 @@ type NimbusRecipeType = {
   getBranchInfos() : BranchInfo[]
   getBranchScreenshotsLink(branchSlug: string) : string
   usesMessagingFeatures() : boolean
-  isMsgRecipe(): boolean
   isExpRecipe(): boolean
   isMsgRolloutRecipe(): boolean | undefined
 }
@@ -255,13 +254,6 @@ null,
   }
 
   /**
-   * @returns true if this recipe is a messaging recipe.
-   */
-  isMsgRecipe() {
-    return this.usesMessagingFeatures()
-  }
-
-  /**
    * @returns true if this recipe is an experiment recipe not in rollout.
    */
   isExpRecipe() {
@@ -272,6 +264,6 @@ null,
    * @returns true if this recipe is currently a message rollout experiment.
    */
   isMsgRolloutRecipe() {
-    return this.isMsgRecipe() && this._rawRecipe.isRollout
+    return this.usesMessagingFeatures() && this._rawRecipe.isRollout
   }
 }

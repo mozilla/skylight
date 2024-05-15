@@ -61,7 +61,7 @@ async function getMsgExpRecipeCollection(): Promise<NimbusRecipeCollection> {
 
   const msgExpRecipeCollection = new NimbusRecipeCollection()
   msgExpRecipeCollection.recipes = expOnlyCollection.recipes.filter((recipe) =>
-    recipe.isMsgRecipe()
+    recipe.usesMessagingFeatures()
   );
   console.log('msgExpRecipeCollection.length = ', msgExpRecipeCollection.recipes.length)
 
