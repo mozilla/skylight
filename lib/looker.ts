@@ -1,13 +1,13 @@
-import { NodeSettingsIniFile, NodeSession } from "@looker/sdk-node"
-import { Looker40SDK as LookerSDK, IDashboardElement, IWriteQuery } from "@looker/sdk"
+import { LookerNodeSDK } from "@looker/sdk-node"
+import { IDashboardElement, IWriteQuery } from "@looker/sdk"
 
 /**
  *
  * @type {string} Local configuration file name, one directory above
  */
-const localConfig = "/Users/dmosedale/s/skylight/"
+const SDK = LookerNodeSDK.init40()
+const me = await sdk.ok(sdk.me());
 
-const SDK = getAuthenticatedLookerSDK();
 
 export async function getAWDashboardElement0(): Promise<IDashboardElement> {
   const dashboardId = "1471";
@@ -48,29 +48,4 @@ export async function runEventCountQuery(filters): Promise<any>{
   console.log("newQueryBody.filters: ", newQueryBody.filters)
   console.log(" newQuery result: ", result)
   return result
-}
-
-function getAuthenticatedLookerSDK(): LookerSDK {
-
-  // taken from MIT-licensed: https://github.com/looker-open-source/sdk-examples/blob/master/typescript/downloadTile.ts
-
-  /**
-   *
-   * @type {NodeSettingsIniFile} Settings retrieved from the configuration file
-   */
-  const settings = new NodeSettingsIniFile(localConfig);
-
-  /**
-   * Automatic authentication support for the Node SDK
-   * @type {NodeSession} Initialized node-based session manager
-   */
-  const session = new NodeSession(settings);
-
-  /**
-   * Initialized SDK object
-   * @type {LookerSDK} SDK object configured for use with Node
-   */
-  const sdk = new LookerSDK(session);
-
-  return sdk;
 }
