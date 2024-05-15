@@ -202,14 +202,14 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     cell: (props: any) => {
       if (props.row.original.userFacingName) {
         return (
-          <div>
+          <>
             <div className="font-semibold text-sm">
               {props.row.original.userFacingName || props.row.original.id}
             </div>
             <div className="font-mono text-3xs">
               {props.row.original.id}
             </div>
-          </div>
+          </>
         );
       }
 
