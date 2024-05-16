@@ -47,34 +47,33 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
   return messages;
 }
 
-async function getMsgExpRecipeCollection(): Promise<NimbusRecipeCollection> {
-
-  const recipeCollection = new NimbusRecipeCollection()
-  await recipeCollection.fetchRecipes()
-  console.log('recipeCollection.length = ', recipeCollection.recipes.length)
-
-  const expOnlyCollection = new NimbusRecipeCollection()
+async function getMsgExpRecipeCollection(
+  recipeCollection: NimbusRecipeCollection
+): Promise<NimbusRecipeCollection> {
+  const expOnlyCollection = new NimbusRecipeCollection();
   expOnlyCollection.recipes = recipeCollection.recipes.filter((recipe) =>
     recipe.isExpRecipe()
   );
-  console.log('expOnlyCollection.length = ', expOnlyCollection.recipes.length)
+  console.log("expOnlyCollection.length = ", expOnlyCollection.recipes.length);
 
-  const msgExpRecipeCollection = new NimbusRecipeCollection()
+  const msgExpRecipeCollection = new NimbusRecipeCollection();
   msgExpRecipeCollection.recipes = expOnlyCollection.recipes.filter((recipe) =>
     recipe.usesMessagingFeatures()
   );
-  console.log('msgExpRecipeCollection.length = ', msgExpRecipeCollection.recipes.length)
+  console.log(
+    "msgExpRecipeCollection.length = ",
+    msgExpRecipeCollection.recipes.length
+  );
 
-  return msgExpRecipeCollection
+  return msgExpRecipeCollection;
 }
 
-async function getMsgRolloutCollection(): Promise<NimbusRecipeCollection> {
-  const recipeCollection = new NimbusRecipeCollection();
-  await recipeCollection.fetchRecipes();
-
+async function getMsgRolloutCollection(
+  recipeCollection: NimbusRecipeCollection
+): Promise<NimbusRecipeCollection> {
   const msgRolloutRecipeCollection = new NimbusRecipeCollection();
   msgRolloutRecipeCollection.recipes = recipeCollection.recipes.filter(
-    (recipe) => recipe.isMsgRolloutRecipe()
+    (recipe) => recipe.usesMessagingFeatures() && !recipe.isExpRecipe()
   );
   console.log(
     "msgRolloutRecipeCollection.length = ",
@@ -85,10 +84,14 @@ async function getMsgRolloutCollection(): Promise<NimbusRecipeCollection> {
 }
 
 export default async function Dashboard() {
+  const recipeCollection = new NimbusRecipeCollection()
+  await recipeCollection.fetchRecipes()
+  console.log('recipeCollection.length = ', recipeCollection.recipes.length)
+
   // XXX await Promise.all for both loads concurrently
   const localData = await getASRouterLocalMessageInfoFromFile()
-  const msgExpRecipeCollection = await getMsgExpRecipeCollection()
-  const msgRolloutRecipeCollection = await getMsgRolloutCollection()
+  const msgExpRecipeCollection = await getMsgExpRecipeCollection(recipeCollection)
+  const msgRolloutRecipeCollection = await getMsgRolloutCollection(recipeCollection)
 
   // get in format useable by MessageTable
   const experimentAndBranchInfo : RecipeOrBranchInfo[] =

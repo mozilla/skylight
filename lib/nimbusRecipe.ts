@@ -29,7 +29,6 @@ type NimbusRecipeType = {
   getBranchScreenshotsLink(branchSlug: string) : string
   usesMessagingFeatures() : boolean
   isExpRecipe(): boolean
-  isMsgRolloutRecipe(): boolean | undefined
 }
 
 export class NimbusRecipe implements NimbusRecipeType {
@@ -258,12 +257,5 @@ null,
    */
   isExpRecipe() {
     return !this._rawRecipe.isRollout
-  }
-
-  /**
-   * @returns true if this recipe is currently a message rollout experiment.
-   */
-  isMsgRolloutRecipe() {
-    return this.usesMessagingFeatures() && this._rawRecipe.isRollout
   }
 }
