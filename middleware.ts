@@ -1,5 +1,7 @@
 import { initAuth0, withMiddlewareAuthRequired } from '@auth0/nextjs-auth0/edge';
 
+const isDevEnvironment = process.env.IS_DEV_ENV === 'true';
+
 const auth0 = initAuth0({
   routes: {
     login: '/api/auth/login',
@@ -7,4 +9,5 @@ const auth0 = initAuth0({
   }
 });
 
-export default auth0.withMiddlewareAuthRequired();
+// The empty middleware function effectively turns off this export for dev environments
+export default isDevEnvironment ? function middleware() {} : auth0.withMiddlewareAuthRequired();
