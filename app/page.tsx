@@ -88,7 +88,7 @@ export default async function Dashboard() {
   await recipeCollection.fetchRecipes()
   console.log('recipeCollection.length = ', recipeCollection.recipes.length)
 
-  // XXX await Promise.all for both loads concurrently
+  // XXX await Promise.allSettled for all three loads concurrently
   const localData = await getASRouterLocalMessageInfoFromFile()
   const msgExpRecipeCollection = await getMsgExpRecipeCollection(recipeCollection)
   const msgRolloutRecipeCollection = await getMsgRolloutCollection(recipeCollection)

@@ -261,7 +261,7 @@ describe('NimbusRecipe', () => {
       expect(result).toBe(true)
     })
 
-    it('returns false if the recipe is a message rollout experiment', () => {
+    it('returns false if the recipe is a message rollout', () => {
       const rawRecipe = ExperimentFakes.recipe("test-recipe", {
         isRollout: true
       });
