@@ -6,8 +6,7 @@ import { IDashboardElement, IWriteQuery } from "@looker/sdk"
  * @type {string} Local configuration file name, one directory above
  */
 const SDK = LookerNodeSDK.init40()
-const me = await sdk.ok(sdk.me());
-
+const me = await SDK.ok(SDK.me());
 
 export async function getAWDashboardElement0(): Promise<IDashboardElement> {
   const dashboardId = "1471";
@@ -27,7 +26,9 @@ export async function runEventCountQuery(filters): Promise<any>{
   delete newQueryBody.client_id // must be unique per-query
 
   // override the filters
-  newQueryBody.filters = Object.assign(
+  newQueryBody.filters = Object.assign
+
+  (
     {
       'event_counts.message_id': '%FAKESPOT_OPTIN_DEFAULT%',
       'event_counts.submission_timestamp_date': '2 days'
