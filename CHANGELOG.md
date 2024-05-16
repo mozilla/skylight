@@ -1,3 +1,9 @@
+## Thursday, May 16th, 2024
+
+### Added
+
+* Added Rollout messages and displayed them inside a new table
+
 ## Wednesday, April 24th, 2024
 
 ### Added

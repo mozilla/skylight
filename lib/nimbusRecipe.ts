@@ -28,6 +28,7 @@ type NimbusRecipeType = {
   getBranchInfos() : BranchInfo[]
   getBranchScreenshotsLink(branchSlug: string) : string
   usesMessagingFeatures() : boolean
+  isExpRecipe(): boolean
 }
 
 export class NimbusRecipe implements NimbusRecipeType {
@@ -250,5 +251,12 @@ null,
       `branch-${encodeURIComponent(branchSlug)}-screenshots`
 
     return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(this._rawRecipe.slug)}/summary#${screenshotsAnchorId}`
+  }
+
+  /**
+   * @returns true if this recipe is an experiment recipe not in rollout.
+   */
+  isExpRecipe() {
+    return !this._rawRecipe.isRollout
   }
 }

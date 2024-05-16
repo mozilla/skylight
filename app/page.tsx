@@ -47,40 +47,51 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
   return messages;
 }
 
-async function getMsgExpRecipeCollection(): Promise<NimbusRecipeCollection> {
+async function getMsgExpRecipeCollection(
+  recipeCollection: NimbusRecipeCollection
+): Promise<NimbusRecipeCollection> {
+  const expOnlyCollection = new NimbusRecipeCollection();
+  expOnlyCollection.recipes = recipeCollection.recipes.filter((recipe) =>
+    recipe.isExpRecipe()
+  );
+  console.log("expOnlyCollection.length = ", expOnlyCollection.recipes.length);
 
+  const msgExpRecipeCollection = new NimbusRecipeCollection();
+  msgExpRecipeCollection.recipes = expOnlyCollection.recipes.filter((recipe) =>
+    recipe.usesMessagingFeatures()
+  );
+  console.log(
+    "msgExpRecipeCollection.length = ",
+    msgExpRecipeCollection.recipes.length
+  );
+
+  return msgExpRecipeCollection;
+}
+
+async function getMsgRolloutCollection(
+  recipeCollection: NimbusRecipeCollection
+): Promise<NimbusRecipeCollection> {
+  const msgRolloutRecipeCollection = new NimbusRecipeCollection();
+  msgRolloutRecipeCollection.recipes = recipeCollection.recipes.filter(
+    (recipe) => recipe.usesMessagingFeatures() && !recipe.isExpRecipe()
+  );
+  console.log(
+    "msgRolloutRecipeCollection.length = ",
+    msgRolloutRecipeCollection.recipes.length
+  );
+
+  return msgRolloutRecipeCollection;
+}
+
+export default async function Dashboard() {
   const recipeCollection = new NimbusRecipeCollection()
   await recipeCollection.fetchRecipes()
   console.log('recipeCollection.length = ', recipeCollection.recipes.length)
 
-
-  // XXX should move to nimbusRecipe
-  function isExpRecipe(recipe : NimbusRecipe) : boolean {
-    return !recipe._rawRecipe.isRollout
-  }
-
-  const expOnlyCollection = new NimbusRecipeCollection()
-  expOnlyCollection.recipes = recipeCollection.recipes.filter(isExpRecipe)
-  console.log('expOnlyCollection.length = ', expOnlyCollection.recipes.length)
-
-
-  // XXX should move to nimbusRecipe
-  function isMsgRecipe(recipe : NimbusRecipe) : boolean {
-    return recipe.usesMessagingFeatures()
-  }
-
-  const msgExpRecipeCollection = new NimbusRecipeCollection()
-  msgExpRecipeCollection.recipes =
-    expOnlyCollection.recipes.filter(isMsgRecipe)
-  console.log('msgExpRecipeCollection.length = ', msgExpRecipeCollection.recipes.length)
-
-  return msgExpRecipeCollection
-}
-
-export default async function Dashboard() {
-  // XXX await Promise.all for both loads concurrently
+  // XXX await Promise.allSettled for all three loads concurrently
   const localData = await getASRouterLocalMessageInfoFromFile()
-  const msgExpRecipeCollection = await getMsgExpRecipeCollection()
+  const msgExpRecipeCollection = await getMsgExpRecipeCollection(recipeCollection)
+  const msgRolloutRecipeCollection = await getMsgRolloutCollection(recipeCollection)
 
   // get in format useable by MessageTable
   const experimentAndBranchInfo : RecipeOrBranchInfo[] =
@@ -88,8 +99,17 @@ export default async function Dashboard() {
       // XXX needing the `.flat(1)` here is a bug
       (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1)
 
-
   const totalExperiments = msgExpRecipeCollection.recipes.length
+
+  const msgRolloutInfo: RecipeOrBranchInfo[] =
+    msgRolloutRecipeCollection.recipes
+      .map(
+        // XXX needing the `.flat(1)` here is a bug
+        (recipe: NimbusRecipe) => recipe.getRecipeOrBranchInfos()
+      )
+      .flat(1);
+
+  const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
 
   return (
     <div>
@@ -126,6 +146,16 @@ export default async function Dashboard() {
 
       <div className="container mx-auto py-10">
         <MessageTable columns={fxmsMessageColumns} data={localData} />
+      </div>
+
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+        Current Message Rollouts
+      </h5>
+      <h5 className="scroll-m-20 text-lg font-semibold text-center">
+        Total: {totalRolloutExperiments}
+      </h5>
+      <div className="container mx-auto py-10">
+        <MessageTable columns={experimentColumns} data={msgRolloutInfo} />
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
