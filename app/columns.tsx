@@ -160,6 +160,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
           {...{
             onClick: table.getToggleAllRowsExpandedHandler(),
           }}
+          data-testid="toggleAllRowsButton"
         >
           {table.getIsAllRowsExpanded() ? (
             <ChevronUp className="mr-2" size={18} />
@@ -180,6 +181,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
                     onClick: props.row.getToggleExpandedHandler(),
                     style: { cursor: 'pointer' },
                   }}
+                  data-testid="toggleBranchRowsButton"
                 >
                   {props.row.getIsExpanded() ? (
                     <ChevronUp className="mr-2" size={18} />
