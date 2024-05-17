@@ -1,3 +1,11 @@
+## Friday, May 17th, 2024
+
+### Added
+
+* SSO integration using the nextjs-auth0 package
+* Middleware that conditionally loads the Auth0 wrapper based on an
+  environment variable (true for prod environment and false for dev && preview)
+
 ## Wednesday, April 24th, 2024
 
 ### Added
