@@ -161,7 +161,7 @@ export default async function Dashboard() {
 
       <div className="container mx-auto py-10">
         <MessageTable columns={experimentColumns} data={experimentAndBranchInfo} />
-        <a className="scroll-m-20 text-s" href="/api/auth/logout">Logout</a>
+        <a className="py-10 text-s" href="/api/auth/logout">Logout</a>
       </div>
     </div>
   );
