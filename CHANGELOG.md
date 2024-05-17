@@ -5,12 +5,37 @@
 * Experiment rows now have toggle buttons that will expand/collapse all its branches
 * The experiments table header now has a toggle button that will expand/collapse all of the experiments at once
 
+## Thursday, May 16th, 2024
+
+### Added
+
+* Added Rollout messages and displayed them inside a new table
+* Adding an Info icon tooltip with context to Released table
+
+### Changed
+
+* Update branch names to be human-readable
+* Make table titles clearer
+* Change "Screen 0" to "1st screen" for readability
+* Removed currently information-free Topic column from Released table.
+
+### Fixed
+
+* Only link to branch screenshots that actually exist
+
+### Internal
+
+* Started pulling data from Experimenter instead of Remote Settings to
+  get access to more data for the UI.
+* Support for getting configurables from the environment in preparation for
+  Auth0 and Looker integration.
+
 ## Wednesday, April 24th, 2024
 
 ### Added
 
 * Support for getting configurables from the environment
-* Added a sample .env file which can be copied for local development 
+* Added a sample .env file which can be copied for local development
 
 ## Monday, April 8th, 2024
 

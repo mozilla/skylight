@@ -31,6 +31,7 @@ export const ExperimentFakes = {
       featureIds: props?.branches?.[0].features?.map(f => f.featureId) || [
         "testFeature",
       ],
+      isRollout: false,
       ...props,
     };
   },

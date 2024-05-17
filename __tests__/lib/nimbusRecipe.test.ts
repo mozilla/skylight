@@ -266,4 +266,26 @@ describe('NimbusRecipe', () => {
 
     })
   })
+
+  describe('isExpRecipe', () => {
+    it('returns true if the recipe is an experiment recipe not in rollout', () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe");
+      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+
+      const result = nimbusRecipe.isExpRecipe()
+
+      expect(result).toBe(true)
+    })
+
+    it('returns false if the recipe is a message rollout', () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        isRollout: true
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe)
+
+      const result = nimbusRecipe.isExpRecipe()
+
+      expect(result).toBe(false)
+    })
+  })
 })
