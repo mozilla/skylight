@@ -4,7 +4,9 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   useReactTable,
+  ExpandedState
 } from "@tanstack/react-table"
 
 import {
@@ -17,6 +19,7 @@ import {
 } from "@/components/ui/table"
 
 import { BranchInfo } from "./columns.tsx"
+import { useState } from "react"
 
 interface MessageTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -27,10 +30,17 @@ export function MessageTable<TData, TValue>({
   columns,
   data,
 }: MessageTableProps<TData, TValue>) {
+  const [expanded, setExpanded] = useState<ExpandedState>({})
   const table = useReactTable({
     data,
     columns,
+    state: {
+      expanded,
+    },
+    onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
+    getSubRows: (originalRow: any) => originalRow.branches,
+    getExpandedRowModel: getExpandedRowModel(),
   })
 
   function getRowSpanForCell(cell : any) {

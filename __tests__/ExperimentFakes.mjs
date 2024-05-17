@@ -31,6 +31,7 @@ export const ExperimentFakes = {
       featureIds: props?.branches?.[0].features?.map(f => f.featureId) || [
         "testFeature",
       ],
+      isRollout: false,
       ...props,
     };
   },
@@ -60,6 +61,8 @@ Object.defineProperty(ExperimentFakes.recipe, "branches", {
             value: { testInt: 123, enabled: true },
           },
         ],
+        screenshots: [],
+        description: "control description",
       },
       {
         slug: "treatment",
@@ -75,6 +78,8 @@ Object.defineProperty(ExperimentFakes.recipe, "branches", {
             },
           },
         ],
+        screenshots: ["screenshotURI"],
+        description: "test description",
       },
     ];
   },

@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
-import { Copy } from "lucide-react";
+import { ChevronUp, ChevronDown, Copy } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import {
   Tooltip,
@@ -67,6 +67,7 @@ export type RecipeInfo = {
   userFacingName?: string
   nimbusExperiment: NimbusExperiment
   isBranch?: boolean
+  branches: BranchInfo[]
 } | []
 
 export type BranchInfo = {
@@ -87,6 +88,8 @@ export type BranchInfo = {
   nimbusExperiment: NimbusExperiment
   isBranch?: boolean
   template?: string
+  screenshots?: string[]
+  description?: string
 } | []
 
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
@@ -151,11 +154,47 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
 export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
   {
     accessorKey: "dates",
-    header: "Dates",
+    header: ({ table }) => (
+      <div className="flex flex-row items-center">
+        <button
+          {...{
+            onClick: table.getToggleAllRowsExpandedHandler(),
+          }}
+          data-testid="toggleAllRowsButton"
+        >
+          {table.getIsAllRowsExpanded() ? (
+            <ChevronUp className="mr-2" size={18} />
+          ) : (
+            <ChevronDown className="mr-2" size={18} />
+          )}
+        </button>
+        Dates 
+      </div>
+    ),
     cell: (props: any) => {
       return (
-        <PrettyDateRange startDate={props.row.original.startDate}
-          endDate={props.row.original.endDate} />
+        <div className="flex flex-row items-center">
+          <div>
+              {props.row.getCanExpand() ? (
+                <button
+                  {...{
+                    onClick: props.row.getToggleExpandedHandler(),
+                    style: { cursor: 'pointer' },
+                  }}
+                  data-testid="toggleBranchRowsButton"
+                >
+                  {props.row.getIsExpanded() ? (
+                    <ChevronUp className="mr-2" size={18} />
+                  ) : (
+                    <ChevronDown className="mr-2" size={18} />
+                  )}
+                </button>
+              ) : null}
+            </div>
+            <PrettyDateRange startDate={props.row.original.startDate}
+              endDate={props.row.original.endDate} />
+        </div>
+        
       );
     }
   },
@@ -177,9 +216,15 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       }
 
       return (
-          <div className="font-mono text-xs ps-6">
-            {props.row.original.id}
+          <div className="ps-6">
+            <p className="text-xs">
+              {props.row.original.description || props.row.original.id}
+            </p>
+            <p className="font-mono text-3xs">
+              {props.row.original.slug}
+            </p>
           </div>
+          
       );
     }
   },
@@ -229,11 +274,13 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         // XXX should figure out how to do this NimbusRecipe instantiation
         // once per row (maybe useState?)
         const recipe = new NimbusRecipe(props.row.original.nimbusExperiment)
-        const branchLink = recipe.getBranchScreenshotsLink(
-            props.row.original.slug);
-        return (
-          OffsiteLink(branchLink, "Screenshots")
-        )
+        
+        if (props.row.original.screenshots.length > 0) {
+          const branchLink = recipe.getBranchScreenshotsLink(props.row.original.slug)
+          return OffsiteLink(branchLink, "Screenshots")
+        } else {
+          return null
+        }
       }
 
       return (
