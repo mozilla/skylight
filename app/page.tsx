@@ -159,9 +159,11 @@ export default async function Dashboard() {
         Total: {totalExperiments}
       </h5>
 
-      <div className="container mx-auto py-10">
+      <div className="space-y-5 container mx-auto py-10">
         <MessageTable columns={experimentColumns} data={experimentAndBranchInfo} />
-        <a className="py-10 text-s" href="/api/auth/logout">Logout</a>
+        <div>
+          <a className="text-s" href="/api/auth/logout">Logout</a>
+        </div>  
       </div>
     </div>
   );
