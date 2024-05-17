@@ -78,6 +78,7 @@ describe('NimbusRecipe', () => {
         userFacingName: "Test Recipe",
       });
       const nimbusRecipe = new NimbusRecipe(rawRecipe)
+      const branches = nimbusRecipe.getBranchInfos()
 
       const recipeInfo = nimbusRecipe.getRecipeInfo()
 
@@ -93,7 +94,8 @@ describe('NimbusRecipe', () => {
         metrics: 'some metrics',
         experimenterLink: `https://experimenter.services.mozilla.com/nimbus/test-recipe`,
         userFacingName: rawRecipe.userFacingName,
-        nimbusExperiment: rawRecipe
+        nimbusExperiment: rawRecipe,
+        branches: branches
       });
     })
   })

@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
-import { Copy } from "lucide-react";
+import { ChevronUp, ChevronDown, Copy } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import {
   Tooltip,
@@ -67,6 +67,7 @@ export type RecipeInfo = {
   userFacingName?: string
   nimbusExperiment: NimbusExperiment
   isBranch?: boolean
+  branches: BranchInfo[]
 } | []
 
 export type BranchInfo = {
@@ -153,11 +154,47 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
 export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
   {
     accessorKey: "dates",
-    header: "Dates",
+    header: ({ table }) => (
+      <div className="flex flex-row items-center">
+        <button
+          {...{
+            onClick: table.getToggleAllRowsExpandedHandler(),
+          }}
+          data-testid="toggleAllRowsButton"
+        >
+          {table.getIsAllRowsExpanded() ? (
+            <ChevronUp className="mr-2" size={18} />
+          ) : (
+            <ChevronDown className="mr-2" size={18} />
+          )}
+        </button>
+        Dates 
+      </div>
+    ),
     cell: (props: any) => {
       return (
-        <PrettyDateRange startDate={props.row.original.startDate}
-          endDate={props.row.original.endDate} />
+        <div className="flex flex-row items-center">
+          <div>
+              {props.row.getCanExpand() ? (
+                <button
+                  {...{
+                    onClick: props.row.getToggleExpandedHandler(),
+                    style: { cursor: 'pointer' },
+                  }}
+                  data-testid="toggleBranchRowsButton"
+                >
+                  {props.row.getIsExpanded() ? (
+                    <ChevronUp className="mr-2" size={18} />
+                  ) : (
+                    <ChevronDown className="mr-2" size={18} />
+                  )}
+                </button>
+              ) : null}
+            </div>
+            <PrettyDateRange startDate={props.row.original.startDate}
+              endDate={props.row.original.endDate} />
+        </div>
+        
       );
     }
   },

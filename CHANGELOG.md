@@ -1,3 +1,10 @@
+## Friday, May 17th, 2024
+
+### Added
+
+* Experiment rows now have toggle buttons that will expand/collapse all its branches
+* The experiments table header now has a toggle button that will expand/collapse all of the experiments at once
+
 ## Thursday, May 16th, 2024
 
 ### Added
