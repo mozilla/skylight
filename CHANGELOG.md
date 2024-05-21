@@ -1,3 +1,12 @@
+## Tuesday, May 21st, 2024
+
+### Changed
+
+* Updated experiment names and branch descriptions to hyperlink to their recipe on Experimenter
+* Removed Experimenter link from the right-most column
+
+### Del
+
 ## Thursday, May 16th, 2024
 
 ### Added
