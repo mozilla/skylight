@@ -47,9 +47,9 @@ Ultimately, I suspect it's six of one/half dozen of the other, and we may end up
 
   * running the queries in parallel might have complexity issues (doesn't seem super high risk).
   * Dependency: Finish sorting out how to [get a limit privs service account](https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk) for the web app to use the Looker API on our instance. I don't yet understand the model for constraining the privs for that account.
-    * [DSRE-1583](https://mozilla-hub.atlassian.net/browse/DSRE-1583)
+    * [DSRE-1583](https://mozilla-hub.atlassian.net/browse/DSRE-1583) (**DONE**)
   * Dependency: add getting secrets from environment vars
-    * [Bug 1888930](https://bugzilla.mozilla.org/show_bug.cgi?id=1888930) (DONE)
+    * [Bug 1888930](https://bugzilla.mozilla.org/show_bug.cgi?id=1888930) (**DONE**)
   * Performance issues
     * do stuff in parallel as described above
 
