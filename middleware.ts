@@ -1,6 +1,6 @@
 import { initAuth0, withMiddlewareAuthRequired } from '@auth0/nextjs-auth0/edge';
 
-const isDevEnvironment = process.env.IS_DEV_ENV === 'true';
+const isDevEnvironment = process.env.NODE_ENV === 'development';
 
 const auth0 = initAuth0({
   routes: {

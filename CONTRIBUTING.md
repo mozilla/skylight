@@ -20,9 +20,14 @@ npm run dev
 
 ## Enabling Auth0 locally
 
-Local development currently has Auth0 turned off by the IS_DEV_ENV environment variable.
-It’s possible to enable Auth0 locally (if desired) for testing, by setting IS_DEV_ENV to
-‘false’ in `.env.local`.
+Local development currently has Auth0 turned off.
+It’s possible to enable Auth0 locally (if desired) for testing, by setting the 
+correct Auth0 values in `.env.local`, and using
+
+```bash
+npm run start
+```
+to run the build, which simulates the prod environment.
 
 To test Auth0 locally, please create an account at https://auth0.com/, create a new app,
 and add the correct properties to `.env.local`:
@@ -33,7 +38,7 @@ Auth0 properties
 AUTH0_SECRET='LONG_RANDOM_VALUE'
 
 # The base url of the application
-AUTH0_BASE_URL='https://fxms-skylight.netlify.app'
+AUTH0_BASE_URL='http://localhost:3000'
 
 # The url of the Auth0 tenant domain
 AUTH0_ISSUER_BASE_URL='AUTH0_TENANT_URL'
