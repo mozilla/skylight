@@ -205,7 +205,8 @@ null,
       metrics: 'some metrics',
       experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${this._rawRecipe.slug}`,
       userFacingName: this._rawRecipe.userFacingName,
-      nimbusExperiment: this._rawRecipe
+      nimbusExperiment: this._rawRecipe,
+      branches: this.getBranchInfos()
     };
   }
 
