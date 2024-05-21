@@ -1,3 +1,9 @@
+## Tuesday, May 21st, 2024
+
+### Added
+
+* Added a Messaging Info navigation menu to include links to key messaging resources
+
 ## Friday, May 17th, 2024
 
 ### Added
