@@ -126,10 +126,6 @@ export default async function Dashboard() {
           <li>
           Feedback of all kinds accepted in <Link href="https://mozilla.slack.com/archives/C05N15KHCLC">#skylight-messaging-system</Link>
           </li>
-
-          <li>
-            <b>(*)</b> Production Messages - Release Channel is currently a partial list. Nimbus rollouts, remote-settings messages, and a small number of others are planned.
-          </li>
         </ul>
       </div>
 
