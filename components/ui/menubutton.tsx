@@ -5,12 +5,10 @@ import * as React from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import { Apple, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -47,7 +45,7 @@ export function MenuButton() {
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            <Menu />
+            Messaging Info <Menu className="ml-2" />
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
@@ -55,13 +53,15 @@ export function MenuButton() {
                 href="https://mozilla-hub.atlassian.net/wiki/spaces/FIREFOX/pages/11043366/Onboarding+Messaging+Communication+OMC+Engineering+Team"
                 title="General Info & Getting Help"
               >
-                General information about the OMC team and how to request for in-product messaging.
+                General information about the OMC team and how to request for
+                in-product messaging.
               </ListItem>
               <ListItem
                 href="https://experimenter.info/messaging/desktop-messaging-surfaces/"
                 title="Messaging Surfaces"
               >
-                Overview of various messaging surfaces available in Firefox Desktop.
+                Overview of various messaging surfaces available in Firefox
+                Desktop.
               </ListItem>
               <ListItem
                 href="https://firefox-source-docs.mozilla.org/browser/components/newtab/content-src/asrouter/docs/"
@@ -72,8 +72,7 @@ export function MenuButton() {
               <ListItem
                 href="https://mozilla.cloud.looker.com/dashboards/1461?Normalized+Channel=release"
                 title="Looker Top 20 Messages Dashboard"
-              >
-              </ListItem>
+              ></ListItem>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
