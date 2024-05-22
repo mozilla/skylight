@@ -20,21 +20,15 @@ npm run dev
 
 ## Enabling Auth0 locally
 
-Local development currently has Auth0 turned off.
-It’s possible to enable Auth0 locally (if desired) for testing, by setting the 
-correct Auth0 values in `.env.local`, and using
-
-```bash
-npm run build && npm run start 
-```
-to run the build, which simulates the prod environment.
+Local development currently has Auth0 turned off, via the `IS_AUTH_ENABLED` env var.
+It’s possible to enable Auth0 locally (if desired) for testing, by setting `IS_AUTH_ENABLED` to true &&
+setting the correct Auth0 values in `.env.local`.
 
 To test Auth0 locally, start with these steps:
 
 1. Create an account at https://auth0.com/ by clicking the "Login" button and following the prompts
 2. Open the Applications section in the sidebar
-3. create a new app
-and add the correct properties to `.env.local`:
+3. create a new app and add the correct properties to `.env.local`:
   
 Auth0 properties
 # A long, secret value used to encrypt the session cookie 
@@ -64,6 +58,8 @@ Allowed Logout URLs: http://localhost:3000
 ```
 URLs need to be exact or Auth0 will throw errors, including the `http` protocol. If something isn't working, check for typos!
 The Login URI must point at `https://fxms-skylight.netlify.app/api/auth/login`, Auth0 will not accept `http://` or `localhost` there.
+
+4. Finally, create a test user in the Auth0 UI, (User Management > Users > Create User) and log in using the credentials you've created.
 
 Documentation for Auth0 quickstart can be found at https://auth0.com/docs/quickstart/webapp/nextjs
 

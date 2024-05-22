@@ -84,6 +84,9 @@ async function getMsgRolloutCollection(
 }
 
 export default async function Dashboard() {
+  // Check to see if Auth is enabled
+  const isAuthEnabled = process.env.IS_AUTH_ENABLED === 'true';
+
   const recipeCollection = new NimbusRecipeCollection()
   await recipeCollection.fetchRecipes()
   console.log('recipeCollection.length = ', recipeCollection.recipes.length)
@@ -161,9 +164,11 @@ export default async function Dashboard() {
 
       <div className="space-y-5 container mx-auto py-10">
         <MessageTable columns={experimentColumns} data={experimentAndBranchInfo} />
-        <div>
-          <a className="text-s" href="/api/auth/logout">Logout</a>
-        </div>  
+        {isAuthEnabled ? (
+          <div>
+            <a className="text-s" href="/api/auth/logout">Logout</a>
+          </div>
+        ) : null}
       </div>
     </div>
   );
