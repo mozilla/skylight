@@ -1,4 +1,14 @@
 /** @type {import('next').NextConfig} */
+
+const cspHeader = `
+    default-src https: 'self' *.netlify.app;
+    font-src 'self';
+    img-src 'self' blob: data:;
+    script-src https: 'self' 'unsafe-inline' 'unsafe-eval';
+    style-src https://cdn.tailwindcss.com/ https: 'self' 'unsafe-inline';
+    frame-ancestors 'self';
+`
+
 const nextConfig = {
   async headers() {
     return [
@@ -7,8 +17,7 @@ const nextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value:
-              "default-src https: 'self' *.netlify.app; font-src 'self' fonts.gstatic.com; img-src 'self' data: blob:; script-src https: 'self' 'unsafe-inline' 'unsafe-eval'; style-src https://cdn.tailwindcss.com/ https: 'self' 'unsafe-inline'; frame-ancestors 'self'",
+            value: cspHeader.replace(/\n/g, ''),
           },
           {
             key: "X-Frame-Options",
