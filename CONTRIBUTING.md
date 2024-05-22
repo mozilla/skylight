@@ -25,16 +25,20 @@ It’s possible to enable Auth0 locally (if desired) for testing, by setting the
 correct Auth0 values in `.env.local`, and using
 
 ```bash
-npm run start
+npm run build && npm run start 
 ```
 to run the build, which simulates the prod environment.
 
-To test Auth0 locally, please create an account at https://auth0.com/, create a new app,
+To test Auth0 locally, start with these steps:
+
+1. Create an account at https://auth0.com/ by clicking the "Login" button and following the prompts
+2. Open the Applications section in the sidebar
+3. create a new app
 and add the correct properties to `.env.local`:
   
 Auth0 properties
 # A long, secret value used to encrypt the session cookie 
-# (use [openssl rand -hex 32] to generate a 32 bytes value)
+# (use `openssl rand -hex 32` to generate a 32 byte value)
 AUTH0_SECRET='LONG_RANDOM_VALUE'
 
 # The base url of the application
@@ -49,15 +53,17 @@ AUTH0_CLIENT_ID='YOUR_AUTH0_CLIENT_ID'
 # The application's Client Secret
 AUTH0_CLIENT_SECRET='YOUR_AUTH0_CLIENT_SECRET'
 
-Within the Auth0 dashboard, set the following properties:
+Within the Application URIs section of the Auth0 application Settings pane, set the following properties:
 
 ```
 Application Login URI: https://fxms-skylight.netlify.app/api/auth/login
 
 Allowed Callback URLs: http://localhost:3000/api/auth/callback
 
-Allowed Logout URLs: https://fxms-skylight.netlify.app/, http://localhost:3000
+Allowed Logout URLs: http://localhost:3000
 ```
+URLs need to be exact or Auth0 will throw errors, including the `http` protocol. If something isn't working, check for typos!
+The Login URI must point at `https://fxms-skylight.netlify.app/api/auth/login`, Auth0 will not accept `http://` or `localhost` there.
 
 Documentation for Auth0 quickstart can be found at https://auth0.com/docs/quickstart/webapp/nextjs
 
