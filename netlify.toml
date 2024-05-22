@@ -7,6 +7,5 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    // Content-Security-Policy-Report-Only = "default-src https:; report-to /csp-violation-report-endpoint/"
     Content-Security-Policy = "frame-ancestors 'none'"
     X-Frame-Options = "DENY"
