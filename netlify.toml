@@ -7,5 +7,5 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    Content-Security-Policy = "frame-ancestors 'none'"
+    Content-Security-Policy = "frame-ancestors='none'"
     X-Frame-Options = "DENY"
