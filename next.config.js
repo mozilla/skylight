@@ -11,6 +11,7 @@ const cspHeaderProd = `
     script-src 'self';
     script-src-elem * 'unsafe-inline';
     style-src 'self' https://cdn.tailwindcss.com/;
+    style-src-attr 'self';
     frame-ancestors 'self';
     base-uri 'self';
     form-action 'self';
