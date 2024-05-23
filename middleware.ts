@@ -7,7 +7,8 @@ console.log('AUTH ENABLED: ', isAuthEnabled);
 const auth0 = initAuth0({
   routes: {
     login: '/api/auth/login',
-    callback: '/api/auth/callback'
+    callback: '/api/auth/callback',
+    postLogoutRedirect: '/api/auth/logout'
   }
 });
 
