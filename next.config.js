@@ -6,12 +6,12 @@ const cspHeaderProd = `
     default-src 'none';
     img-src 'self' blob: data:;
     connect-src 'self';
-    frame-src 'self';
+    frame-src 'self' *.netlify.app;
     font-src 'self';
     script-src 'self';
     script-src-elem * 'unsafe-inline';
     style-src 'self' https://cdn.tailwindcss.com/;
-    style-src-attr *;
+    style-src-attr * 'unsafe-inline';
     frame-ancestors 'self';
     base-uri 'self';
     form-action 'self';
