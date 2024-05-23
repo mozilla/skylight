@@ -5,6 +5,12 @@
 * Experiment rows now have toggle buttons that will expand/collapse all its branches
 * The experiments table header now has a toggle button that will expand/collapse all of the experiments at once
 
+### Internal
+
+* SSO integration using the nextjs-auth0 package
+* Middleware that conditionally loads the Auth0 wrapper based on an
+  environment variable (true for prod environment and false for dev && preview)
+
 ## Thursday, May 16th, 2024
 
 ### Added
