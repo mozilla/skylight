@@ -1,11 +1,12 @@
 /** @type {import('next').NextConfig} */
 
 const cspHeader = `
-    default-src https: 'self' *.netlify.app;
-    font-src 'self';
+    default-src 'none';
     img-src 'self' blob: data:;
-    script-src 'self' 'unsafe-inline' 'unsafe-eval';
-    style-src https://cdn.tailwindcss.com/ https: 'self' 'unsafe-inline';
+    connect-src 'self';
+    font-src 'self';
+    script-src 'self' 'unsafe-eval' 'unsafe-inline';
+    style-src 'self' https://cdn.tailwindcss.com/ 'unsafe-inline';
     frame-ancestors 'self';
     base-uri 'self';
     form-action 'self';
