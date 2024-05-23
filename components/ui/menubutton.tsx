@@ -9,8 +9,9 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Menu } from "lucide-react";
+import { Menu, Slack } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ListItem = React.forwardRef<
@@ -44,35 +45,38 @@ export function MenuButton() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <a
+              className="no-underline flex text-primary hover:bg-accent hover:text-accent-foreground visited:text-inherit"
+              href="https://mozilla.slack.com/archives/C05N15KHCLC"
+            >
+              <Slack size={20} className="mr-1" />
+              Help/Feedback
+            </a>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
           <NavigationMenuTrigger>
-            Messaging Info <Menu className="ml-2" />
+            <Menu className="mr-1" /> Messaging Info
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <ListItem
                 href="https://mozilla-hub.atlassian.net/wiki/spaces/FIREFOX/pages/11043366/Onboarding+Messaging+Communication+OMC+Engineering+Team"
-                title="General Info & Getting Help"
-              >
-                General information about the OMC team and how to request for
-                in-product messaging.
-              </ListItem>
+                title="OMC General Info"
+              />
               <ListItem
                 href="https://experimenter.info/messaging/desktop-messaging-surfaces/"
                 title="Messaging Surfaces"
-              >
-                Overview of various messaging surfaces available in Firefox
-                Desktop.
-              </ListItem>
+              />
               <ListItem
                 href="https://firefox-source-docs.mozilla.org/browser/components/newtab/content-src/asrouter/docs/"
-                title="Detailed Technical Documentation"
-              >
-                Documentation for Firefox Home (New Tab).
-              </ListItem>
+                title="New Tab Technical Documentation"
+              />
               <ListItem
                 href="https://mozilla.cloud.looker.com/dashboards/1461?Normalized+Channel=release"
                 title="Looker Top 20 Messages Dashboard"
-              ></ListItem>
+              />
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>

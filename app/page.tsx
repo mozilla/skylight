@@ -122,10 +122,6 @@ export default async function Dashboard() {
           <li>
             To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>; <b>a Firefox 126 build from March 29 or newer</b> is required.
           </li>
-
-          <li>
-          Feedback of all kinds accepted in <Link href="https://mozilla.slack.com/archives/C05N15KHCLC">#skylight-messaging-system</Link>
-          </li>
         </ul>
       </div>
 
