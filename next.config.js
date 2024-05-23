@@ -6,8 +6,10 @@ const cspHeaderProd = `
     default-src 'none';
     img-src 'self' blob: data:;
     connect-src 'self';
+    frame-src 'self';
     font-src 'self';
-    script-src 'self' 'unsafe-inline';
+    script-src 'self';
+    script-src-elem * 'unsafe-inline';
     style-src 'self' https://cdn.tailwindcss.com/;
     frame-ancestors 'self';
     base-uri 'self';
@@ -20,7 +22,8 @@ const cspHeaderDev = `
     img-src 'self' blob: data:;
     connect-src 'self';
     font-src 'self';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline';
+    script-src 'self' 'unsafe-eval';
+    script-src-elem * 'unsafe-inline';
     style-src 'self' https://cdn.tailwindcss.com/ 'unsafe-inline';
     frame-ancestors 'self';
     base-uri 'self';
