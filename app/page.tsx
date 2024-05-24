@@ -86,6 +86,9 @@ async function getMsgRolloutCollection(
 }
 
 export default async function Dashboard() {
+  // Check to see if Auth is enabled
+  const isAuthEnabled = process.env.IS_AUTH_ENABLED === 'true';
+
   const recipeCollection = new NimbusRecipeCollection()
   await recipeCollection.fetchRecipes()
   console.log('recipeCollection.length = ', recipeCollection.recipes.length)
@@ -111,6 +114,7 @@ export default async function Dashboard() {
   return (
     <div>
       <div>
+<<<<<<< bug-1897771
         <div className="flex justify-between mx-20 py-8">
           <h4 className="scroll-m-20 text-3xl font-semibold">
             Skylight
@@ -118,6 +122,11 @@ export default async function Dashboard() {
           <MenuButton />
         </div>
 
+=======
+        <h4 className="scroll-m-20 text-3xl font-semibold text-center py-4">
+          Skylight
+        </h4>
+>>>>>>> main
         <ul className='list-[circle] mx-20 text-sm'>
           <li>
             To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>; <b>a Firefox 126 build from March 29 or newer</b> is required.
@@ -157,9 +166,14 @@ export default async function Dashboard() {
         Total: {totalExperiments}
       </h5>
 
-      <div className="container mx-auto py-10">
+      <div className="space-y-5 container mx-auto py-10">
         <MessageTable columns={experimentColumns} data={experimentAndBranchInfo} />
+        {isAuthEnabled ? (
+          <div>
+            <a className="text-s" href="/api/auth/logout">Logout</a>
+          </div>
+        ) : null}
       </div>
     </div>
   );
-}
+};
