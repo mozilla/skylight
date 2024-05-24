@@ -3,6 +3,7 @@
 ### Added
 
 * Added a Messaging Info navigation menu to include links to key messaging resources
+* Added a Help/Feedback button linking to the #skylight-messaging-system slack channel
 
 ## Tuesday, May 21st, 2024
 

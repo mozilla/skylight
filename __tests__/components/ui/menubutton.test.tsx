@@ -6,6 +6,7 @@ describe("MenuButton", () => {
     render(<MenuButton />);
     
     const menuButton = screen.getByText("Messaging Info");
+    
     expect(menuButton).toBeInTheDocument();
   });
 
