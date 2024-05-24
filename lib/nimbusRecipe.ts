@@ -29,6 +29,7 @@ type NimbusRecipeType = {
   getBranchScreenshotsLink(branchSlug: string) : string
   usesMessagingFeatures() : boolean
   isExpRecipe(): boolean
+  getBranchRecipeLink(branchSlug: string): string
 }
 
 export class NimbusRecipe implements NimbusRecipeType {
@@ -259,5 +260,14 @@ null,
    */
   isExpRecipe() {
     return !this._rawRecipe.isRollout
+  }
+
+  /** 
+   * @returns a link to recipe section of the Experimenter page for that branch.
+   */
+  getBranchRecipeLink(branchSlug: string): string {
+    return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(
+      this._rawRecipe.slug
+    )}/summary#${branchSlug}`;
   }
 }
