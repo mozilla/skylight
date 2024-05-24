@@ -6,11 +6,11 @@ const cspHeaderProd = `
     default-src 'none';
     img-src 'self' blob: data:;
     connect-src 'self';
-    frame-src 'self' *.netlify.app;
+    frame-src *;
     font-src 'self';
     script-src 'self';
     script-src-elem * 'unsafe-inline';
-    style-src 'self' https://cdn.tailwindcss.com/;
+    style-src 'self';
     style-src-attr * 'unsafe-inline';
     frame-ancestors 'self';
     base-uri 'self';
@@ -25,7 +25,7 @@ const cspHeaderDev = `
     font-src 'self';
     script-src 'self' 'unsafe-eval';
     script-src-elem * 'unsafe-inline';
-    style-src 'self' https://cdn.tailwindcss.com/ 'unsafe-inline';
+    style-src 'self' 'unsafe-inline';
     frame-ancestors 'self';
     base-uri 'self';
     form-action 'self';
