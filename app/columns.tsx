@@ -1,17 +1,11 @@
 "use client"
 import { types } from "@mozilla/nimbus-shared";
 import { ColumnDef } from "@tanstack/react-table";
-import { Button, buttonVariants } from "@/components/ui/button";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
-import { ChevronUp, ChevronDown, Copy } from "lucide-react";
+import { ChevronUp, ChevronDown } from "lucide-react";
 import { PrettyDateRange } from "./dates";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { InfoPopover } from "@/components/ui/infopopover";
 
 function OffsiteLink(href: string, linkText: string) {
   return (
@@ -137,7 +131,15 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     }
   }, {
     accessorKey: "previewLink",
-    header: "",
+    header: () => (
+      <div className="flex flex-row items-center">
+        Visuals
+        <InfoPopover
+          iconSize={14}
+          content="To make the preview URLs work, load about:config in Firefox and set browser.newtabpage.activity-stream.asrouter.devtoolsEnabled to true; a Firefox 126 build is required."
+        />
+      </div>
+    ),
     cell: (props: any) => {
       if (props.row.original.template !== 'infobar'
           && props.row.original.template !== 'spotlight') {
@@ -293,7 +295,15 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     }
   }, {
     accessorKey: "other",
-    header: "",
+    header: () => (
+      <div className="flex flex-row items-center">
+        Visuals
+        <InfoPopover
+          iconSize={14}
+          content="To make the preview URLs work, load about:config in Firefox and set browser.newtabpage.activity-stream.asrouter.devtoolsEnabled to true; a Firefox 126 build is required."
+        />
+      </div>
+    ),
     cell: (props: any) => {
       if (props.row.original.previewLink == undefined) {
         // XXX should figure out how to do this NimbusRecipe instantiation
