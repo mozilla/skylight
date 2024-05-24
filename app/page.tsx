@@ -9,6 +9,8 @@ import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
 import { MessageTable } from "./message-table";
 import Link from "next/link";
 
+import { MenuButton } from "@/components/ui/menubutton.tsx";
+
 function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
   let fxmsMsgInfo : FxMSMessageInfo = {
     product: 'Desktop',
@@ -112,20 +114,16 @@ export default async function Dashboard() {
   return (
     <div>
       <div>
-        <h4 className="scroll-m-20 text-3xl font-semibold text-center py-4">
-          Skylight
-        </h4>
+        <div className="flex justify-between mx-20 py-8">
+          <h4 className="scroll-m-20 text-3xl font-semibold">
+            Skylight
+          </h4>
+          <MenuButton />
+        </div>
+
         <ul className='list-[circle] mx-20 text-sm'>
           <li>
             To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>; <b>a Firefox 126 build from March 29 or newer</b> is required.
-          </li>
-
-          <li>
-          Feedback of all kinds accepted in <Link href="https://mozilla.slack.com/archives/C05N15KHCLC">#skylight-messaging-system</Link>
-          </li>
-
-          <li>
-            <b>(*)</b> Production Messages - Release Channel is currently a partial list. Nimbus rollouts, remote-settings messages, and a small number of others are planned.
           </li>
         </ul>
       </div>
