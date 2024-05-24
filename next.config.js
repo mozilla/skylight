@@ -38,16 +38,20 @@ const nextConfig = {
       {
         source: "/:path*",
         headers: [
-          {
-            key: "Content-Security-Policy",
-            value: isDev
-              ? cspHeaderDev.replace(/\n/g, "")
-              : cspHeaderProd.replace(/\n/g, ""),
-          },
+          // {
+          //   key: "Content-Security-Policy",
+          //   value: isDev
+          //     ? cspHeaderDev.replace(/\n/g, "")
+          //     : cspHeaderProd.replace(/\n/g, ""),
+          // },
           {
             key: "X-Frame-Options",
             value: "DENY",
           },
+          {
+            key: "Content-Security-Policy-Report-Only",
+            value: cspHeaderProd.replace(/\n/g, "") + "report-uri /csp-violation-report-endpoint/"
+          }
         ],
       },
     ];
