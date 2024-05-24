@@ -114,7 +114,6 @@ export default async function Dashboard() {
   return (
     <div>
       <div>
-<<<<<<< bug-1897771
         <div className="flex justify-between mx-20 py-8">
           <h4 className="scroll-m-20 text-3xl font-semibold">
             Skylight
@@ -122,11 +121,6 @@ export default async function Dashboard() {
           <MenuButton />
         </div>
 
-=======
-        <h4 className="scroll-m-20 text-3xl font-semibold text-center py-4">
-          Skylight
-        </h4>
->>>>>>> main
         <ul className='list-[circle] mx-20 text-sm'>
           <li>
             To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>; <b>a Firefox 126 build from March 29 or newer</b> is required.

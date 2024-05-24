@@ -1,15 +1,15 @@
-## Tuesday, May 21st, 2024
+## Friday, May 24th, 2024
 
-<<<<<<< bug-1897771
 ### Added
 
 * Added a Messaging Info navigation menu to include links to key messaging resources
-=======
+
+## Tuesday, May 21st, 2024
+
 ### Changed
 
 * Updated experiment names and branch descriptions to hyperlink to their recipe on Experimenter
 * Removed Experimenter link from the right-most column
->>>>>>> main
 
 ## Friday, May 17th, 2024
 
