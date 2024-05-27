@@ -175,11 +175,12 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
             onClick: table.getToggleAllRowsExpandedHandler(),
           }}
           data-testid="toggleAllRowsButton"
+          aria-label="Toggle All Branches"
         >
           {table.getIsAllRowsExpanded() ? (
-            <ChevronUp className="mr-2" size={18} aria-label="Collapse"/>
+            <ChevronUp className="mr-2" size={18}/>
           ) : (
-            <ChevronDown className="mr-2" size={18} aria-label="Expand" />
+            <ChevronDown className="mr-2" size={18}/>
           )}
         </button>
         Dates 
@@ -196,6 +197,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
                     style: { cursor: 'pointer' },
                   }}
                   data-testid="toggleBranchRowsButton"
+                  aria-label="Toggle Branches"
                 >
                   {props.row.getIsExpanded() ? (
                     <ChevronUp className="mr-2" size={18} />
