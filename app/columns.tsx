@@ -228,7 +228,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
               {props.row.original.userFacingName || props.row.original.id}
               <svg
                 fill="currentColor"
-                fill-opacity="0.6"
+                fillOpacity="0.6"
                 viewBox="0 0 8 8"
                 className="inline h-[1.2rem] w-[1.2rem] px-1"
                 aria-hidden="true"
@@ -259,7 +259,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
             {props.row.original.description || props.row.original.id}
             <svg
               fill="currentColor"
-              fill-opacity="0.6"
+              fillOpacity="0.6"
               viewBox="0 0 8 8"
               className="inline h-[1.0rem] w-[1.0rem] px-1"
               aria-hidden="true"
