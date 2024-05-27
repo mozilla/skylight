@@ -28,6 +28,8 @@ type NimbusRecipeType = {
   getBranchInfos() : BranchInfo[]
   getBranchScreenshotsLink(branchSlug: string) : string
   usesMessagingFeatures() : boolean
+  isExpRecipe(): boolean
+  getBranchRecipeLink(branchSlug: string): string
 }
 
 export class NimbusRecipe implements NimbusRecipeType {
@@ -50,7 +52,8 @@ export class NimbusRecipe implements NimbusRecipeType {
         // needed NimbusRecipe class rewrapping can be done there.
         nimbusExperiment: this._rawRecipe,
         slug: branch.slug,
-        screenshots: branch.screenshots
+        screenshots: branch.screenshots,
+        description: branch.description
       }
 
     // XXX right now we don't support more than one messaging feature
@@ -214,7 +217,8 @@ null,
       metrics: 'some metrics',
       experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${this._rawRecipe.slug}`,
       userFacingName: this._rawRecipe.userFacingName,
-      nimbusExperiment: this._rawRecipe
+      nimbusExperiment: this._rawRecipe,
+      branches: this.getBranchInfos()
     };
   }
 
@@ -261,5 +265,21 @@ null,
       `branch-${encodeURIComponent(branchSlug)}-screenshots`
 
     return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(this._rawRecipe.slug)}/summary#${screenshotsAnchorId}`
+  }
+
+  /**
+   * @returns true if this recipe is an experiment recipe not in rollout.
+   */
+  isExpRecipe() {
+    return !this._rawRecipe.isRollout
+  }
+
+  /** 
+   * @returns a link to recipe section of the Experimenter page for that branch.
+   */
+  getBranchRecipeLink(branchSlug: string): string {
+    return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(
+      this._rawRecipe.slug
+    )}/summary#${branchSlug}`;
   }
 }

@@ -4,9 +4,12 @@ import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAbo
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
+import { InfoIcon } from "@/components/ui/infoicon.tsx";
 import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
 import { MessageTable } from "./message-table";
 import Link from "next/link";
+
+import { MenuButton } from "@/components/ui/menubutton.tsx";
 
 function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
   let fxmsMsgInfo : FxMSMessageInfo = {
@@ -46,87 +49,125 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
   return messages;
 }
 
-async function getMsgExpRecipeCollection(): Promise<NimbusRecipeCollection> {
+async function getMsgExpRecipeCollection(
+  recipeCollection: NimbusRecipeCollection
+): Promise<NimbusRecipeCollection> {
+  const expOnlyCollection = new NimbusRecipeCollection();
+  expOnlyCollection.recipes = recipeCollection.recipes.filter((recipe) =>
+    recipe.isExpRecipe()
+  );
+  console.log("expOnlyCollection.length = ", expOnlyCollection.recipes.length);
+
+  const msgExpRecipeCollection = new NimbusRecipeCollection();
+  msgExpRecipeCollection.recipes = expOnlyCollection.recipes.filter((recipe) =>
+    recipe.usesMessagingFeatures()
+  );
+  console.log(
+    "msgExpRecipeCollection.length = ",
+    msgExpRecipeCollection.recipes.length
+  );
+
+  return msgExpRecipeCollection;
+}
+
+async function getMsgRolloutCollection(
+  recipeCollection: NimbusRecipeCollection
+): Promise<NimbusRecipeCollection> {
+  const msgRolloutRecipeCollection = new NimbusRecipeCollection();
+  msgRolloutRecipeCollection.recipes = recipeCollection.recipes.filter(
+    (recipe) => recipe.usesMessagingFeatures() && !recipe.isExpRecipe()
+  );
+  console.log(
+    "msgRolloutRecipeCollection.length = ",
+    msgRolloutRecipeCollection.recipes.length
+  );
+
+  return msgRolloutRecipeCollection;
+}
+
+export default async function Dashboard() {
+  // Check to see if Auth is enabled
+  const isAuthEnabled = process.env.IS_AUTH_ENABLED === 'true';
 
   const recipeCollection = new NimbusRecipeCollection()
   await recipeCollection.fetchRecipes()
   console.log('recipeCollection.length = ', recipeCollection.recipes.length)
 
-
-  // XXX should move to nimbusRecipe
-  function isExpRecipe(recipe : NimbusRecipe) : boolean {
-    return !recipe._rawRecipe.isRollout
-  }
-
-  const expOnlyCollection = new NimbusRecipeCollection()
-  expOnlyCollection.recipes = recipeCollection.recipes.filter(isExpRecipe)
-  console.log('expOnlyCollection.length = ', expOnlyCollection.recipes.length)
-
-
-  // XXX should move to nimbusRecipe
-  function isMsgRecipe(recipe : NimbusRecipe) : boolean {
-    return recipe.usesMessagingFeatures()
-  }
-
-  const msgExpRecipeCollection = new NimbusRecipeCollection()
-  msgExpRecipeCollection.recipes =
-    expOnlyCollection.recipes.filter(isMsgRecipe)
-  console.log('msgExpRecipeCollection.length = ', msgExpRecipeCollection.recipes.length)
-
-  return msgExpRecipeCollection
-}
-
-export default async function Dashboard() {
-  // XXX await Promise.all for both loads concurrently
+  // XXX await Promise.allSettled for all three loads concurrently
   const localData = await getASRouterLocalMessageInfoFromFile()
-  const msgExpRecipeCollection = await getMsgExpRecipeCollection()
+  const msgExpRecipeCollection = await getMsgExpRecipeCollection(recipeCollection)
+  const msgRolloutRecipeCollection = await getMsgRolloutCollection(recipeCollection)
 
   // get in format useable by MessageTable
   const experimentAndBranchInfo : RecipeOrBranchInfo[] =
     msgExpRecipeCollection.recipes.map(
-      (recipe : NimbusRecipe) => recipe.getRecipeOrBranchInfos()).flat(1)
-
+      (recipe : NimbusRecipe) => recipe.getRecipeInfo())
 
   const totalExperiments = msgExpRecipeCollection.recipes.length
+
+  const msgRolloutInfo: RecipeOrBranchInfo[] =
+    msgRolloutRecipeCollection.recipes.map(
+      (recipe : NimbusRecipe) => recipe.getRecipeInfo())
+
+  const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
 
   return (
     <div>
       <div>
-        <h4 className="scroll-m-20 text-3xl font-semibold text-center py-4">
-          Skylight
-        </h4>
+        <div className="flex justify-between mx-20 py-8">
+          <h4 className="scroll-m-20 text-3xl font-semibold">
+            Skylight
+          </h4>
+          <MenuButton />
+        </div>
 
         <ul className='list-[circle] mx-20 text-sm'>
           <li>
             To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>; <b>a Firefox 126 build from March 29 or newer</b> is required.
           </li>
-
-          <li>
-          Feedback of all kinds accepted in <Link href="https://mozilla.slack.com/archives/C05N15KHCLC">#skylight-messaging-system</Link>
-          </li>
-
-          <li>
-            <b>(*)</b> Production Messages - Release Channel is currently a partial list. Nimbus rollouts, remote-settings messages, and a small number of others are planned.
-          </li>
         </ul>
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
-        Production Messages - Release Channel (*)
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+        Messages Released on Firefox
+        <InfoIcon
+          iconSize={16}
+          content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
+        />
+      </h5>
+      <h5 className="scroll-m-20 text-lg font-semibold text-center">
+        (Partial List) 
       </h5>
 
       <div className="container mx-auto py-10">
         <MessageTable columns={fxmsMessageColumns} data={localData} />
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center py-4">
-        Live Message Experiments: &nbsp;
-          {totalExperiments} total
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+        Current Message Rollouts
+      </h5>
+      <h5 className="scroll-m-20 text-lg font-semibold text-center">
+        Total: {totalRolloutExperiments}
+      </h5>
+      <div className="container mx-auto py-10">
+        <MessageTable columns={experimentColumns} data={msgRolloutInfo} />
+      </div>
+
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+        Current Message Experiments
+      </h5>
+      <h5 className="scroll-m-20 text-lg font-semibold text-center">
+        Total: {totalExperiments}
       </h5>
 
-      <div className="container mx-auto py-10">
+      <div className="space-y-5 container mx-auto py-10">
         <MessageTable columns={experimentColumns} data={experimentAndBranchInfo} />
+        {isAuthEnabled ? (
+          <div>
+            <a className="text-s" href="/api/auth/logout">Logout</a>
+          </div>
+        ) : null}
       </div>
     </div>
   );
-}
+};

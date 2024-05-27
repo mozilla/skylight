@@ -38,6 +38,8 @@ const AW_RECIPE = {
     }],
     ratio: 1,
     slug: "control",
+    screenshots: [],
+    description: "control description"
   },
   {
     features: [{
@@ -55,6 +57,8 @@ const AW_RECIPE = {
     }],
     ratio: 1,
     slug: "treatment-a",
+    screenshots: ["screenshotURI"],
+    description: "treatment-a description"
   }],
 }
 
@@ -74,6 +78,7 @@ describe('NimbusRecipe', () => {
         userFacingName: "Test Recipe",
       });
       const nimbusRecipe = new NimbusRecipe(rawRecipe)
+      const branches = nimbusRecipe.getBranchInfos()
 
       const recipeInfo = nimbusRecipe.getRecipeInfo()
 
@@ -89,7 +94,8 @@ describe('NimbusRecipe', () => {
         metrics: 'some metrics',
         experimenterLink: `https://experimenter.services.mozilla.com/nimbus/test-recipe`,
         userFacingName: rawRecipe.userFacingName,
-        nimbusExperiment: rawRecipe
+        nimbusExperiment: rawRecipe,
+        branches: branches
       });
     })
   })
@@ -112,7 +118,9 @@ describe('NimbusRecipe', () => {
         nimbusExperiment: rawRecipe,
         slug: branch.slug,
         surface: "testTemplate",
-        template: "testTemplate"
+        template: "testTemplate",
+        screenshots: ["screenshotURI"],
+        description: "test description"
       })
     })
 
@@ -134,7 +142,9 @@ describe('NimbusRecipe', () => {
         slug: branch.slug,
         surface: "About:Welcome Page (1st screen)",
         template: "aboutwelcome",
-        previewLink: "about:messagepreview?json=ewAiAGkAZAAiADoAIgBhAGIAbwB1AHQAdwBlAGwAYwBvAG0AZQAtAHQAZQBzAHQALQByAGUAYwBpAHAAZQAiACwAIgB0AGUAbQBwAGwAYQB0AGUAIgA6ACIAcwBwAG8AdABsAGkAZwBoAHQAIgAsACIAdABhAHIAZwBlAHQAaQBuAGcAIgA6AHQAcgB1AGUALAAiAGMAbwBuAHQAZQBuAHQAIgA6AHsAIgBiAGEAYwBrAGQAcgBvAHAAIgA6ACIAdABlAHMAdAAtAGIAYQBjAGsAZAByAG8AcAAiACwAIgBpAGQAIgA6ACIAZgBlAGEAdAB1AHIAZQBfAHYAYQBsAHUAZQBfAGkAZAA6AHQAcgBlAGEAdABtAGUAbgB0AC0AYQAiACwAIgBzAGMAcgBlAGUAbgBzACIAOgBbAHsAIgBpAGQAIgA6ACIAVABFAFMAVABfAFMAQwBSAEUARQBOAF8ASQBEAF8AQQBfADAAIgB9AF0ALAAiAG0AbwBkAGEAbAAiADoAIgB0AGEAYgAiAH0AfQA%3D"
+        previewLink: "about:messagepreview?json=ewAiAGkAZAAiADoAIgBhAGIAbwB1AHQAdwBlAGwAYwBvAG0AZQAtAHQAZQBzAHQALQByAGUAYwBpAHAAZQAiACwAIgB0AGUAbQBwAGwAYQB0AGUAIgA6ACIAcwBwAG8AdABsAGkAZwBoAHQAIgAsACIAdABhAHIAZwBlAHQAaQBuAGcAIgA6AHQAcgB1AGUALAAiAGMAbwBuAHQAZQBuAHQAIgA6AHsAIgBiAGEAYwBrAGQAcgBvAHAAIgA6ACIAdABlAHMAdAAtAGIAYQBjAGsAZAByAG8AcAAiACwAIgBpAGQAIgA6ACIAZgBlAGEAdAB1AHIAZQBfAHYAYQBsAHUAZQBfAGkAZAA6AHQAcgBlAGEAdABtAGUAbgB0AC0AYQAiACwAIgBzAGMAcgBlAGUAbgBzACIAOgBbAHsAIgBpAGQAIgA6ACIAVABFAFMAVABfAFMAQwBSAEUARQBOAF8ASQBEAF8AQQBfADAAIgB9AF0ALAAiAG0AbwBkAGEAbAAiADoAIgB0AGEAYgAiAH0AfQA%3D",
+        screenshots: ["screenshotURI"],
+        description: "treatment-a description"
       })
     })
 
@@ -158,7 +168,9 @@ describe('NimbusRecipe', () => {
         nimbusExperiment: AW_RECIPE_NO_SCREENS,
         slug: branch.slug,
         surface: "About:Welcome Page (1st screen)",
-        template: "aboutwelcome"
+        template: "aboutwelcome",
+        screenshots: ["screenshotURI"],
+        description: "treatment-a description"
       })
     })
   })
@@ -177,7 +189,9 @@ describe('NimbusRecipe', () => {
         nimbusExperiment: rawRecipe,
         slug: 'control',
         surface: "none",
-        template: "none"
+        template: "none",
+        screenshots: [],
+        description: "control description"
       })
 
       expect(branchInfos[1]).toEqual({
@@ -187,7 +201,9 @@ describe('NimbusRecipe', () => {
         nimbusExperiment: rawRecipe,
         slug: 'treatment',
         surface: "testTemplate",
-        template: "testTemplate"
+        template: "testTemplate",
+        screenshots: ["screenshotURI"],
+        description: "test description"
       })
     })
   })
@@ -246,4 +262,47 @@ describe('NimbusRecipe', () => {
 
     })
   })
+
+  describe("isExpRecipe", () => {
+    it("returns true if the recipe is an experiment recipe not in rollout", () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe");
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+
+      const result = nimbusRecipe.isExpRecipe();
+
+      expect(result).toBe(true);
+    });
+
+    it("returns false if the recipe is a message rollout", () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        isRollout: true,
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+
+      const result = nimbusRecipe.isExpRecipe();
+
+      expect(result).toBe(false);
+    });
+  });
+
+  describe("getBranchRecipeLink", () => {
+    it("returns a link to the branch recipe in experimenter", () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        slug: "goat shearing`test",
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+
+      // having a weird char in the branch slug helps test that the code
+      // is calling encodeURIComponent
+      const branchSlug: string = "treatment`a";
+
+      const result = nimbusRecipe.getBranchRecipeLink(branchSlug);
+
+      expect(result).toBe(
+        `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(
+          rawRecipe.slug
+        )}/summary#${branchSlug}`
+      );
+    });
+  });
 })

@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
-import { Copy } from "lucide-react";
+import { ChevronUp, ChevronDown, Copy } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import {
   Tooltip,
@@ -67,6 +67,7 @@ export type RecipeInfo = {
   userFacingName?: string
   nimbusExperiment: NimbusExperiment
   isBranch?: boolean
+  branches: BranchInfo[]
 } | []
 
 export type BranchInfo = {
@@ -88,6 +89,7 @@ export type BranchInfo = {
   isBranch?: boolean
   template?: string
   screenshots?: string[]
+  description?: string
 } | []
 
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
@@ -152,11 +154,47 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
 export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
   {
     accessorKey: "dates",
-    header: "Dates",
+    header: ({ table }) => (
+      <div className="flex flex-row items-center">
+        <button
+          {...{
+            onClick: table.getToggleAllRowsExpandedHandler(),
+          }}
+          data-testid="toggleAllRowsButton"
+        >
+          {table.getIsAllRowsExpanded() ? (
+            <ChevronUp className="mr-2" size={18} />
+          ) : (
+            <ChevronDown className="mr-2" size={18} />
+          )}
+        </button>
+        Dates 
+      </div>
+    ),
     cell: (props: any) => {
       return (
-        <PrettyDateRange startDate={props.row.original.startDate}
-          endDate={props.row.original.endDate} />
+        <div className="flex flex-row items-center">
+          <div>
+              {props.row.getCanExpand() ? (
+                <button
+                  {...{
+                    onClick: props.row.getToggleExpandedHandler(),
+                    style: { cursor: 'pointer' },
+                  }}
+                  data-testid="toggleBranchRowsButton"
+                >
+                  {props.row.getIsExpanded() ? (
+                    <ChevronUp className="mr-2" size={18} />
+                  ) : (
+                    <ChevronDown className="mr-2" size={18} />
+                  )}
+                </button>
+              ) : null}
+            </div>
+            <PrettyDateRange startDate={props.row.original.startDate}
+              endDate={props.row.original.endDate} />
+        </div>
+        
       );
     }
   },
@@ -167,20 +205,57 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       if (props.row.original.userFacingName) {
         return (
           <>
-            <div className="font-semibold text-sm">
+            <a
+              href={props.row.original.experimenterLink}
+              className="font-semibold text-sm text-primary visited:text-inherit hover:text-blue-800 no-underline"
+              target="_blank"
+              rel="noreferrer"
+            >
               {props.row.original.userFacingName || props.row.original.id}
-            </div>
-            <div className="font-mono text-3xs">
-              {props.row.original.id}
-            </div>
+              <svg
+                fill="currentColor"
+                fill-opacity="0.6"
+                viewBox="0 0 8 8"
+                className="inline h-[1.2rem] w-[1.2rem] px-1"
+                aria-hidden="true"
+                style={{
+                  marginInline: "0.1rem 0",
+                  paddingBlock: "0 0.1rem",
+                  overflow: "visible",
+                }}
+              >
+                <path d="m1.71278 0h.57093c.31531 0 .57092.255837.57092.571429 0 .315591-.25561.571431-.57092.571431h-.57093c-.31531 0-.57093.25583-.57093.57143v4.57142c0 .3156.25562.57143.57093.57143h4.56741c.31531 0 .57093-.25583.57093-.57143v-.57142c0-.3156.25561-.57143.57092-.57143.31532 0 .57093.25583.57093.57143v.57142c0 .94678-.76684 1.71429-1.71278 1.71429h-4.56741c-.945943 0-1.71278-.76751-1.71278-1.71429v-4.57142c0-.946778.766837-1.71429 1.71278-1.71429zm5.71629 0c.23083.0002686.43879.13963.52697.353143.02881.069172.04375.143342.04396.218286v2.857141c0 .31559-.25561.57143-.57093.57143-.31531 0-.57092-.25584-.57092-.57143v-1.47771l-1.88006 1.88171c-.14335.14855-.35562.20812-.55523.15583-.19962-.0523-.35551-.20832-.40775-.40811-.05225-.19979.00727-.41225.15569-.55572l1.88006-1.88171h-1.47642c-.31531 0-.57093-.25584-.57093-.571431 0-.315592.25562-.571429.57093-.571429z"></path>
+              </svg>
+            </a>
+            <div className="font-mono text-3xs">{props.row.original.id}</div>
           </>
         );
       }
 
+      const recipe = new NimbusRecipe(props.row.original.nimbusExperiment)
+
       return (
-          <div className="font-mono text-xs ps-6">
-            {props.row.original.id}
-          </div>
+        <div className="ps-6">
+          <a
+            href={recipe.getBranchRecipeLink(props.row.original.slug)}
+            className="text-xs text-primary visited:text-inherit hover:text-blue-800 no-underline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {props.row.original.description || props.row.original.id}
+            <svg
+              fill="currentColor"
+              fill-opacity="0.6"
+              viewBox="0 0 8 8"
+              className="inline h-[1.0rem] w-[1.0rem] px-1"
+              aria-hidden="true"
+              style={{ paddingBlock: "0 0.1rem", overflow: "visible" }}
+            >
+              <path d="m1.71278 0h.57093c.31531 0 .57092.255837.57092.571429 0 .315591-.25561.571431-.57092.571431h-.57093c-.31531 0-.57093.25583-.57093.57143v4.57142c0 .3156.25562.57143.57093.57143h4.56741c.31531 0 .57093-.25583.57093-.57143v-.57142c0-.3156.25561-.57143.57092-.57143.31532 0 .57093.25583.57093.57143v.57142c0 .94678-.76684 1.71429-1.71278 1.71429h-4.56741c-.945943 0-1.71278-.76751-1.71278-1.71429v-4.57142c0-.946778.766837-1.71429 1.71278-1.71429zm5.71629 0c.23083.0002686.43879.13963.52697.353143.02881.069172.04375.143342.04396.218286v2.857141c0 .31559-.25561.57143-.57093.57143-.31531 0-.57092-.25584-.57092-.57143v-1.47771l-1.88006 1.88171c-.14335.14855-.35562.20812-.55523.15583-.19962-.0523-.35551-.20832-.40775-.40811-.05225-.19979.00727-.41225.15569-.55572l1.88006-1.88171h-1.47642c-.31531 0-.57093-.25584-.57093-.571431 0-.315592.25562-.571429.57093-.571429z"></path>
+            </svg>
+          </a>
+          <p className="font-mono text-3xs">{props.row.original.slug}</p>
+        </div>
       );
     }
   },
@@ -220,18 +295,12 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     accessorKey: "other",
     header: "",
     cell: (props: any) => {
-      if (props.row.original.experimenterLink) {
-        return (
-          OffsiteLink(props.row.original.experimenterLink, "Experiment")
-        );
-      }
-
       if (props.row.original.previewLink == undefined) {
         // XXX should figure out how to do this NimbusRecipe instantiation
         // once per row (maybe useState?)
         const recipe = new NimbusRecipe(props.row.original.nimbusExperiment)
         
-        if (props.row.original.screenshots.length > 0) {
+        if (props.row.original.screenshots && props.row.original.screenshots.length > 0) {
           const branchLink = recipe.getBranchScreenshotsLink(props.row.original.slug)
           return OffsiteLink(branchLink, "Screenshots")
         } else {
