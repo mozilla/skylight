@@ -15,7 +15,7 @@ type InfoProps = {
   content: string;
 };
 
-export function InfoIcon({ iconSize, content }: InfoProps) {
+export function InfoTooltip({ iconSize, content }: InfoProps) {
   return (
     <TooltipProvider>
       <Tooltip>
