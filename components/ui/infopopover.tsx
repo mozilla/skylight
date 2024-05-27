@@ -15,7 +15,7 @@ type InfoProps = {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Info size={iconSize} className={iconStyle} role="info"/>
+        <Info size={iconSize} className={iconStyle} role="img" aria-label="Info"/>
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <div className="grid gap-4">

@@ -27,6 +27,7 @@ export function InfoTooltip({ iconSize, content }: InfoProps) {
               className:
                 "bg-background p-2 hover:text-primary/70 hover:bg-background",
             })}
+            aria-label="Info"
           >
             <Info size={iconSize} />
           </Button>

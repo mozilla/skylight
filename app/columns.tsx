@@ -177,9 +177,9 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
           data-testid="toggleAllRowsButton"
         >
           {table.getIsAllRowsExpanded() ? (
-            <ChevronUp className="mr-2" size={18} />
+            <ChevronUp className="mr-2" size={18} aria-label="Collapse"/>
           ) : (
-            <ChevronDown className="mr-2" size={18} />
+            <ChevronDown className="mr-2" size={18} aria-label="Expand" />
           )}
         </button>
         Dates 
