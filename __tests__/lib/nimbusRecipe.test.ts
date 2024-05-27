@@ -149,10 +149,7 @@ describe('NimbusRecipe', () => {
       const branch = AW_RECIPE_NO_SCREENS.branches[1]
 
       const branchInfo = nimbusRecipe.getBranchInfo(branch)
-
-      // XXX getBranchInfo is actually going to return a previewLink, which
-      // makes this test kind of brittle. We could refactor this to no longer
-      // use deepEqual and check for the existence of object properties instead.
+      
       expect(branchInfo).toEqual({
         product: 'Desktop',
         ctrDashboardLink: "https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25FEATURE_VALUE_ID%3ATREATMENT-A%25&Normalized+Channel=&Experiment=aboutwelcome-test-recipe&Branch=treatment-a",
@@ -161,8 +158,7 @@ describe('NimbusRecipe', () => {
         nimbusExperiment: AW_RECIPE_NO_SCREENS,
         slug: branch.slug,
         surface: "About:Welcome Page (1st screen)",
-        template: "aboutwelcome",
-        previewLink: "about:messagepreview?json=ewAiAGkAZAAiADoAIgBhAGIAbwB1AHQAdwBlAGwAYwBvAG0AZQAtAHQAZQBzAHQALQByAGUAYwBpAHAAZQAiACwAIgB0AGUAbQBwAGwAYQB0AGUAIgA6ACIAcwBwAG8AdABsAGkAZwBoAHQAIgAsACIAdABhAHIAZwBlAHQAaQBuAGcAIgA6AHQAcgB1AGUALAAiAGMAbwBuAHQAZQBuAHQAIgA6AHsAIgBpAGQAIgA6ACIAZgBlAGEAdAB1AHIAZQBfAHYAYQBsAHUAZQBfAGkAZAA6AHQAcgBlAGEAdABtAGUAbgB0AC0AYQAiACwAIgBtAG8AZABhAGwAIgA6ACIAdABhAGIAIgAsACIAYgBhAGMAawBkAHIAbwBwACIAOgAiAHYAYQByACgALQAtAG0AcgAtAHcAZQBsAGMAbwBtAGUALQBiAGEAYwBrAGcAcgBvAHUAbgBkAC0AYwBvAGwAbwByACkAIAB2AGEAcgAoAC0ALQBtAHIALQB3AGUAbABjAG8AbQBlAC0AYgBhAGMAawBnAHIAbwB1AG4AZAAtAGcAcgBhAGQAaQBlAG4AdAApACIAfQB9AA%3D%3D"
+        template: "aboutwelcome"
       })
     })
   })
