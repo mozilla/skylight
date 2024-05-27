@@ -178,9 +178,9 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
           aria-label="Toggle All Branches"
         >
           {table.getIsAllRowsExpanded() ? (
-            <ChevronUp className="mr-2" size={18}/>
+            <ChevronUp className="mr-2" size={18} />
           ) : (
-            <ChevronDown className="mr-2" size={18}/>
+            <ChevronDown className="mr-2" size={18} />
           )}
         </button>
         Dates 
