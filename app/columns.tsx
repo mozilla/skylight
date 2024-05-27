@@ -88,6 +88,21 @@ export type BranchInfo = {
 
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
 
+const previewURLInfoButton = (
+  <InfoPopover
+    iconSize={14}
+    content={
+      <p>
+        To make the Preview URLs work, load <code>about:config</code> in Firefox
+        and set{" "}
+        <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code>{" "}
+        to true; a Firefox 126 build is required."
+      </p>
+    }
+    iconStyle="ml-1 cursor-pointer hover:text-slate-400/70"
+  />
+);
+
 export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   {
     accessorKey: "id",
@@ -134,10 +149,7 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     header: () => (
       <div className="flex flex-row items-center">
         Visuals
-        <InfoPopover
-          iconSize={14}
-          content="To make the preview URLs work, load about:config in Firefox and set browser.newtabpage.activity-stream.asrouter.devtoolsEnabled to true; a Firefox 126 build is required."
-        />
+        {previewURLInfoButton}
       </div>
     ),
     cell: (props: any) => {
@@ -298,10 +310,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     header: () => (
       <div className="flex flex-row items-center">
         Visuals
-        <InfoPopover
-          iconSize={14}
-          content="To make the preview URLs work, load about:config in Firefox and set browser.newtabpage.activity-stream.asrouter.devtoolsEnabled to true; a Firefox 126 build is required."
-        />
+        {previewURLInfoButton}
       </div>
     ),
     cell: (props: any) => {

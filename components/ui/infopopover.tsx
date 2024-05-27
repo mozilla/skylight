@@ -7,14 +7,15 @@ import { Info } from "lucide-react";
 
 type InfoProps = {
     iconSize: number;
-    content: string;
+    content: any;
+    iconStyle: string;
   };
   
-  export function InfoPopover({ iconSize, content }: InfoProps) {
+  export function InfoPopover({ iconSize, content, iconStyle }: InfoProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Info size={iconSize} className="ml-2 cursor-pointer hover:text-foreground"/>
+        <Info size={iconSize} className={iconStyle}/>
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <div className="grid gap-4">
