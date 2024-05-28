@@ -96,7 +96,7 @@ const previewURLInfoButton = (
         To make the Preview URLs work, load <code>about:config</code> in Firefox
         and set{" "}
         <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code>{" "}
-        to true; a Firefox 126 build is required.
+        to true; Firefox 126 or newer is required.
       </p>
     }
     iconStyle="ml-1 cursor-pointer hover:text-slate-400/70"
