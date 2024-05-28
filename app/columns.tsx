@@ -1,17 +1,11 @@
 "use client"
 import { types } from "@mozilla/nimbus-shared";
 import { ColumnDef } from "@tanstack/react-table";
-import { Button, buttonVariants } from "@/components/ui/button";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
-import { ChevronUp, ChevronDown, Copy } from "lucide-react";
+import { ChevronUp, ChevronDown } from "lucide-react";
 import { PrettyDateRange } from "./dates";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { InfoPopover } from "@/components/ui/infopopover";
 
 function OffsiteLink(href: string, linkText: string) {
   return (
@@ -94,6 +88,21 @@ export type BranchInfo = {
 
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
 
+const previewURLInfoButton = (
+  <InfoPopover
+    iconSize={14}
+    content={
+      <p>
+        To make the Preview URLs work, load <code>about:config</code> in Firefox
+        and set{" "}
+        <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code>{" "}
+        to true; Firefox 126 or newer is required.
+      </p>
+    }
+    iconStyle="ml-1 cursor-pointer hover:text-slate-400/70"
+  />
+);
+
 export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   {
     accessorKey: "id",
@@ -137,7 +146,12 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     }
   }, {
     accessorKey: "previewLink",
-    header: "",
+    header: () => (
+      <div className="flex flex-row items-center">
+        Visuals
+        {previewURLInfoButton}
+      </div>
+    ),
     cell: (props: any) => {
       if (props.row.original.template !== 'infobar'
           && props.row.original.template !== 'spotlight') {
@@ -161,6 +175,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
             onClick: table.getToggleAllRowsExpandedHandler(),
           }}
           data-testid="toggleAllRowsButton"
+          aria-label="Toggle All Branches"
         >
           {table.getIsAllRowsExpanded() ? (
             <ChevronUp className="mr-2" size={18} />
@@ -182,6 +197,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
                     style: { cursor: 'pointer' },
                   }}
                   data-testid="toggleBranchRowsButton"
+                  aria-label="Toggle Branches"
                 >
                   {props.row.getIsExpanded() ? (
                     <ChevronUp className="mr-2" size={18} />
@@ -214,7 +230,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
               {props.row.original.userFacingName || props.row.original.id}
               <svg
                 fill="currentColor"
-                fill-opacity="0.6"
+                fillOpacity="0.6"
                 viewBox="0 0 8 8"
                 className="inline h-[1.2rem] w-[1.2rem] px-1"
                 aria-hidden="true"
@@ -245,7 +261,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
             {props.row.original.description || props.row.original.id}
             <svg
               fill="currentColor"
-              fill-opacity="0.6"
+              fillOpacity="0.6"
               viewBox="0 0 8 8"
               className="inline h-[1.0rem] w-[1.0rem] px-1"
               aria-hidden="true"
@@ -293,7 +309,12 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     }
   }, {
     accessorKey: "other",
-    header: "",
+    header: () => (
+      <div className="flex flex-row items-center">
+        Visuals
+        {previewURLInfoButton}
+      </div>
+    ),
     cell: (props: any) => {
       if (props.row.original.previewLink == undefined) {
         // XXX should figure out how to do this NimbusRecipe instantiation
