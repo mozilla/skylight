@@ -1,3 +1,9 @@
+## Friday, May 31st, 2024
+
+### Added
+
+* Added the AboutWelcomeDefaults message to the release table
+
 ## Friday, May 24th, 2024
 
 ### Added

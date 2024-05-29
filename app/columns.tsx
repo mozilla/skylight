@@ -139,8 +139,8 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     accessorKey: "previewLink",
     header: "",
     cell: (props: any) => {
-      if (props.row.original.template !== 'infobar'
-          && props.row.original.template !== 'spotlight') {
+      const supportedTypes = ['infobar', 'spotlight', 'defaultaboutwelcome'];
+      if (!(supportedTypes.includes(props.row.original.template))) {
           return ( <div/> );
       }
 
