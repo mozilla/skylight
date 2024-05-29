@@ -7,11 +7,10 @@ Ultimately, I suspect it's six of one/half dozen of the other, and we may end up
 ### Looker
 
 * Set up credentials
-  * Testing/Development: use developer API credentials
+  * Testing/Development: use developer API credentials (may need to talk to AScholz to get those creds, and definitely will need to do do so to get Looker-side dev privs)
   * Production: service account
 
 * Looker SDK
-  * `npm install @looker/sdk`
   * Learning how to use it:
     * The docs contained in the [API Explorer](https://cloud.google.com/looker/docs/api-explorer) Looker app for the REST API itself are decent, as is the built in query-runnner. Looker developer privs are required.
 
