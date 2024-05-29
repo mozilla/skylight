@@ -26,9 +26,7 @@ export async function runEventCountQuery(filters): Promise<any>{
   delete newQueryBody.client_id // must be unique per-query
 
   // override the filters
-  newQueryBody.filters = Object.assign
-
-  (
+  newQueryBody.filters = Object.assign(
     {
       'event_counts.message_id': '%FAKESPOT_OPTIN_DEFAULT%',
       'event_counts.submission_timestamp_date': '2 days'
