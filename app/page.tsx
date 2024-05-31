@@ -4,7 +4,7 @@ import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAbo
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
-import { InfoIcon } from "@/components/ui/infoicon.tsx";
+import { InfoTooltip } from "@/components/ui/infotooltip.tsx";
 import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
 import { MessageTable } from "./message-table";
 import Link from "next/link";
@@ -113,24 +113,16 @@ export default async function Dashboard() {
 
   return (
     <div>
-      <div>
-        <div className="flex justify-between mx-20 py-8">
-          <h4 className="scroll-m-20 text-3xl font-semibold">
-            Skylight
-          </h4>
-          <MenuButton />
-        </div>
-
-        <ul className='list-[circle] mx-20 text-sm'>
-          <li>
-            To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>; <b>a Firefox 126 build from March 29 or newer</b> is required.
-          </li>
-        </ul>
+      <div className="flex justify-between mx-20 py-8">
+        <h4 className="scroll-m-20 text-3xl font-semibold">
+          Skylight
+        </h4>
+        <MenuButton />
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Messages Released on Firefox
-        <InfoIcon
+        <InfoTooltip
           iconSize={16}
           content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
         />
