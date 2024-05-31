@@ -1,6 +1,6 @@
 import { types } from "@mozilla/nimbus-shared";
 import { getAWDashboardElement0, runEventCountQuery } from "@/lib/looker.ts";
-import { BranchInfo, RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
+import { BranchInfo, RecipeInfo, RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
@@ -28,16 +28,16 @@ async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMes
   let dbElement = await getAWDashboardElement0();
 
   // console.log("dbElement.query: ", dbElement.query)
-  console.log("dbElement.query.filters: ", dbElement.query.filters)
-  console.log("dbElement.query.model: ", dbElement.query.model)
-  console.log("dbElement.query.filter_expression: ",
-    dbElement.query.filter_expression)
+  // console.log("dbElement.query.filters: ", dbElement.query.filters)
+  // console.log("dbElement.query.model: ", dbElement.query.model)
+  // console.log("dbElement.query.filter_expression: ",
+  //   dbElement.query.filter_expression)
 
   const queryResult = await runEventCountQuery(
     { 'event_counts.message_id':  '%' + messageDef.id + '%' }
   )
 
-  console.log("queryResult: ", queryResult)
+  // console.log("queryResult: ", queryResult)
   if (queryResult.length > 0 && fxmsMsgInfo.template !== 'infobar') {
     fxmsMsgInfo.ctrPercent = Number(Number(queryResult[0].primary_rate * 100).toFixed(1))
   }
@@ -111,36 +111,94 @@ async function getMsgRolloutCollection(
 
 export default async function Dashboard() {
   // Check to see if Auth is enabled
-  const isAuthEnabled = process.env.IS_AUTH_ENABLED === 'true';
+  const isAuthEnabled = process.env.IS_AUTH_ENABLED === "true";
 
-  const recipeCollection = new NimbusRecipeCollection()
-  await recipeCollection.fetchRecipes()
-  console.log('recipeCollection.length = ', recipeCollection.recipes.length)
+  const recipeCollection = new NimbusRecipeCollection();
+  await recipeCollection.fetchRecipes();
+  console.log("recipeCollection.length = ", recipeCollection.recipes.length);
 
   // XXX await Promise.allSettled for all three loads concurrently
-  const localData = await getASRouterLocalMessageInfoFromFile()
-  const msgExpRecipeCollection = await getMsgExpRecipeCollection(recipeCollection)
-  const msgRolloutRecipeCollection = await getMsgRolloutCollection(recipeCollection)
+  const localData = await getASRouterLocalMessageInfoFromFile();
+  const msgExpRecipeCollection = await getMsgExpRecipeCollection(
+    recipeCollection
+  );
+  const msgRolloutRecipeCollection = await getMsgRolloutCollection(
+    recipeCollection
+  );
 
-  // get in format useable by MessageTable
-  const experimentAndBranchInfo : RecipeOrBranchInfo[] =
+  // Get in format useable by MessageTable
+  const experimentAndBranchInfo: RecipeOrBranchInfo[] = await Promise.all(
     msgExpRecipeCollection.recipes.map(
-      (recipe : NimbusRecipe) => recipe.getRecipeInfo())
+      async (recipe: NimbusRecipe): Promise<RecipeInfo> => {
+        let branches = await Promise.all(
+          recipe
+            .getBranchInfos()
+            .map(async (branch: BranchInfo): Promise<BranchInfo> => {
+              // Get CTR percent through Looker
+              let dbElement = await getAWDashboardElement0();
 
-  const totalExperiments = msgExpRecipeCollection.recipes.length
+              // We are making all branch ids upper case to make up for Looker being case sensitive
+              const queryResult = await runEventCountQuery({
+                "event_counts.message_id": "%" + branch.id.toUpperCase() + "%",
+              });
 
-  const msgRolloutInfo: RecipeOrBranchInfo[] =
+              if (queryResult.length > 0) {
+                branch.ctrPercent = Number(
+                  Number(queryResult[0].primary_rate * 100).toFixed(1)
+                );
+              }
+
+              return branch;
+            })
+        );
+        // Update branches with CTR data for each recipe
+        let updatedRecipe = recipe.getRecipeInfo();
+        updatedRecipe.branches = branches;
+        return updatedRecipe;
+      }
+    )
+  );
+
+  const totalExperiments = msgExpRecipeCollection.recipes.length;
+
+  const msgRolloutInfo: RecipeOrBranchInfo[] = await Promise.all(
     msgRolloutRecipeCollection.recipes.map(
-      (recipe : NimbusRecipe) => recipe.getRecipeInfo())
+      async (recipe: NimbusRecipe): Promise<RecipeInfo> => {
+        let branches = await Promise.all(
+          recipe
+            .getBranchInfos()
+            .map(async (branch: BranchInfo): Promise<BranchInfo> => {
+              // Get CTR percent through Looker
+              let dbElement = await getAWDashboardElement0();
+
+              // We are making all branch ids upper case to make up for Looker being case sensitive
+              const queryResult = await runEventCountQuery({
+                "event_counts.message_id": "%" + branch.id.toUpperCase() + "%",
+              });
+
+              if (queryResult.length > 0) {
+                branch.ctrPercent = Number(
+                  Number(queryResult[0].primary_rate * 100).toFixed(1)
+                );
+              }
+
+              return branch;
+            })
+        );
+        // Update branches with CTR data for each recipe
+        let updatedRecipe = recipe.getRecipeInfo();
+        updatedRecipe.branches = branches;
+        return updatedRecipe;
+      }
+    )
+  );
 
   const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
 
   return (
     <div>
       <div className="flex justify-between mx-20 py-8">
-        <h4 className="scroll-m-20 text-3xl font-semibold">
-          Skylight
-        </h4>
+        <h4 className="scroll-m-20 text-3xl font-semibold">Skylight</h4>
         <MenuButton />
       </div>
 
@@ -152,7 +210,7 @@ export default async function Dashboard() {
         />
       </h5>
       <h5 className="scroll-m-20 text-lg font-semibold text-center">
-        (Partial List) 
+        (Partial List)
       </h5>
 
       <div className="container mx-auto py-10">
@@ -177,10 +235,15 @@ export default async function Dashboard() {
       </h5>
 
       <div className="space-y-5 container mx-auto py-10">
-        <MessageTable columns={experimentColumns} data={experimentAndBranchInfo} />
+        <MessageTable
+          columns={experimentColumns}
+          data={experimentAndBranchInfo}
+        />
         {isAuthEnabled ? (
           <div>
-            <a className="text-s" href="/api/auth/logout">Logout</a>
+            <a className="text-s" href="/api/auth/logout">
+              Logout
+            </a>
           </div>
         ) : null}
       </div>

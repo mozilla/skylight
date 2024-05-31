@@ -85,5 +85,13 @@ describe("MessageTable", () => {
       const treatmentBranchDescription = screen.queryByText("test description");
       expect(treatmentBranchDescription).not.toBeInTheDocument();
     });
+
+    it("displays CTR percentages if Looker dashboard exists", () => {
+
+    });
+
+    it("doesn't display any CTR percentages if Looker dashboard doesn't exist", () => {
+
+    });
   });
 });

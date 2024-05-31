@@ -16,7 +16,7 @@ export async function getAWDashboardElement0(): Promise<IDashboardElement> {
   return elements[0];
 }
 
-export async function runEventCountQuery(filters): Promise<any>{
+export async function runEventCountQuery(filters: any): Promise<any>{
 
   const element0 = await getAWDashboardElement0()
   const origQuery = element0.query as IWriteQuery
@@ -34,17 +34,17 @@ export async function runEventCountQuery(filters): Promise<any>{
     filters
   )
 
-  console.log("filters: ", filters)
-  console.log("newQueryBody.filters: ", newQueryBody.filters)
+  // console.log("filters: ", filters)
+  // console.log("newQueryBody.filters: ", newQueryBody.filters)
 
 
   const newQuery = await SDK.ok(SDK.create_query(newQueryBody));
   const result = await SDK.ok(SDK.run_query({
-      query_id: newQuery.id,
+      query_id: newQuery.id!,
       result_format: "json"
     }))
 
-  console.log("newQueryBody.filters: ", newQueryBody.filters)
-  console.log(" newQuery result: ", result)
+  // console.log("newQueryBody.filters: ", newQueryBody.filters)
+  // console.log(" newQuery result: ", result)
   return result
 }

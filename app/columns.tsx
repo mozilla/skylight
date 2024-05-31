@@ -62,7 +62,7 @@ export type RecipeInfo = {
   nimbusExperiment: NimbusExperiment
   isBranch?: boolean
   branches: BranchInfo[]
-} | []
+}
 
 export type BranchInfo = {
   product: 'Desktop' | 'Android'
@@ -84,7 +84,7 @@ export type BranchInfo = {
   template?: string
   screenshots?: string[]
   description?: string
-} | []
+}
 
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
 
@@ -302,7 +302,9 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
 
       // XXX see https://bugzilla.mozilla.org/show_bug.cgi?id=1890055 for
       // re-enabling infobar code.
-      if (props.row.original.ctrDashboardLink) {
+      if (props.row.original.ctrDashboardLink && props.row.original.ctrPercent) {
+        return OffsiteLink(props.row.original.ctrDashboardLink, props.row.original.ctrPercent + "% CTR");
+      } else if (props.row.original.ctrDashboardLink) {
         return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
       }
       return ( <></> );
