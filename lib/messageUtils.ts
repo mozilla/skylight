@@ -78,7 +78,7 @@ export function toBinary(string: string): string {
   return btoa(String.fromCharCode(...Array.from(new Uint8Array(codeUnits.buffer))));
 }
 
-export function maybeCreateWelcomePreview(message: any): string {
+export function maybeCreateWelcomePreview(message: any): object {
   if (message.template === "defaultaboutwelcome") {
     //Shove the about:welcome message in a spotlight
     let defaultWelcomeFake = {
