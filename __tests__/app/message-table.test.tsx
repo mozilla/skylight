@@ -87,11 +87,38 @@ describe("MessageTable", () => {
     });
 
     it("displays CTR percentages if Looker dashboard exists", () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe");
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+      const branchInfos = nimbusRecipe.getBranchInfos()
+      branchInfos[0].ctrDashboardLink = "https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25FEATURE_VALUE_ID%3ATREATMENT-A%25&Normalized+Channel=&Experiment=aboutwelcome-test-recipe&Branch=treatment-a"
+      branchInfos[0].ctrPercent = 23.2
+      let updatedRecipe = nimbusRecipe.getRecipeInfo()
+      updatedRecipe.branches = branchInfos
+      const messageTableData: RecipeOrBranchInfo[] =
+        [updatedRecipe];
+      render(
+        <MessageTable columns={experimentColumns} data={messageTableData} />
+      );
 
+      const toggleButton = screen.getByTestId("toggleBranchRowsButton");
+      fireEvent.click(toggleButton);
+      const ctrMetric = screen.getByText("23.2% CTR")
+
+      expect(ctrMetric).toBeInTheDocument();
     });
 
     it("doesn't display any CTR percentages if Looker dashboard doesn't exist", () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe");
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+      const messageTableData: RecipeOrBranchInfo[] =
+        [nimbusRecipe.getRecipeInfo()];
+      render(
+        <MessageTable columns={experimentColumns} data={messageTableData} />
+      );
 
+      const ctrMetrics = screen.queryByText("CTR");
+
+      expect(ctrMetrics).not.toBeInTheDocument();
     });
   });
 });
