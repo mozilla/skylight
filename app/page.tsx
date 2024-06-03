@@ -1,5 +1,5 @@
 import { types } from "@mozilla/nimbus-shared";
-import { getAWDashboardElement0, runEventCountQuery } from "@/lib/looker.ts";
+import { setCTRPercent } from "@/lib/looker.ts";
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
@@ -25,21 +25,9 @@ async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMes
     previewLink: getPreviewLink(messageDef),
   };
 
-  let dbElement = await getAWDashboardElement0();
-
-  // console.log("dbElement.query: ", dbElement.query)
-  // console.log("dbElement.query.filters: ", dbElement.query.filters)
-  // console.log("dbElement.query.model: ", dbElement.query.model)
-  // console.log("dbElement.query.filter_expression: ",
-  //   dbElement.query.filter_expression)
-
-  const queryResult = await runEventCountQuery(
-    { 'event_counts.message_id':  '%' + messageDef.id + '%' }
-  )
-
-  // console.log("queryResult: ", queryResult)
-  if (queryResult.length > 0 && fxmsMsgInfo.template !== 'infobar') {
-    fxmsMsgInfo.ctrPercent = Number(Number(queryResult[0].primary_rate * 100).toFixed(1))
+  const ctrPercent = await setCTRPercent(messageDef.id, fxmsMsgInfo.template)
+  if (ctrPercent) {
+    fxmsMsgInfo.ctrPercent = ctrPercent
   }
   fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id, "release")
 
@@ -134,18 +122,10 @@ export default async function Dashboard() {
           recipe
             .getBranchInfos()
             .map(async (branch: BranchInfo): Promise<BranchInfo> => {
-              // Get CTR percent through Looker
-              let dbElement = await getAWDashboardElement0();
-
               // We are making all branch ids upper case to make up for Looker being case sensitive
-              const queryResult = await runEventCountQuery({
-                "event_counts.message_id": "%" + branch.id.toUpperCase() + "%",
-              });
-
-              if (queryResult.length > 0) {
-                branch.ctrPercent = Number(
-                  Number(queryResult[0].primary_rate * 100).toFixed(1)
-                );
+              const ctrPercent = await setCTRPercent(branch.id.toUpperCase(), branch.template)
+              if (ctrPercent) {
+                branch.ctrPercent = ctrPercent
               }
 
               return branch;
@@ -168,18 +148,10 @@ export default async function Dashboard() {
           recipe
             .getBranchInfos()
             .map(async (branch: BranchInfo): Promise<BranchInfo> => {
-              // Get CTR percent through Looker
-              let dbElement = await getAWDashboardElement0();
-
               // We are making all branch ids upper case to make up for Looker being case sensitive
-              const queryResult = await runEventCountQuery({
-                "event_counts.message_id": "%" + branch.id.toUpperCase() + "%",
-              });
-
-              if (queryResult.length > 0) {
-                branch.ctrPercent = Number(
-                  Number(queryResult[0].primary_rate * 100).toFixed(1)
-                );
+              const ctrPercent = await setCTRPercent(branch.id.toUpperCase(), branch.template)
+              if (ctrPercent) {
+                branch.ctrPercent = ctrPercent
               }
 
               return branch;

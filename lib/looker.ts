@@ -48,3 +48,12 @@ export async function runEventCountQuery(filters: any): Promise<any>{
   // console.log(" newQuery result: ", result)
   return result
 }
+
+export async function setCTRPercent(id: string, template?: string): Promise<number|undefined> {
+  const queryResult = await runEventCountQuery(
+    { 'event_counts.message_id':  '%' + id + '%' }
+  )
+  if (queryResult.length > 0 && template !== 'infobar') {
+    return Number(Number(queryResult[0].primary_rate * 100).toFixed(1))
+  }
+}
