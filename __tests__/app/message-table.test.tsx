@@ -1,8 +1,29 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { MessageTable } from "@/app/message-table";
-import { experimentColumns, RecipeOrBranchInfo } from "@/app/columns";
+import { getExperimentAndBranchInfos } from "@/app/page";
+import { experimentColumns, RecipeInfo, RecipeOrBranchInfo } from "@/app/columns";
 import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
+import { NimbusRecipeCollection } from '@/lib/nimbusRecipeCollection'
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
+
+const fakeQueryResult = {
+  "event_counts.submission_timestamp_date": "2024-06-04",
+  primary_rate: 0.123456789,
+  other_rate: 0.987654321,
+  "event_counts.user_count": {},
+};
+jest.mock("../../lib/looker", () => {
+  return {
+    _esModule: true,
+    SDK: "mocked SDK",
+    me: "mocked me",
+    getAWDashboardElement0: jest.fn(() => "mocked dashboard element"),
+    runEventCountQuery: jest.fn(() => fakeQueryResult),
+    setCTRPercent: jest.fn(() =>
+      Number(Number(fakeQueryResult.primary_rate * 100).toFixed(1))
+    ),
+  };
+});
 
 describe("MessageTable", () => {
   describe("ExperimentColumns", () => {
@@ -86,25 +107,25 @@ describe("MessageTable", () => {
       expect(treatmentBranchDescription).not.toBeInTheDocument();
     });
 
-    it("displays CTR percentages if Looker dashboard exists", () => {
-      const rawRecipe = ExperimentFakes.recipe("test-recipe");
-      const nimbusRecipe = new NimbusRecipe(rawRecipe);
-      const branchInfos = nimbusRecipe.getBranchInfos()
-      branchInfos[0].ctrDashboardLink = "https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25FEATURE_VALUE_ID%3ATREATMENT-A%25&Normalized+Channel=&Experiment=aboutwelcome-test-recipe&Branch=treatment-a"
-      branchInfos[0].ctrPercent = 23.2
-      let updatedRecipe = nimbusRecipe.getRecipeInfo()
-      updatedRecipe.branches = branchInfos
-      const messageTableData: RecipeOrBranchInfo[] =
-        [updatedRecipe];
-      render(
-        <MessageTable columns={experimentColumns} data={messageTableData} />
-      );
+    it("displays CTR percentages if Looker dashboard exists", async () => {
+      const nimbusRecipeCollection = new NimbusRecipeCollection();
+      nimbusRecipeCollection.recipes = [
+        new NimbusRecipe(ExperimentFakes.recipe()),
+      ];
+      const recipeInfos: RecipeInfo[] = await getExperimentAndBranchInfos(
+        nimbusRecipeCollection
+      ) as RecipeInfo[];
 
-      const toggleButton = screen.getByTestId("toggleBranchRowsButton");
+      // Setting fake dashboard link in order to render in MessageTable
+      recipeInfos[0].branches[0].ctrDashboardLink = "fake link"
+      render(<MessageTable columns={experimentColumns} data={recipeInfos} />);
+      const toggleButton = screen.getByTestId("toggleAllRowsButton");
       fireEvent.click(toggleButton);
-      const ctrMetric = screen.getByText("23.2% CTR")
+      const ctrMetrics = screen.getByText("12.3% CTR");
 
-      expect(ctrMetric).toBeInTheDocument();
+      expect(recipeInfos[0].branches[0].ctrPercent).toBe(12.3)
+      expect(recipeInfos[0].branches[0].ctrDashboardLink).toBeDefined()
+      expect(ctrMetrics).toBeInTheDocument();
     });
 
     it("doesn't display any CTR percentages if Looker dashboard doesn't exist", () => {
@@ -116,6 +137,8 @@ describe("MessageTable", () => {
         <MessageTable columns={experimentColumns} data={messageTableData} />
       );
 
+      const toggleButton = screen.getByTestId("toggleAllRowsButton");
+      fireEvent.click(toggleButton);
       const ctrMetrics = screen.queryByText("CTR");
 
       expect(ctrMetrics).not.toBeInTheDocument();

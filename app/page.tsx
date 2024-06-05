@@ -98,10 +98,11 @@ async function getMsgRolloutCollection(
 }
 
 /**
+ * XXX Consider moving to nimbusRecipeCollection.tsx
  * @returns a list of RecipeInfo with the branches of every recipe having the 
  * ctrPercent property updated.
  */
-async function getExperimentAndBranchInfos(
+export async function getExperimentAndBranchInfos(
   recipeCollection: NimbusRecipeCollection
 ): Promise<RecipeOrBranchInfo[]> {
   return await Promise.all(
