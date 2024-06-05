@@ -12,7 +12,7 @@ import Link from "next/link";
 
 import { MenuButton } from "@/components/ui/menubutton.tsx";
 
-async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMessageInfo> {
+export async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMessageInfo> {
   let fxmsMsgInfo : FxMSMessageInfo = {
     product: 'Desktop',
     id: messageDef.id,
