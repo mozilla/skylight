@@ -14,8 +14,6 @@ const fakeQueryResult = {
 jest.mock("../../lib/looker", () => {
   return {
     _esModule: true,
-    SDK: "mocked SDK",
-    me: "mocked me",
     getAWDashboardElement0: jest.fn(() => "mocked dashboard element"),
     runEventCountQuery: jest.fn(() => fakeQueryResult),
     setCTRPercent: jest.fn(() =>
