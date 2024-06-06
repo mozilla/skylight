@@ -12,6 +12,8 @@ import Link from "next/link";
 
 import { MenuButton } from "@/components/ui/menubutton.tsx";
 
+const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
+
 export async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMessageInfo> {
   let fxmsMsgInfo : FxMSMessageInfo = {
     product: 'Desktop',
@@ -20,15 +22,18 @@ export async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<
     surface: getDisplayNameForTemplate(getTemplateFromMessage(messageDef)),
     segment: 'some segment',
     metrics: 'some metrics',
-    ctrPercent: 0, // getMeFromLooker
-    ctrPercentChange: 2, // getMeFromLooker
+    ctrPercent: undefined, // getMeFromLooker
+    ctrPercentChange: undefined, // getMeFromLooker
     previewLink: getPreviewLink(messageDef),
   };
 
-  const ctrPercent = await setCTRPercent(messageDef.id, fxmsMsgInfo.template)
-  if (ctrPercent) {
-    fxmsMsgInfo.ctrPercent = ctrPercent
+  if (isLookerEnabled) {
+    const ctrPercent = await setCTRPercent(messageDef.id, fxmsMsgInfo.template)
+    if (ctrPercent) {
+      fxmsMsgInfo.ctrPercent = ctrPercent
+    }
   }
+  
   fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id, "release")
 
   // dashboard link -> dashboard id -> query id -> query -> ctr_percent_from_lastish_day
@@ -151,11 +156,19 @@ export default async function Dashboard() {
   );
 
   // Get in format useable by MessageTable
-  const experimentAndBranchInfo: RecipeOrBranchInfo[] = await getExperimentAndBranchInfos(msgExpRecipeCollection)
+  const experimentAndBranchInfo: RecipeOrBranchInfo[] = isLookerEnabled
+    ? await getExperimentAndBranchInfos(msgExpRecipeCollection)
+    : msgExpRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
+        recipe.getRecipeInfo()
+      );
 
   const totalExperiments = msgExpRecipeCollection.recipes.length;
 
-  const msgRolloutInfo: RecipeOrBranchInfo[] = await getExperimentAndBranchInfos(msgRolloutRecipeCollection)
+  const msgRolloutInfo: RecipeOrBranchInfo[] = isLookerEnabled
+    ? await getExperimentAndBranchInfos(msgRolloutRecipeCollection)
+    : msgRolloutRecipeCollection.recipes.map((recipe:NimbusRecipe) => 
+        recipe.getRecipeInfo()
+    );
 
   const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
 

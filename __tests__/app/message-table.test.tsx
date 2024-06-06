@@ -24,6 +24,25 @@ jest.mock("../../lib/looker", () => {
     ),
   };
 });
+const fakeFxMSMessage: FxMSMessageInfo = {
+  product: "Desktop",
+  id: "test id",
+  template: "test template",
+  surface: "test surface",
+  segment: 'test segment',
+  metrics: 'test metrics',
+  ctrPercent: 12.3,
+  ctrPercentChange: 2,
+};
+// Mocking this function because it depends on process.env.IS_LOOKER_ENABLED to set CTR
+jest.mock("../../app/page", () => {
+  const originalModule = jest.requireActual("../../app/page")
+  return {
+    _esModule: true,
+    ...originalModule,
+    getASRouterLocalColumnFromJSON: jest.fn(() => fakeFxMSMessage)
+  }
+})
 
 
 describe("MessageTable", () => {
@@ -150,8 +169,8 @@ describe("MessageTable", () => {
     it("displays CTR percentages if Looker dashboard exists", async () => {
       const fakeMessageDef = {
         id: "test id",
-        template: "test template",
-      } as FxMSMessageInfo
+        template: "test template"
+      }
       const fakeData = [await getASRouterLocalColumnFromJSON(fakeMessageDef)]
       // Setting fake dashboard link in order to render in MessageTable
       fakeData[0].ctrDashboardLink = "test link"

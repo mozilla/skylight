@@ -8,6 +8,8 @@ import { IDashboardElement, IWriteQuery } from "@looker/sdk"
 const SDK = LookerNodeSDK.init40()
 const me = await SDK.ok(SDK.me());
 
+console.log('LOOKER ENABLED: ', process.env.IS_LOOKER_ENABLED);
+
 export async function getAWDashboardElement0(): Promise<IDashboardElement> {
   const dashboardId = "1471";
 //  await(getDBFilters())
