@@ -1,6 +1,6 @@
 import { types } from "@mozilla/nimbus-shared";
 import { setCTRPercent } from "@/lib/looker.ts";
-import { BranchInfo, RecipeInfo, RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
+import { RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
@@ -13,7 +13,7 @@ import { MenuButton } from "@/components/ui/menubutton.tsx";
 
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
-export async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMessageInfo> {
+async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMessageInfo> {
   let fxmsMsgInfo : FxMSMessageInfo = {
     product: 'Desktop',
     id: messageDef.id,
