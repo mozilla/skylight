@@ -1,5 +1,8 @@
 import { types } from "@mozilla/nimbus-shared"
 import { NimbusRecipe } from "../lib/nimbusRecipe"
+import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "@/app/columns"
+import { setCTRPercent } from "./looker"
+
 type NimbusExperiment = types.experiments.NimbusExperiment
 
 type NimbusRecipeCollectionType = {
@@ -32,5 +35,38 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
     )
 
     return this.recipes
+  }
+
+  /**
+   * @returns a list of RecipeInfo with the branches of every recipe in this collection
+   * having the ctrPercent property updated using setCTRPercent.
+   */
+  async getExperimentAndBranchInfos(): Promise<RecipeOrBranchInfo[]> {
+    return await Promise.all(
+      this.recipes.map(
+        async (recipe: NimbusRecipe): Promise<RecipeInfo> => {
+          let branches = await Promise.all(
+            recipe
+              .getBranchInfos()
+              .map(async (branch: BranchInfo): Promise<BranchInfo> => {
+                // We are making all branch ids upper case to make up for Looker being case sensitive
+                const ctrPercent = await setCTRPercent(
+                  branch.id.toUpperCase(),
+                  branch.template
+                );
+                if (ctrPercent) {
+                  branch.ctrPercent = ctrPercent;
+                }
+
+                return branch;
+              })
+          );
+          // Update branches with CTR data for each recipe
+          let updatedRecipe = recipe.getRecipeInfo();
+          updatedRecipe.branches = branches;
+          return updatedRecipe;
+        }
+      )
+    );
   }
 }

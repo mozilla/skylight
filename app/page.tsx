@@ -8,7 +8,6 @@ import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 import { InfoTooltip } from "@/components/ui/infotooltip.tsx";
 import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
 import { MessageTable } from "./message-table";
-import Link from "next/link";
 
 import { MenuButton } from "@/components/ui/menubutton.tsx";
 
@@ -102,42 +101,6 @@ async function getMsgRolloutCollection(
   return msgRolloutRecipeCollection;
 }
 
-/**
- * XXX Consider moving to nimbusRecipeCollection.tsx
- * @returns a list of RecipeInfo with the branches of every recipe having the 
- * ctrPercent property updated.
- */
-export async function getExperimentAndBranchInfos(
-  recipeCollection: NimbusRecipeCollection
-): Promise<RecipeOrBranchInfo[]> {
-  return await Promise.all(
-    recipeCollection.recipes.map(
-      async (recipe: NimbusRecipe): Promise<RecipeInfo> => {
-        let branches = await Promise.all(
-          recipe
-            .getBranchInfos()
-            .map(async (branch: BranchInfo): Promise<BranchInfo> => {
-              // We are making all branch ids upper case to make up for Looker being case sensitive
-              const ctrPercent = await setCTRPercent(
-                branch.id.toUpperCase(),
-                branch.template
-              );
-              if (ctrPercent) {
-                branch.ctrPercent = ctrPercent;
-              }
-
-              return branch;
-            })
-        );
-        // Update branches with CTR data for each recipe
-        let updatedRecipe = recipe.getRecipeInfo();
-        updatedRecipe.branches = branches;
-        return updatedRecipe;
-      }
-    )
-  );
-}
-
 export default async function Dashboard() {
   // Check to see if Auth is enabled
   const isAuthEnabled = process.env.IS_AUTH_ENABLED === "true";
@@ -157,7 +120,7 @@ export default async function Dashboard() {
 
   // Get in format useable by MessageTable
   const experimentAndBranchInfo: RecipeOrBranchInfo[] = isLookerEnabled
-    ? await getExperimentAndBranchInfos(msgExpRecipeCollection)
+    ? await msgExpRecipeCollection.getExperimentAndBranchInfos()
     : msgExpRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
         recipe.getRecipeInfo()
       );
@@ -165,7 +128,7 @@ export default async function Dashboard() {
   const totalExperiments = msgExpRecipeCollection.recipes.length;
 
   const msgRolloutInfo: RecipeOrBranchInfo[] = isLookerEnabled
-    ? await getExperimentAndBranchInfos(msgRolloutRecipeCollection)
+    ? await msgRolloutRecipeCollection.getExperimentAndBranchInfos()
     : msgRolloutRecipeCollection.recipes.map((recipe:NimbusRecipe) => 
         recipe.getRecipeInfo()
     );

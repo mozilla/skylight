@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { MessageTable } from "@/app/message-table";
-import { getASRouterLocalColumnFromJSON, getExperimentAndBranchInfos } from "@/app/page";
+import { getASRouterLocalColumnFromJSON } from "@/app/page";
 import { experimentColumns, fxmsMessageColumns, FxMSMessageInfo, RecipeInfo, RecipeOrBranchInfo } from "@/app/columns";
 import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
 import { NimbusRecipeCollection } from '@/lib/nimbusRecipeCollection'
@@ -132,9 +132,7 @@ describe("MessageTable", () => {
       nimbusRecipeCollection.recipes = [
         new NimbusRecipe(ExperimentFakes.recipe()),
       ];
-      const recipeInfos: RecipeInfo[] = await getExperimentAndBranchInfos(
-        nimbusRecipeCollection
-      ) as RecipeInfo[];
+      const recipeInfos = await nimbusRecipeCollection.getExperimentAndBranchInfos() as RecipeInfo[];
 
       // Setting fake dashboard link in order to render in MessageTable
       recipeInfos[0].branches[0].ctrDashboardLink = "test link"

@@ -9,6 +9,15 @@ global.fetch = jest.fn(() =>
   }),
 ) as jest.Mock;
 
+// Required with getExperimentAndBranchInfos being inside NimbusRecipeCollection
+jest.mock("../../lib/looker", () => {
+  return {
+    _esModule: true,
+    SDK: "mocked SDK",
+    me: "mocked me",
+  };
+});
+
 describe('NimbusRecipeCollection', () => {
   it('creates an empty NimbusRecipeCollection', () => {
     const nimbusRecipeCollection = new NimbusRecipeCollection()
