@@ -175,17 +175,7 @@ export default async function Dashboard() {
       </h5>
 
       <div className="space-y-5 container mx-auto py-10">
-        <MessageTable
-          columns={experimentColumns}
-          data={experimentAndBranchInfo}
-        />
-        {isAuthEnabled ? (
-          <div>
-            <a className="text-s" href="/api/auth/logout">
-              Logout
-            </a>
-          </div>
-        ) : null}
+        <MessageTable columns={experimentColumns} data={experimentAndBranchInfo} />
       </div>
     </div>
   );
