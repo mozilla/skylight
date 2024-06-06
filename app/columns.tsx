@@ -9,7 +9,7 @@ import { InfoPopover } from "@/components/ui/infopopover";
 
 function OffsiteLink(href: string, linkText: string) {
   return (
-    <a href={href} className="text-xs/[180%] whitespace-nowrap" target="_blank" rel="noreferrer">
+    <a href={href} className="text-xs/[180%] whitespace-nowrap flex items-center" target="_blank" rel="noreferrer">
       {linkText}
       <svg
         fill="none"
