@@ -63,6 +63,13 @@ The Login URI must point at `https://fxms-skylight.netlify.app/api/auth/login`, 
 
 Documentation for Auth0 quickstart can be found at https://auth0.com/docs/quickstart/webapp/nextjs
 
+## Enabling Looker Locally
+
+Local development by default has Looker disabled, via the `IS_LOOKER_ENABLED` env var. It’s possible to enable Looker locally (if desired) for testing, by setting `IS_LOOKER_ENABLED` to true && setting the correct Looker SDK credentials in `.env.local`.
+
+<!-- XXX link correct resource for devs to reach out to -->
+Please reach out to Data Engineering to retrieve Looker SDK credentials if needed. 
+
 ## Pull Requests
 
 Before submitting a pull request for review, please do at least these things:
