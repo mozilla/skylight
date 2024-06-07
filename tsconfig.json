@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "allowImportingTsExtensions": true,
@@ -23,7 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "extensionsToTreatAsEsm": [".ts"],
   "include": [
     "next-env.d.ts",
     "env.d.ts",
