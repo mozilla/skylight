@@ -67,8 +67,7 @@ Documentation for Auth0 quickstart can be found at https://auth0.com/docs/quicks
 
 Local development by default has Looker disabled, via the `IS_LOOKER_ENABLED` env var. It’s possible to enable Looker locally (if desired) for testing, by setting `IS_LOOKER_ENABLED` to true && setting the correct Looker SDK credentials in `.env.local`.
 
-<!-- XXX link correct resource for devs to reach out to -->
-Please reach out to Data Engineering to retrieve Looker SDK credentials if needed. 
+Ask in #data-help on Slack to get Looker API credentials for your own Looker account to use in development.
 
 ## Pull Requests
 

@@ -29,13 +29,15 @@ function OffsiteLink(href: string, linkText: string) {
 }
 
 // This type is used to define the shape of our data.
+// NOTE: ctrPercent is undefined by default until set using getCTRPercent. It is
+// made optional to help determine what's displayed in the Metrics column.
 export type FxMSMessageInfo = {
   product: 'Desktop' | 'Android'
   id: string
   template: string
   surface: string
   segment: string
-  ctrPercent?: number
+  ctrPercent?: number 
   ctrPercentChange?: number
   ctrDashboardLink?: string
   previewLink?: string

@@ -10,7 +10,6 @@ console.log('LOOKER ENABLED: ', process.env.IS_LOOKER_ENABLED);
 
 export async function getAWDashboardElement0(SDK: any): Promise<IDashboardElement> {
   const dashboardId = "1471";
-//  await(getDBFilters())
 
   const elements: IDashboardElement[] = await SDK.ok(SDK.dashboard_dashboard_elements(dashboardId));
   return elements[0];
@@ -30,14 +29,10 @@ export async function runEventCountQuery(filters: any): Promise<any>{
   // override the filters
   newQueryBody.filters = Object.assign(
     {
-      'event_counts.message_id': '%FAKESPOT_OPTIN_DEFAULT%',
       'event_counts.submission_timestamp_date': '2 days'
     },
     filters
   )
-
-  // console.log("filters: ", filters)
-  // console.log("newQueryBody.filters: ", newQueryBody.filters)
 
   const newQuery = await SDK.ok(SDK.create_query(newQueryBody));
   const result = await SDK.ok(SDK.run_query({
@@ -45,8 +40,6 @@ export async function runEventCountQuery(filters: any): Promise<any>{
       result_format: "json"
     }))
 
-  // console.log("newQueryBody.filters: ", newQueryBody.filters)
-  // console.log(" newQuery result: ", result)
   return result
 }
 
@@ -62,8 +55,8 @@ export async function getCTRPercent(id: string, template?: string): Promise<numb
     { 'event_counts.message_id':  '%' + id + '%' }
   )
 
-  // XXX fix issues with the infobar Looker dashboards to remove the 
-  // template condition
+  // XXX fix https://bugzilla.mozilla.org/show_bug.cgi?id=1901036 to remove the 
+  // infobar template condition
   if (queryResult.length > 0 && template !== 'infobar') {
     return Number(Number(queryResult[0].primary_rate * 100).toFixed(1))
   }
