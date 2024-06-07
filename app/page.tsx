@@ -1,6 +1,6 @@
 import { types } from "@mozilla/nimbus-shared";
-import { setCTRPercent } from "@/lib/looker.ts";
 import { RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
+import { getCTRPercent } from "@/lib/looker.ts";
 import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
@@ -27,7 +27,7 @@ async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMes
   };
 
   if (isLookerEnabled) {
-    const ctrPercent = await setCTRPercent(messageDef.id, fxmsMsgInfo.template)
+    const ctrPercent = await getCTRPercent(messageDef.id, fxmsMsgInfo.template)
     if (ctrPercent) {
       fxmsMsgInfo.ctrPercent = ctrPercent
     }
@@ -62,7 +62,7 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
       }
     ))
 
-    return messages;
+  return messages;
 }
 
 async function getMsgExpRecipeCollection(
@@ -120,6 +120,7 @@ export default async function Dashboard() {
 
   // Get in format useable by MessageTable
   const experimentAndBranchInfo: RecipeOrBranchInfo[] = isLookerEnabled
+    // Update branches inside recipe infos with CTR percents
     ? await msgExpRecipeCollection.getExperimentAndBranchInfos()
     : msgExpRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
         recipe.getRecipeInfo()
@@ -128,6 +129,7 @@ export default async function Dashboard() {
   const totalExperiments = msgExpRecipeCollection.recipes.length;
 
   const msgRolloutInfo: RecipeOrBranchInfo[] = isLookerEnabled
+    // Update branches inside recipe infos with CTR percents
     ? await msgRolloutRecipeCollection.getExperimentAndBranchInfos()
     : msgRolloutRecipeCollection.recipes.map((recipe:NimbusRecipe) => 
         recipe.getRecipeInfo()

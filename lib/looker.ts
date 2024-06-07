@@ -50,10 +50,20 @@ export async function runEventCountQuery(filters: any): Promise<any>{
   return result
 }
 
-export async function setCTRPercent(id: string, template?: string): Promise<number|undefined> {
+/**
+ * @param id the events_count.message_id required for running the looker 
+ * query to retrieve CTR metrics
+ * @param template the message template
+ * @returns a CTR percent value for a message if the Looker query results are
+ * defined
+ */
+export async function getCTRPercent(id: string, template?: string): Promise<number|undefined> {
   const queryResult = await runEventCountQuery(
     { 'event_counts.message_id':  '%' + id + '%' }
   )
+
+  // XXX fix issues with the infobar Looker dashboards to remove the 
+  // template condition
   if (queryResult.length > 0 && template !== 'infobar') {
     return Number(Number(queryResult[0].primary_rate * 100).toFixed(1))
   }
