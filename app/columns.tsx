@@ -90,6 +90,24 @@ export type BranchInfo = {
 
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
 
+/**
+ * XXX fix https://bugzilla.mozilla.org/show_bug.cgi?id=1901036 to remove the 
+ * infobar template condition
+ * @returns an OffsiteLink linking to the Looker dashboard link if it exists,
+ * labelled with either the CTR percent or "Dashboard"
+ */
+function showCTRMetrics(
+  template?: string,
+  ctrDashboardLink?: string,
+  ctrPercent?: number
+) {
+  if (ctrDashboardLink && ctrPercent !== undefined && template !== "infobar") {
+    return OffsiteLink(ctrDashboardLink, ctrPercent + "% CTR");
+  } else if (ctrDashboardLink) {
+    return OffsiteLink(ctrDashboardLink, "Dashboard");
+  }
+}
+
 const previewURLInfoButton = (
   <InfoPopover
     iconSize={14}
@@ -141,10 +159,13 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         return ( <></> );
       }
 
-      if (props.row.original.ctrDashboardLink && props.row.original.ctrPercent !== undefined && props.row.original.template !== 'infobar') {
-        return OffsiteLink(props.row.original.ctrDashboardLink, props.row.original.ctrPercent + "% CTR");
-      } else if (props.row.original.ctrDashboardLink) {
-        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard")
+      const metrics = showCTRMetrics(
+        props.row.original.template,
+        props.row.original.ctrDashboardLink,
+        props.row.original.ctrPercent
+      );
+      if (metrics) {
+        return metrics
       }
       return ( <></> );
     }
@@ -303,13 +324,13 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         return ( <></> );
       }
 
-
-      // XXX see https://bugzilla.mozilla.org/show_bug.cgi?id=1890055 for
-      // re-enabling infobar code.
-      if (props.row.original.ctrDashboardLink && props.row.original.ctrPercent !== undefined) {
-        return OffsiteLink(props.row.original.ctrDashboardLink, props.row.original.ctrPercent + "% CTR");
-      } else if (props.row.original.ctrDashboardLink) {
-        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard")
+      const metrics = showCTRMetrics(
+        props.row.original.template,
+        props.row.original.ctrDashboardLink,
+        props.row.original.ctrPercent
+      );
+      if (metrics) {
+        return metrics
       }
       return ( <></> );
     }

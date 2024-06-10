@@ -21,8 +21,8 @@ async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMes
     surface: getDisplayNameForTemplate(getTemplateFromMessage(messageDef)),
     segment: 'some segment',
     metrics: 'some metrics',
-    ctrPercent: undefined, // getMeFromLooker
-    ctrPercentChange: undefined, // getMeFromLooker
+    ctrPercent: undefined, // may be populated from Looker data
+    ctrPercentChange: undefined, // may be populated from Looker data
     previewLink: getPreviewLink(messageDef),
   };
 

@@ -1,8 +1,8 @@
-## Friday, June 7th, 2024
+## Monday, June 10th, 2024
 
 ### Added
 
-* When enabling Looker, CTR percents will be displayed in the Metrics column inside tables
+* Display CTR percentages in the table when Looker is configured
 
 ## Monday, May 27th, 2024
 
