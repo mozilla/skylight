@@ -5,7 +5,15 @@ import { IDashboardElement, IWriteQuery } from "@looker/sdk"
  *
  * @type {string} Local configuration file name, one directory above
  */
-const SDK = LookerNodeSDK.init40()
+
+let SDK: any;
+
+function getLookerSDK() {
+  if (!SDK) {
+    SDK = LookerNodeSDK.init40();
+  }
+  return SDK;
+}
 
 console.log('LOOKER ENABLED: ', process.env.IS_LOOKER_ENABLED);
 
@@ -17,6 +25,7 @@ export async function getAWDashboardElement0(SDK: any): Promise<IDashboardElemen
 }
 
 export async function runEventCountQuery(filters: any): Promise<any>{
+  SDK = getLookerSDK();
   const element0 = await getAWDashboardElement0(SDK)
   const origQuery = element0.query as IWriteQuery
 
