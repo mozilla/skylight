@@ -41,6 +41,7 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
    * @returns a list of RecipeInfo with updated ctrPercent properties for all
    * the branches of every recipe in this collection
    */
+  // XXX split into two nested functions
   async getExperimentAndBranchInfos(): Promise<RecipeOrBranchInfo[]> {
     return await Promise.all(
       this.recipes.map(
