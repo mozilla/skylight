@@ -37,7 +37,7 @@ export type FxMSMessageInfo = {
   template: string
   surface: string
   segment: string
-  ctrPercent?: number 
+  ctrPercent?: number
   ctrPercentChange?: number
   ctrDashboardLink?: string
   previewLink?: string

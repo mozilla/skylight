@@ -8,12 +8,6 @@ global.fetch = jest.fn(() =>
     json: () => Promise.resolve(fakeFetchData),
   }),
 ) as jest.Mock;
-jest.mock("../../lib/looker", () => {
-  return {
-    _esModule: true,
-    SDK: "mock SDK",
-  };
-});
 
 describe('NimbusRecipeCollection', () => {
   it('creates an empty NimbusRecipeCollection', () => {
