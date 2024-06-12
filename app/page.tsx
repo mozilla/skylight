@@ -118,7 +118,6 @@ export default async function Dashboard() {
           Skylight
         </h4>
         <MenuButton />
-
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
