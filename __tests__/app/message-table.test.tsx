@@ -5,22 +5,13 @@ import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
 import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 
-const fakeQueryResult = {
-  "event_counts.submission_timestamp_date": "2024-06-04",
-  primary_rate: 0.123456789,
-  other_rate: 0.987654321,
-  "event_counts.user_count": {},
-};
-jest.mock("../../lib/looker", () => {
-  return {
-    _esModule: true,
-    getAWDashboardElement0: jest.fn(() => "mocked dashboard element"),
-    runEventCountQuery: jest.fn(() => fakeQueryResult),
-    getCTRPercent: jest.fn(() =>
-      Number(Number(fakeQueryResult.primary_rate * 100).toFixed(1))
-    ),
-  };
-});
+// Mock SDK
+jest.mock("../../lib/sdk")
+
+// Mocking structuredClone
+global.structuredClone = jest.fn((val) => {
+  return JSON.parse(JSON.stringify(val))
+})
 
 describe("MessageTable", () => {
   describe("ExperimentColumns", () => {
