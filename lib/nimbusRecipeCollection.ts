@@ -38,34 +38,33 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
   }
 
   /**
-   * @returns a list of RecipeInfo with updated ctrPercent properties for all
-   * the branches of every recipe in this collection
+   * @returns a list of RecipeInfo of recipes in this collection with updated
+   * ctrPercent properties
    */
-  // XXX split into two nested functions
   async getExperimentAndBranchInfos(): Promise<RecipeOrBranchInfo[]> {
     return await Promise.all(
       this.recipes.map(
         async (recipe: NimbusRecipe): Promise<RecipeInfo> => {
-          let branches = await Promise.all(
-            recipe
-              .getBranchInfos()
-              .map(async (branch: BranchInfo): Promise<BranchInfo> => {
-                // We are making all branch ids upper case to make up for 
-                // Looker being case sensitive
-                const ctrPercent = await getCTRPercent(
-                  branch.id.toUpperCase(),
-                  branch.template
-                );
-                if (ctrPercent) {
-                  branch.ctrPercent = ctrPercent;
-                }
-
-                return branch;
-              })
-          );
-          // Update branches with CTR data for each recipe
           let updatedRecipe = recipe.getRecipeInfo();
-          updatedRecipe.branches = branches;
+          
+          // Update all branches with CTR data for the recipe
+          updatedRecipe.branches = await Promise.all(
+            recipe.getBranchInfos().map(
+                async (branch: BranchInfo): Promise<BranchInfo> => {
+                  // We are making all branch ids upper case to make up for
+                  // Looker being case sensitive
+                  const ctrPercent = await getCTRPercent(
+                    branch.id.toUpperCase(),
+                    branch.template
+                  );
+                  if (ctrPercent) {
+                    branch.ctrPercent = ctrPercent;
+                  }
+                  return branch;
+                }
+              )
+            );
+
           return updatedRecipe;
         }
       )
