@@ -1,3 +1,9 @@
+## Monday, May 27th, 2024
+
+### Added
+
+* Added a label to the last column in the message and experiment tables with a info popover button that displays preview URL context when clicked
+
 ## Friday, May 24th, 2024
 
 ### Added
