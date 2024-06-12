@@ -10,10 +10,8 @@ global.fetch = jest.fn(() =>
   }),
 ) as jest.Mock;
 
-// Mock SDK
 jest.mock("../../lib/sdk")
 
-// Mocking structuredClone
 global.structuredClone = jest.fn((val) => {
   return JSON.parse(JSON.stringify(val))
 })
@@ -35,18 +33,18 @@ describe('NimbusRecipeCollection', () => {
     })
   })
 
-  describe('getExperimentAndBranchInfos', () => {
-    it('gets all the recipe infos with updated CTR percents', async () => {
+  describe("getExperimentAndBranchInfos", () => {
+    it("gets all the recipe infos with updated CTR percents", async () => {
       const nimbusRecipeCollection = new NimbusRecipeCollection();
       nimbusRecipeCollection.recipes = [
         new NimbusRecipe(ExperimentFakes.recipe("test recipe")),
       ];
-      
+
       const recipeInfos =
         (await nimbusRecipeCollection.getExperimentAndBranchInfos()) as RecipeInfo[];
 
-      expect(recipeInfos[0].branches[0].ctrPercent).toBe(12.3)
-      expect(recipeInfos[0].branches[1].ctrPercent).toBe(12.3)
-    })
-  })
+      expect(recipeInfos[0].branches[0].ctrPercent).toBe(12.3);
+      expect(recipeInfos[0].branches[1].ctrPercent).toBe(12.3);
+    });
+  });
 })

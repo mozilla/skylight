@@ -5,10 +5,8 @@ import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
 import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 
-// Mock SDK
 jest.mock("../../lib/sdk")
 
-// Mocking structuredClone
 global.structuredClone = jest.fn((val) => {
   return JSON.parse(JSON.stringify(val))
 })
