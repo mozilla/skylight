@@ -123,7 +123,7 @@ export default async function Dashboard() {
 
         <ul className='list-[circle] mx-20 text-sm'>
           <li>
-            To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>; <b>a Firefox 126 build from March 29 or newer</b> is required.
+            To make the preview URLs work: load <code>about:config</code> in Firefox, and set <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code> to <code>true</code>; <b>a Firefox 128 build from June 4th or newer</b> is required.
           </li>
         </ul>
       </div>
