@@ -1,3 +1,14 @@
+
+## Wednesday, June 12, 2024
+
+### Added
+
+* Enabled the preview button for Feature Callouts
+
+### Fixed
+
+* Fixed a bug where about:welcome previews were being generated for empty messages
+
 ## Monday, May 27th, 2024
 
 ### Added
