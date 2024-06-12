@@ -137,7 +137,7 @@ describe("MessageTable", () => {
     it("doesn't display any metric when Looker dashboard doesn't exist", () => {
       const rawRecipe = ExperimentFakes.recipe("test-recipe");
       const nimbusRecipe = new NimbusRecipe(rawRecipe);
-      const messageTableData: RecipeOrBranchInfo[] = [
+      const messageTableData: RecipeInfo[] = [
         nimbusRecipe.getRecipeInfo(),
       ];
       render(
@@ -149,6 +149,8 @@ describe("MessageTable", () => {
       const ctrMetrics = screen.queryByText("CTR");
       const dashboardLink = screen.queryByText("Dashboard");
 
+      expect(messageTableData[0].branches[0].ctrPercent).not.toBeDefined()
+      expect(messageTableData[0].branches[0].ctrDashboardLink).not.toBeDefined()
       expect(ctrMetrics).not.toBeInTheDocument();
       expect(dashboardLink).not.toBeInTheDocument();
     });
