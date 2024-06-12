@@ -9,6 +9,14 @@ global.fetch = jest.fn(() =>
   }),
 ) as jest.Mock;
 
+// Mock SDK
+jest.mock('../../lib/sdk', () => {
+  return {
+    __esModule: true,
+    SDK: "mocked SDK"
+  }
+})
+
 describe('NimbusRecipeCollection', () => {
   it('creates an empty NimbusRecipeCollection', () => {
     const nimbusRecipeCollection = new NimbusRecipeCollection()

@@ -1,23 +1,7 @@
-import { LookerNodeSDK } from "@looker/sdk-node"
 import { IDashboardElement, IWriteQuery } from "@looker/sdk"
+import { SDK } from "./sdk";
 
-/**
- *
- * @type {string} Local configuration file name, one directory above
- */
-
-let SDK: any;
-
-function getLookerSDK() {
-  if (!SDK) {
-    SDK = LookerNodeSDK.init40();
-  }
-  return SDK;
-}
-
-console.log('LOOKER ENABLED: ', process.env.IS_LOOKER_ENABLED);
-
-export async function getAWDashboardElement0(SDK: any): Promise<IDashboardElement> {
+export async function getAWDashboardElement0(): Promise<IDashboardElement> {
   const dashboardId = "1471";
 
   const elements: IDashboardElement[] = await SDK.ok(SDK.dashboard_dashboard_elements(dashboardId));
@@ -25,8 +9,7 @@ export async function getAWDashboardElement0(SDK: any): Promise<IDashboardElemen
 }
 
 export async function runEventCountQuery(filters: any): Promise<any>{
-  SDK = getLookerSDK();
-  const element0 = await getAWDashboardElement0(SDK)
+  const element0 = await getAWDashboardElement0()
   const origQuery = element0.query as IWriteQuery
 
   // take the query from the original dashboard
