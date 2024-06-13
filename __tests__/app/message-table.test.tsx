@@ -7,10 +7,6 @@ import { NimbusRecipe } from "@/lib/nimbusRecipe";
 
 jest.mock("../../lib/sdk")
 
-global.structuredClone = jest.fn((val) => {
-  return JSON.parse(JSON.stringify(val))
-})
-
 describe("MessageTable", () => {
   describe("ExperimentColumns", () => {
     it("renders the branch description and slug on expanded branch rows", () => {

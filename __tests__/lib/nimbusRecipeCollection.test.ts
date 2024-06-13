@@ -12,10 +12,6 @@ global.fetch = jest.fn(() =>
 
 jest.mock("../../lib/sdk")
 
-global.structuredClone = jest.fn((val) => {
-  return JSON.parse(JSON.stringify(val))
-})
-
 describe('NimbusRecipeCollection', () => {
   it('creates an empty NimbusRecipeCollection', () => {
     const nimbusRecipeCollection = new NimbusRecipeCollection()

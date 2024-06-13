@@ -7,10 +7,6 @@ import * as looker from "@/lib/looker";
 
 jest.mock("../../lib/sdk");
 
-global.structuredClone = jest.fn((val) => {
-  return JSON.parse(JSON.stringify(val));
-});
-
 describe("Looker", () => {
   it("should return the first dashboard element", async () => {
     const element = await looker.getAWDashboardElement0();
