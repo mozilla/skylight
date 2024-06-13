@@ -109,13 +109,8 @@ export class NimbusRecipe implements NimbusRecipeType {
         // XXX should iterate over all screens
         branchInfo.id = feature.value.content.screens[0].id
         // Localize the feature callout if necessary
-        console.log(this._rawRecipe);
-        if(this._rawRecipe.localizations) {
-          console.log(Object.keys(this._rawRecipe.localizations)[0]);
-        }
         let localizedFeatureCallout = _substituteLocalizations(feature.value,
 this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
-        //console.log(JSON.stringify(localizedFeatureCallout, null, 2));
         // Use the localized object to generate the previewlink
         branchInfo.previewLink = getPreviewLink(localizedFeatureCallout);
         break

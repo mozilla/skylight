@@ -85,5 +85,41 @@ describe("MessageTable", () => {
       const treatmentBranchDescription = screen.queryByText("test description");
       expect(treatmentBranchDescription).not.toBeInTheDocument();
     });
+
+    it("renders preview buttons for all expected surfaces", () => {
+      const rawRecipe1 = ExperimentFakes.recipe("test-recipe-1");
+      const rawRecipe2 = ExperimentFakes.recipe("test-recipe-2");
+      const rawRecipe3 = ExperimentFakes.recipe("test-recipe-3");
+      const rawRecipe4 = ExperimentFakes.recipe("test-recipe-4");
+      // infobar needs a content object to generate a previewLink
+      rawRecipe1.branches[1].features[0].value.template = "infobar"
+      rawRecipe1.branches[1].features[0].value.content = { string: "test" }
+
+      rawRecipe2.branches[1].features[0].value.template = "spotlight"
+      // feature callout needs screens to generate a previewLink
+      rawRecipe3.branches[1].features[0].value.template = "feature_callout"
+      rawRecipe3.branches[1].features[0].value.content = { screens: [{ id: "testID" }] }
+      // aboutwelcome with no screens will not generate a previewLink
+      rawRecipe4.branches[1].features[0].value.template = "aboutwelcome"
+
+      const nimbusRecipe1 = new NimbusRecipe(rawRecipe1);
+      const nimbusRecipe2 = new NimbusRecipe(rawRecipe2);
+      const nimbusRecipe3 = new NimbusRecipe(rawRecipe3);
+      const nimbusRecipe4 = new NimbusRecipe(rawRecipe4);
+      const messageTableData: RecipeOrBranchInfo[] = [
+        nimbusRecipe1.getRecipeInfo(),
+        nimbusRecipe2.getRecipeInfo(),
+        nimbusRecipe3.getRecipeInfo(),
+        nimbusRecipe4.getRecipeInfo(),
+      ];
+      render(
+        <MessageTable columns={experimentColumns} data={messageTableData} />
+      );
+
+      const toggleButton = screen.getByTestId("toggleAllRowsButton");
+      fireEvent.click(toggleButton);
+
+      expect(screen.getAllByText("Copy Preview URL").length).toBe(3);
+    });
   });
 });
