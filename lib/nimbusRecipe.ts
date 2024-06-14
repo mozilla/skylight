@@ -105,7 +105,9 @@ export class NimbusRecipe implements NimbusRecipeType {
 
       case 'feature_callout':
         // XXX should iterate over all screens
-        branchInfo.id = feature.value.content.screens[0].id
+        // XXX some branches have incorrect ":treatment-a" attached to the end
+        // of the id that needs to be removed (see https://bugzilla.mozilla.org/show_bug.cgi?id=1902424)
+        branchInfo.id = feature.value.content.screens[0].id.split(":")[0]
         break
 
       case 'infobar':
