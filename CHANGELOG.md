@@ -1,3 +1,9 @@
+## Thursday, June 13th, 2024
+
+### Added
+
+* Added an option to make experiment tables default to being fully expanded or collapsed
+
 ## Monday, May 27th, 2024
 
 ### Added
