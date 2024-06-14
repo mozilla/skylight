@@ -4,6 +4,9 @@ import { SDK } from "./sdk";
 export async function getAWDashboardElement0(): Promise<IDashboardElement> {
   const dashboardId = "1471";
 
+  // XXX switch this out for the more performant dashboard_element (see 
+  // https://mozilla.cloud.looker.com/extensions/marketplace_extension_api_explorer::api-explorer/4.0/methods/Dashboard/dashboard_element
+  // for more info).
   const elements: IDashboardElement[] = await SDK.ok(SDK.dashboard_dashboard_elements(dashboardId));
   return elements[0];
 }
