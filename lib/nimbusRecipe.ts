@@ -105,8 +105,13 @@ export class NimbusRecipe implements NimbusRecipeType {
 
       case 'feature_callout':
         // XXX should iterate over all screens
-        // XXX some branches have incorrect ":treatment-a" attached to the end
-        // of the id that needs to be removed (see https://bugzilla.mozilla.org/show_bug.cgi?id=1902424)
+        // NOTE: Some branches have incorrect ":treatment-a" attached to the end
+        // of the id, which needs to be removed to display the correct dashboard
+        // link (see https://bugzilla.mozilla.org/show_bug.cgi?id=1902424).
+        // The problem was in the experiment JSON object, so splitting the 
+        // ":treatment-a" here was the quickest solution. Some long-term 
+        // solutions we can consider include linting, implementing JSON schemas 
+        // or eliminating the error via a GUI message creation.
         branchInfo.id = feature.value.content.screens[0].id.split(":")[0]
         break
 
