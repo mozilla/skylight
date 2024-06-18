@@ -105,13 +105,15 @@ export class NimbusRecipe implements NimbusRecipeType {
 
       case 'feature_callout':
         // XXX should iterate over all screens
+        //
         // NOTE: Some branches have incorrect ":treatment-a" attached to the end
-        // of the id, which needs to be removed to display the correct dashboard
-        // link (see https://bugzilla.mozilla.org/show_bug.cgi?id=1902424).
-        // The problem was in the experiment JSON object, so splitting the 
-        // ":treatment-a" here was the quickest solution. Some long-term 
-        // solutions we can consider include linting, implementing JSON schemas 
-        // or eliminating the error via a GUI message creation.
+        // of the id, which is breaking the Looker dashboard links
+        // (see https://bugzilla.mozilla.org/show_bug.cgi?id=1902424).
+        // The problem was in the recipe JSON in Experimenter, likely a user error
+        // during experiment creation that involved some cloning or copy/paste. 
+        //
+        // XXX consider pulling branch ids from somewhere else that is validated
+        // by Experimenter, to avoid similar user errors in branch ids.
         branchInfo.id = feature.value.content.screens[0].id.split(":")[0]
         break
 
