@@ -16,17 +16,17 @@ type NimbusRecipeCollectionType = {
 async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
   return await Promise.all(
     recipe.getBranchInfos().map(
-      async (branch: BranchInfo): Promise<BranchInfo> => {
+      async (branchInfo: BranchInfo): Promise<BranchInfo> => {
         // We are making all branch ids upper case to make up for
         // Looker being case sensitive
         const ctrPercent = await getCTRPercent(
-          branch.id.toUpperCase(),
-          branch.template
+          branchInfo.id.toUpperCase(),
+          branchInfo.template
         );
         if (ctrPercent) {
-          branch.ctrPercent = ctrPercent;
+          branchInfo.ctrPercent = ctrPercent;
         }
-        return branch;
+        return branchInfo;
       }
     )
   );

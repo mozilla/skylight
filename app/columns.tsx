@@ -63,7 +63,7 @@ export type RecipeInfo = {
   userFacingName?: string
   nimbusExperiment: NimbusExperiment
   isBranch?: boolean
-  branches: BranchInfo[]
+  branches: BranchInfo[] // XXX rename this to branchInfos to avoid confusion with the branches property inside NimbusExperiment
 }
 
 export type BranchInfo = {

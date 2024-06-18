@@ -32,16 +32,10 @@ export function getLookerSDK(): any {
 }
 
 export const SDK = {
-    dashboard_dashboard_elements: () => "dashboard_dashboard_elements",
-    create_query: () => "create_query",
-    run_query: () => "run_query",
+    dashboard_dashboard_elements: () => fakeDashboardElements,
+    create_query: () => fakeQuery,
+    run_query: () => fakeQueryResult,
     ok: (apiMethod: any) => {
-        if (apiMethod === "dashboard_dashboard_elements") {
-            return fakeDashboardElements
-        } else if (apiMethod === "create_query") {
-            return fakeQuery
-        } else if (apiMethod === "run_query") {
-            return fakeQueryResult
-        }
+        return apiMethod
     }
 }
