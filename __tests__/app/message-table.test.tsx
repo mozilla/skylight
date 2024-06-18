@@ -86,31 +86,16 @@ describe("MessageTable", () => {
       expect(treatmentBranchDescription).not.toBeInTheDocument();
     });
 
-    it("renders preview buttons for all expected surfaces", () => {
-      const rawRecipe1 = ExperimentFakes.recipe("test-recipe-1");
-      const rawRecipe2 = ExperimentFakes.recipe("test-recipe-2");
-      const rawRecipe3 = ExperimentFakes.recipe("test-recipe-3");
-      const rawRecipe4 = ExperimentFakes.recipe("test-recipe-4");
+    it("renders preview buttons for infobars", () => {
+      const infobarRecipe = ExperimentFakes.recipe("test-recipe");
       // infobar needs a content object to generate a previewLink
-      rawRecipe1.branches[1].features[0].value.template = "infobar"
-      rawRecipe1.branches[1].features[0].value.content = { string: "test" }
+      infobarRecipe.branches[1].features[0].value.template = "infobar"
+      infobarRecipe.branches[1].features[0].value.content = { string: "test" }
 
-      rawRecipe2.branches[1].features[0].value.template = "spotlight"
-      // feature callout needs screens to generate a previewLink
-      rawRecipe3.branches[1].features[0].value.template = "feature_callout"
-      rawRecipe3.branches[1].features[0].value.content = { screens: [{ id: "testID" }] }
-      // aboutwelcome with no screens will not generate a previewLink
-      rawRecipe4.branches[1].features[0].value.template = "aboutwelcome"
-
-      const nimbusRecipe1 = new NimbusRecipe(rawRecipe1);
-      const nimbusRecipe2 = new NimbusRecipe(rawRecipe2);
-      const nimbusRecipe3 = new NimbusRecipe(rawRecipe3);
-      const nimbusRecipe4 = new NimbusRecipe(rawRecipe4);
+      const nimbusRecipe = new NimbusRecipe(infobarRecipe);
+      
       const messageTableData: RecipeOrBranchInfo[] = [
-        nimbusRecipe1.getRecipeInfo(),
-        nimbusRecipe2.getRecipeInfo(),
-        nimbusRecipe3.getRecipeInfo(),
-        nimbusRecipe4.getRecipeInfo(),
+        nimbusRecipe.getRecipeInfo(),
       ];
       render(
         <MessageTable columns={experimentColumns} data={messageTableData} />
@@ -119,7 +104,71 @@ describe("MessageTable", () => {
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
       fireEvent.click(toggleButton);
 
-      expect(screen.getAllByText("Copy Preview URL").length).toBe(3);
+      expect(screen.getAllByText("Copy Preview URL").length).toBe(1);
+    });
+
+    it("renders preview buttons for spotlights", () => {
+      const spotlightRecipe = ExperimentFakes.recipe("test-recipe");
+
+      spotlightRecipe.branches[1].features[0].value.template = "spotlight"
+
+      const nimbusRecipe = new NimbusRecipe(spotlightRecipe);
+      
+      const messageTableData: RecipeOrBranchInfo[] = [
+        nimbusRecipe.getRecipeInfo(),
+      ];
+      render(
+        <MessageTable columns={experimentColumns} data={messageTableData} />
+      );
+
+      const toggleButton = screen.getByTestId("toggleAllRowsButton");
+      fireEvent.click(toggleButton);
+
+      expect(screen.getAllByText("Copy Preview URL").length).toBe(1);
+    });
+
+    it("renders preview buttons for feature callouts", () => {
+      const featureCalloutRecipe = ExperimentFakes.recipe("test-recipe");
+      // feature callout needs screens to generate a previewLink
+      featureCalloutRecipe.branches[1].features[0].value.template = "feature_callout"
+      featureCalloutRecipe.branches[1].features[0].value.content = { screens: [{ id: "testID" }] }
+
+      const nimbusRecipe = new NimbusRecipe(featureCalloutRecipe);
+    
+      const messageTableData: RecipeOrBranchInfo[] = [
+        nimbusRecipe.getRecipeInfo(),
+      ];
+      render(
+        <MessageTable columns={experimentColumns} data={messageTableData} />
+      );
+
+      const toggleButton = screen.getByTestId("toggleAllRowsButton");
+      fireEvent.click(toggleButton);
+
+      expect(screen.getAllByText("Copy Preview URL").length).toBe(1);
+    });
+
+    it("does not render a preview button for toasts", () => {
+      const toastRecipe = ExperimentFakes.recipe("test-recipe");
+      // we don't generate a previewLink for toasts
+      toastRecipe.branches[1].features[0].value.template = "toast_notification"
+      toastRecipe.branches[1].features[0].value.content = { tag: "test tag" }
+
+      const nimbusRecipe = new NimbusRecipe(toastRecipe);
+      
+      const messageTableData: RecipeOrBranchInfo[] = [
+        nimbusRecipe.getRecipeInfo(),
+      ];
+      render(
+        <MessageTable columns={experimentColumns} data={messageTableData} />
+      );
+
+      const toggleButton = screen.getByTestId("toggleAllRowsButton");
+      fireEvent.click(toggleButton);
+
+      const previewButton = screen.queryByText("Copy Preview URL");
+
+      expect(previewButton).not.toBeInTheDocument();
     });
   });
 });
