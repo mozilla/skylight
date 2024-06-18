@@ -24,13 +24,16 @@ import { useState } from "react"
 interface MessageTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  defaultExpanded?: boolean
 }
 
 export function MessageTable<TData, TValue>({
   columns,
   data,
+  defaultExpanded
 }: MessageTableProps<TData, TValue>) {
-  const [expanded, setExpanded] = useState<ExpandedState>({})
+  // Tables will start collapsed if defaultExpanded is undefined
+  const [expanded, setExpanded] = useState<ExpandedState>(defaultExpanded || {})
   const table = useReactTable({
     data,
     columns,

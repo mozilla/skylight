@@ -166,7 +166,7 @@ export default async function Dashboard() {
         Total: {totalRolloutExperiments}
       </h5>
       <div className="container mx-auto py-10">
-        <MessageTable columns={experimentColumns} data={msgRolloutInfo} />
+        <MessageTable columns={experimentColumns} data={msgRolloutInfo} defaultExpanded={false}/>
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
@@ -177,7 +177,7 @@ export default async function Dashboard() {
       </h5>
 
       <div className="space-y-5 container mx-auto py-10">
-        <MessageTable columns={experimentColumns} data={experimentAndBranchInfo} />
+        <MessageTable columns={experimentColumns} data={experimentAndBranchInfo} defaultExpanded={true} />
       </div>
     </div>
   );
