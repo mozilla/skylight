@@ -107,7 +107,16 @@ export class NimbusRecipe implements NimbusRecipeType {
 
       case 'feature_callout':
         // XXX should iterate over all screens
-        branchInfo.id = feature.value.content.screens[0].id
+        //
+        // NOTE: Some branches have incorrect ":treatment-a" attached to the end
+        // of the id, which is breaking the Looker dashboard links
+        // (see https://bugzilla.mozilla.org/show_bug.cgi?id=1902424).
+        // The problem was in the recipe JSON in Experimenter, likely a user error
+        // during experiment creation that involved some cloning or copy/paste. 
+        //
+        // XXX consider pulling branch ids from somewhere else that is validated
+        // by Experimenter, to avoid similar user errors in branch ids.
+        branchInfo.id = feature.value.content.screens[0].id.split(":")[0]
         // Localize the feature callout if necessary
         let localizedFeatureCallout = _substituteLocalizations(feature.value,
 this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
