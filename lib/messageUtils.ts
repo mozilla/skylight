@@ -1,6 +1,7 @@
 export function getDisplayNameForTemplate(template: string): string {
   const displayNames: any = {
     aboutwelcome: "About:Welcome Page (1st screen)",
+    defaultaboutwelcome: "Default About:Welcome Message",
     feature_callout: "Feature Callout (1st screen)",
     infobar: "InfoBar",
     milestone_message: "Milestone Messages",
@@ -33,6 +34,7 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
   // it's a spotlight
   const aboutWelcomeSurfaces = [
     "aboutwelcome",
+    "defaultaboutwelcome",
     "feature_callout",
     "multi",
     "spotlight",
@@ -76,7 +78,29 @@ export function toBinary(string: string): string {
   return btoa(String.fromCharCode(...Array.from(new Uint8Array(codeUnits.buffer))));
 }
 
+export function maybeCreateWelcomePreview(message: any): object {
+  if (message.template === "defaultaboutwelcome") {
+    //Shove the about:welcome message in a spotlight
+    let defaultWelcomeFake = {
+      id: message.id,
+      template: "spotlight",
+      targeting: true,
+      content: message,
+    };
+    // Add the modal property to the spotlight to mimic about:welcome
+    defaultWelcomeFake.content.modal = "tab";
+    // The recipe might have a backdrop, but if not, fall back to the default
+    defaultWelcomeFake.content.backdrop = message.backdrop ||
+    "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
+
+    return defaultWelcomeFake;
+  }
+  // if the message isn't about:welcome, just send it back
+  return message;
+}
+
 export function getPreviewLink(message: any): string {
+
   let previewLink = `about:messagepreview?json=${encodeURIComponent(
     toBinary(JSON.stringify(message)),
   )}`;

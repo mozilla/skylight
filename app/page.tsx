@@ -1,7 +1,9 @@
 import { types } from "@mozilla/nimbus-shared";
 import { RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
 import { getCTRPercent } from "@/lib/looker.ts";
-import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
+import { BranchInfo, RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
+import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, maybeCreateWelcomePreview, getPreviewLink } from "../lib/messageUtils.ts";
+
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
@@ -23,7 +25,7 @@ async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMes
     metrics: 'some metrics',
     ctrPercent: undefined, // may be populated from Looker data
     ctrPercentChange: undefined, // may be populated from Looker data
-    previewLink: getPreviewLink(messageDef),
+    previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
   };
 
   if (isLookerEnabled) {
