@@ -79,33 +79,49 @@ export class NimbusRecipe implements NimbusRecipeType {
       case "aboutwelcome":
 
         branchInfo.id = feature.value.id
+        // Only create a preview object if there's something to preview
+        if (feature.value.hasOwnProperty("screens")) {
+          // featureValue will become the "content" object in a spotlight JSON
+          let spotlightFake = {
+            id: this._rawRecipe.id,
+            template: "spotlight",
+            targeting: true,
+            content: feature.value,
+          };
+          // Add the modal property to the spotlight to mimic about:welcome
+          spotlightFake.content.modal = "tab";
+          // The recipe might have a backdrop, but if not, fall back to the default
+          spotlightFake.content.backdrop = feature.value.backdrop ||
+          "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
+          // Localize the recipe if necessary.
+          let localizedWelcome = _substituteLocalizations(
+            spotlightFake,
+            this._rawRecipe.localizations?.[
+              Object.keys(this._rawRecipe.localizations)[0]
+            ],
+          );
 
-        // featureValue will become the "content" object in a spotlight JSON
-        let spotlightFake = {
-          id: this._rawRecipe.id,
-          template: "spotlight",
-          targeting: true,
-          content: feature.value,
-        };
-        // Add the modal property to the spotlight to mimic about:welcome
-        spotlightFake.content.modal = "tab";
-        // The recipe might have a backdrop, but if not, fall back to the default
-        spotlightFake.content.backdrop = feature.value.backdrop ||
-        "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
-        // Localize the recipe if necessary.
-        let localizedWelcome = _substituteLocalizations(
-          spotlightFake,
-          this._rawRecipe.localizations?.[
-            Object.keys(this._rawRecipe.localizations)[0]
-          ],
-        );
-
-        branchInfo.previewLink = getPreviewLink(localizedWelcome);
+          branchInfo.previewLink = getPreviewLink(localizedWelcome);
+        }
         break;
 
       case 'feature_callout':
         // XXX should iterate over all screens
-        branchInfo.id = feature.value.content.screens[0].id
+        //
+        // NOTE: Some branches have incorrect ":treatment-a" attached to the end
+        // of the id, which is breaking the Looker dashboard links
+        // (see https://bugzilla.mozilla.org/show_bug.cgi?id=1902424).
+        // The problem was in the recipe JSON in Experimenter, likely a user error
+        // during experiment creation that involved some cloning or copy/paste. 
+        //
+        // XXX consider pulling branch ids from somewhere else that is validated
+        // by Experimenter, to avoid similar user errors in branch ids.
+        branchInfo.id = feature.value.content.screens[0].id.split(":")[0]
+        // Localize the feature callout if necessary
+        let localizedFeatureCallout = _substituteLocalizations(feature.value,
+this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
+        // Use the localized object to generate the previewlink
+        branchInfo.previewLink = getPreviewLink(localizedFeatureCallout);
         break
 
       case 'infobar':
@@ -153,7 +169,7 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         break
 
       case 'momentsUpdate':
-        console.warn(`we don't fully support  messages yet`)
+        console.warn(`we don't fully support moments messages yet`)
         return branchInfo
 
       default:
