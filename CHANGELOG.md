@@ -1,3 +1,18 @@
+## Thursday, June 13th, 2024
+
+### Added
+
+* Added an option to make experiment tables default to being fully expanded or collapsed
+
+## Wednesday, June 12, 2024
+
+### Added
+
+* Enabled the preview button for Feature Callouts
+
+### Fixed
+
+* Fixed a bug where about:welcome previews were being generated for empty messages (those without a `screens` property)
 
 ## Friday, May 31st, 2024
 

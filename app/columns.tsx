@@ -96,7 +96,7 @@ const previewURLInfoButton = (
         To make the Preview URLs work, load <code>about:config</code> in Firefox
         and set{" "}
         <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code>{" "}
-        to true; Firefox 126 or newer is required.
+        to true; Firefox 128 or newer is required.
       </p>
     }
     iconStyle="ml-1 cursor-pointer hover:text-slate-400/70"
@@ -153,7 +153,9 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
       </div>
     ),
     cell: (props: any) => {
-      const supportedTypes = ['infobar', 'spotlight', 'defaultaboutwelcome'];
+      const supportedTypes = [
+        'infobar', 'spotlight', 'defaultaboutwelcome', 'feature_callout'
+      ];
       if (!(supportedTypes.includes(props.row.original.template))) {
           return ( <div/> );
       }
