@@ -34,7 +34,7 @@ export function PreviewLinkButton( linkObject: any ) {
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>After clicking to copy, paste in (Fx 126+ &gt;= March 29 only) URL bar for message preview</p>
+          <p>After clicking to copy, paste in (Fx 128+ &gt;= June 4th only) URL bar for message preview</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
