@@ -7,7 +7,7 @@
 
 ### Fixed
 
-* Fixed a bug where about:welcome previews were being generated for empty messages
+* Fixed a bug where about:welcome previews were being generated for empty messages (those without a `screens` property)
 
 ## Monday, May 27th, 2024
 

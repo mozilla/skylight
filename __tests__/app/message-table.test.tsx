@@ -91,17 +91,15 @@ describe("MessageTable", () => {
       // infobar needs a content object to generate a previewLink
       infobarRecipe.branches[1].features[0].value.template = "infobar"
       infobarRecipe.branches[1].features[0].value.content = { string: "test" }
-
       const nimbusRecipe = new NimbusRecipe(infobarRecipe);
-      
       const messageTableData: RecipeOrBranchInfo[] = [
         nimbusRecipe.getRecipeInfo(),
       ];
       render(
         <MessageTable columns={experimentColumns} data={messageTableData} />
       );
-
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
+
       fireEvent.click(toggleButton);
 
       expect(screen.getAllByText("Copy Preview URL").length).toBe(1);
@@ -109,19 +107,16 @@ describe("MessageTable", () => {
 
     it("renders preview buttons for spotlights", () => {
       const spotlightRecipe = ExperimentFakes.recipe("test-recipe");
-
       spotlightRecipe.branches[1].features[0].value.template = "spotlight"
-
       const nimbusRecipe = new NimbusRecipe(spotlightRecipe);
-      
       const messageTableData: RecipeOrBranchInfo[] = [
         nimbusRecipe.getRecipeInfo(),
       ];
       render(
         <MessageTable columns={experimentColumns} data={messageTableData} />
       );
-
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
+
       fireEvent.click(toggleButton);
 
       expect(screen.getAllByText("Copy Preview URL").length).toBe(1);
@@ -132,17 +127,15 @@ describe("MessageTable", () => {
       // feature callout needs screens to generate a previewLink
       featureCalloutRecipe.branches[1].features[0].value.template = "feature_callout"
       featureCalloutRecipe.branches[1].features[0].value.content = { screens: [{ id: "testID" }] }
-
       const nimbusRecipe = new NimbusRecipe(featureCalloutRecipe);
-    
       const messageTableData: RecipeOrBranchInfo[] = [
         nimbusRecipe.getRecipeInfo(),
       ];
       render(
         <MessageTable columns={experimentColumns} data={messageTableData} />
       );
-
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
+
       fireEvent.click(toggleButton);
 
       expect(screen.getAllByText("Copy Preview URL").length).toBe(1);
@@ -153,21 +146,18 @@ describe("MessageTable", () => {
       // we don't generate a previewLink for toasts
       toastRecipe.branches[1].features[0].value.template = "toast_notification"
       toastRecipe.branches[1].features[0].value.content = { tag: "test tag" }
-
-      const nimbusRecipe = new NimbusRecipe(toastRecipe);
-      
+      const nimbusRecipe = new NimbusRecipe(toastRecipe);  
       const messageTableData: RecipeOrBranchInfo[] = [
         nimbusRecipe.getRecipeInfo(),
       ];
       render(
         <MessageTable columns={experimentColumns} data={messageTableData} />
       );
-
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
+
       fireEvent.click(toggleButton);
 
       const previewButton = screen.queryByText("Copy Preview URL");
-
       expect(previewButton).not.toBeInTheDocument();
     });
   });
