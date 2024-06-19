@@ -153,9 +153,11 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
       </div>
     ),
     cell: (props: any) => {
-      const supportedTypes = ['infobar', 'spotlight', 'feature_callout'];
+      const supportedTypes = [
+        'infobar', 'spotlight', 'defaultaboutwelcome', 'feature_callout'
+      ];
       if (!(supportedTypes.includes(props.row.original.template))) {
-        return ( <div/> );
+          return ( <div/> );
       }
 
       return (

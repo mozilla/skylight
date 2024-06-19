@@ -1,6 +1,6 @@
 import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
-import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, getPreviewLink } from "../lib/messageUtils.ts";
+import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, maybeCreateWelcomePreview, getPreviewLink } from "../lib/messageUtils.ts";
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
@@ -21,7 +21,7 @@ function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
     metrics: 'some metrics',
     ctrPercent: .5, // getMeFromLooker
     ctrPercentChange: 2, // getMeFromLooker
-    previewLink: getPreviewLink(messageDef),
+    previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
   };
 
   fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id,
