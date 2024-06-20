@@ -49,6 +49,17 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
   return messages;
 }
 
+function compareFn(a: any, b: any) {
+  if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
+    return -1;
+  } else if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
+}
+
+
 async function getMsgExpRecipeCollection(
   recipeCollection: NimbusRecipeCollection
 ): Promise<NimbusRecipeCollection> {
@@ -66,6 +77,10 @@ async function getMsgExpRecipeCollection(
     "msgExpRecipeCollection.length = ",
     msgExpRecipeCollection.recipes.length
   );
+
+  msgExpRecipeCollection.recipes =
+    msgExpRecipeCollection.recipes.sort(compareFn);
+  return msgExpRecipeCollection
 
   return msgExpRecipeCollection;
 }

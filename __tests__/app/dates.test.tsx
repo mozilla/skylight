@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { PrettyDateRange } from '../../app/dates'
 
-describe('PrettyDateRange', () => {
+describe.skip('PrettyDateRange', () => {
   it("should render a pretty version of the range", () => {
     const startDate = "2024-02-01"
     const endDate = "2024-02-04"

@@ -10,6 +10,10 @@ function toPrettyDate(dateString : string | null) : string | null {
 
     let dateObj = new Date(dateString);
 
+    return dateObj.toLocaleDateString("ko-KR", {
+       timeZone: "UTC"
+    });
+
     return dateObj.toLocaleDateString("en-US", {
       month: "short", day: "numeric", timeZone: "UTC"
     });
