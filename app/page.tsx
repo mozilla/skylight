@@ -27,14 +27,16 @@ async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMes
     previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
   };
 
+  const channel = "release";
+
   if (isLookerEnabled) {
-    const ctrPercent = await getCTRPercent(messageDef.id, fxmsMsgInfo.template)
+    const ctrPercent = await getCTRPercent(messageDef.id, fxmsMsgInfo.template, channel)
     if (ctrPercent) {
       fxmsMsgInfo.ctrPercent = ctrPercent
     }
   }
   
-  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id, "release")
+  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id, channel)
 
   // dashboard link -> dashboard id -> query id -> query -> ctr_percent_from_lastish_day
 

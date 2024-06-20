@@ -67,7 +67,7 @@ describe('getDashboard', () => {
 
     const result = getDashboard(template, msgId, channel, experiment, branchSlug)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1682?Messaging+System+Ping+Type=${encodeURIComponent(template)}&Submission+Date=30+days&Messaging+System+Message+Id=${encodeURIComponent(msgId)}&Normalized+Channel=${encodeURIComponent(channel)}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodeURIComponent(experiment)}&Experiment+Branch=${encodeURIComponent(branchSlug)}`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1775?Messaging+System+Ping+Type=${encodeURIComponent(template)}&Submission+Date=30+day+ago+for+30+day&Messaging+System+Message+Id=${encodeURIComponent(msgId)}&Normalized+Channel=${encodeURIComponent(channel)}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodeURIComponent(experiment)}&Experiment+Branch=${encodeURIComponent(branchSlug)}`
     expect(result).toEqual(expectedLink)
   })
 

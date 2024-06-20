@@ -21,7 +21,10 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
         // Looker being case sensitive
         const ctrPercent = await getCTRPercent(
           branchInfo.id.toUpperCase(),
-          branchInfo.template
+          branchInfo.template!,
+          undefined,
+          branchInfo.nimbusExperiment.slug,
+          branchInfo.slug
         );
         if (ctrPercent) {
           branchInfo.ctrPercent = ctrPercent;

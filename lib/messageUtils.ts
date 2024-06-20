@@ -62,7 +62,7 @@ export function getDashboard(
   }
 
   if (template === "infobar") {
-    return `https://mozilla.cloud.looker.com/dashboards/1682?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=30+days&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=${encodedChannel}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodedExperiment}&Experiment+Branch=${encodedBranchSlug}`;
+    return `https://mozilla.cloud.looker.com/dashboards/1775?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=30+day+ago+for+30+day&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=${encodedChannel}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodedExperiment}&Experiment+Branch=${encodedBranchSlug}`;
   }
 
   return undefined;
