@@ -1,17 +1,20 @@
 import { types } from "@mozilla/nimbus-shared";
-import { BranchInfo, RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
+import { RecipeOrBranchInfo, experimentColumns, FxMSMessageInfo, fxmsMessageColumns } from "./columns";
+import { getCTRPercent } from "@/lib/looker.ts";
 import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAboutWelcomeTemplate, maybeCreateWelcomePreview, getPreviewLink } from "../lib/messageUtils.ts";
+
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
 import { InfoTooltip } from "@/components/ui/infotooltip.tsx";
 import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
 import { MessageTable } from "./message-table";
-import Link from "next/link";
 
 import { MenuButton } from "@/components/ui/menubutton.tsx";
 
-function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
+const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
+
+async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMessageInfo> {
   let fxmsMsgInfo : FxMSMessageInfo = {
     product: 'Desktop',
     id: messageDef.id,
@@ -19,13 +22,23 @@ function getASRouterLocalColumnFromJSON(messageDef: any) : FxMSMessageInfo {
     surface: getDisplayNameForTemplate(getTemplateFromMessage(messageDef)),
     segment: 'some segment',
     metrics: 'some metrics',
-    ctrPercent: .5, // getMeFromLooker
-    ctrPercentChange: 2, // getMeFromLooker
+    ctrPercent: undefined, // may be populated from Looker data
+    ctrPercentChange: undefined, // may be populated from Looker data
     previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
   };
 
-  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id,
-    "release")
+  if (isLookerEnabled) {
+    const ctrPercent = await getCTRPercent(messageDef.id, fxmsMsgInfo.template)
+    if (ctrPercent) {
+      fxmsMsgInfo.ctrPercent = ctrPercent
+    }
+  }
+  
+  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id, "release")
+
+  // dashboard link -> dashboard id -> query id -> query -> ctr_percent_from_lastish_day
+
+  // console.log("fxmsMsgInfo: ", fxmsMsgInfo)
 
   return fxmsMsgInfo
 }
@@ -43,8 +56,12 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<FxMSMessageInfo[]>
     "utf8");
   let json_data = JSON.parse(data);
 
-  let messages : FxMSMessageInfo[] =
-    json_data.map((messageDef : any) : FxMSMessageInfo => getASRouterLocalColumnFromJSON(messageDef));
+  let messages =
+    await Promise.all(json_data.map(
+      async (messageDef : any): Promise<FxMSMessageInfo> => {
+        return await getASRouterLocalColumnFromJSON(messageDef)
+      }
+    ))
 
   return messages;
 }
@@ -87,36 +104,44 @@ async function getMsgRolloutCollection(
 
 export default async function Dashboard() {
   // Check to see if Auth is enabled
-  const isAuthEnabled = process.env.IS_AUTH_ENABLED === 'true';
+  const isAuthEnabled = process.env.IS_AUTH_ENABLED === "true";
 
-  const recipeCollection = new NimbusRecipeCollection()
-  await recipeCollection.fetchRecipes()
-  console.log('recipeCollection.length = ', recipeCollection.recipes.length)
+  const recipeCollection = new NimbusRecipeCollection();
+  await recipeCollection.fetchRecipes();
+  console.log("recipeCollection.length = ", recipeCollection.recipes.length);
 
   // XXX await Promise.allSettled for all three loads concurrently
-  const localData = await getASRouterLocalMessageInfoFromFile()
-  const msgExpRecipeCollection = await getMsgExpRecipeCollection(recipeCollection)
-  const msgRolloutRecipeCollection = await getMsgRolloutCollection(recipeCollection)
+  const localData = await getASRouterLocalMessageInfoFromFile();
+  const msgExpRecipeCollection = await getMsgExpRecipeCollection(
+    recipeCollection
+  );
+  const msgRolloutRecipeCollection = await getMsgRolloutCollection(
+    recipeCollection
+  );
 
-  // get in format useable by MessageTable
-  const experimentAndBranchInfo : RecipeOrBranchInfo[] =
-    msgExpRecipeCollection.recipes.map(
-      (recipe : NimbusRecipe) => recipe.getRecipeInfo())
+  // Get in format useable by MessageTable
+  const experimentAndBranchInfo: RecipeOrBranchInfo[] = isLookerEnabled
+    // Update branches inside recipe infos with CTR percents
+    ? await msgExpRecipeCollection.getExperimentAndBranchInfos()
+    : msgExpRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
+        recipe.getRecipeInfo()
+      );
 
-  const totalExperiments = msgExpRecipeCollection.recipes.length
+  const totalExperiments = msgExpRecipeCollection.recipes.length;
 
-  const msgRolloutInfo: RecipeOrBranchInfo[] =
-    msgRolloutRecipeCollection.recipes.map(
-      (recipe : NimbusRecipe) => recipe.getRecipeInfo())
+  const msgRolloutInfo: RecipeOrBranchInfo[] = isLookerEnabled
+    // Update branches inside recipe infos with CTR percents
+    ? await msgRolloutRecipeCollection.getExperimentAndBranchInfos()
+    : msgRolloutRecipeCollection.recipes.map((recipe:NimbusRecipe) => 
+        recipe.getRecipeInfo()
+    );
 
   const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
 
   return (
     <div>
       <div className="flex justify-between mx-20 py-8">
-        <h4 className="scroll-m-20 text-3xl font-semibold">
-          Skylight
-        </h4>
+        <h4 className="scroll-m-20 text-3xl font-semibold">Skylight</h4>
         <MenuButton />
       </div>
 
@@ -128,7 +153,7 @@ export default async function Dashboard() {
         />
       </h5>
       <h5 className="scroll-m-20 text-lg font-semibold text-center">
-        (Partial List) 
+        (Partial List)
       </h5>
 
       <div className="container mx-auto py-10">

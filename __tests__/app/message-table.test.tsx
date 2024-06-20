@@ -1,8 +1,11 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { MessageTable } from "@/app/message-table";
-import { experimentColumns, RecipeOrBranchInfo } from "@/app/columns";
+import { experimentColumns, fxmsMessageColumns, FxMSMessageInfo, RecipeInfo, RecipeOrBranchInfo } from "@/app/columns";
 import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
+import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
+
+jest.mock("../../lib/sdk")
 
 describe("MessageTable", () => {
   describe("ExperimentColumns", () => {
@@ -159,6 +162,126 @@ describe("MessageTable", () => {
 
       const previewButton = screen.queryByText("Copy Preview URL");
       expect(previewButton).not.toBeInTheDocument();
+    });
+
+    it("displays CTR percentages when Looker dashboard exists and CTR is defined", async () => {
+      const nimbusRecipeCollection = new NimbusRecipeCollection();
+      nimbusRecipeCollection.recipes = [
+        new NimbusRecipe(ExperimentFakes.recipe()),
+      ];
+      const recipeInfos =
+        (await nimbusRecipeCollection.getExperimentAndBranchInfos()) as RecipeInfo[];
+      // Setting fake dashboard link in order to render in MessageTable
+      recipeInfos[0].branches[0].ctrDashboardLink = "test link";
+      render(<MessageTable columns={experimentColumns} data={recipeInfos} />);
+
+      const toggleButton = screen.getByTestId("toggleAllRowsButton");
+      fireEvent.click(toggleButton);
+      const ctrMetrics = screen.getByText("12.3% CTR");
+
+      expect(recipeInfos[0].branches[0].ctrPercent).toBe(12.3);
+      expect(recipeInfos[0].branches[0].ctrDashboardLink).toBeDefined();
+      expect(ctrMetrics).toBeInTheDocument();
+    });
+
+    it("displays 'Dashboard' when Looker dashboard exists but CTR is undefined", () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe");
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+      let recipeInfo = nimbusRecipe.getRecipeInfo();
+      // Setting fake dashboard link in order to render in MessageTable
+      recipeInfo.branches[0].ctrDashboardLink = "test link";
+      render(<MessageTable columns={experimentColumns} data={[recipeInfo]} />);
+
+      const toggleButton = screen.getByTestId("toggleAllRowsButton");
+      fireEvent.click(toggleButton);
+      const dashboardLink = screen.getByText("Dashboard");
+      const ctrMetrics = screen.queryByText("CTR");
+
+      expect(recipeInfo.branches[0].ctrPercent).not.toBeDefined()
+      expect(recipeInfo.branches[0].ctrDashboardLink).toBeDefined();
+      expect(dashboardLink).toBeInTheDocument();
+      expect(ctrMetrics).not.toBeInTheDocument();
+    });
+
+    it("doesn't display any metric when Looker dashboard doesn't exist", () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe");
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+      const messageTableData: RecipeInfo[] = [
+        nimbusRecipe.getRecipeInfo(),
+      ];
+      render(
+        <MessageTable columns={experimentColumns} data={messageTableData} />
+      );
+
+      const toggleButton = screen.getByTestId("toggleAllRowsButton");
+      fireEvent.click(toggleButton);
+      const ctrMetrics = screen.queryByText("CTR");
+      const dashboardLink = screen.queryByText("Dashboard");
+
+      expect(messageTableData[0].branches[0].ctrPercent).not.toBeDefined()
+      expect(messageTableData[0].branches[0].ctrDashboardLink).not.toBeDefined()
+      expect(ctrMetrics).not.toBeInTheDocument();
+      expect(dashboardLink).not.toBeInTheDocument();
+    });
+  });
+
+  describe("MessageColumns", () => {
+    it("displays CTR percentages when Looker dashboard exists and CTR is defined", async () => {
+      const fakeMsgInfo: FxMSMessageInfo = {
+        product: "Desktop",
+        id: "test id",
+        template: "test template",
+        surface: "test surface",
+        segment: "test segment",
+        metrics: "test metrics",
+        ctrPercent: 12.3,
+        ctrPercentChange: 2,
+        ctrDashboardLink: "test link"
+      };
+      render(<MessageTable columns={fxmsMessageColumns} data={[fakeMsgInfo]} />);
+
+      const ctrMetrics = screen.getByText("12.3% CTR");
+
+      expect(ctrMetrics).toBeInTheDocument();
+    });
+
+    it("displays 'Dashboard' when Looker dashboard exists but CTR is undefined", () => {
+      const fakeMsgInfo: FxMSMessageInfo = {
+        product: "Desktop",
+        id: "test id",
+        template: "test template",
+        surface: "test surface",
+        segment: "test segment",
+        metrics: "test metrics",
+        ctrDashboardLink: "test link"
+      };
+      render(<MessageTable columns={fxmsMessageColumns} data={[fakeMsgInfo]} />);
+
+      const ctrMetrics = screen.queryByText("CTR");
+      const dashboardLink = screen.getByText("Dashboard");
+
+      expect(ctrMetrics).not.toBeInTheDocument();
+      expect(dashboardLink).toBeInTheDocument();
+    });
+
+    it("doesn't display any metrics when Looker dashboard doesn't exist", () => {
+      const fxmsMsgInfo: FxMSMessageInfo = {
+        product: "Desktop",
+        id: "test id",
+        template: "test template",
+        surface: "test surface",
+        segment: "test segment",
+        metrics: "test metrics",
+      };
+      render(
+        <MessageTable columns={fxmsMessageColumns} data={[fxmsMsgInfo]} />
+      );
+
+      const ctrMetrics = screen.queryByText("CTR");
+      const dashboardLink = screen.queryByText("Dashboard");
+
+      expect(ctrMetrics).not.toBeInTheDocument();
+      expect(dashboardLink).not.toBeInTheDocument();
     });
   });
 });

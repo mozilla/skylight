@@ -9,7 +9,7 @@ import { InfoPopover } from "@/components/ui/infopopover";
 
 function OffsiteLink(href: string, linkText: string) {
   return (
-    <a href={href} className="text-xs/[180%] whitespace-nowrap" target="_blank" rel="noreferrer">
+    <a href={href} className="text-xs/[180%] whitespace-nowrap flex items-center" target="_blank" rel="noreferrer">
       {linkText}
       <svg
         fill="none"
@@ -29,14 +29,16 @@ function OffsiteLink(href: string, linkText: string) {
 }
 
 // This type is used to define the shape of our data.
+// NOTE: ctrPercent is undefined by default until set using getCTRPercent. It is
+// made optional to help determine what's displayed in the Metrics column.
 export type FxMSMessageInfo = {
   product: 'Desktop' | 'Android'
   id: string
   template: string
   surface: string
   segment: string
-  ctrPercent: number
-  ctrPercentChange: number
+  ctrPercent?: number
+  ctrPercentChange?: number
   ctrDashboardLink?: string
   previewLink?: string
   metrics: string
@@ -61,8 +63,8 @@ export type RecipeInfo = {
   userFacingName?: string
   nimbusExperiment: NimbusExperiment
   isBranch?: boolean
-  branches: BranchInfo[]
-} | []
+  branches: BranchInfo[] // XXX rename this to branchInfos to avoid confusion with the branches property inside NimbusExperiment
+}
 
 export type BranchInfo = {
   product: 'Desktop' | 'Android'
@@ -84,9 +86,27 @@ export type BranchInfo = {
   template?: string
   screenshots?: string[]
   description?: string
-} | []
+}
 
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
+
+/**
+ * XXX fix https://bugzilla.mozilla.org/show_bug.cgi?id=1901036 to remove the 
+ * infobar template condition
+ * @returns an OffsiteLink linking to the Looker dashboard link if it exists,
+ * labelled with either the CTR percent or "Dashboard"
+ */
+function showCTRMetrics(
+  template?: string,
+  ctrDashboardLink?: string,
+  ctrPercent?: number
+) {
+  if (ctrDashboardLink && ctrPercent !== undefined && template !== "infobar") {
+    return OffsiteLink(ctrDashboardLink, ctrPercent + "% CTR");
+  } else if (ctrDashboardLink) {
+    return OffsiteLink(ctrDashboardLink, "Dashboard");
+  }
+}
 
 const previewURLInfoButton = (
   <InfoPopover
@@ -139,8 +159,13 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         return ( <></> );
       }
 
-      if (props.row.original.ctrDashboardLink) {
-        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
+      const metrics = showCTRMetrics(
+        props.row.original.template,
+        props.row.original.ctrDashboardLink,
+        props.row.original.ctrPercent
+      );
+      if (metrics) {
+        return metrics
       }
       return ( <></> );
     }
@@ -301,11 +326,13 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         return ( <></> );
       }
 
-
-      // XXX see https://bugzilla.mozilla.org/show_bug.cgi?id=1890055 for
-      // re-enabling infobar code.
-      if (props.row.original.ctrDashboardLink) {
-        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
+      const metrics = showCTRMetrics(
+        props.row.original.template,
+        props.row.original.ctrDashboardLink,
+        props.row.original.ctrPercent
+      );
+      if (metrics) {
+        return metrics
       }
       return ( <></> );
     }
@@ -322,7 +349,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         // XXX should figure out how to do this NimbusRecipe instantiation
         // once per row (maybe useState?)
         const recipe = new NimbusRecipe(props.row.original.nimbusExperiment)
-        
+
         if (props.row.original.screenshots && props.row.original.screenshots.length > 0) {
           const branchLink = recipe.getBranchScreenshotsLink(props.row.original.slug)
           return OffsiteLink(branchLink, "Screenshots")
