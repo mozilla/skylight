@@ -167,7 +167,7 @@ export default async function Dashboard() {
         Total: {totalRolloutExperiments}
       </h5>
       <div className="container mx-auto py-10">
-        <MessageTable columns={experimentColumns} data={msgRolloutInfo} defaultExpanded={false}/>
+        <MessageTable columns={experimentColumns} data={msgRolloutInfo} defaultExpanded={true}/>
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
