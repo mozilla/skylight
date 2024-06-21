@@ -3,7 +3,7 @@ import { types } from "@mozilla/nimbus-shared";
 import { ColumnDef } from "@tanstack/react-table";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import { ChevronsUpDown, ChevronDown, ChevronRight } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import { InfoPopover } from "@/components/ui/infopopover";
 
@@ -205,9 +205,9 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
           aria-label="Toggle All Branches"
         >
           {table.getIsAllRowsExpanded() ? (
-            <ChevronUp className="mr-2" size={18} />
-          ) : (
             <ChevronDown className="mr-2" size={18} />
+          ) : (
+            <ChevronsUpDown className="mr-2" size={18} />
           )}
         </button>
         Dates 
@@ -227,9 +227,9 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
                   aria-label="Toggle Branches"
                 >
                   {props.row.getIsExpanded() ? (
-                    <ChevronUp className="mr-2" size={18} />
-                  ) : (
                     <ChevronDown className="mr-2" size={18} />
+                  ) : (
+                    <ChevronRight className="mr-2" size={18} />
                   )}
                 </button>
               ) : null}
