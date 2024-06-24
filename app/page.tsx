@@ -97,6 +97,10 @@ async function getMsgRolloutCollection(
     msgRolloutRecipeCollection.recipes.length
   );
 
+  msgRolloutRecipeCollection.recipes =
+    msgRolloutRecipeCollection.recipes.sort(compareFn);
+  return msgRolloutRecipeCollection
+
   return msgRolloutRecipeCollection;
 }
 
