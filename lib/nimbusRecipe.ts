@@ -181,10 +181,9 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         branchInfo.id = feature.value.messages[0].id
         break
     }
-
+    const endDate = branchInfo.nimbusExperiment.endDate || getProposedEndDate(branchInfo.nimbusExperiment.startDate, branchInfo.nimbusExperiment.proposedDuration ? branchInfo.nimbusExperiment.proposedDuration + 1 : undefined) || null;
     branchInfo.ctrDashboardLink =
-      getDashboard(branch.template, branchInfo.id, undefined, branchInfo.nimbusExperiment.slug, branch.slug)
-
+      getDashboard(branch.template, branchInfo.id, undefined, branchInfo.nimbusExperiment.slug, branch.slug, branchInfo.nimbusExperiment.startDate, endDate)
     if (!feature.value.content) {
       console.log("v.content is null")
       // console.log("v= ", value)

@@ -97,4 +97,16 @@ describe('getDashboard', () => {
     expect(result).toEqual(expectedLink)
   });
 
+  it('returns a correct dashboard link with start and end dates', () => {
+    const template = "feature_callout"
+    const msgId = "1:23" // weird chars to test URI encoding
+    const startDate = "2024-03-08"
+    const endDate = "2024-06-28"
+
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1677?Submission+Timestamp+Date=2024-03-08+to+2024-06-28&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
+
+    const result = getDashboard(template, msgId, undefined, undefined, undefined, startDate, endDate)
+    expect(result).toEqual(expectedLink)
+  })
+
 })
