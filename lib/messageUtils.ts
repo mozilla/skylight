@@ -60,13 +60,10 @@ export function getDashboard(
   const encodedBranchSlug = branchSlug ? (encodeURIComponent(branchSlug)) : "";
   const dashboardId = getDashboardIdForTemplate(template);
 
-  const encodedStartDate = startDate ? (encodeURIComponent(startDate)) : "";
-  const encodedEndDate = endDate ? (encodeURIComponent(endDate)) : "";
-
   // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
   let encodedSubmissionDate = "30+day+ago+for+30+day";
-  if (encodedStartDate && encodedEndDate) {
-    encodedSubmissionDate = `${encodedStartDate}+to+${encodedEndDate}`;
+  if (startDate && endDate) {
+    encodedSubmissionDate = `${startDate}+to+${endDate}`;
   }
 
   if (_isAboutWelcomeTemplate(template)) {
