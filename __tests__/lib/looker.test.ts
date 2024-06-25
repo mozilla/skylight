@@ -9,13 +9,15 @@ jest.mock("../../lib/sdk");
 
 describe("Looker", () => {
   it("should return the first dashboard element", async () => {
-    const element = await looker.getAWDashboardElement0();
+    const template = "test_template";
+    const element = await looker.getAWDashboardElement0(template);
 
     expect(element).toEqual(fakeDashboardElements[0]);
   });
 
   it("should return the query results", async () => {
-    const queryResult = await looker.runEventCountQuery(fakeFilters);
+    const template = "test_template";
+    const queryResult = await looker.runQueryForTemplate(template, fakeFilters);
 
     expect(queryResult).toEqual(fakeQueryResult);
   });

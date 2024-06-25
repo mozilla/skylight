@@ -107,3 +107,14 @@ export function getPreviewLink(message: any): string {
 
   return previewLink;
 }
+
+/**
+ * @returns the Looker dashboard ID for a given message template
+ */
+export function getDashboardIdForTemplate(template: string) {
+  if (template === "infobar") {
+    return "1775";
+  } else {
+    return "1677";
+  }
+}

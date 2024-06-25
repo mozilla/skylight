@@ -1,11 +1,9 @@
 import { IDashboardElement, IWriteQuery } from "@looker/sdk"
 import { SDK } from "./sdk";
+import { getDashboardIdForTemplate } from "./messageUtils";
 
 export async function getAWDashboardElement0(template: string): Promise<IDashboardElement> {
-  let dashboardId = "1677";
-  if (template === "infobar") {
-    dashboardId = "1775";
-  }
+  const dashboardId = getDashboardIdForTemplate(template);
 
   // XXX switch this out for the more performant dashboard_element (see 
   // https://mozilla.cloud.looker.com/extensions/marketplace_extension_api_explorer::api-explorer/4.0/methods/Dashboard/dashboard_element
@@ -14,7 +12,7 @@ export async function getAWDashboardElement0(template: string): Promise<IDashboa
   return elements[0];
 }
 
-export async function runEventCountQuery(filters: any, template: string): Promise<any>{
+export async function runQueryForTemplate(template: string, filters: any): Promise<any>{
   const element0 = await getAWDashboardElement0(template)
   const origQuery = element0.query as IWriteQuery
 
@@ -67,25 +65,20 @@ export async function getCTRPercent(
 ): Promise<number | undefined> {
   let queryResult;
   if (template === "infobar") {
-    queryResult = await runEventCountQuery(
-      {
-        "messaging_system.metrics__text2__messaging_system_message_id": id,
-        "messaging_system.normalized_channel": channel,
-        "messaging_system.metrics__string__messaging_system_ping_type":
-          template,
-      },
-      template
-    );
+    queryResult = await runQueryForTemplate(template, {
+      "messaging_system.metrics__text2__messaging_system_message_id": id,
+      "messaging_system.normalized_channel": channel,
+      "messaging_system.metrics__string__messaging_system_ping_type": template,
+      "messaging_system__ping_info__experiments.key": experiment,
+      "messaging_system__ping_info__experiments.value__branch": branch,
+    });
   } else {
-    queryResult = await runEventCountQuery(
-      {
-        "event_counts.message_id": "%" + id + "%",
-        "event_counts.normalized_channel": channel,
-        "onboarding_v1__experiments.experiment": experiment,
-        "onboarding_v1__experiments.branch": branch,
-      },
-      template
-    );
+    queryResult = await runQueryForTemplate(template, {
+      "event_counts.message_id": "%" + id + "%",
+      "event_counts.normalized_channel": channel,
+      "onboarding_v1__experiments.experiment": experiment,
+      "onboarding_v1__experiments.branch": branch,
+    });
   }
 
   if (queryResult.length > 0) {
