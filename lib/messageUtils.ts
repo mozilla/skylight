@@ -64,6 +64,8 @@ export function getDashboard(
   let encodedSubmissionDate = "30+day+ago+for+30+day";
   if (startDate && endDate) {
     encodedSubmissionDate = `${startDate}+to+${endDate}`;
+  } else if (startDate) {
+    encodedSubmissionDate = `${startDate}+to+today`;
   }
 
   if (_isAboutWelcomeTemplate(template)) {

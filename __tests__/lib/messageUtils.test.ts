@@ -77,7 +77,7 @@ describe('getDashboard', () => {
     const msgId = "1:23" // weird chars to test URI encoding
     const dashboardId = getDashboardIdForTemplate(template)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30+day+ago+for+30+day&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
 
     const result = getDashboard(template, msgId)
     expect(result).toEqual(expectedLink)
@@ -91,7 +91,7 @@ describe('getDashboard', () => {
     const branchSlug = "treatment:a"
     const dashboardId = getDashboardIdForTemplate(template)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Message+ID=%25${encodeURIComponent(msgId.toUpperCase())}%25&Normalized+Channel=&Experiment=${encodeURIComponent(experiment)}&Branch=${encodeURIComponent(branchSlug)}`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30+day+ago+for+30+day&Message+ID=%25${encodeURIComponent(msgId.toUpperCase())}%25&Normalized+Channel=&Experiment=${encodeURIComponent(experiment)}&Branch=${encodeURIComponent(branchSlug)}`
 
     const result = getDashboard(template, msgId, undefined, experiment, branchSlug)
     expect(result).toEqual(expectedLink)
