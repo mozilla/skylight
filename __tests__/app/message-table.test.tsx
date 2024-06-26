@@ -177,9 +177,9 @@ describe("MessageTable", () => {
 
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
       fireEvent.click(toggleButton);
-      const ctrMetrics = screen.getByText("12.3% CTR");
+      const ctrMetrics = screen.getByText("12.35% CTR");
 
-      expect(recipeInfos[0].branches[0].ctrPercent).toBe(12.3);
+      expect(recipeInfos[0].branches[0].ctrPercent).toBe(12.35);
       expect(recipeInfos[0].branches[0].ctrDashboardLink).toBeDefined();
       expect(ctrMetrics).toBeInTheDocument();
     });
@@ -234,13 +234,13 @@ describe("MessageTable", () => {
         surface: "test surface",
         segment: "test segment",
         metrics: "test metrics",
-        ctrPercent: 12.3,
+        ctrPercent: 12.35,
         ctrPercentChange: 2,
         ctrDashboardLink: "test link"
       };
       render(<MessageTable columns={fxmsMessageColumns} data={[fakeMsgInfo]} />);
 
-      const ctrMetrics = screen.getByText("12.3% CTR");
+      const ctrMetrics = screen.getByText("12.35% CTR");
 
       expect(ctrMetrics).toBeInTheDocument();
     });

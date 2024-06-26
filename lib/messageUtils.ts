@@ -56,13 +56,14 @@ export function getDashboard(
   const encodedChannel = channel ? (encodeURIComponent(channel)) : "";
   const encodedExperiment = experiment ? (encodeURIComponent(experiment)) : "";
   const encodedBranchSlug = branchSlug ? (encodeURIComponent(branchSlug)) : "";
+  const dashboardId = getDashboardIdForTemplate(template);
 
   if (_isAboutWelcomeTemplate(template)) {
-    return `https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`
+    return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`
   }
 
   if (template === "infobar") {
-    return `https://mozilla.cloud.looker.com/dashboards/1682?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=30+days&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=${encodedChannel}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodedExperiment}&Experiment+Branch=${encodedBranchSlug}`;
+    return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=30+day+ago+for+30+day&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=${encodedChannel}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodedExperiment}&Experiment+Branch=${encodedBranchSlug}`;
   }
 
   return undefined;
@@ -106,4 +107,16 @@ export function getPreviewLink(message: any): string {
   )}`;
 
   return previewLink;
+}
+
+/**
+ * XXX consider moving this function inside looker.ts
+ * @returns the Looker dashboard ID for a given message template
+ */
+export function getDashboardIdForTemplate(template: string) {
+  if (template === "infobar") {
+    return "1775";
+  } else {
+    return "1677";
+  }
 }
