@@ -63,6 +63,9 @@ export async function getCTRPercent(
   experiment?: string,
   branch?: string
 ): Promise<number | undefined> {
+  // XXX the filters are currently defined to match the filters in getDashboard.
+  // It would be more ideal to consider a different approach when definining
+  // those filters to sync up the data in both places.
   let queryResult;
   if (template === "infobar") {
     queryResult = await runQueryForTemplate(template, {
@@ -82,6 +85,8 @@ export async function getCTRPercent(
   }
 
   if (queryResult.length > 0) {
-    return Number(Number(queryResult[0].primary_rate * 100).toFixed(1));
+    // CTR percents will have 2 decimal places since this is what is expected
+    // from Experimenter analyses.
+    return Number(Number(queryResult[0].primary_rate * 100).toFixed(2));
   }
 }

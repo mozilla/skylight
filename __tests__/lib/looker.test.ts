@@ -28,6 +28,6 @@ describe("Looker", () => {
 
     const ctrPercent = await looker.getCTRPercent(id, template);
 
-    expect(ctrPercent).toEqual(12.3);
+    expect(ctrPercent).toEqual(12.35);
   });
 });
