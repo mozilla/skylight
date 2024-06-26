@@ -181,6 +181,8 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         branchInfo.id = feature.value.messages[0].id
         break
     }
+    // We are using the proposed end date + 1 as the end date because the end
+    // date is not inclusive in Looker
     branchInfo.ctrDashboardLink = getDashboard(
       branch.template,
       branchInfo.id,
@@ -188,7 +190,12 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
       branchInfo.nimbusExperiment.slug,
       branch.slug,
       branchInfo.nimbusExperiment.startDate,
-      branchInfo.nimbusExperiment.endDate
+      getProposedEndDate(
+        branchInfo.nimbusExperiment.startDate,
+        branchInfo.nimbusExperiment.proposedDuration
+          ? branchInfo.nimbusExperiment.proposedDuration + 1
+          : undefined
+      )
     );
     if (!feature.value.content) {
       console.log("v.content is null")

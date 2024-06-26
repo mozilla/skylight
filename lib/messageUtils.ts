@@ -62,7 +62,7 @@ export function getDashboard(
 
   // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
   let encodedSubmissionDate = "30+day+ago+for+30+day";
-  if (startDate && endDate) {
+  if (startDate && endDate && (new Date() < new Date(endDate))) {
     encodedSubmissionDate = `${startDate}+to+${endDate}`;
   } else if (startDate) {
     encodedSubmissionDate = `${startDate}+to+today`;
