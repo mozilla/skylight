@@ -5,7 +5,7 @@ import { getDashboardIdForTemplate } from "./messageUtils";
 export async function getAWDashboardElement0(template: string): Promise<IDashboardElement> {
   const dashboardId = getDashboardIdForTemplate(template);
 
-  // XXX switch this out for the more performant dashboard_element (see
+  // XXX maybe switch this out for the more performant dashboard_element (see
   // https://mozilla.cloud.looker.com/extensions/marketplace_extension_api_explorer::api-explorer/4.0/methods/Dashboard/dashboard_element
   // for more info).
 
@@ -50,6 +50,7 @@ export async function runQueryForTemplate(template: string, filters: any, startD
     );
   } else {
     // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
+    // XXX refactor the date logic below into a separate function (see https://bugzilla.mozilla.org/show_bug.cgi?id=1905204)
     let submission_timestamp_date = "30 day ago for 30 day";
     if (startDate && endDate && (new Date() < new Date(endDate))) {
       submission_timestamp_date = `${startDate} to ${endDate}`;
@@ -115,7 +116,6 @@ export async function getCTRPercent(
       "onboarding_v1__experiments.experiment": experiment,
       "onboarding_v1__experiments.branch": branch,
     }, startDate, endDate);
-    console.log("queryResult: ", queryResult);
   }
 
   if (queryResult.length > 0) {
