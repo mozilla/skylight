@@ -31,7 +31,7 @@ export async function getAWDashboardElement0(template: string): Promise<IDashboa
   return elements[0];
 }
 
-export async function runQueryForTemplate(template: string, filters: any): Promise<any>{
+export async function runQueryForTemplate(template: string, filters: any, startDate?: string | null, endDate?: string | null,): Promise<any>{
   const element0 = await getAWDashboardElement0(template)
 
   const origQuery = element0.query as IWriteQuery
@@ -49,11 +49,17 @@ export async function runQueryForTemplate(template: string, filters: any): Promi
       filters
     );
   } else {
+    // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
+    let submission_timestamp_date = "30 day ago for 30 day";
+    if (startDate && endDate && (new Date() < new Date(endDate))) {
+      submission_timestamp_date = `${startDate} to ${endDate}`;
+    } else if (startDate) {
+      submission_timestamp_date = `${startDate} to today`;
+    }
+    
     newQueryBody.filters = Object.assign(
       {
-        // XXX reasonable default for non-experiment messages
-        // and matches how we default the dashboard URL
-        "event_counts.submission_timestamp_date": "30 day ago for 30 day",
+        "event_counts.submission_timestamp_date": submission_timestamp_date,
       },
       filters
     );
@@ -83,7 +89,9 @@ export async function getCTRPercent(
   template: string,
   channel?: string,
   experiment?: string,
-  branch?: string
+  branch?: string,
+  startDate?: string | null,
+  endDate?: string | null
 ): Promise<number | undefined> {
   // XXX the filters are currently defined to match the filters in getDashboard.
   // It would be more ideal to consider a different approach when definining
@@ -96,14 +104,15 @@ export async function getCTRPercent(
       "messaging_system.metrics__string__messaging_system_ping_type": template,
       "messaging_system__ping_info__experiments.key": experiment,
       "messaging_system__ping_info__experiments.value__branch": branch,
-    });
+    }, startDate, endDate);
   } else {
+
     queryResult = await runQueryForTemplate(template, {
       "event_counts.message_id": "%" + id + "%",
       "event_counts.normalized_channel": channel,
       "onboarding_v1__experiments.experiment": experiment,
       "onboarding_v1__experiments.branch": branch,
-    });
+    }, startDate, endDate);
     console.log("queryResult: ", queryResult);
   }
 

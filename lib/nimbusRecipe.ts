@@ -198,7 +198,6 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
       branchInfo.nimbusExperiment.startDate,
       proposedEndDate
     );
-
     if (!feature.value.content) {
       console.log("v.content is null")
       // console.log("v= ", value)
