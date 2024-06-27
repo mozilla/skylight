@@ -183,6 +183,12 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
     }
     // We are using the proposed end date + 1 as the end date because the end
     // date is not inclusive in Looker
+    const proposedEndDate = getProposedEndDate(
+      branchInfo.nimbusExperiment.startDate,
+      branchInfo.nimbusExperiment.proposedDuration
+        ? branchInfo.nimbusExperiment.proposedDuration + 1
+        : undefined
+    );
     branchInfo.ctrDashboardLink = getDashboard(
       branch.template,
       branchInfo.id,
@@ -190,12 +196,7 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
       branchInfo.nimbusExperiment.slug,
       branch.slug,
       branchInfo.nimbusExperiment.startDate,
-      getProposedEndDate(
-        branchInfo.nimbusExperiment.startDate,
-        branchInfo.nimbusExperiment.proposedDuration
-          ? branchInfo.nimbusExperiment.proposedDuration + 1
-          : undefined
-      )
+      proposedEndDate
     );
     if (!feature.value.content) {
       console.log("v.content is null")
