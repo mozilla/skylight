@@ -58,14 +58,16 @@ export function getDashboard(
   const encodedChannel = channel ? (encodeURIComponent(channel)) : "";
   const encodedExperiment = experiment ? (encodeURIComponent(experiment)) : "";
   const encodedBranchSlug = branchSlug ? (encodeURIComponent(branchSlug)) : "";
+  const encodedStartDate = startDate ? (encodeURIComponent(startDate)) : "";
+  const encodedEndDate = endDate ? (encodeURIComponent(endDate)) : "";
   const dashboardId = getDashboardIdForTemplate(template);
 
   // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
   let encodedSubmissionDate = "30+day+ago+for+30+day";
   if (startDate && endDate && (new Date() < new Date(endDate))) {
-    encodedSubmissionDate = `${startDate}+to+${endDate}`;
+    encodedSubmissionDate = `${encodedStartDate}+to+${encodedEndDate}`;
   } else if (startDate) {
-    encodedSubmissionDate = `${startDate}+to+today`;
+    encodedSubmissionDate = `${encodedStartDate}+to+today`;
   }
 
   if (_isAboutWelcomeTemplate(template)) {
