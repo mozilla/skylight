@@ -2,7 +2,7 @@
 
 Spiked with both BigQuery and Looker.  Ultimately, I went with Looker because it appeared more straightforward, and Looker is what we're linking to for more sophisicated dashboards and it appeared (initially) as though it would be easier to implement. 
 
-Ultimately, I suspect it's six of one/half dozen of the other, and we may end up switching to BigQuery at some point, but for now we've got something that basically works. 
+Ultimately, I suspect it's six of one/half dozen of the other, and we may end up switching to BigQuery at some point, but for now we've got something that basically works.  
 
 ### Looker
 
