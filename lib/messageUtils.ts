@@ -49,21 +49,33 @@ export function getDashboard(
   msgId: string,
   channel?: string,
   experiment?: string,
-  branchSlug?: string): string | undefined {
+  branchSlug?: string,
+  startDate?: string | null,
+  endDate?: string | null): string | undefined {
 
   const encodedMsgId = encodeURIComponent(msgId);
   const encodedTemplate = encodeURIComponent(template);
   const encodedChannel = channel ? (encodeURIComponent(channel)) : "";
   const encodedExperiment = experiment ? (encodeURIComponent(experiment)) : "";
   const encodedBranchSlug = branchSlug ? (encodeURIComponent(branchSlug)) : "";
+  const encodedStartDate = startDate ? (encodeURIComponent(startDate)) : "";
+  const encodedEndDate = endDate ? (encodeURIComponent(endDate)) : "";
   const dashboardId = getDashboardIdForTemplate(template);
 
+  // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
+  let encodedSubmissionDate = "30+day+ago+for+30+day";
+  if (startDate && endDate && (new Date() < new Date(endDate))) {
+    encodedSubmissionDate = `${encodedStartDate}+to+${encodedEndDate}`;
+  } else if (startDate) {
+    encodedSubmissionDate = `${encodedStartDate}+to+today`;
+  }
+
   if (_isAboutWelcomeTemplate(template)) {
-    return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`
+    return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=${encodedSubmissionDate}&Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`
   }
 
   if (template === "infobar") {
-    return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=30+day+ago+for+30+day&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=${encodedChannel}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodedExperiment}&Experiment+Branch=${encodedBranchSlug}`;
+    return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=${encodedSubmissionDate}&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=${encodedChannel}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodedExperiment}&Experiment+Branch=${encodedBranchSlug}`;
   }
 
   return undefined;
