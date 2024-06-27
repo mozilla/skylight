@@ -56,7 +56,7 @@ export async function runQueryForTemplate(template: string, filters: any, startD
     } else if (startDate) {
       submission_timestamp_date = `${startDate} to today`;
     }
-    
+
     newQueryBody.filters = Object.assign(
       {
         "event_counts.submission_timestamp_date": submission_timestamp_date,
@@ -81,6 +81,8 @@ export async function runQueryForTemplate(template: string, filters: any, startD
  * @param channel the normalized channel
  * @param experiment the experiment slug
  * @param branch the branch slug
+ * @param startDate the experiment start date
+ * @param endDate the experiment proposed end date
  * @returns a CTR percent value for a message if the Looker query results are
  * defined
  */
