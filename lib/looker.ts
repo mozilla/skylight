@@ -5,15 +5,35 @@ import { getDashboardIdForTemplate } from "./messageUtils";
 export async function getAWDashboardElement0(template: string): Promise<IDashboardElement> {
   const dashboardId = getDashboardIdForTemplate(template);
 
-  // XXX switch this out for the more performant dashboard_element (see 
+  // XXX switch this out for the more performant dashboard_element (see
   // https://mozilla.cloud.looker.com/extensions/marketplace_extension_api_explorer::api-explorer/4.0/methods/Dashboard/dashboard_element
   // for more info).
-  const elements: IDashboardElement[] = await SDK.ok(SDK.dashboard_dashboard_elements(dashboardId));
+
+  let elements: IDashboardElement[];
+  if (template == "infobar") {
+    // XXX infobar hasn't had its own overview dashboard element created yet
+    // so we're still using the old code here
+    elements = await SDK.ok(SDK.dashboard_dashboard_elements(dashboardId));
+  } else {
+    elements = await SDK.ok(
+      // XXX whether search_dashboard_elements is a net win here isn't
+      // clear, but the code is working, so I'm inclined to leave it alone for now.
+      SDK.search_dashboard_elements(
+        {
+          dashboard_id: dashboardId,
+          title: 'CTR and User Profiles Impressed',
+          fields: 'query'
+        }
+      )
+    )
+  }
+
   return elements[0];
 }
 
 export async function runQueryForTemplate(template: string, filters: any): Promise<any>{
   const element0 = await getAWDashboardElement0(template)
+
   const origQuery = element0.query as IWriteQuery
 
   // take the query from the original dashboard
@@ -31,7 +51,9 @@ export async function runQueryForTemplate(template: string, filters: any): Promi
   } else {
     newQueryBody.filters = Object.assign(
       {
-        "event_counts.submission_timestamp_date": "2 days",
+        // XXX reasonable default for non-experiment messages
+        // and matches how we default the dashboard URL
+        "event_counts.submission_timestamp_date": "30 day ago for 30 day",
       },
       filters
     );
@@ -47,7 +69,7 @@ export async function runQueryForTemplate(template: string, filters: any): Promi
 }
 
 /**
- * @param id the events_count.message_id required for running the looker 
+ * @param id the events_count.message_id required for running the looker
  * query to retrieve CTR metrics
  * @param template the message template
  * @param channel the normalized channel
@@ -82,6 +104,7 @@ export async function getCTRPercent(
       "onboarding_v1__experiments.experiment": experiment,
       "onboarding_v1__experiments.branch": branch,
     });
+    console.log("queryResult: ", queryResult);
   }
 
   if (queryResult.length > 0) {

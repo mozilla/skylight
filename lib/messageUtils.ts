@@ -129,6 +129,6 @@ export function getDashboardIdForTemplate(template: string) {
   if (template === "infobar") {
     return "1775";
   } else {
-    return "1677";
+    return "1806";
   }
 }
