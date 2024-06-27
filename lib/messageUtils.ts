@@ -63,6 +63,7 @@ export function getDashboard(
   const dashboardId = getDashboardIdForTemplate(template);
 
   // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
+  // XXX refactor the date logic below into a separate function (see https://bugzilla.mozilla.org/show_bug.cgi?id=1905204)
   let encodedSubmissionDate = "30+day+ago+for+30+day";
   if (startDate && endDate && (new Date() < new Date(endDate))) {
     encodedSubmissionDate = `${encodedStartDate}+to+${encodedEndDate}`;
@@ -129,6 +130,6 @@ export function getDashboardIdForTemplate(template: string) {
   if (template === "infobar") {
     return "1775";
   } else {
-    return "1677";
+    return "1806";
   }
 }

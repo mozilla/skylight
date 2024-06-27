@@ -181,8 +181,10 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         branchInfo.id = feature.value.messages[0].id
         break
     }
+    
     // We are using the proposed end date + 1 as the end date because the end
     // date is not inclusive in Looker
+    // XXX refactor proposedEndDate into a separate function (see https://bugzilla.mozilla.org/show_bug.cgi?id=1905204)
     const proposedEndDate = getProposedEndDate(
       branchInfo.nimbusExperiment.startDate,
       branchInfo.nimbusExperiment.proposedDuration
