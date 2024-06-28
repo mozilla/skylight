@@ -27,14 +27,16 @@ async function getASRouterLocalColumnFromJSON(messageDef: any) : Promise<FxMSMes
     previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
   };
 
+  const channel = "release";
+
   if (isLookerEnabled) {
-    const ctrPercent = await getCTRPercent(messageDef.id, fxmsMsgInfo.template)
+    const ctrPercent = await getCTRPercent(messageDef.id, fxmsMsgInfo.template, channel)
     if (ctrPercent) {
       fxmsMsgInfo.ctrPercent = ctrPercent
     }
   }
   
-  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id, "release")
+  fxmsMsgInfo.ctrDashboardLink = getDashboard(messageDef.template, messageDef.id, channel)
 
   // dashboard link -> dashboard id -> query id -> query -> ctr_percent_from_lastish_day
 
@@ -152,7 +154,7 @@ export default async function Dashboard() {
           content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
         />
       </h5>
-      <h5 className="scroll-m-20 text-lg font-semibold text-center">
+      <h5 className="scroll-m-20 text-sm text-center">
         (Partial List)
       </h5>
 
@@ -163,17 +165,17 @@ export default async function Dashboard() {
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Current Message Rollouts
       </h5>
-      <h5 className="scroll-m-20 text-lg font-semibold text-center">
+      <h5 className="scroll-m-20 text-sm text-center">
         Total: {totalRolloutExperiments}
       </h5>
       <div className="container mx-auto py-10">
-        <MessageTable columns={experimentColumns} data={msgRolloutInfo} defaultExpanded={false}/>
+        <MessageTable columns={experimentColumns} data={msgRolloutInfo} defaultExpanded={true}/>
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Current Message Experiments
       </h5>
-      <h5 className="scroll-m-20 text-lg font-semibold text-center">
+      <h5 className="scroll-m-20 text-sm text-center">
         Total: {totalExperiments}
       </h5>
 

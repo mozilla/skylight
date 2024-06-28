@@ -181,10 +181,25 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         branchInfo.id = feature.value.messages[0].id
         break
     }
-
-    branchInfo.ctrDashboardLink =
-      getDashboard(branch.template, branchInfo.id, undefined, branchInfo.nimbusExperiment.slug, branch.slug)
-
+    
+    // We are using the proposed end date + 1 as the end date because the end
+    // date is not inclusive in Looker
+    // XXX refactor proposedEndDate into a separate function (see https://bugzilla.mozilla.org/show_bug.cgi?id=1905204)
+    const proposedEndDate = getProposedEndDate(
+      branchInfo.nimbusExperiment.startDate,
+      branchInfo.nimbusExperiment.proposedDuration
+        ? branchInfo.nimbusExperiment.proposedDuration + 1
+        : undefined
+    );
+    branchInfo.ctrDashboardLink = getDashboard(
+      branch.template,
+      branchInfo.id,
+      undefined,
+      branchInfo.nimbusExperiment.slug,
+      branch.slug,
+      branchInfo.nimbusExperiment.startDate,
+      proposedEndDate
+    );
     if (!feature.value.content) {
       console.log("v.content is null")
       // console.log("v= ", value)

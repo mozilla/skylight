@@ -3,7 +3,7 @@ import { types } from "@mozilla/nimbus-shared";
 import { ColumnDef } from "@tanstack/react-table";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import { ChevronsUpDown, ChevronDown, ChevronRight } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import { InfoPopover } from "@/components/ui/infopopover";
 
@@ -91,8 +91,6 @@ export type BranchInfo = {
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
 
 /**
- * XXX fix https://bugzilla.mozilla.org/show_bug.cgi?id=1901036 to remove the 
- * infobar template condition
  * @returns an OffsiteLink linking to the Looker dashboard link if it exists,
  * labelled with either the CTR percent or "Dashboard"
  */
@@ -101,6 +99,7 @@ function showCTRMetrics(
   ctrDashboardLink?: string,
   ctrPercent?: number
 ) {
+  // XXX remove infobar condition in https://bugzilla.mozilla.org/show_bug.cgi?id=1905155
   if (ctrDashboardLink && ctrPercent !== undefined && template !== "infobar") {
     return OffsiteLink(ctrDashboardLink, ctrPercent + "% CTR");
   } else if (ctrDashboardLink) {
@@ -205,9 +204,9 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
           aria-label="Toggle All Branches"
         >
           {table.getIsAllRowsExpanded() ? (
-            <ChevronUp className="mr-2" size={18} />
-          ) : (
             <ChevronDown className="mr-2" size={18} />
+          ) : (
+            <ChevronsUpDown className="mr-2" size={18} />
           )}
         </button>
         Dates 
@@ -227,9 +226,9 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
                   aria-label="Toggle Branches"
                 >
                   {props.row.getIsExpanded() ? (
-                    <ChevronUp className="mr-2" size={18} />
-                  ) : (
                     <ChevronDown className="mr-2" size={18} />
+                  ) : (
+                    <ChevronRight className="mr-2" size={18} />
                   )}
                 </button>
               ) : null}
