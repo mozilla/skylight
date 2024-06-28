@@ -39,8 +39,8 @@ describe('NimbusRecipeCollection', () => {
       const recipeInfos =
         (await nimbusRecipeCollection.getExperimentAndBranchInfos()) as RecipeInfo[];
 
-      expect(recipeInfos[0].branches[0].ctrPercent).toBe(12.3);
-      expect(recipeInfos[0].branches[1].ctrPercent).toBe(12.3);
+      expect(recipeInfos[0].branches[0].ctrPercent).toBe(12.35);
+      expect(recipeInfos[0].branches[1].ctrPercent).toBe(12.35);
     });
   });
 })

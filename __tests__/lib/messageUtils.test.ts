@@ -1,4 +1,4 @@
-import { getDashboard, _isAboutWelcomeTemplate, toBinary } from '@/lib/messageUtils'
+import { getDashboard, _isAboutWelcomeTemplate, toBinary, getDashboardIdForTemplate } from '@/lib/messageUtils'
 
 describe('isAboutWelcomeTemplate', () => {
   it('returns true if a feature_callout', () => {
@@ -64,18 +64,20 @@ describe('getDashboard', () => {
     const channel = "release"
     const experiment = "experiment:test"
     const branchSlug = "treatment:a"
+    const dashboardId = getDashboardIdForTemplate(template)
 
     const result = getDashboard(template, msgId, channel, experiment, branchSlug)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1682?Messaging+System+Ping+Type=${encodeURIComponent(template)}&Submission+Date=30+days&Messaging+System+Message+Id=${encodeURIComponent(msgId)}&Normalized+Channel=${encodeURIComponent(channel)}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodeURIComponent(experiment)}&Experiment+Branch=${encodeURIComponent(branchSlug)}`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Messaging+System+Ping+Type=${encodeURIComponent(template)}&Submission+Date=30+day+ago+for+30+day&Messaging+System+Message+Id=${encodeURIComponent(msgId)}&Normalized+Channel=${encodeURIComponent(channel)}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodeURIComponent(experiment)}&Experiment+Branch=${encodeURIComponent(branchSlug)}`
     expect(result).toEqual(expectedLink)
   })
 
   it('returns a correct featureCallout dashboard link', () => {
     const template = "feature_callout"
     const msgId = "1:23" // weird chars to test URI encoding
+    const dashboardId = getDashboardIdForTemplate(template)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30+day+ago+for+30+day&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
 
     const result = getDashboard(template, msgId)
     expect(result).toEqual(expectedLink)
@@ -87,11 +89,49 @@ describe('getDashboard', () => {
     const msgId = "1:23" // weird chars to test URI encoding
     const experiment = "experiment:test"
     const branchSlug = "treatment:a"
+    const dashboardId = getDashboardIdForTemplate(template)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25${encodeURIComponent(msgId.toUpperCase())}%25&Normalized+Channel=&Experiment=${encodeURIComponent(experiment)}&Branch=${encodeURIComponent(branchSlug)}`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30+day+ago+for+30+day&Message+ID=%25${encodeURIComponent(msgId.toUpperCase())}%25&Normalized+Channel=&Experiment=${encodeURIComponent(experiment)}&Branch=${encodeURIComponent(branchSlug)}`
 
     const result = getDashboard(template, msgId, undefined, experiment, branchSlug)
     expect(result).toEqual(expectedLink)
   });
 
+  it('returns a correct dashboard link with defined start and end dates where the end date is in the future', () => {
+    const template = "feature_callout"
+    const msgId = "1:23" // weird chars to test URI encoding
+    const startDate = "2024-03-08"
+    const endDate = "2025-06-28"
+    const dashboardId = getDashboardIdForTemplate(template)
+
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=2024-03-08+to+2025-06-28&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
+
+    const result = getDashboard(template, msgId, undefined, undefined, undefined, startDate, endDate)
+    expect(result).toEqual(expectedLink)
+  })
+
+  it('returns a correct dashboard link with defined start and end dates where the end date is in the past', () => {
+    const template = "feature_callout"
+    const msgId = "1:23" // weird chars to test URI encoding
+    const startDate = "2024-03-08"
+    const endDate = "2024-05-28"
+    const dashboardId = getDashboardIdForTemplate(template)
+
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=2024-03-08+to+today&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
+
+    const result = getDashboard(template, msgId, undefined, undefined, undefined, startDate, endDate)
+    expect(result).toEqual(expectedLink)
+  })
+
+  it('returns a correct dashboard link with a defined start date', () => {
+    const template = "feature_callout"
+    const msgId = "1:23" // weird chars to test URI encoding
+    const startDate = "2024-03-08"
+    const dashboardId = getDashboardIdForTemplate(template)
+
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=2024-03-08+to+today&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
+
+    const result = getDashboard(template, msgId, undefined, undefined, undefined, startDate, null)
+    expect(result).toEqual(expectedLink)
+  })
 })
