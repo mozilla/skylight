@@ -91,8 +91,6 @@ export type BranchInfo = {
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
 
 /**
- * XXX fix https://bugzilla.mozilla.org/show_bug.cgi?id=1901036 to remove the 
- * infobar template condition
  * @returns an OffsiteLink linking to the Looker dashboard link if it exists,
  * labelled with either the CTR percent or "Dashboard"
  */
@@ -101,6 +99,7 @@ function showCTRMetrics(
   ctrDashboardLink?: string,
   ctrPercent?: number
 ) {
+  // XXX remove infobar condition in https://bugzilla.mozilla.org/show_bug.cgi?id=1905155
   if (ctrDashboardLink && ctrPercent !== undefined && template !== "infobar") {
     return OffsiteLink(ctrDashboardLink, ctrPercent + "% CTR");
   } else if (ctrDashboardLink) {

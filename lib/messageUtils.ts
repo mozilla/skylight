@@ -49,20 +49,34 @@ export function getDashboard(
   msgId: string,
   channel?: string,
   experiment?: string,
-  branchSlug?: string): string | undefined {
+  branchSlug?: string,
+  startDate?: string | null,
+  endDate?: string | null): string | undefined {
 
   const encodedMsgId = encodeURIComponent(msgId);
   const encodedTemplate = encodeURIComponent(template);
   const encodedChannel = channel ? (encodeURIComponent(channel)) : "";
   const encodedExperiment = experiment ? (encodeURIComponent(experiment)) : "";
   const encodedBranchSlug = branchSlug ? (encodeURIComponent(branchSlug)) : "";
+  const encodedStartDate = startDate ? (encodeURIComponent(startDate)) : "";
+  const encodedEndDate = endDate ? (encodeURIComponent(endDate)) : "";
+  const dashboardId = getDashboardIdForTemplate(template);
+
+  // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
+  // XXX refactor the date logic below into a separate function (see https://bugzilla.mozilla.org/show_bug.cgi?id=1905204)
+  let encodedSubmissionDate = "30+day+ago+for+30+day";
+  if (startDate && endDate && (new Date() < new Date(endDate))) {
+    encodedSubmissionDate = `${encodedStartDate}+to+${encodedEndDate}`;
+  } else if (startDate) {
+    encodedSubmissionDate = `${encodedStartDate}+to+today`;
+  }
 
   if (_isAboutWelcomeTemplate(template)) {
-    return `https://mozilla.cloud.looker.com/dashboards/1677?Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`
+    return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=${encodedSubmissionDate}&Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`
   }
 
   if (template === "infobar") {
-    return `https://mozilla.cloud.looker.com/dashboards/1682?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=30+days&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=${encodedChannel}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodedExperiment}&Experiment+Branch=${encodedBranchSlug}`;
+    return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=${encodedSubmissionDate}&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=${encodedChannel}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodedExperiment}&Experiment+Branch=${encodedBranchSlug}`;
   }
 
   return undefined;
@@ -106,4 +120,16 @@ export function getPreviewLink(message: any): string {
   )}`;
 
   return previewLink;
+}
+
+/**
+ * XXX consider moving this function inside looker.ts
+ * @returns the Looker dashboard ID for a given message template
+ */
+export function getDashboardIdForTemplate(template: string) {
+  if (template === "infobar") {
+    return "1775";
+  } else {
+    return "1806";
+  }
 }
