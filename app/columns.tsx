@@ -99,8 +99,7 @@ function showCTRMetrics(
   ctrDashboardLink?: string,
   ctrPercent?: number
 ) {
-  // XXX remove infobar condition in https://bugzilla.mozilla.org/show_bug.cgi?id=1905155
-  if (ctrDashboardLink && ctrPercent !== undefined && template !== "infobar") {
+  if (ctrDashboardLink && ctrPercent !== undefined) {
     return OffsiteLink(ctrDashboardLink, ctrPercent + "% CTR");
   } else if (ctrDashboardLink) {
     return OffsiteLink(ctrDashboardLink, "Dashboard");

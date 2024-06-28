@@ -120,7 +120,7 @@ export function getPreviewLink(message: any): string {
  */
 export function getDashboardIdForTemplate(template: string) {
   if (template === "infobar") {
-    return "1775";
+    return "1809";
   } else {
     return "1806";
   }
