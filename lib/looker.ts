@@ -1,6 +1,6 @@
 import { IDashboardElement, IWriteQuery } from "@looker/sdk"
 import { SDK } from "./sdk";
-import { getDashboardIdForTemplate } from "./messageUtils";
+import { getDashboardIdForTemplate, getSubmissionTimestampDateFilter } from "./messageUtils";
 
 export async function getAWDashboardElement0(template: string): Promise<IDashboardElement> {
   const dashboardId = getDashboardIdForTemplate(template);
@@ -49,15 +49,7 @@ export async function runQueryForTemplate(template: string, filters: any, startD
       filters
     );
   } else {
-    // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
-    // XXX refactor the date logic below into a separate function (see https://bugzilla.mozilla.org/show_bug.cgi?id=1905204)
-    let submission_timestamp_date = "30 day ago for 30 day";
-    if (startDate && endDate && (new Date() < new Date(endDate))) {
-      submission_timestamp_date = `${startDate} to ${endDate}`;
-    } else if (startDate) {
-      submission_timestamp_date = `${startDate} to today`;
-    }
-
+    const submission_timestamp_date = getSubmissionTimestampDateFilter(startDate, endDate);
     newQueryBody.filters = Object.assign(
       {
         "event_counts.submission_timestamp_date": submission_timestamp_date,
