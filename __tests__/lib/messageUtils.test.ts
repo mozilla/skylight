@@ -137,13 +137,13 @@ describe('getDashboard', () => {
 })
 
 describe("getSubmissionTimestampDateFilter", () => {
-  it("returns the appropriate date filter when startDate and endDate are null", () => {
+  it("returns the default date filter when startDate and endDate are null", () => {
     const result = getSubmissionTimestampDateFilter(null, null);
 
     expect(result).toEqual("30 day ago for 30 day");
   })
 
-  it("returns the appropriate date filter when endDate is null", () => {
+  it("returns a date filter from the startDate to today when endDate is null", () => {
     const startDate = "2024-06-20";
 
     const result = getSubmissionTimestampDateFilter(startDate, null);
@@ -151,7 +151,7 @@ describe("getSubmissionTimestampDateFilter", () => {
     expect(result).toEqual("2024-06-20 to today");
   })
 
-  it("returns the appropriate date filter when startDate and endDate are defined but endDate is in the past", () => {
+  it("returns a date filter from the startDate to today when startDate and endDate are defined and endDate is in the past", () => {
     const startDate = "2024-05-08";
     const endDate = "2024-06-10";
 
@@ -160,7 +160,7 @@ describe("getSubmissionTimestampDateFilter", () => {
     expect(result).toEqual("2024-05-08 to today");
   })
 
-  it("returns the appropriate date filter when startDate and endDate are defined but endDate is in the future", () => {
+  it("returns a date filter from the startDate to endDate when startDate and endDate are defined and endDate is in the future", () => {
     const startDate = "2024-05-08";
     const endDate = "3024-06-10";
 

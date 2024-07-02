@@ -135,7 +135,7 @@ describe("getExperimentDashboardDates", () => {
     expect(result).toEqual("2024-07-09");
   });
 
-  it("returns the null when startDate is null", () => {
+  it("returns null when startDate is null", () => {
     const proposedDuration = 10;
 
     const result = getExperimentDashboardDates(null, proposedDuration);
@@ -143,7 +143,7 @@ describe("getExperimentDashboardDates", () => {
     expect(result).toBeNull();
   });
 
-  it("returns the null when proposedDuration is undefined", () => {
+  it("returns null when proposedDuration is undefined", () => {
     const startDate = "2024-06-28";
 
     const result = getExperimentDashboardDates(startDate, undefined);

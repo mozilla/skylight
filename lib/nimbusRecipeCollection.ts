@@ -2,7 +2,7 @@ import { types } from "@mozilla/nimbus-shared"
 import { NimbusRecipe } from "../lib/nimbusRecipe"
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "@/app/columns"
 import { getCTRPercent } from "./looker"
-import { getExperimentDashboardDates, getProposedEndDate } from "./experimentUtils"
+import { getExperimentDashboardDates } from "./experimentUtils"
 
 type NimbusExperiment = types.experiments.NimbusExperiment
 
@@ -18,7 +18,7 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
   return await Promise.all(
     recipe.getBranchInfos().map(
       async (branchInfo: BranchInfo): Promise<BranchInfo> => {
-        const endDate = getExperimentDashboardDates(
+        const proposedEndDate = getExperimentDashboardDates(
           branchInfo.nimbusExperiment.startDate,
           branchInfo.nimbusExperiment.proposedDuration
         );
@@ -31,7 +31,7 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
           branchInfo.nimbusExperiment.slug,
           branchInfo.slug,
           branchInfo.nimbusExperiment.startDate,
-          endDate
+          proposedEndDate
         );
         if (ctrPercent) {
           branchInfo.ctrPercent = ctrPercent;

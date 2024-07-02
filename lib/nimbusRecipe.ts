@@ -182,7 +182,7 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         break
     }
     
-    const endDate = getExperimentDashboardDates(
+    const proposedEndDate = getExperimentDashboardDates(
       branchInfo.nimbusExperiment.startDate,
       branchInfo.nimbusExperiment.proposedDuration
     );
@@ -193,7 +193,7 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
       branchInfo.nimbusExperiment.slug,
       branch.slug,
       branchInfo.nimbusExperiment.startDate,
-      endDate
+      proposedEndDate
     );
     if (!feature.value.content) {
       console.log("v.content is null")
