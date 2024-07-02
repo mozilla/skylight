@@ -33,6 +33,7 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
   "pbNewtab",
   "spotlight",
   "testFeature",
+  "whatsNewPage",
 ];
 
 /**
