@@ -1,4 +1,4 @@
-import { getProposedEndDate, _substituteLocalizations, getExperimentDashboardDates } from '../../lib/experimentUtils.ts'
+import { getProposedEndDate, _substituteLocalizations } from '../../lib/experimentUtils.ts'
 
 import { types } from "@mozilla/nimbus-shared"
 type NimbusExperiment = types.experiments.NimbusExperiment;
@@ -124,30 +124,3 @@ describe('_substituteLocalizations', () => {
     expect(result).toEqual(LOCALIZED_DEEPLY_NESTED_VALUE);
   })
 })
-
-describe("getExperimentDashboardDates", () => {
-  it("returns the correct end date when startDate and proposedDuration are defined", () => {
-    const startDate = "2024-06-28";
-    const proposedDuration = 10;
-
-    const result = getExperimentDashboardDates(startDate, proposedDuration);
-
-    expect(result).toEqual("2024-07-09");
-  });
-
-  it("returns null when startDate is null", () => {
-    const proposedDuration = 10;
-
-    const result = getExperimentDashboardDates(null, proposedDuration);
-
-    expect(result).toBeNull();
-  });
-
-  it("returns null when proposedDuration is undefined", () => {
-    const startDate = "2024-06-28";
-
-    const result = getExperimentDashboardDates(startDate, undefined);
-
-    expect(result).toBeNull();
-  });
-});

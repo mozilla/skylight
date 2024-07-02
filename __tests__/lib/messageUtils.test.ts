@@ -1,4 +1,4 @@
-import { getDashboard, _isAboutWelcomeTemplate, toBinary, getDashboardIdForTemplate, getSubmissionTimestampDateFilter } from '@/lib/messageUtils'
+import { getDashboard, _isAboutWelcomeTemplate, toBinary, getDashboardIdForTemplate } from '@/lib/messageUtils'
 
 describe('isAboutWelcomeTemplate', () => {
   it('returns true if a feature_callout', () => {
@@ -133,39 +133,5 @@ describe('getDashboard', () => {
 
     const result = getDashboard(template, msgId, undefined, undefined, undefined, startDate, null)
     expect(result).toEqual(expectedLink)
-  })
-})
-
-describe("getSubmissionTimestampDateFilter", () => {
-  it("returns the default date filter when startDate and endDate are null", () => {
-    const result = getSubmissionTimestampDateFilter(null, null);
-
-    expect(result).toEqual("30 day ago for 30 day");
-  })
-
-  it("returns a date filter from the startDate to today when endDate is null", () => {
-    const startDate = "2024-06-20";
-
-    const result = getSubmissionTimestampDateFilter(startDate, null);
-
-    expect(result).toEqual("2024-06-20 to today");
-  })
-
-  it("returns a date filter from the startDate to today when startDate and endDate are defined and endDate is in the past", () => {
-    const startDate = "2024-05-08";
-    const endDate = "2024-06-10";
-
-    const result = getSubmissionTimestampDateFilter(startDate, endDate);
-
-    expect(result).toEqual("2024-05-08 to today");
-  })
-
-  it("returns a date filter from the startDate to endDate when startDate and endDate are defined and endDate is in the future", () => {
-    const startDate = "2024-05-08";
-    const endDate = "3024-06-10";
-
-    const result = getSubmissionTimestampDateFilter(startDate, endDate);
-
-    expect(result).toEqual("2024-05-08 to 3024-06-10");
   })
 })

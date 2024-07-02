@@ -1,3 +1,5 @@
+import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
+
 export function getDisplayNameForTemplate(template: string): string {
   const displayNames: any = {
     aboutwelcome: "About:Welcome Page (1st screen)",
@@ -58,7 +60,7 @@ export function getDashboard(
   const encodedChannel = channel ? (encodeURIComponent(channel)) : "";
   const encodedExperiment = experiment ? (encodeURIComponent(experiment)) : "";
   const encodedBranchSlug = branchSlug ? (encodeURIComponent(branchSlug)) : "";
-  const encodedSubmissionDate = encodeURIComponent(getSubmissionTimestampDateFilter(startDate, endDate));
+  const encodedSubmissionDate = encodeURIComponent(getLookerSubmissionTimestampDateFilter(startDate, endDate));
   const dashboardId = getDashboardIdForTemplate(template);
 
   if (_isAboutWelcomeTemplate(template)) {
@@ -122,20 +124,4 @@ export function getDashboardIdForTemplate(template: string) {
   } else {
     return "1806";
   }
-}
-
-/**
- * @returns the submission timestamp date filter to be used in the Looker dashboard links
- */
-export function getSubmissionTimestampDateFilter(startDate?: string | null, endDate?: string | null): string {
-  // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
-  let submission_timestamp_date = "30 day ago for 30 day";
-  
-  if (startDate && endDate && (new Date() < new Date(endDate))) {
-    submission_timestamp_date = `${startDate} to ${endDate}`;
-  } else if (startDate) {
-    submission_timestamp_date = `${startDate} to today`;
-  }
-  
-  return submission_timestamp_date;
 }

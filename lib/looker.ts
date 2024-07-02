@@ -1,6 +1,7 @@
 import { IDashboardElement, IWriteQuery } from "@looker/sdk"
 import { SDK } from "./sdk";
-import { getDashboardIdForTemplate, getSubmissionTimestampDateFilter } from "./messageUtils";
+import { getDashboardIdForTemplate } from "./messageUtils";
+import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 
 export async function getAWDashboardElement0(template: string): Promise<IDashboardElement> {
   const dashboardId = getDashboardIdForTemplate(template);
@@ -49,7 +50,7 @@ export async function runQueryForTemplate(template: string, filters: any, startD
       filters
     );
   } else {
-    const submission_timestamp_date = getSubmissionTimestampDateFilter(startDate, endDate);
+    const submission_timestamp_date = getLookerSubmissionTimestampDateFilter(startDate, endDate);
     newQueryBody.filters = Object.assign(
       {
         "event_counts.submission_timestamp_date": submission_timestamp_date,

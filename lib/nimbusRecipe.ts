@@ -2,7 +2,8 @@ import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "../app/columns.jsx";
 import { getDashboard, getDisplayNameForTemplate, getPreviewLink, getTemplateFromMessage }
 from "../lib/messageUtils.ts";
-import { getProposedEndDate, MESSAGING_EXPERIMENTS_DEFAULT_FEATURES,_substituteLocalizations, getExperimentDashboardDates } from "../lib/experimentUtils.ts";
+import { getProposedEndDate, MESSAGING_EXPERIMENTS_DEFAULT_FEATURES,_substituteLocalizations } from "../lib/experimentUtils.ts";
+import { getExperimentLookerDashboardDates } from "./lookerUtils.ts";
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
@@ -182,7 +183,7 @@ this._rawRecipe.localizations?.[Object.keys(this._rawRecipe.localizations)[0]])
         break
     }
     
-    const proposedEndDate = getExperimentDashboardDates(
+    const proposedEndDate = getExperimentLookerDashboardDates(
       branchInfo.nimbusExperiment.startDate,
       branchInfo.nimbusExperiment.proposedDuration
     );

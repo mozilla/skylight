@@ -106,13 +106,3 @@ export function _substituteLocalizations(values: any, localizations?: any) : obj
 
   return substituted;
 }
-
-/**
- * @returns the proposed end date used for experiment Looker dashboard links. 
- *          We are adding 1 to the date because the end date in the Looker
- *          date filters are not inclusive. 
- */
-export function getExperimentDashboardDates(startDate : string | null, proposedDuration : number | undefined) {
-  const duration = proposedDuration ? proposedDuration + 1 : undefined
-  return getProposedEndDate(startDate, duration)
-}
