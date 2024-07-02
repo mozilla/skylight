@@ -58,18 +58,8 @@ export function getDashboard(
   const encodedChannel = channel ? (encodeURIComponent(channel)) : "";
   const encodedExperiment = experiment ? (encodeURIComponent(experiment)) : "";
   const encodedBranchSlug = branchSlug ? (encodeURIComponent(branchSlug)) : "";
-  const encodedStartDate = startDate ? (encodeURIComponent(startDate)) : "";
-  const encodedEndDate = endDate ? (encodeURIComponent(endDate)) : "";
+  const encodedSubmissionDate = encodeURIComponent(getSubmissionTimestampDateFilter(startDate, endDate));
   const dashboardId = getDashboardIdForTemplate(template);
-
-  // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
-  // XXX refactor the date logic below into a separate function (see https://bugzilla.mozilla.org/show_bug.cgi?id=1905204)
-  let encodedSubmissionDate = "30+day+ago+for+30+day";
-  if (startDate && endDate && (new Date() < new Date(endDate))) {
-    encodedSubmissionDate = `${encodedStartDate}+to+${encodedEndDate}`;
-  } else if (startDate) {
-    encodedSubmissionDate = `${encodedStartDate}+to+today`;
-  }
 
   if (_isAboutWelcomeTemplate(template)) {
     return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=${encodedSubmissionDate}&Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`
@@ -132,4 +122,20 @@ export function getDashboardIdForTemplate(template: string) {
   } else {
     return "1806";
   }
+}
+
+/**
+ * @returns the submission timestamp date filter to be used in the Looker dashboard links
+ */
+export function getSubmissionTimestampDateFilter(startDate?: string | null, endDate?: string | null): string {
+  // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
+  let submission_timestamp_date = "30 day ago for 30 day";
+  
+  if (startDate && endDate && (new Date() < new Date(endDate))) {
+    submission_timestamp_date = `${startDate} to ${endDate}`;
+  } else if (startDate) {
+    submission_timestamp_date = `${startDate} to today`;
+  }
+  
+  return submission_timestamp_date;
 }
