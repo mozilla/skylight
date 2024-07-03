@@ -1,11 +1,11 @@
-import { getExperimentLookerDashboardDates, getLookerSubmissionTimestampDateFilter } from "@/lib/lookerUtils";
+import { getExperimentLookerDashboardDate, getLookerSubmissionTimestampDateFilter } from "@/lib/lookerUtils";
 
 describe("getExperimentDashboardDates", () => {
     it("returns the correct end date when startDate and proposedDuration are defined", () => {
       const startDate = "2024-06-28";
       const proposedDuration = 10;
   
-      const result = getExperimentLookerDashboardDates(startDate, proposedDuration);
+      const result = getExperimentLookerDashboardDate(startDate, proposedDuration);
   
       expect(result).toEqual("2024-07-09");
     });
@@ -13,7 +13,7 @@ describe("getExperimentDashboardDates", () => {
     it("returns null when startDate is null", () => {
       const proposedDuration = 10;
   
-      const result = getExperimentLookerDashboardDates(null, proposedDuration);
+      const result = getExperimentLookerDashboardDate(null, proposedDuration);
   
       expect(result).toBeNull();
     });
@@ -21,7 +21,7 @@ describe("getExperimentDashboardDates", () => {
     it("returns null when proposedDuration is undefined", () => {
       const startDate = "2024-06-28";
   
-      const result = getExperimentLookerDashboardDates(startDate, undefined);
+      const result = getExperimentLookerDashboardDate(startDate, undefined);
   
       expect(result).toBeNull();
     });
