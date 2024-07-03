@@ -3,7 +3,7 @@ import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 export function getDisplayNameForTemplate(template: string): string {
   const displayNames: any = {
     aboutwelcome: "About:Welcome Page (1st screen)",
-    defaultaboutwelcome: "Default About:Welcome Message",
+    defaultaboutwelcome: "Default About:Welcome Message (1st screen)",
     feature_callout: "Feature Callout (1st screen)",
     infobar: "InfoBar",
     milestone_message: "Milestone Messages",
@@ -122,6 +122,6 @@ export function getDashboardIdForTemplate(template: string) {
   if (template === "infobar") {
     return "1809";
   } else {
-    return "1806";
+    return "1818";
   }
 }
