@@ -1,6 +1,6 @@
 import { getExperimentLookerDashboardDate, getLookerSubmissionTimestampDateFilter } from "@/lib/lookerUtils";
 
-describe("getExperimentDashboardDates", () => {
+describe("getExperimentLookerDashboardDate", () => {
     it("returns the correct end date when startDate and proposedDuration are defined", () => {
       const startDate = "2024-06-28";
       const proposedDuration = 10;
@@ -27,7 +27,7 @@ describe("getExperimentDashboardDates", () => {
     });
 });
 
-describe("getSubmissionTimestampDateFilter", () => {
+describe("getLookerSubmissionTimestampDateFilter", () => {
     it("returns the default date filter when startDate and endDate are null", () => {
         const result = getLookerSubmissionTimestampDateFilter(null, null);
 

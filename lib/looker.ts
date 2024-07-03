@@ -34,7 +34,7 @@ export async function runQueryForTemplate(template: string, filters: any, startD
   const newQueryBody = structuredClone(origQuery)
   delete newQueryBody.client_id // must be unique per-query
 
-  const submission_timestamp_date = getSubmissionTimestampDateFilter(startDate, endDate);
+  const submission_timestamp_date = getLookerSubmissionTimestampDateFilter(startDate, endDate);
 
   // override the filters
   if (template === "infobar") {
