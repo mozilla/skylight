@@ -1,3 +1,5 @@
+import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
+
 export function getDisplayNameForTemplate(template: string): string {
   const displayNames: any = {
     aboutwelcome: "About:Welcome Page (1st screen)",
@@ -58,18 +60,8 @@ export function getDashboard(
   const encodedChannel = channel ? (encodeURIComponent(channel)) : "";
   const encodedExperiment = experiment ? (encodeURIComponent(experiment)) : "";
   const encodedBranchSlug = branchSlug ? (encodeURIComponent(branchSlug)) : "";
-  const encodedStartDate = startDate ? (encodeURIComponent(startDate)) : "";
-  const encodedEndDate = endDate ? (encodeURIComponent(endDate)) : "";
+  const encodedSubmissionDate = encodeURIComponent(getLookerSubmissionTimestampDateFilter(startDate, endDate));
   const dashboardId = getDashboardIdForTemplate(template);
-
-  // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
-  // XXX refactor the date logic below into a separate function (see https://bugzilla.mozilla.org/show_bug.cgi?id=1905204)
-  let encodedSubmissionDate = "30+day+ago+for+30+day";
-  if (startDate && endDate && (new Date() < new Date(endDate))) {
-    encodedSubmissionDate = `${encodedStartDate}+to+${encodedEndDate}`;
-  } else if (startDate) {
-    encodedSubmissionDate = `${encodedStartDate}+to+today`;
-  }
 
   if (_isAboutWelcomeTemplate(template)) {
     return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=${encodedSubmissionDate}&Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`

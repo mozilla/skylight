@@ -68,7 +68,7 @@ describe('getDashboard', () => {
 
     const result = getDashboard(template, msgId, channel, experiment, branchSlug)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Messaging+System+Ping+Type=${encodeURIComponent(template)}&Submission+Date=30+day+ago+for+30+day&Messaging+System+Message+Id=${encodeURIComponent(msgId)}&Normalized+Channel=${encodeURIComponent(channel)}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodeURIComponent(experiment)}&Experiment+Branch=${encodeURIComponent(branchSlug)}`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Messaging+System+Ping+Type=${encodeURIComponent(template)}&Submission+Date=30%20day%20ago%20for%2030%20day&Messaging+System+Message+Id=${encodeURIComponent(msgId)}&Normalized+Channel=${encodeURIComponent(channel)}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodeURIComponent(experiment)}&Experiment+Branch=${encodeURIComponent(branchSlug)}`
     expect(result).toEqual(expectedLink)
   })
 
@@ -77,7 +77,7 @@ describe('getDashboard', () => {
     const msgId = "1:23" // weird chars to test URI encoding
     const dashboardId = getDashboardIdForTemplate(template)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30+day+ago+for+30+day&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30%20day%20ago%20for%2030%20day&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
 
     const result = getDashboard(template, msgId)
     expect(result).toEqual(expectedLink)
@@ -91,7 +91,7 @@ describe('getDashboard', () => {
     const branchSlug = "treatment:a"
     const dashboardId = getDashboardIdForTemplate(template)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30+day+ago+for+30+day&Message+ID=%25${encodeURIComponent(msgId.toUpperCase())}%25&Normalized+Channel=&Experiment=${encodeURIComponent(experiment)}&Branch=${encodeURIComponent(branchSlug)}`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30%20day%20ago%20for%2030%20day&Message+ID=%25${encodeURIComponent(msgId.toUpperCase())}%25&Normalized+Channel=&Experiment=${encodeURIComponent(experiment)}&Branch=${encodeURIComponent(branchSlug)}`
 
     const result = getDashboard(template, msgId, undefined, experiment, branchSlug)
     expect(result).toEqual(expectedLink)
@@ -104,7 +104,7 @@ describe('getDashboard', () => {
     const endDate = "2025-06-28"
     const dashboardId = getDashboardIdForTemplate(template)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=2024-03-08+to+2025-06-28&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=2024-03-08%20to%202025-06-28&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
 
     const result = getDashboard(template, msgId, undefined, undefined, undefined, startDate, endDate)
     expect(result).toEqual(expectedLink)
@@ -117,7 +117,7 @@ describe('getDashboard', () => {
     const endDate = "2024-05-28"
     const dashboardId = getDashboardIdForTemplate(template)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=2024-03-08+to+today&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=2024-03-08%20to%20today&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
 
     const result = getDashboard(template, msgId, undefined, undefined, undefined, startDate, endDate)
     expect(result).toEqual(expectedLink)
@@ -129,7 +129,7 @@ describe('getDashboard', () => {
     const startDate = "2024-03-08"
     const dashboardId = getDashboardIdForTemplate(template)
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=2024-03-08+to+today&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
+    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=2024-03-08%20to%20today&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`
 
     const result = getDashboard(template, msgId, undefined, undefined, undefined, startDate, null)
     expect(result).toEqual(expectedLink)
