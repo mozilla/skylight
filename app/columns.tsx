@@ -140,7 +140,23 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   //   header: "Segment",
   // }, {
     accessorKey: "metrics",
-    header: "Metrics",
+    header: () => (
+      <div className="flex flex-row items-center">
+        Metrics
+        <InfoPopover
+          iconSize={14}
+          content={
+            <p>
+              The CTR metrics in this table are the primary button
+              clickthrough rates calculated over the <b>last 30 days</b>.
+              Clicking into the CTR value will direct you to the Looker 
+              dashboard displaying the data.
+            </p>
+          }
+          iconStyle="ml-1 cursor-pointer hover:text-slate-400/70"
+        />
+      </div>
+    ),
     cell: (props: any) => {
 
       // XXX these dashboards are currently (incorrectly) empty.
@@ -311,7 +327,23 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
   //   header: "Segment",
   // }, {
     accessorKey: "metrics",
-    header: "Metrics",
+    header: () => (
+      <div className="flex flex-row items-center">
+        Metrics
+        <InfoPopover
+          iconSize={14}
+          content={
+            <p>
+              The CTR metrics in this table are the primary button
+              clickthrough rates calculated over the <b>time that the
+              experiment is live</b>. Clicking into the CTR value will direct you
+              to the Looker dashboard displaying the data.
+            </p>
+          }
+          iconStyle="ml-1 cursor-pointer hover:text-slate-400/70"
+        />
+      </div>
+    ),
     cell: (props: any) => {
 
       // XXX these dashboards are currently (incorrectly) empty.
