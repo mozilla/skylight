@@ -6,11 +6,11 @@ import { getDashboard, getDisplayNameForTemplate, getTemplateFromMessage, _isAbo
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection"
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
-import { InfoTooltip } from "@/components/ui/infotooltip.tsx";
 import { NimbusRecipe } from "../lib/nimbusRecipe.ts"
 import { MessageTable } from "./message-table";
 
 import { MenuButton } from "@/components/ui/menubutton.tsx";
+import { InfoPopover } from "@/components/ui/infopopover.tsx";
 
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
@@ -147,11 +147,12 @@ export default async function Dashboard() {
         <MenuButton />
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4 flex items-center justify-center">
         Messages Released on Firefox
-        <InfoTooltip
+        <InfoPopover
           iconSize={16}
           content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
+          iconStyle="ml-1 cursor-pointer"
         />
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">
