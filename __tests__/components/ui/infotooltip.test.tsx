@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { InfoTooltip } from "@/components/ui/infotooltip";
 
 describe("InfoTooltip", () => {
@@ -12,12 +13,14 @@ describe("InfoTooltip", () => {
     expect(infoTooltipButton).toBeInTheDocument();
   });
 
-  it("displays tooltip content on focus", () => {
+  it("displays tooltip content on focus", async () => {
+    const user = userEvent.setup()
     render(<InfoTooltip iconSize={iconSize} content={content} />);
     const infoTooltipButton = screen.getByRole("button");
+    
+    await user.tab();
 
-    fireEvent.focus(infoTooltipButton)
-
+    expect(infoTooltipButton).toHaveFocus();
     expect(screen.getByRole("tooltip")).toBeInTheDocument();
   })
 });
