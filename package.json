@@ -10,7 +10,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "prepare": "husky",
-    "prettier:check:ci": "npx --no prettier . --check"
+    "prettier": "npx --no prettier . --check"
   },
   "engines": {
     "node": "20.11.*",
