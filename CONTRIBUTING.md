@@ -12,15 +12,6 @@ practices solidify.
 1. Modify variables in .env.local, e.g. uncommenting the `EXPERIMENTER_API_CALL`
    line will switch from the default of live experiments to preview experiments
 
-## Linting
-
-To correctly run [Prettier](https://prettier.io/docs/en/install) as a pre-commit hook, set up [husky](https://github.com/typicode/husky):
-
-```
-npm i
-npx husky init
-```
-
 ## Running the development server
 
 ```bash
