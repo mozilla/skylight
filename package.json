@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "prettier": "npx --no prettier . --check"
+    "prettier": "npm run prettier . --",
+    "prettier:check": "prettier . --check"
   },
   "engines": {
     "node": "20.11.*",
