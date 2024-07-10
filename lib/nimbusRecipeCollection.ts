@@ -2,7 +2,7 @@ import { types } from "@mozilla/nimbus-shared"
 import { NimbusRecipe } from "../lib/nimbusRecipe"
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "@/app/columns"
 import { getCTRPercent } from "./looker"
-import { getProposedEndDate } from "./experimentUtils"
+import { getExperimentLookerDashboardDate } from "./lookerUtils"
 
 type NimbusExperiment = types.experiments.NimbusExperiment
 
@@ -18,14 +18,9 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
   return await Promise.all(
     recipe.getBranchInfos().map(
       async (branchInfo: BranchInfo): Promise<BranchInfo> => {
-        // We are using the proposed end date + 1 as the end date because the end
-        // date is not inclusive in Looker
-        // XXX refactor proposedEndDate into a separate function (see https://bugzilla.mozilla.org/show_bug.cgi?id=1905204)
-        const proposedEndDate = getProposedEndDate(
+        const proposedEndDate = getExperimentLookerDashboardDate(
           branchInfo.nimbusExperiment.startDate,
           branchInfo.nimbusExperiment.proposedDuration
-            ? branchInfo.nimbusExperiment.proposedDuration + 1
-            : undefined
         );
         // We are making all branch ids upper case to make up for
         // Looker being case sensitive

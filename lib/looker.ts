@@ -1,6 +1,7 @@
 import { IDashboardElement, IWriteQuery } from "@looker/sdk"
 import { SDK } from "./sdk";
 import { getDashboardIdForTemplate } from "./messageUtils";
+import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 
 export async function getAWDashboardElement0(template: string): Promise<IDashboardElement> {
   const dashboardId = getDashboardIdForTemplate(template);
@@ -9,13 +10,7 @@ export async function getAWDashboardElement0(template: string): Promise<IDashboa
   // https://mozilla.cloud.looker.com/extensions/marketplace_extension_api_explorer::api-explorer/4.0/methods/Dashboard/dashboard_element
   // for more info).
 
-  let elements: IDashboardElement[];
-  if (template == "infobar") {
-    // XXX infobar hasn't had its own overview dashboard element created yet
-    // so we're still using the old code here
-    elements = await SDK.ok(SDK.dashboard_dashboard_elements(dashboardId));
-  } else {
-    elements = await SDK.ok(
+  const elements: IDashboardElement[] = await SDK.ok(
       // XXX whether search_dashboard_elements is a net win here isn't
       // clear, but the code is working, so I'm inclined to leave it alone for now.
       SDK.search_dashboard_elements(
@@ -26,7 +21,6 @@ export async function getAWDashboardElement0(template: string): Promise<IDashboa
         }
       )
     )
-  }
 
   return elements[0];
 }
@@ -40,24 +34,17 @@ export async function runQueryForTemplate(template: string, filters: any, startD
   const newQueryBody = structuredClone(origQuery)
   delete newQueryBody.client_id // must be unique per-query
 
+  const submission_timestamp_date = getLookerSubmissionTimestampDateFilter(startDate, endDate);
+
   // override the filters
   if (template === "infobar") {
     newQueryBody.filters = Object.assign(
       {
-        "messaging_system.submission_date": "1 day ago for 1 day",
+        "messaging_system.submission_date": submission_timestamp_date,
       },
       filters
     );
   } else {
-    // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
-    // XXX refactor the date logic below into a separate function (see https://bugzilla.mozilla.org/show_bug.cgi?id=1905204)
-    let submission_timestamp_date = "30 day ago for 30 day";
-    if (startDate && endDate && (new Date() < new Date(endDate))) {
-      submission_timestamp_date = `${startDate} to ${endDate}`;
-    } else if (startDate) {
-      submission_timestamp_date = `${startDate} to today`;
-    }
-
     newQueryBody.filters = Object.assign(
       {
         "event_counts.submission_timestamp_date": submission_timestamp_date,
