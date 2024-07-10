@@ -3,9 +3,9 @@ import { SDK } from "./sdk";
 import { getDashboardIdForTemplate } from "./messageUtils";
 import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 
-export async function getAWDashboardElement0(template: string): Promise<IDashboardElement> {
-  const dashboardId = getDashboardIdForTemplate(template);
+let queries: { [template: string]: IWriteQuery};
 
+export async function getAWDashboardElement0(dashboardId: string): Promise<IDashboardElement> {
   // XXX maybe switch this out for the more performant dashboard_element (see
   // https://mozilla.cloud.looker.com/extensions/marketplace_extension_api_explorer::api-explorer/4.0/methods/Dashboard/dashboard_element
   // for more info).
@@ -25,10 +25,21 @@ export async function getAWDashboardElement0(template: string): Promise<IDashboa
   return elements[0];
 }
 
-export async function runQueryForTemplate(template: string, filters: any, startDate?: string | null, endDate?: string | null,): Promise<any>{
-  const element0 = await getAWDashboardElement0(template)
+export async function getSkeletonQueryForTemplate(template: string): Promise<IWriteQuery> {
+  const dashboardId = getDashboardIdForTemplate(template);
 
-  const origQuery = element0.query as IWriteQuery
+  if (!queries || !queries[dashboardId]) {
+    const element0 = await getAWDashboardElement0(dashboardId);
+    const query = element0.query as IWriteQuery;
+    queries[dashboardId] = query;
+    return query;
+  } else {
+    return queries[dashboardId];
+  }
+}
+
+export async function runQueryForTemplate(template: string, filters: any, startDate?: string | null, endDate?: string | null,): Promise<any>{
+  const origQuery = await getSkeletonQueryForTemplate(template);
 
   // take the query from the original dashboard
   const newQueryBody = structuredClone(origQuery)
