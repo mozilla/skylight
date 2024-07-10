@@ -1,3 +1,9 @@
+## Wednesday, July 10th, 2024
+
+### Added
+
+* Added info popover buttons to the Metrics column headers to give more context about the CTR values
+
 ## Tuesday, June 18th, 2024
 
 ### Added
