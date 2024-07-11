@@ -3,7 +3,7 @@ import { SDK } from "./sdk";
 import { getDashboardIdForTemplate } from "./messageUtils";
 import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 
-let queries: { [template: string]: IWriteQuery};
+let queries: Record<string, IWriteQuery> = {};
 
 export async function getAWDashboardElement0(dashboardId: string): Promise<IDashboardElement> {
   // XXX maybe switch this out for the more performant dashboard_element (see
@@ -25,10 +25,12 @@ export async function getAWDashboardElement0(dashboardId: string): Promise<IDash
   return elements[0];
 }
 
-export async function getSkeletonQueryForTemplate(template: string): Promise<IWriteQuery> {
+export async function getSkeletonQueryForTemplate(
+  template: string
+): Promise<IWriteQuery> {
   const dashboardId = getDashboardIdForTemplate(template);
 
-  if (!queries || !queries[dashboardId]) {
+  if (!queries[dashboardId]) {
     const element0 = await getAWDashboardElement0(dashboardId);
     const query = element0.query as IWriteQuery;
     queries[dashboardId] = query;
