@@ -45,7 +45,6 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
   return aboutWelcomeSurfaces.includes(template);
 }
 
-
 export function getDashboard(
   template: string,
   msgId: string,
@@ -53,18 +52,20 @@ export function getDashboard(
   experiment?: string,
   branchSlug?: string,
   startDate?: string | null,
-  endDate?: string | null): string | undefined {
-
+  endDate?: string | null,
+): string | undefined {
   const encodedMsgId = encodeURIComponent(msgId);
   const encodedTemplate = encodeURIComponent(template);
-  const encodedChannel = channel ? (encodeURIComponent(channel)) : "";
-  const encodedExperiment = experiment ? (encodeURIComponent(experiment)) : "";
-  const encodedBranchSlug = branchSlug ? (encodeURIComponent(branchSlug)) : "";
-  const encodedSubmissionDate = encodeURIComponent(getLookerSubmissionTimestampDateFilter(startDate, endDate));
+  const encodedChannel = channel ? encodeURIComponent(channel) : "";
+  const encodedExperiment = experiment ? encodeURIComponent(experiment) : "";
+  const encodedBranchSlug = branchSlug ? encodeURIComponent(branchSlug) : "";
+  const encodedSubmissionDate = encodeURIComponent(
+    getLookerSubmissionTimestampDateFilter(startDate, endDate),
+  );
   const dashboardId = getDashboardIdForTemplate(template);
 
   if (_isAboutWelcomeTemplate(template)) {
-    return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=${encodedSubmissionDate}&Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`
+    return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=${encodedSubmissionDate}&Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`;
   }
 
   if (template === "infobar") {
@@ -81,7 +82,9 @@ export function toBinary(string: string): string {
   for (let i = 0; i < codeUnits.length; i++) {
     codeUnits[i] = string.charCodeAt(i);
   }
-  return btoa(String.fromCharCode(...Array.from(new Uint8Array(codeUnits.buffer))));
+  return btoa(
+    String.fromCharCode(...Array.from(new Uint8Array(codeUnits.buffer))),
+  );
 }
 
 export function maybeCreateWelcomePreview(message: any): object {
@@ -96,8 +99,9 @@ export function maybeCreateWelcomePreview(message: any): object {
     // Add the modal property to the spotlight to mimic about:welcome
     defaultWelcomeFake.content.modal = "tab";
     // The recipe might have a backdrop, but if not, fall back to the default
-    defaultWelcomeFake.content.backdrop = message.backdrop ||
-    "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
+    defaultWelcomeFake.content.backdrop =
+      message.backdrop ||
+      "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)";
 
     return defaultWelcomeFake;
   }
@@ -106,7 +110,6 @@ export function maybeCreateWelcomePreview(message: any): object {
 }
 
 export function getPreviewLink(message: any): string {
-
   let previewLink = `about:messagepreview?json=${encodeURIComponent(
     toBinary(JSON.stringify(message)),
   )}`;

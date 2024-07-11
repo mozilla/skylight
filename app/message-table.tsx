@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   ColumnDef,
@@ -6,8 +6,8 @@ import {
   getCoreRowModel,
   getExpandedRowModel,
   useReactTable,
-  ExpandedState
-} from "@tanstack/react-table"
+  ExpandedState,
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -16,24 +16,26 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
-import { BranchInfo } from "./columns.tsx"
-import { useState } from "react"
+import { BranchInfo } from "./columns.tsx";
+import { useState } from "react";
 
 interface MessageTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  defaultExpanded?: boolean
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  defaultExpanded?: boolean;
 }
 
 export function MessageTable<TData, TValue>({
   columns,
   data,
-  defaultExpanded
+  defaultExpanded,
 }: MessageTableProps<TData, TValue>) {
   // Tables will start collapsed if defaultExpanded is undefined
-  const [expanded, setExpanded] = useState<ExpandedState>(defaultExpanded || {})
+  const [expanded, setExpanded] = useState<ExpandedState>(
+    defaultExpanded || {},
+  );
   const table = useReactTable({
     data,
     columns,
@@ -44,9 +46,9 @@ export function MessageTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getSubRows: (originalRow: any) => originalRow.branches,
     getExpandedRowModel: getExpandedRowModel(),
-  })
+  });
 
-  function getRowSpanForCell(cell : any) {
+  function getRowSpanForCell(cell: any) {
     // XXX is an experiment & the dates column
     // if (cell.row.original.recipe && cell.column.id == 'dates') {
     //   return cell.row.original.recipe.branches.length
@@ -63,15 +65,18 @@ export function MessageTable<TData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead className="bg-stone-100 text-slate-400" key={header.id}>
+                  <TableHead
+                    className="bg-stone-100 text-slate-400"
+                    key={header.id}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -87,12 +92,18 @@ export function MessageTable<TData, TValue>({
                   // if ((cell.row.original as any).isBranch)
                   //   return ( <></> );
                   return (
-                      <TableCell className="py-2" key={cell.id} rowSpan=
-                        {getRowSpanForCell(cell)}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                      );
-                  })}
+                    <TableCell
+                      className="py-2"
+                      key={cell.id}
+                      rowSpan={getRowSpanForCell(cell)}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))
           ) : (
@@ -105,5 +116,5 @@ export function MessageTable<TData, TValue>({
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }
