@@ -28,7 +28,7 @@ export const ExperimentFakes = {
       bucketConfig: ExperimentFakes.recipe.bucketConfig,
       userFacingName: "Nimbus recipe",
       userFacingDescription: "NimbusTestUtils recipe",
-      featureIds: props?.branches?.[0].features?.map(f => f.featureId) || [
+      featureIds: props?.branches?.[0].features?.map((f) => f.featureId) || [
         "testFeature",
       ],
       isRollout: false,
@@ -74,7 +74,7 @@ Object.defineProperty(ExperimentFakes.recipe, "branches", {
               id: "TEST_MESSAGE_ID",
               testInt: 123,
               enabled: true,
-              template: "testTemplate"
+              template: "testTemplate",
             },
           },
         ],

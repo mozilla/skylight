@@ -4,18 +4,18 @@ import { MenuButton } from "@/components/ui/menubutton.tsx";
 describe("MenuButton", () => {
   it("renders a MenuButton button", () => {
     render(<MenuButton />);
-    
+
     const menuButton = screen.getByText("Messaging Info");
-    
+
     expect(menuButton).toBeInTheDocument();
   });
 
   it("displays menu content on focus", () => {
-    render(<MenuButton/>);
+    render(<MenuButton />);
     const menuButton = screen.getByText("Messaging Info");
 
-    fireEvent.focus(menuButton)
+    fireEvent.focus(menuButton);
 
     expect(screen.getByRole("navigation")).toBeInTheDocument();
-  })
+  });
 });
