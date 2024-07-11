@@ -10,12 +10,12 @@ describe("InfoPopover", () => {
     render(<InfoPopover iconSize={iconSize} content={content} />);
 
     const infoPopoverButton = screen.getByRole("img", { name: "Info" });
-    
+
     expect(infoPopoverButton).toBeInTheDocument();
   });
 
   it("displays menu on click", async () => {
-    const user = userEvent.setup()
+    const user = userEvent.setup();
     render(<InfoPopover iconSize={iconSize} content={content} />);
     const infoPopoverButton = screen.getByRole("img", { name: "Info" });
 
