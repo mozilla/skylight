@@ -31,11 +31,14 @@ export async function getSkeletonQueryForTemplate(
   const dashboardId = getDashboardIdForTemplate(template);
 
   if (!queries[dashboardId]) {
+    console.log("returned uncached skel: ", template);
+
     const element0 = await getAWDashboardElement0(dashboardId);
     const query = element0.query as IWriteQuery;
     queries[dashboardId] = query;
     return query;
   } else {
+    console.log("returned cached skel", template);
     return queries[dashboardId];
   }
 }
