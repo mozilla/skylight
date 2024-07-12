@@ -216,18 +216,19 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
   {
     accessorKey: "dates",
     header: ({ table }) => (
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row items-center gap-x-2">
         <button
           {...{
             onClick: table.getToggleAllRowsExpandedHandler(),
           }}
           data-testid="toggleAllRowsButton"
           aria-label="Toggle All Branches"
+          className="p-1 rounded-md bg-inherit hover:bg-slate-200"
         >
           {table.getIsAllRowsExpanded() ? (
-            <ChevronDown className="mr-2" size={18} />
+            <ChevronDown size={18} />
           ) : (
-            <ChevronsUpDown className="mr-2" size={18} />
+            <ChevronsUpDown size={18} />
           )}
         </button>
         Dates
@@ -235,7 +236,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     ),
     cell: (props: any) => {
       return (
-        <div className="flex flex-row items-center">
+        <div className="flex flex-row items-center gap-x-2">
           <div>
             {props.row.getCanExpand() ? (
               <button
@@ -245,11 +246,12 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
                 }}
                 data-testid="toggleBranchRowsButton"
                 aria-label="Toggle Branches"
+                className="p-1 rounded-md bg-inherit hover:bg-slate-200"
               >
                 {props.row.getIsExpanded() ? (
-                  <ChevronDown className="mr-2" size={18} />
+                  <ChevronDown size={18} />
                 ) : (
-                  <ChevronRight className="mr-2" size={18} />
+                  <ChevronRight size={18} />
                 )}
               </button>
             ) : null}
