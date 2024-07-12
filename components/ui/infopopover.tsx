@@ -4,6 +4,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Info } from "lucide-react";
+import { Button } from "./button";
 
 type InfoProps = {
   iconSize: number;
@@ -13,18 +14,15 @@ type InfoProps = {
 
 export function InfoPopover({ iconSize, content, iconStyle }: InfoProps) {
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Info
-          size={iconSize}
-          className={iconStyle}
-          role="img"
-          aria-label="Info"
-        />
-      </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="grid gap-4">{content}</div>
-      </PopoverContent>
-    </Popover>
+    <Button variant="outline" size="icon" className={iconStyle}>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Info size={iconSize} role="img" aria-label="Info" />
+        </PopoverTrigger>
+        <PopoverContent className="w-80">
+          <div className="grid gap-4">{content}</div>
+        </PopoverContent>
+      </Popover>
+    </Button>
   );
 }
