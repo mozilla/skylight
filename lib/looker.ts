@@ -5,7 +5,9 @@ import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 
 let queries: Record<string, IWriteQuery> = {};
 
-export async function getAWDashboardElement0(dashboardId: string): Promise<IDashboardElement> {
+export async function getAWDashboardElement0(
+  dashboardId: string,
+): Promise<IDashboardElement> {
   // XXX maybe switch this out for the more performant dashboard_element (see
   // https://mozilla.cloud.looker.com/extensions/marketplace_extension_api_explorer::api-explorer/4.0/methods/Dashboard/dashboard_element
   // for more info).
@@ -24,7 +26,7 @@ export async function getAWDashboardElement0(dashboardId: string): Promise<IDash
 }
 
 export async function getSkeletonQueryForTemplate(
-  template: string
+  template: string,
 ): Promise<IWriteQuery> {
   const dashboardId = getDashboardIdForTemplate(template);
 
