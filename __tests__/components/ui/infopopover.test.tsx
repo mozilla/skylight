@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { InfoPopover } from "@/components/ui/infopopover";
 
 describe("InfoPopover", () => {
@@ -9,15 +10,18 @@ describe("InfoPopover", () => {
     render(<InfoPopover iconSize={iconSize} content={content} />);
 
     const infoPopoverButton = screen.getByRole("img", { name: "Info" });
-    
+
     expect(infoPopoverButton).toBeInTheDocument();
   });
 
-  it("displays menu on click", () => {
+  it("displays menu on click", async () => {
+    const user = userEvent.setup();
     render(<InfoPopover iconSize={iconSize} content={content} />);
     const infoPopoverButton = screen.getByRole("img", { name: "Info" });
 
-    fireEvent.click(infoPopoverButton);
+    await act(async () => {
+      await user.click(infoPopoverButton);
+    });
 
     expect(screen.getByText(content)).toBeInTheDocument();
   });

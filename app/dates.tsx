@@ -1,21 +1,23 @@
 type DatesProps = {
-  startDate: string | null
-  endDate: string | null
+  startDate: string | null;
+  endDate: string | null;
+};
+
+function toPrettyDate(dateString: string | null): string | null {
+  if (!dateString) {
+    return null;
+  }
+
+  let dateObj = new Date(dateString);
+
+  return dateObj.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
 }
 
-function toPrettyDate(dateString : string | null) : string | null {
-    if (!dateString) {
-      return null;
-    }
-
-    let dateObj = new Date(dateString);
-
-    return dateObj.toLocaleDateString("en-US", {
-      month: "short", day: "numeric", timeZone: "UTC"
-    });
-}
-
-export function PrettyDateRange({startDate, endDate} : DatesProps) {
+export function PrettyDateRange({ startDate, endDate }: DatesProps) {
   if (startDate || endDate) {
     return (
       <>
@@ -26,7 +28,7 @@ export function PrettyDateRange({startDate, endDate} : DatesProps) {
           {toPrettyDate(endDate)}
         </div>
       </>
-    )
+    );
   }
-  return ( <></> )
+  return <></>;
 }
