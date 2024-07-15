@@ -121,7 +121,7 @@ const previewURLInfoButton = (
         to true; Firefox 128 or newer is required.
       </p>
     }
-    iconStyle="ml-1 h-6 w-6 p-1 bg-inherit rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
+    iconStyle="ml-1 h-6 w-6 p-1 rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
   />
 );
 
@@ -157,7 +157,7 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
               data.
             </p>
           }
-          iconStyle="ml-1 h-6 w-6 p-1 bg-inherit rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
+          iconStyle="ml-1 h-6 w-6 p-1 rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
         />
       </div>
     ),
@@ -347,7 +347,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
               dashboard displaying the data.
             </p>
           }
-          iconStyle="ml-1 h-6 w-6 p-1 bg-inherit rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
+          iconStyle="ml-1 h-6 w-6 p-1 rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
         />
       </div>
     ),
