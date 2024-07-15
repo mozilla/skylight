@@ -34,6 +34,7 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
           branchInfo.nimbusExperiment.startDate,
           proposedEndDate,
         );
+        console.timeLog("dashboard", "branch CTR received");
         if (ctrPercent) {
           branchInfo.ctrPercent = ctrPercent;
         }

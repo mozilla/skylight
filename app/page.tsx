@@ -54,6 +54,8 @@ async function getASRouterLocalColumnFromJSON(
     }
   }
 
+  console.timeLog("dashboard", "FxMS CTR info received");
+
   fxmsMsgInfo.ctrDashboardLink = getDashboard(
     messageDef.template,
     messageDef.id,
@@ -128,6 +130,8 @@ async function getMsgRolloutCollection(
 }
 
 export default async function Dashboard() {
+
+  console.time("dashboard");
   // Check to see if Auth is enabled
   const isAuthEnabled = process.env.IS_AUTH_ENABLED === "true";
 
@@ -137,10 +141,15 @@ export default async function Dashboard() {
 
   // XXX await Promise.allSettled for all three loads concurrently
   const localData = await getASRouterLocalMessageInfoFromFile();
+
+  console.timeLog("dashboard", "local collections including CTR received");
+
   const msgExpRecipeCollection =
     await getMsgExpRecipeCollection(recipeCollection);
   const msgRolloutRecipeCollection =
     await getMsgRolloutCollection(recipeCollection);
+
+  console.timeLog("dashboard", "collections retrieved");
 
   // Get in format useable by MessageTable
   const experimentAndBranchInfo: RecipeOrBranchInfo[] = isLookerEnabled
@@ -149,6 +158,7 @@ export default async function Dashboard() {
     : msgExpRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
         recipe.getRecipeInfo(),
       );
+  console.timeLog("dashboard", "Experiment CTR info retrieved")
 
   const totalExperiments = msgExpRecipeCollection.recipes.length;
 
@@ -160,6 +170,7 @@ export default async function Dashboard() {
       );
 
   const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
+  console.timeLog("dashboard", "Rollout CTR data retrieved")
 
   return (
     <div>
