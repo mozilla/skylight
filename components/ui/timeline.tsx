@@ -26,7 +26,7 @@ export function Timeline({ active }: TimelineProps) {
       <hr className="border-1 w-4" />
       <TimelineStep isActive={active === "rollout"} stepName="Rollout" />
       <hr className="border-1 w-4" />
-      <TimelineStep isActive={active === "in tree"} stepName="In Tree" />
+      <TimelineStep isActive={active === "firefox"} stepName="Firefox" />
     </div>
   );
 }

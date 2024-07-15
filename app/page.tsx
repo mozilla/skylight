@@ -179,7 +179,7 @@ export default async function Dashboard() {
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">(Partial List)</h5>
       <div className="flex justify-center">
-        <Timeline active="in tree" />
+        <Timeline active="firefox" />
       </div>
 
       <div className="container mx-auto py-10">
