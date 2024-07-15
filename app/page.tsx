@@ -174,7 +174,7 @@ export default async function Dashboard() {
         <InfoPopover
           iconSize={16}
           content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
-          iconStyle="h-7 w-7 rounded-full cursor-pointer border-0"
+          iconStyle="h-7 w-7 rounded-full cursor-pointer border-0 bg-slate-100 hover:bg-slate-200"
         />
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">(Partial List)</h5>

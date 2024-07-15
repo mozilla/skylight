@@ -10,9 +10,15 @@ type InfoProps = {
   iconSize: number;
   content: any;
   iconStyle?: string;
+  fillColor?: string;
 };
 
-export function InfoPopover({ iconSize, content, iconStyle }: InfoProps) {
+export function InfoPopover({
+  iconSize,
+  content,
+  iconStyle,
+  fillColor,
+}: InfoProps) {
   return (
     <Button variant="outline" size="icon" className={iconStyle}>
       <Popover>
