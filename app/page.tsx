@@ -23,6 +23,7 @@ import { MessageTable } from "./message-table";
 
 import { MenuButton } from "@/components/ui/menubutton.tsx";
 import { InfoPopover } from "@/components/ui/infopopover.tsx";
+import { Timeline } from "@/components/ui/timeline.tsx";
 
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
@@ -177,6 +178,9 @@ export default async function Dashboard() {
         />
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">(Partial List)</h5>
+      <div className="flex justify-center">
+        <Timeline active="firefox" />
+      </div>
 
       <div className="container mx-auto py-10">
         <MessageTable columns={fxmsMessageColumns} data={localData} />
@@ -188,6 +192,9 @@ export default async function Dashboard() {
       <h5 className="scroll-m-20 text-sm text-center">
         Total: {totalRolloutExperiments}
       </h5>
+      <div className="flex justify-center">
+        <Timeline active="rollout" />
+      </div>
       <div className="container mx-auto py-10">
         <MessageTable
           columns={experimentColumns}
@@ -202,7 +209,9 @@ export default async function Dashboard() {
       <h5 className="scroll-m-20 text-sm text-center">
         Total: {totalExperiments}
       </h5>
-
+      <div className="flex justify-center">
+        <Timeline active="experiment" />
+      </div>
       <div className="space-y-5 container mx-auto py-10">
         <MessageTable
           columns={experimentColumns}
