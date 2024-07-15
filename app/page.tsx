@@ -170,7 +170,7 @@ export default async function Dashboard() {
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4 flex items-center justify-center">
-        Messages Released on Firefox
+        Desktop Messages Released on Firefox
         <InfoPopover
           iconSize={16}
           content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
@@ -187,7 +187,7 @@ export default async function Dashboard() {
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
-        Current Message Rollouts
+        Current Desktop Message Rollouts
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">
         Total: {totalRolloutExperiments}
@@ -204,7 +204,7 @@ export default async function Dashboard() {
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
-        Current Message Experiments
+        Current Desktop Message Experiments
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">
         Total: {totalExperiments}
