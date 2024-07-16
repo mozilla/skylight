@@ -113,7 +113,6 @@ function showCTRMetrics(
 
 const previewURLInfoButton = (
   <InfoPopover
-    iconSize={14}
     content={
       <p>
         To make the Preview URLs work, load <code>about:config</code> in Firefox
@@ -122,7 +121,7 @@ const previewURLInfoButton = (
         to true; Firefox 128 or newer is required.
       </p>
     }
-    iconStyle="ml-1 cursor-pointer hover:text-slate-400/70"
+    iconStyle="ml-1 h-6 w-6 p-1 rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
   />
 );
 
@@ -150,7 +149,6 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
       <div className="flex flex-row items-center">
         Metrics
         <InfoPopover
-          iconSize={14}
           content={
             <p>
               The CTR metrics in this table are the primary button clickthrough
@@ -159,7 +157,7 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
               data.
             </p>
           }
-          iconStyle="ml-1 cursor-pointer hover:text-slate-400/70"
+          iconStyle="ml-1 h-6 w-6 p-1 rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
         />
       </div>
     ),
@@ -216,18 +214,19 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
   {
     accessorKey: "dates",
     header: ({ table }) => (
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row items-center gap-x-2">
         <button
           {...{
             onClick: table.getToggleAllRowsExpandedHandler(),
           }}
           data-testid="toggleAllRowsButton"
           aria-label="Toggle All Branches"
+          className="p-1 rounded-full bg-gray-200/70 hover:bg-gray-300/70"
         >
           {table.getIsAllRowsExpanded() ? (
-            <ChevronDown className="mr-2" size={18} />
+            <ChevronDown size={18} />
           ) : (
-            <ChevronsUpDown className="mr-2" size={18} />
+            <ChevronsUpDown size={18} />
           )}
         </button>
         Dates
@@ -235,7 +234,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     ),
     cell: (props: any) => {
       return (
-        <div className="flex flex-row items-center">
+        <div className="flex flex-row items-center gap-x-2">
           <div>
             {props.row.getCanExpand() ? (
               <button
@@ -245,11 +244,12 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
                 }}
                 data-testid="toggleBranchRowsButton"
                 aria-label="Toggle Branches"
+                className="p-1 rounded-full bg-slate-100 hover:bg-slate-200"
               >
                 {props.row.getIsExpanded() ? (
-                  <ChevronDown className="mr-2" size={18} />
+                  <ChevronDown size={18} />
                 ) : (
-                  <ChevronRight className="mr-2" size={18} />
+                  <ChevronRight size={18} />
                 )}
               </button>
             ) : null}
@@ -339,7 +339,6 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       <div className="flex flex-row items-center">
         Metrics
         <InfoPopover
-          iconSize={14}
           content={
             <p>
               The CTR metrics in this table are the primary button clickthrough
@@ -348,7 +347,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
               dashboard displaying the data.
             </p>
           }
-          iconStyle="ml-1 cursor-pointer hover:text-slate-400/70"
+          iconStyle="ml-1 h-6 w-6 p-1 rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
         />
       </div>
     ),

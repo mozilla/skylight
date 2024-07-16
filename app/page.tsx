@@ -169,12 +169,11 @@ export default async function Dashboard() {
         <MenuButton />
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4 flex items-center justify-center">
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4 flex items-center justify-center gap-x-1">
         Desktop Messages Released on Firefox
         <InfoPopover
-          iconSize={16}
           content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
-          iconStyle="ml-1 cursor-pointer"
+          iconStyle="h-7 w-7 p-1 rounded-full cursor-pointer border-0 bg-slate-100 hover:bg-slate-200"
         />
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">(Partial List)</h5>
