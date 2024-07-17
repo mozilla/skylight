@@ -47,6 +47,7 @@ export type FxMSMessageInfo = {
   ctrDashboardLink?: string;
   previewLink?: string;
   metrics: string;
+  impressions?: number;
 };
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
@@ -91,6 +92,7 @@ export type BranchInfo = {
   template?: string;
   screenshots?: string[];
   description?: string;
+  impressions?: number;
 };
 
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
@@ -100,12 +102,19 @@ export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
  * labelled with either the CTR percent or "Dashboard"
  */
 function showCTRMetrics(
-  template?: string,
   ctrDashboardLink?: string,
   ctrPercent?: number,
+  impressions?: number,
 ) {
   if (ctrDashboardLink && ctrPercent !== undefined) {
-    return OffsiteLink(ctrDashboardLink, ctrPercent + "% CTR");
+    return (
+      <div>
+        {OffsiteLink(ctrDashboardLink, ctrPercent + "% CTR")}
+        <p className="text-xs/[180%] whitespace-nowrap">
+          Impressions: {impressions}
+        </p>
+      </div>
+    );
   } else if (ctrDashboardLink) {
     return OffsiteLink(ctrDashboardLink, "Dashboard");
   }
@@ -151,10 +160,10 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         <InfoPopover
           content={
             <p>
-              The CTR metrics in this table are the primary button clickthrough
-              rates calculated over the <b>last 30 days</b>. Clicking into the
-              CTR value will direct you to the Looker dashboard displaying the
-              data.
+              The CTR and impressions metrics in this table are the primary
+              button clickthrough rates calculated over the <b>last 30 days</b>.
+              Clicking into the CTR value will direct you to the Looker
+              dashboard displaying the data.
             </p>
           }
           iconStyle="ml-1 h-6 w-6 p-1 rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
@@ -176,9 +185,9 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
       }
 
       const metrics = showCTRMetrics(
-        props.row.original.template,
         props.row.original.ctrDashboardLink,
         props.row.original.ctrPercent,
+        props.row.original.impressions,
       );
       if (metrics) {
         return metrics;
@@ -341,10 +350,10 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         <InfoPopover
           content={
             <p>
-              The CTR metrics in this table are the primary button clickthrough
-              rates calculated over the <b>time that the experiment is live</b>.
-              Clicking into the CTR value will direct you to the Looker
-              dashboard displaying the data.
+              The CTR and impressions metrics in this table are the primary
+              button clickthrough rates calculated over the{" "}
+              <b>time that the experiment is live</b>. Clicking into the CTR
+              value will direct you to the Looker dashboard displaying the data.
             </p>
           }
           iconStyle="ml-1 h-6 w-6 p-1 rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
@@ -367,9 +376,9 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       }
 
       const metrics = showCTRMetrics(
-        props.row.original.template,
         props.row.original.ctrDashboardLink,
         props.row.original.ctrPercent,
+        props.row.original.impressions,
       );
       if (metrics) {
         return metrics;
