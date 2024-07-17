@@ -1,6 +1,6 @@
 // FixJSDOMEnvironment.ts
 
-import JSDOMEnvironment from 'jest-environment-jsdom';
+import JSDOMEnvironment from "jest-environment-jsdom";
 
 // https://github.com/facebook/jest/blob/v29.4.3/website/versioned_docs/version-29.4/Configuration.md#testenvironment-string
 export default class FixJSDOMEnvironment extends JSDOMEnvironment {

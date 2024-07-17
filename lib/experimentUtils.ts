@@ -1,4 +1,4 @@
-import { types } from "@mozilla/nimbus-shared"
+import { types } from "@mozilla/nimbus-shared";
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
 /**
@@ -12,7 +12,7 @@ type NimbusExperiment = types.experiments.NimbusExperiment;
  *
  * Should be manually update when that file changes.
  */
-export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
+export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES: string[] = [
   "aboutwelcome",
   "backgroundTaskMessage", // XXX need to backport this to tree
   "cfr",
@@ -43,19 +43,21 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES : string[] = [
  * @param proposedDuration - may be undefined as NimbusExperiment types
  *                    allow this.  returns null in this case.
  */
-export function getProposedEndDate (startDate : string | null, proposedDuration : number | undefined) : string | null {
-
+export function getProposedEndDate(
+  startDate: string | null,
+  proposedDuration: number | undefined,
+): string | null {
   if (startDate === null || proposedDuration === undefined) {
-    return null
+    return null;
   }
 
   // XXX need to verify that experimenter actually uses UTC here
-  const jsDate = new Date(startDate)
+  const jsDate = new Date(startDate);
 
-  jsDate.setUTCDate(jsDate.getUTCDate() + proposedDuration)
-  const formattedDate = jsDate.toISOString().slice(0, 10)
+  jsDate.setUTCDate(jsDate.getUTCDate() + proposedDuration);
+  const formattedDate = jsDate.toISOString().slice(0, 10);
 
-  return formattedDate
+  return formattedDate;
 }
 
 // XXX this should really be a method on NimbusRecipe, though it'll need some
@@ -69,7 +71,7 @@ export function getProposedEndDate (startDate : string | null, proposedDuration 
  * returned.
  *
  * Otherwise, the value will be recursively substituted.
- * 
+ *
  * Right now, we are manually passing the first locale out of the localization object.
  * Eventually we'll want to select a locale on the dashboard (probably with a dropdown.)
  *
@@ -81,24 +83,38 @@ export function getProposedEndDate (startDate : string | null, proposedDuration 
 
 // XXX there are some existing issues with looping over && assigning object keys in Typescript;
 // using the "any" type here is a workaround for those issues.
-export function _substituteLocalizations(values: any, localizations?: any) : object {
+export function _substituteLocalizations(
+  values: any,
+  localizations?: any,
+): object {
   // If the recipe is not localized, we don't need to do anything.
-  // Likewise, if the value we are attempting to localize is not an 
+  // Likewise, if the value we are attempting to localize is not an
   // object, there is nothing to localize.
-  if ( typeof localizations === "undefined" || typeof values !== "object" || values === null ) {
+  if (
+    typeof localizations === "undefined" ||
+    typeof values !== "object" ||
+    values === null
+  ) {
     return values;
   }
 
   if (Array.isArray(values)) {
-    return values.map((value) => _substituteLocalizations(value, localizations));
+    return values.map((value) =>
+      _substituteLocalizations(value, localizations),
+    );
   }
 
   const substituted = Object.assign({}, values);
 
-  // Loop over "$l10n" objects in the recipe and assign the appropriate string IDs from the 
+  // Loop over "$l10n" objects in the recipe and assign the appropriate string IDs from the
   // localizations object
   for (const [key, value] of Object.entries(values)) {
-    if ( key === "$l10n" && typeof value === "object" && value !== null && (value as any)?.id) {
+    if (
+      key === "$l10n" &&
+      typeof value === "object" &&
+      value !== null &&
+      (value as any)?.id
+    ) {
       return localizations[(value as any).id];
     }
 

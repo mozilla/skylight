@@ -1,6 +1,9 @@
-import { getProposedEndDate, _substituteLocalizations } from '../../lib/experimentUtils.ts'
+import {
+  getProposedEndDate,
+  _substituteLocalizations,
+} from "../../lib/experimentUtils.ts";
 
-import { types } from "@mozilla/nimbus-shared"
+import { types } from "@mozilla/nimbus-shared";
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
 const LOCALIZATIONS = {
@@ -64,63 +67,63 @@ const LOCALIZED_DEEPLY_NESTED_VALUE = {
   waldo: ["localized waldo text"],
 };
 
-describe('getProposedEndDate', () => {
-  it('returns the same date if the proposed duration is 0', () => {
-    const startDate : string = "2020-01-01"
-    const proposedDuration : number = 0
+describe("getProposedEndDate", () => {
+  it("returns the same date if the proposed duration is 0", () => {
+    const startDate: string = "2020-01-01";
+    const proposedDuration: number = 0;
 
-    const result = getProposedEndDate(startDate, proposedDuration)
+    const result = getProposedEndDate(startDate, proposedDuration);
 
-    expect(result).toBe(startDate)
-  })
+    expect(result).toBe(startDate);
+  });
 
-  it('returns a date in the next month if appropriate', () => {
-    const startDate : string = "2020-01-01"
-    const proposedDuration : number = 32
+  it("returns a date in the next month if appropriate", () => {
+    const startDate: string = "2020-01-01";
+    const proposedDuration: number = 32;
 
-    const result = getProposedEndDate(startDate, proposedDuration)
+    const result = getProposedEndDate(startDate, proposedDuration);
 
-    expect(result).toBe("2020-02-02")
-  })
+    expect(result).toBe("2020-02-02");
+  });
 
-  it('returns a date in the next year if appropriate', () => {
-    const startDate : string = "2021-12-01"
-    const proposedDuration : number = 32
+  it("returns a date in the next year if appropriate", () => {
+    const startDate: string = "2021-12-01";
+    const proposedDuration: number = 32;
 
-    const result = getProposedEndDate(startDate, proposedDuration)
+    const result = getProposedEndDate(startDate, proposedDuration);
 
-    expect(result).toBe("2022-01-02")
-  })
+    expect(result).toBe("2022-01-02");
+  });
 
-  it('returns null if startDate is null', () => {
-    const startDate : string | null = null
-    const proposedDuration : number = 32
+  it("returns null if startDate is null", () => {
+    const startDate: string | null = null;
+    const proposedDuration: number = 32;
 
-    const result = getProposedEndDate(startDate, proposedDuration)
+    const result = getProposedEndDate(startDate, proposedDuration);
 
-    expect(result).toBeNull()
-  })
+    expect(result).toBeNull();
+  });
 
-  it('returns null if proposedDuration is undefined', () => {
-    const startDate : string | null = "2021-12-01";
-    const proposedDuration : number | undefined = undefined;
+  it("returns null if proposedDuration is undefined", () => {
+    const startDate: string | null = "2021-12-01";
+    const proposedDuration: number | undefined = undefined;
 
-    const result = getProposedEndDate(startDate, proposedDuration)
+    const result = getProposedEndDate(startDate, proposedDuration);
 
-    expect(result).toBeNull()
-  })
-})
+    expect(result).toBeNull();
+  });
+});
 
-describe('_substituteLocalizations', () => {
-  it('returns the values unchanged if there are no localizations', () => {
+describe("_substituteLocalizations", () => {
+  it("returns the values unchanged if there are no localizations", () => {
     const result = _substituteLocalizations(DEEPLY_NESTED_VALUE);
 
     expect(result).toEqual(DEEPLY_NESTED_VALUE);
-  })
+  });
 
-  it('returns a localized recipe if there are localizations', () => {
+  it("returns a localized recipe if there are localizations", () => {
     const result = _substituteLocalizations(DEEPLY_NESTED_VALUE, LOCALIZATIONS);
 
     expect(result).toEqual(LOCALIZED_DEEPLY_NESTED_VALUE);
-  })
-})
+  });
+});

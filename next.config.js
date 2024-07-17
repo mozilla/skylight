@@ -33,6 +33,7 @@ const cspHeaderDev = `
 `;
 
 const nextConfig = {
+  staticPageGenerationTimeout: 120,
   async headers() {
     return [
       {
@@ -50,8 +51,10 @@ const nextConfig = {
           },
           {
             key: "Content-Security-Policy-Report-Only",
-            value: cspHeaderProd.replace(/\n/g, "") + "report-uri /csp-violation-report-endpoint/"
-          }
+            value:
+              cspHeaderProd.replace(/\n/g, "") +
+              "report-uri /csp-violation-report-endpoint/",
+          },
         ],
       },
     ];

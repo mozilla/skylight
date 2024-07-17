@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { types } from "@mozilla/nimbus-shared";
 import { ColumnDef } from "@tanstack/react-table";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
@@ -9,7 +9,12 @@ import { InfoPopover } from "@/components/ui/infopopover";
 
 function OffsiteLink(href: string, linkText: string) {
   return (
-    <a href={href} className="text-xs/[180%] whitespace-nowrap flex items-center" target="_blank" rel="noreferrer">
+    <a
+      href={href}
+      className="text-xs/[180%] whitespace-nowrap flex items-center"
+      target="_blank"
+      rel="noreferrer"
+    >
       {linkText}
       <svg
         fill="none"
@@ -32,61 +37,61 @@ function OffsiteLink(href: string, linkText: string) {
 // NOTE: ctrPercent is undefined by default until set using getCTRPercent. It is
 // made optional to help determine what's displayed in the Metrics column.
 export type FxMSMessageInfo = {
-  product: 'Desktop' | 'Android'
-  id: string
-  template: string
-  surface: string
-  segment: string
-  ctrPercent?: number
-  ctrPercentChange?: number
-  ctrDashboardLink?: string
-  previewLink?: string
-  metrics: string
-}
+  product: "Desktop" | "Android";
+  id: string;
+  template: string;
+  surface: string;
+  segment: string;
+  ctrPercent?: number;
+  ctrPercentChange?: number;
+  ctrDashboardLink?: string;
+  previewLink?: string;
+  metrics: string;
+};
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
 export type RecipeInfo = {
-  product: 'Desktop' | 'Android'
-  id: string
-  template?: string
-  surface?: string
-  segment?: string
-  ctrPercent?: number
-  ctrPercentChange?: number
-  ctrDashboardLink?: string
-  previewLink?: string
-  metrics?: string
-  experimenterLink?: string
-  startDate: string | null
-  endDate: string | null
-  userFacingName?: string
-  nimbusExperiment: NimbusExperiment
-  isBranch?: boolean
-  branches: BranchInfo[] // XXX rename this to branchInfos to avoid confusion with the branches property inside NimbusExperiment
-}
+  product: "Desktop" | "Android";
+  id: string;
+  template?: string;
+  surface?: string;
+  segment?: string;
+  ctrPercent?: number;
+  ctrPercentChange?: number;
+  ctrDashboardLink?: string;
+  previewLink?: string;
+  metrics?: string;
+  experimenterLink?: string;
+  startDate: string | null;
+  endDate: string | null;
+  userFacingName?: string;
+  nimbusExperiment: NimbusExperiment;
+  isBranch?: boolean;
+  branches: BranchInfo[]; // XXX rename this to branchInfos to avoid confusion with the branches property inside NimbusExperiment
+};
 
 export type BranchInfo = {
-  product: 'Desktop' | 'Android'
-  id: string
-  slug: string
-  surface?: string
-  segment?: string
-  ctrPercent?: number
-  ctrPercentChange?: number
-  ctrDashboardLink?: string
-  previewLink?: string
-  metrics?: string
-  experimenterLink?: string
-  startDate?: string
-  endDate?: string
-  userFacingName?: string
-  nimbusExperiment: NimbusExperiment
-  isBranch?: boolean
-  template?: string
-  screenshots?: string[]
-  description?: string
-}
+  product: "Desktop" | "Android";
+  id: string;
+  slug: string;
+  surface?: string;
+  segment?: string;
+  ctrPercent?: number;
+  ctrPercentChange?: number;
+  ctrDashboardLink?: string;
+  previewLink?: string;
+  metrics?: string;
+  experimenterLink?: string;
+  startDate?: string;
+  endDate?: string;
+  userFacingName?: string;
+  nimbusExperiment: NimbusExperiment;
+  isBranch?: boolean;
+  template?: string;
+  screenshots?: string[];
+  description?: string;
+};
 
 export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
 
@@ -97,10 +102,9 @@ export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
 function showCTRMetrics(
   template?: string,
   ctrDashboardLink?: string,
-  ctrPercent?: number
+  ctrPercent?: number,
 ) {
-  // XXX remove infobar condition in https://bugzilla.mozilla.org/show_bug.cgi?id=1905155
-  if (ctrDashboardLink && ctrPercent !== undefined && template !== "infobar") {
+  if (ctrDashboardLink && ctrPercent !== undefined) {
     return OffsiteLink(ctrDashboardLink, ctrPercent + "% CTR");
   } else if (ctrDashboardLink) {
     return OffsiteLink(ctrDashboardLink, "Dashboard");
@@ -109,7 +113,6 @@ function showCTRMetrics(
 
 const previewURLInfoButton = (
   <InfoPopover
-    iconSize={14}
     content={
       <p>
         To make the Preview URLs work, load <code>about:config</code> in Firefox
@@ -118,7 +121,7 @@ const previewURLInfoButton = (
         to true; Firefox 128 or newer is required.
       </p>
     }
-    iconStyle="ml-1 cursor-pointer hover:text-slate-400/70"
+    iconStyle="ml-1 h-6 w-6 p-1 rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
   />
 );
 
@@ -127,23 +130,38 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     accessorKey: "id",
     header: "Message ID",
     cell: (props: any) => {
-      return <div className="font-mono text-xs">{props.row.original.id}</div>
-    }
+      return <div className="font-mono text-xs">{props.row.original.id}</div>;
+    },
   },
   {
     accessorKey: "surface",
     header: "Surface",
     cell: (props: any) => {
-      return <div className="text-xs/[180%]">{props.row.original.surface}</div>
-    }
-  }, {
-  //   accessorKey: "segment",
-  //   header: "Segment",
-  // }, {
+      return <div className="text-xs/[180%]">{props.row.original.surface}</div>;
+    },
+  },
+  {
+    //   accessorKey: "segment",
+    //   header: "Segment",
+    // }, {
     accessorKey: "metrics",
-    header: "Metrics",
+    header: () => (
+      <div className="flex flex-row items-center">
+        Metrics
+        <InfoPopover
+          content={
+            <p>
+              The CTR metrics in this table are the primary button clickthrough
+              rates calculated over the <b>last 30 days</b>. Clicking into the
+              CTR value will direct you to the Looker dashboard displaying the
+              data.
+            </p>
+          }
+          iconStyle="ml-1 h-6 w-6 p-1 rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
+        />
+      </div>
+    ),
     cell: (props: any) => {
-
       // XXX these dashboards are currently (incorrectly) empty.
       // Until we debug and fix, we'll hide them.
       //
@@ -152,23 +170,23 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         "PDFJS_FEATURE_TOUR_A",
         "PDFJS_FEATURE_TOUR_B",
         "FIREFOX_VIEW_SPOTLIGHT",
-      ]
-      if (hideDashboardMessages.includes(
-          props.row.original.id)) {
-        return ( <></> );
+      ];
+      if (hideDashboardMessages.includes(props.row.original.id)) {
+        return <></>;
       }
 
       const metrics = showCTRMetrics(
         props.row.original.template,
         props.row.original.ctrDashboardLink,
-        props.row.original.ctrPercent
+        props.row.original.ctrPercent,
       );
       if (metrics) {
-        return metrics
+        return metrics;
       }
-      return ( <></> );
-    }
-  }, {
+      return <></>;
+    },
+  },
+  {
     accessorKey: "previewLink",
     header: () => (
       <div className="flex flex-row items-center">
@@ -178,67 +196,71 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     ),
     cell: (props: any) => {
       const supportedTypes = [
-        'infobar', 'spotlight', 'defaultaboutwelcome', 'feature_callout'
+        "infobar",
+        "spotlight",
+        "defaultaboutwelcome",
+        "feature_callout",
       ];
-      if (!(supportedTypes.includes(props.row.original.template))) {
-          return ( <div/> );
+      if (!supportedTypes.includes(props.row.original.template)) {
+        return <div />;
       }
 
-      return (
-        <PreviewLinkButton previewLink={props.row.original.previewLink} />
-      )
-    }
+      return <PreviewLinkButton previewLink={props.row.original.previewLink} />;
+    },
   },
-]
+];
 
 export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
   {
     accessorKey: "dates",
     header: ({ table }) => (
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row items-center gap-x-2">
         <button
           {...{
             onClick: table.getToggleAllRowsExpandedHandler(),
           }}
           data-testid="toggleAllRowsButton"
           aria-label="Toggle All Branches"
+          className="p-1 rounded-full bg-gray-200/70 hover:bg-gray-300/70"
         >
           {table.getIsAllRowsExpanded() ? (
-            <ChevronDown className="mr-2" size={18} />
+            <ChevronDown size={18} />
           ) : (
-            <ChevronsUpDown className="mr-2" size={18} />
+            <ChevronsUpDown size={18} />
           )}
         </button>
-        Dates 
+        Dates
       </div>
     ),
     cell: (props: any) => {
       return (
-        <div className="flex flex-row items-center">
+        <div className="flex flex-row items-center gap-x-2">
           <div>
-              {props.row.getCanExpand() ? (
-                <button
-                  {...{
-                    onClick: props.row.getToggleExpandedHandler(),
-                    style: { cursor: 'pointer' },
-                  }}
-                  data-testid="toggleBranchRowsButton"
-                  aria-label="Toggle Branches"
-                >
-                  {props.row.getIsExpanded() ? (
-                    <ChevronDown className="mr-2" size={18} />
-                  ) : (
-                    <ChevronRight className="mr-2" size={18} />
-                  )}
-                </button>
-              ) : null}
-            </div>
-            <PrettyDateRange startDate={props.row.original.startDate}
-              endDate={props.row.original.endDate} />
+            {props.row.getCanExpand() ? (
+              <button
+                {...{
+                  onClick: props.row.getToggleExpandedHandler(),
+                  style: { cursor: "pointer" },
+                }}
+                data-testid="toggleBranchRowsButton"
+                aria-label="Toggle Branches"
+                className="p-1 rounded-full bg-slate-100 hover:bg-slate-200"
+              >
+                {props.row.getIsExpanded() ? (
+                  <ChevronDown size={18} />
+                ) : (
+                  <ChevronRight size={18} />
+                )}
+              </button>
+            ) : null}
+          </div>
+          <PrettyDateRange
+            startDate={props.row.original.startDate}
+            endDate={props.row.original.endDate}
+          />
         </div>
-        
       );
-    }
+    },
   },
   {
     accessorKey: "exp_or_branch",
@@ -274,7 +296,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         );
       }
 
-      const recipe = new NimbusRecipe(props.row.original.nimbusExperiment)
+      const recipe = new NimbusRecipe(props.row.original.nimbusExperiment);
 
       return (
         <div className="ps-6">
@@ -299,43 +321,63 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
           <p className="font-mono text-3xs">{props.row.original.slug}</p>
         </div>
       );
-    }
+    },
   },
   {
     accessorKey: "surface",
     header: "Surface",
     cell: (props: any) => {
-      return <div className="text-xs/[180%]">{props.row.original.surface}</div>
-    }
-  }, {
-  //   accessorKey: "segment",
-  //   header: "Segment",
-  // }, {
+      return <div className="text-xs/[180%]">{props.row.original.surface}</div>;
+    },
+  },
+  {
+    //   accessorKey: "segment",
+    //   header: "Segment",
+    // }, {
     accessorKey: "metrics",
-    header: "Metrics",
+    header: () => (
+      <div className="flex flex-row items-center">
+        Metrics
+        <InfoPopover
+          content={
+            <p>
+              The CTR metrics in this table are the primary button clickthrough
+              rates calculated over the <b>time that the experiment is live</b>.
+              Clicking into the CTR value will direct you to the Looker
+              dashboard displaying the data.
+            </p>
+          }
+          iconStyle="ml-1 h-6 w-6 p-1 rounded-full cursor-pointer bg-gray-200/70 hover:text-slate-400/70 hover:bg-gray-300/70 border-0"
+        />
+      </div>
+    ),
     cell: (props: any) => {
-
       // XXX these dashboards are currently (incorrectly) empty.
       // Until we fix the upcase bug, we'll hide them
       const hideDashboardExperiments = [
         "recommend-media-addons-feature-existing-users",
-        "recommend-media-addons-feature-callout"
-      ]
-      if (hideDashboardExperiments.includes(props.row.original?.nimbusExperiment?.slug)) {
-        return ( <></> );
+        "recommend-media-addons-feature-callout",
+      ];
+      if (
+        hideDashboardExperiments.includes(
+          props.row.original?.nimbusExperiment?.slug,
+        )
+      ) {
+        return <></>;
       }
 
       const metrics = showCTRMetrics(
         props.row.original.template,
         props.row.original.ctrDashboardLink,
-        props.row.original.ctrPercent
+        props.row.original.ctrPercent,
       );
       if (metrics) {
-        return metrics
+        return metrics;
       }
-      return ( <></> );
-    }
-  }, {
+      return <></>;
+    },
+  },
+  {
     accessorKey: "other",
     header: () => (
       <div className="flex flex-row items-center">
@@ -347,19 +389,22 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       if (props.row.original.previewLink == undefined) {
         // XXX should figure out how to do this NimbusRecipe instantiation
         // once per row (maybe useState?)
-        const recipe = new NimbusRecipe(props.row.original.nimbusExperiment)
+        const recipe = new NimbusRecipe(props.row.original.nimbusExperiment);
 
-        if (props.row.original.screenshots && props.row.original.screenshots.length > 0) {
-          const branchLink = recipe.getBranchScreenshotsLink(props.row.original.slug)
-          return OffsiteLink(branchLink, "Screenshots")
+        if (
+          props.row.original.screenshots &&
+          props.row.original.screenshots.length > 0
+        ) {
+          const branchLink = recipe.getBranchScreenshotsLink(
+            props.row.original.slug,
+          );
+          return OffsiteLink(branchLink, "Screenshots");
         } else {
-          return null
+          return null;
         }
       }
 
-      return (
-        <PreviewLinkButton previewLink={props.row.original.previewLink} />
-      );
-    }
+      return <PreviewLinkButton previewLink={props.row.original.previewLink} />;
+    },
   },
-]
+];

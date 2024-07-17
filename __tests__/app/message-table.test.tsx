@@ -1,25 +1,32 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { MessageTable } from "@/app/message-table";
-import { experimentColumns, fxmsMessageColumns, FxMSMessageInfo, RecipeInfo, RecipeOrBranchInfo } from "@/app/columns";
+import {
+  experimentColumns,
+  fxmsMessageColumns,
+  FxMSMessageInfo,
+  RecipeInfo,
+  RecipeOrBranchInfo,
+} from "@/app/columns";
 import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
 import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 
-jest.mock("../../lib/sdk")
+jest.mock("../../lib/sdk");
 
 describe("MessageTable", () => {
   describe("ExperimentColumns", () => {
     it("renders the branch description and slug on expanded branch rows", () => {
       const rawRecipe = ExperimentFakes.recipe("test-recipe");
       const nimbusRecipe = new NimbusRecipe(rawRecipe);
-      const messageTableData: RecipeOrBranchInfo[] =
-        [nimbusRecipe.getRecipeInfo()];
+      const messageTableData: RecipeOrBranchInfo[] = [
+        nimbusRecipe.getRecipeInfo(),
+      ];
       render(
-        <MessageTable columns={experimentColumns} data={messageTableData} />
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
       );
 
-      const toggleButton = screen.getByTestId("toggleBranchRowsButton")
-      fireEvent.click(toggleButton)
+      const toggleButton = screen.getByTestId("toggleBranchRowsButton");
+      fireEvent.click(toggleButton);
 
       expect(screen.getByRole("table")).toBeInTheDocument();
       expect(screen.getByText("test description")).toBeInTheDocument();
@@ -36,7 +43,7 @@ describe("MessageTable", () => {
         nimbusRecipe2.getRecipeInfo(),
       ];
       render(
-        <MessageTable columns={experimentColumns} data={messageTableData} />
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
       );
 
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
@@ -56,11 +63,11 @@ describe("MessageTable", () => {
       ];
 
       render(
-        <MessageTable columns={experimentColumns} data={messageTableData} />
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
       );
 
       const controlBranchDescription = screen.queryByText(
-        "control description"
+        "control description",
       );
       expect(controlBranchDescription).not.toBeInTheDocument();
       const treatmentBranchDescription = screen.queryByText("test description");
@@ -74,7 +81,7 @@ describe("MessageTable", () => {
         nimbusRecipe.getRecipeInfo(),
       ];
       render(
-        <MessageTable columns={experimentColumns} data={messageTableData} />
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
       );
 
       const toggleButton = screen.getByTestId("toggleBranchRowsButton");
@@ -82,7 +89,7 @@ describe("MessageTable", () => {
       fireEvent.click(toggleButton);
 
       const controlBranchDescription = screen.queryByText(
-        "control description"
+        "control description",
       );
       expect(controlBranchDescription).not.toBeInTheDocument();
       const treatmentBranchDescription = screen.queryByText("test description");
@@ -92,14 +99,14 @@ describe("MessageTable", () => {
     it("renders preview buttons for infobars", () => {
       const infobarRecipe = ExperimentFakes.recipe("test-recipe");
       // infobar needs a content object to generate a previewLink
-      infobarRecipe.branches[1].features[0].value.template = "infobar"
-      infobarRecipe.branches[1].features[0].value.content = { string: "test" }
+      infobarRecipe.branches[1].features[0].value.template = "infobar";
+      infobarRecipe.branches[1].features[0].value.content = { string: "test" };
       const nimbusRecipe = new NimbusRecipe(infobarRecipe);
       const messageTableData: RecipeOrBranchInfo[] = [
         nimbusRecipe.getRecipeInfo(),
       ];
       render(
-        <MessageTable columns={experimentColumns} data={messageTableData} />
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
       );
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
 
@@ -110,13 +117,13 @@ describe("MessageTable", () => {
 
     it("renders preview buttons for spotlights", () => {
       const spotlightRecipe = ExperimentFakes.recipe("test-recipe");
-      spotlightRecipe.branches[1].features[0].value.template = "spotlight"
+      spotlightRecipe.branches[1].features[0].value.template = "spotlight";
       const nimbusRecipe = new NimbusRecipe(spotlightRecipe);
       const messageTableData: RecipeOrBranchInfo[] = [
         nimbusRecipe.getRecipeInfo(),
       ];
       render(
-        <MessageTable columns={experimentColumns} data={messageTableData} />
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
       );
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
 
@@ -128,14 +135,17 @@ describe("MessageTable", () => {
     it("renders preview buttons for feature callouts", () => {
       const featureCalloutRecipe = ExperimentFakes.recipe("test-recipe");
       // feature callout needs screens to generate a previewLink
-      featureCalloutRecipe.branches[1].features[0].value.template = "feature_callout"
-      featureCalloutRecipe.branches[1].features[0].value.content = { screens: [{ id: "testID" }] }
+      featureCalloutRecipe.branches[1].features[0].value.template =
+        "feature_callout";
+      featureCalloutRecipe.branches[1].features[0].value.content = {
+        screens: [{ id: "testID" }],
+      };
       const nimbusRecipe = new NimbusRecipe(featureCalloutRecipe);
       const messageTableData: RecipeOrBranchInfo[] = [
         nimbusRecipe.getRecipeInfo(),
       ];
       render(
-        <MessageTable columns={experimentColumns} data={messageTableData} />
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
       );
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
 
@@ -147,14 +157,14 @@ describe("MessageTable", () => {
     it("does not render a preview button for toasts", () => {
       const toastRecipe = ExperimentFakes.recipe("test-recipe");
       // we don't generate a previewLink for toasts
-      toastRecipe.branches[1].features[0].value.template = "toast_notification"
-      toastRecipe.branches[1].features[0].value.content = { tag: "test tag" }
-      const nimbusRecipe = new NimbusRecipe(toastRecipe);  
+      toastRecipe.branches[1].features[0].value.template = "toast_notification";
+      toastRecipe.branches[1].features[0].value.content = { tag: "test tag" };
+      const nimbusRecipe = new NimbusRecipe(toastRecipe);
       const messageTableData: RecipeOrBranchInfo[] = [
         nimbusRecipe.getRecipeInfo(),
       ];
       render(
-        <MessageTable columns={experimentColumns} data={messageTableData} />
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
       );
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
 
@@ -197,7 +207,7 @@ describe("MessageTable", () => {
       const dashboardLink = screen.getByText("Dashboard");
       const ctrMetrics = screen.queryByText("CTR");
 
-      expect(recipeInfo.branches[0].ctrPercent).not.toBeDefined()
+      expect(recipeInfo.branches[0].ctrPercent).not.toBeDefined();
       expect(recipeInfo.branches[0].ctrDashboardLink).toBeDefined();
       expect(dashboardLink).toBeInTheDocument();
       expect(ctrMetrics).not.toBeInTheDocument();
@@ -206,11 +216,9 @@ describe("MessageTable", () => {
     it("doesn't display any metric when Looker dashboard doesn't exist", () => {
       const rawRecipe = ExperimentFakes.recipe("test-recipe");
       const nimbusRecipe = new NimbusRecipe(rawRecipe);
-      const messageTableData: RecipeInfo[] = [
-        nimbusRecipe.getRecipeInfo(),
-      ];
+      const messageTableData: RecipeInfo[] = [nimbusRecipe.getRecipeInfo()];
       render(
-        <MessageTable columns={experimentColumns} data={messageTableData} />
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
       );
 
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
@@ -218,8 +226,10 @@ describe("MessageTable", () => {
       const ctrMetrics = screen.queryByText("CTR");
       const dashboardLink = screen.queryByText("Dashboard");
 
-      expect(messageTableData[0].branches[0].ctrPercent).not.toBeDefined()
-      expect(messageTableData[0].branches[0].ctrDashboardLink).not.toBeDefined()
+      expect(messageTableData[0].branches[0].ctrPercent).not.toBeDefined();
+      expect(
+        messageTableData[0].branches[0].ctrDashboardLink,
+      ).not.toBeDefined();
       expect(ctrMetrics).not.toBeInTheDocument();
       expect(dashboardLink).not.toBeInTheDocument();
     });
@@ -236,9 +246,11 @@ describe("MessageTable", () => {
         metrics: "test metrics",
         ctrPercent: 12.35,
         ctrPercentChange: 2,
-        ctrDashboardLink: "test link"
+        ctrDashboardLink: "test link",
       };
-      render(<MessageTable columns={fxmsMessageColumns} data={[fakeMsgInfo]} />);
+      render(
+        <MessageTable columns={fxmsMessageColumns} data={[fakeMsgInfo]} />,
+      );
 
       const ctrMetrics = screen.getByText("12.35% CTR");
 
@@ -253,9 +265,11 @@ describe("MessageTable", () => {
         surface: "test surface",
         segment: "test segment",
         metrics: "test metrics",
-        ctrDashboardLink: "test link"
+        ctrDashboardLink: "test link",
       };
-      render(<MessageTable columns={fxmsMessageColumns} data={[fakeMsgInfo]} />);
+      render(
+        <MessageTable columns={fxmsMessageColumns} data={[fakeMsgInfo]} />,
+      );
 
       const ctrMetrics = screen.queryByText("CTR");
       const dashboardLink = screen.getByText("Dashboard");
@@ -274,7 +288,7 @@ describe("MessageTable", () => {
         metrics: "test metrics",
       };
       render(
-        <MessageTable columns={fxmsMessageColumns} data={[fxmsMsgInfo]} />
+        <MessageTable columns={fxmsMessageColumns} data={[fxmsMsgInfo]} />,
       );
 
       const ctrMetrics = screen.queryByText("CTR");
