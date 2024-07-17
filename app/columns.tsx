@@ -111,7 +111,7 @@ function showCTRMetrics(
       <div>
         {OffsiteLink(ctrDashboardLink, ctrPercent + "% CTR")}
         <p className="text-xs/[180%] whitespace-nowrap">
-          Impressions: {impressions}
+          Impressions: {impressions?.toLocaleString()}
         </p>
       </div>
     );
