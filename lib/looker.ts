@@ -133,9 +133,20 @@ export async function getCTRPercentData(
   if (queryResult.length > 0) {
     // CTR percents will have 2 decimal places since this is what is expected
     // from Experimenter analyses.
+    let impressions;
+    if (template === "infobar") {
+      impressions =
+        queryResult[0]["messaging_system.ping_count"][
+          "messaging_system.metrics__string__messaging_system_event"
+        ]["IMPRESSION"];
+    } else {
+      impressions =
+        queryResult[0]["event_counts.user_count"]["action"][" Impression"];
+    }
+
     return {
       ctrPercent: Number(Number(queryResult[0].primary_rate * 100).toFixed(2)),
-      impressions: queryResult[0].impressions,
+      impressions: impressions,
     };
   }
 }
