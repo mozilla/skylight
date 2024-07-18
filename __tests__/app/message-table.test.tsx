@@ -187,7 +187,7 @@ describe("MessageTable", () => {
 
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
       fireEvent.click(toggleButton);
-      const ctrMetrics = screen.getByText("12.35% CTR");
+      const ctrMetrics = screen.getByText("12.35% CTR (Impr: 12,899)");
 
       expect(recipeInfos[0].branches[0].ctrPercent).toBe(12.35);
       expect(recipeInfos[0].branches[0].ctrDashboardLink).toBeDefined();
@@ -252,7 +252,9 @@ describe("MessageTable", () => {
         <MessageTable columns={fxmsMessageColumns} data={[fakeMsgInfo]} />,
       );
 
-      const ctrMetrics = screen.getByText("12.35% CTR");
+      const ctrMetrics = screen.getByText("12.35% CTR", {
+        exact: false,
+      });
 
       expect(ctrMetrics).toBeInTheDocument();
     });

@@ -23,7 +23,6 @@ export const fakeQuery = {
 export const fakeQueryResult = [
   {
     primary_rate: 0.123456789,
-    impressions: 12899,
     "event_counts.user_count": {
       action: {
         " Impression": 12899,
