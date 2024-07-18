@@ -109,10 +109,14 @@ function showCTRMetrics(
   if (ctrDashboardLink && ctrPercent !== undefined) {
     return (
       <div>
-        {OffsiteLink(ctrDashboardLink, ctrPercent + "% CTR")}
-        <p className="text-xs/[180%] whitespace-nowrap">
-          Impressions: {impressions?.toLocaleString()}
-        </p>
+        {OffsiteLink(
+          ctrDashboardLink,
+          ctrPercent +
+            "% CTR" +
+            " (Impr: " +
+            impressions?.toLocaleString() +
+            ")",
+        )}
       </div>
     );
   } else if (ctrDashboardLink) {
