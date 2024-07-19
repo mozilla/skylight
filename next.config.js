@@ -33,7 +33,7 @@ const cspHeaderDev = `
 `;
 
 const nextConfig = {
-  staticPageGenerationTimeout: 120,
+  staticPageGenerationTimeout: 240,
   async headers() {
     return [
       {
