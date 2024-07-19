@@ -7,6 +7,29 @@ import { ChevronsUpDown, ChevronDown, ChevronRight } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import { InfoPopover } from "@/components/ui/infopopover";
 
+function getSurfaceTagColor(template: string): string {
+  const surfaceTagColors: any = {
+    aboutwelcome: "bg-red-400",
+    defaultaboutwelcome: "bg-orange-400",
+    feature_callout: "bg-yellow-500",
+    infobar: "bg-green-400",
+    milestone_message: "bg-teal-400",
+    multi: "bg-cyan-400",
+    pb_newtab: "bg-sky-400",
+    protections_panel: "bg-emerald-400",
+    toast_notification: "bg-indigo-400",
+    toolbar_badge: "bg-blue-400",
+    spotlight: "bg-purple-400",
+    update_action: "bg-pink-400",
+  };
+
+  if (template in surfaceTagColors) {
+    return surfaceTagColors[template];
+  }
+
+  return "";
+}
+
 function OffsiteLink(href: string, linkText: string) {
   return (
     <a
@@ -137,7 +160,25 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     accessorKey: "surface",
     header: "Surface",
     cell: (props: any) => {
-      return <div className="text-xs/[180%]">{props.row.original.surface}</div>;
+      if (
+        !props.row.original.template ||
+        props.row.original.template === "none"
+      ) {
+        return (
+          <div className="text-xs/[180%]">{props.row.original.surface}</div>
+        );
+      } else {
+        return (
+          <div
+            className={
+              `text-xs/[180%] text-secondary p-1 inline rounded-md ` +
+              getSurfaceTagColor(props.row.original.template)
+            }
+          >
+            {props.row.original.surface}
+          </div>
+        );
+      }
     },
   },
   {
@@ -327,7 +368,25 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     accessorKey: "surface",
     header: "Surface",
     cell: (props: any) => {
-      return <div className="text-xs/[180%]">{props.row.original.surface}</div>;
+      if (
+        !props.row.original.template ||
+        props.row.original.template === "none"
+      ) {
+        return (
+          <div className="text-xs/[180%]">{props.row.original.surface}</div>
+        );
+      } else {
+        return (
+          <div
+            className={
+              `text-xs/[180%] text-secondary p-1 inline rounded-md ` +
+              getSurfaceTagColor(props.row.original.template)
+            }
+          >
+            {props.row.original.surface}
+          </div>
+        );
+      }
     },
   },
   {
