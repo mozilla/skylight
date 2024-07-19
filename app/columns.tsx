@@ -61,7 +61,7 @@ function SurfaceTag(template: string, surface: string) {
         className={
           "text-xs/[180%] " +
           surfaceTagClassName +
-          " visited:text-secondary hover:text-blue-800 hover:bg-opacity-80 cursor-pointer no-underline"
+          " visited:text-secondary hover:text-primary hover:bg-opacity-80 cursor-pointer no-underline"
         }
         href={surfaceDoc}
         target="_blank"
