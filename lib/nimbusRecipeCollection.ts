@@ -1,7 +1,7 @@
 import { types } from "@mozilla/nimbus-shared";
 import { NimbusRecipe } from "../lib/nimbusRecipe";
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "@/app/columns";
-import { getCTRPercent } from "./looker";
+import { getCTRPercentData } from "./looker";
 import { getExperimentLookerDashboardDate } from "./lookerUtils";
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
@@ -25,7 +25,7 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
         );
         // We are making all branch ids upper case to make up for
         // Looker being case sensitive
-        const ctrPercent = await getCTRPercent(
+        const ctrPercentData = await getCTRPercentData(
           branchInfo.id.toUpperCase(),
           branchInfo.template!,
           undefined,
@@ -34,8 +34,9 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
           branchInfo.nimbusExperiment.startDate,
           proposedEndDate,
         );
-        if (ctrPercent) {
-          branchInfo.ctrPercent = ctrPercent;
+        if (ctrPercentData) {
+          branchInfo.ctrPercent = ctrPercentData.ctrPercent;
+          branchInfo.impressions = ctrPercentData.impressions;
         }
         return branchInfo;
       }),
