@@ -112,7 +112,7 @@ function showCTRMetrics(
         {OffsiteLink(
           ctrDashboardLink,
           <>
-            {ctrPercent + "% CTR"} <br />{" "}
+            {ctrPercent + "% CTR"} <br />
             {impressions.toLocaleString() +
               " impression" +
               (impressions > 1 ? "s" : "")}
