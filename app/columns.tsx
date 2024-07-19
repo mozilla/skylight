@@ -30,6 +30,19 @@ function getSurfaceTagColor(template: string): string {
   return "";
 }
 
+function SurfaceTag(template: string, surface: string) {
+  let surfaceTagClassName = "";
+  if (template !== "none") {
+    surfaceTagClassName =
+      "text-secondary px-2 py-1 inline rounded-md " +
+      getSurfaceTagColor(template);
+  }
+
+  return (
+    <div className={"text-xs/[180%] " + surfaceTagClassName}>{surface}</div>
+  );
+}
+
 function OffsiteLink(href: string, linkText: string) {
   return (
     <a
@@ -160,25 +173,10 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     accessorKey: "surface",
     header: "Surface",
     cell: (props: any) => {
-      if (
-        !props.row.original.template ||
-        props.row.original.template === "none"
-      ) {
-        return (
-          <div className="text-xs/[180%]">{props.row.original.surface}</div>
-        );
-      } else {
-        return (
-          <div
-            className={
-              `text-xs/[180%] text-secondary px-2 py-1 inline rounded-md ` +
-              getSurfaceTagColor(props.row.original.template)
-            }
-          >
-            {props.row.original.surface}
-          </div>
-        );
-      }
+      return SurfaceTag(
+        props.row.original.template,
+        props.row.original.surface,
+      );
     },
   },
   {
@@ -368,25 +366,10 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     accessorKey: "surface",
     header: "Surface",
     cell: (props: any) => {
-      if (
-        !props.row.original.template ||
-        props.row.original.template === "none"
-      ) {
-        return (
-          <div className="text-xs/[180%]">{props.row.original.surface}</div>
-        );
-      } else {
-        return (
-          <div
-            className={
-              `text-xs/[180%] text-secondary px-2 py-1 inline rounded-md ` +
-              getSurfaceTagColor(props.row.original.template)
-            }
-          >
-            {props.row.original.surface}
-          </div>
-        );
-      }
+      return SurfaceTag(
+        props.row.original.template,
+        props.row.original.surface,
+      );
     },
   },
   {
