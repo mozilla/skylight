@@ -7,6 +7,23 @@ import { ChevronsUpDown, ChevronDown, ChevronRight } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import { InfoPopover } from "@/components/ui/infopopover";
 
+function getSurfaceDocs(template: string): string | undefined {
+  const surfaceTagDocs: any = {
+    feature_callout:
+      "https://experimenter.info/messaging/desktop-messaging-surfaces/#feature-callouts",
+    infobar:
+      "https://experimenter.info/messaging/desktop-messaging-surfaces/#infobar",
+    pb_newtab:
+      "https://experimenter.info/messaging/desktop-messaging-surfaces/#privatebrowsing",
+    spotlight:
+      "https://experimenter.info/messaging/desktop-messaging-surfaces/#multistage-spotlight",
+  };
+
+  if (template in surfaceTagDocs) {
+    return surfaceTagDocs[template];
+  }
+}
+
 function getSurfaceTagColor(template: string): string {
   const surfaceTagColors: any = {
     aboutwelcome: "bg-red-400",
@@ -37,9 +54,27 @@ function SurfaceTag(template: string, surface: string) {
       "px-2 py-1 inline rounded-md " + getSurfaceTagColor(template);
   }
 
-  return (
-    <div className={"text-xs/[180%] " + surfaceTagClassName}>{surface}</div>
-  );
+  const surfaceDoc = getSurfaceDocs(template);
+  if (surfaceDoc) {
+    return (
+      <a
+        className={
+          "text-xs/[180%] " +
+          surfaceTagClassName +
+          " visited:text-secondary hover:text-blue-800 hover:bg-opacity-80 cursor-pointer no-underline"
+        }
+        href={surfaceDoc}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {surface}
+      </a>
+    );
+  } else {
+    return (
+      <div className={"text-xs/[180%] " + surfaceTagClassName}>{surface}</div>
+    );
+  }
 }
 
 function OffsiteLink(href: string, linkText: any) {
