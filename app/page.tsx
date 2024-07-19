@@ -5,7 +5,7 @@ import {
   FxMSMessageInfo,
   fxmsMessageColumns,
 } from "./columns";
-import { getCTRPercent } from "@/lib/looker.ts";
+import { getCTRPercentData } from "@/lib/looker.ts";
 import {
   getDashboard,
   getDisplayNameForTemplate,
@@ -40,18 +40,20 @@ async function getASRouterLocalColumnFromJSON(
     ctrPercent: undefined, // may be populated from Looker data
     ctrPercentChange: undefined, // may be populated from Looker data
     previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
+    impressions: undefined, // may be populated from Looker data
   };
 
   const channel = "release";
 
   if (isLookerEnabled) {
-    const ctrPercent = await getCTRPercent(
+    const ctrPercentData = await getCTRPercentData(
       messageDef.id,
       fxmsMsgInfo.template,
       channel,
     );
-    if (ctrPercent) {
-      fxmsMsgInfo.ctrPercent = ctrPercent;
+    if (ctrPercentData) {
+      fxmsMsgInfo.ctrPercent = ctrPercentData.ctrPercent;
+      fxmsMsgInfo.impressions = ctrPercentData.impressions;
     }
   }
 
