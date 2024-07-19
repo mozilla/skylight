@@ -7,11 +7,11 @@ import { ChevronsUpDown, ChevronDown, ChevronRight } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import { InfoPopover } from "@/components/ui/infopopover";
 
-function OffsiteLink(href: string, linkText: string) {
+function OffsiteLink(href: string, linkText: any) {
   return (
     <a
       href={href}
-      className="text-xs/[180%] whitespace-nowrap flex items-center"
+      className="text-xs/[180%] whitespace-nowrap"
       target="_blank"
       rel="noreferrer"
     >
@@ -106,16 +106,17 @@ function showCTRMetrics(
   ctrPercent?: number,
   impressions?: number,
 ) {
-  if (ctrDashboardLink && ctrPercent !== undefined) {
+  if (ctrDashboardLink && ctrPercent !== undefined && impressions) {
     return (
       <div>
         {OffsiteLink(
           ctrDashboardLink,
-          ctrPercent +
-            "% CTR" +
-            " (Impr: " +
-            impressions?.toLocaleString() +
-            ")",
+          <>
+            {ctrPercent + "% CTR"} <br />{" "}
+            {impressions.toLocaleString() +
+              " impression" +
+              (impressions > 1 ? "s" : "")}
+          </>,
         )}
       </div>
     );
