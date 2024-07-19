@@ -9,18 +9,18 @@ import { InfoPopover } from "@/components/ui/infopopover";
 
 function getSurfaceTagColor(template: string): string {
   const surfaceTagColors: any = {
-    aboutwelcome: "bg-red-400",
-    defaultaboutwelcome: "bg-orange-400",
+    aboutwelcome: "bg-red-500",
+    defaultaboutwelcome: "bg-orange-500",
     feature_callout: "bg-yellow-500",
-    infobar: "bg-green-400",
-    milestone_message: "bg-teal-400",
-    multi: "bg-cyan-400",
-    pb_newtab: "bg-sky-400",
-    protections_panel: "bg-emerald-400",
+    infobar: "bg-lime-400",
+    milestone_message: "bg-green-500",
+    multi: "bg-teal-500",
+    pb_newtab: "bg-sky-500",
+    protections_panel: "bg-blue-700",
     toast_notification: "bg-indigo-400",
-    toolbar_badge: "bg-blue-400",
-    spotlight: "bg-purple-400",
-    update_action: "bg-pink-400",
+    toolbar_badge: "bg-purple-500",
+    spotlight: "bg-pink-500",
+    update_action: "bg-rose-800",
   };
 
   if (template in surfaceTagColors) {
@@ -171,7 +171,7 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         return (
           <div
             className={
-              `text-xs/[180%] text-secondary p-1 inline rounded-md ` +
+              `text-xs/[180%] text-secondary px-2 py-1 inline rounded-md ` +
               getSurfaceTagColor(props.row.original.template)
             }
           >
@@ -379,7 +379,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         return (
           <div
             className={
-              `text-xs/[180%] text-secondary p-1 inline rounded-md ` +
+              `text-xs/[180%] text-secondary px-2 py-1 inline rounded-md ` +
               getSurfaceTagColor(props.row.original.template)
             }
           >
