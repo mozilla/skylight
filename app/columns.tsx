@@ -9,18 +9,18 @@ import { InfoPopover } from "@/components/ui/infopopover";
 
 function getSurfaceTagColor(template: string): string {
   const surfaceTagColors: any = {
-    aboutwelcome: "bg-red-500",
-    defaultaboutwelcome: "bg-orange-500",
-    feature_callout: "bg-yellow-500",
-    infobar: "bg-lime-400",
-    milestone_message: "bg-green-500",
-    multi: "bg-teal-500",
-    pb_newtab: "bg-sky-500",
-    protections_panel: "bg-blue-700",
+    aboutwelcome: "bg-red-400",
+    defaultaboutwelcome: "bg-orange-400",
+    feature_callout: "bg-yellow-300",
+    infobar: "bg-lime-300",
+    milestone_message: "bg-green-400",
+    multi: "bg-teal-300",
+    pb_newtab: "bg-sky-400",
+    protections_panel: "bg-blue-500",
     toast_notification: "bg-indigo-400",
-    toolbar_badge: "bg-purple-500",
-    spotlight: "bg-pink-500",
-    update_action: "bg-rose-800",
+    toolbar_badge: "bg-purple-400",
+    spotlight: "bg-pink-400",
+    update_action: "bg-fuchsia-500",
   };
 
   if (template in surfaceTagColors) {
@@ -34,8 +34,7 @@ function SurfaceTag(template: string, surface: string) {
   let surfaceTagClassName = "";
   if (template !== "none") {
     surfaceTagClassName =
-      "text-secondary px-2 py-1 inline rounded-md " +
-      getSurfaceTagColor(template);
+      "px-2 py-1 inline rounded-md " + getSurfaceTagColor(template);
   }
 
   return (
