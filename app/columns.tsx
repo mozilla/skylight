@@ -20,7 +20,7 @@ function getSurfaceTagColor(template: string): string {
     toast_notification: "bg-indigo-400",
     toolbar_badge: "bg-purple-400",
     spotlight: "bg-pink-400",
-    update_action: "bg-fuchsia-500",
+    update_action: "bg-rose-400",
   };
 
   if (template in surfaceTagColors) {
