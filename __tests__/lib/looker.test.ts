@@ -26,8 +26,9 @@ describe("Looker", () => {
     const id = "test_query_0";
     const template = "test_template";
 
-    const ctrPercent = await looker.getCTRPercent(id, template);
+    const ctrPercentData = await looker.getCTRPercentData(id, template);
 
-    expect(ctrPercent).toEqual(12.35);
+    expect(ctrPercentData?.ctrPercent).toEqual(12.35);
+    expect(ctrPercentData?.impressions).toEqual(12899);
   });
 });

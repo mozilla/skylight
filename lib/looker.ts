@@ -3,6 +3,11 @@ import { SDK } from "./sdk";
 import { getDashboardIdForTemplate } from "./messageUtils";
 import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 
+export type CTRData = {
+  ctrPercent: number;
+  impressions: number;
+};
+
 export async function getAWDashboardElement0(
   template: string,
 ): Promise<IDashboardElement> {
@@ -84,7 +89,7 @@ export async function runQueryForTemplate(
  * @returns a CTR percent value for a message if the Looker query results are
  * defined
  */
-export async function getCTRPercent(
+export async function getCTRPercentData(
   id: string,
   template: string,
   channel?: string,
@@ -92,7 +97,7 @@ export async function getCTRPercent(
   branch?: string,
   startDate?: string | null,
   endDate?: string | null,
-): Promise<number | undefined> {
+): Promise<CTRData | undefined> {
   // XXX the filters are currently defined to match the filters in getDashboard.
   // It would be more ideal to consider a different approach when definining
   // those filters to sync up the data in both places.
@@ -128,6 +133,20 @@ export async function getCTRPercent(
   if (queryResult.length > 0) {
     // CTR percents will have 2 decimal places since this is what is expected
     // from Experimenter analyses.
-    return Number(Number(queryResult[0].primary_rate * 100).toFixed(2));
+    let impressions;
+    if (template === "infobar") {
+      impressions =
+        queryResult[0]["messaging_system.ping_count"][
+          "messaging_system.metrics__string__messaging_system_event"
+        ]["IMPRESSION"];
+    } else {
+      impressions =
+        queryResult[0]["event_counts.user_count"]["action"][" Impression"];
+    }
+
+    return {
+      ctrPercent: Number(Number(queryResult[0].primary_rate * 100).toFixed(2)),
+      impressions: impressions,
+    };
   }
 }
