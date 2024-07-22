@@ -11,7 +11,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Menu, Hash } from "lucide-react";
+import { Menu, Hash, Book, AppWindow } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ListItem = React.forwardRef<
@@ -48,30 +48,44 @@ export function MenuButton() {
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <a
               className="no-underline flex text-primary hover:bg-accent hover:text-accent-foreground visited:text-inherit"
+              href="https://experimenter.info/messaging/desktop-messaging-surfaces/"
+            >
+              <AppWindow size={20} className="mr-1" />
+              Messaging Surfaces
+            </a>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <a
+              className="no-underline flex text-primary hover:bg-accent hover:text-accent-foreground visited:text-inherit"
+              href="https://firefox-source-docs.mozilla.org/browser/components/asrouter/docs/index.html"
+            >
+              <Book size={20} className="mr-1" />
+              Technical Docs
+            </a>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <a
+              className="no-underline flex text-primary hover:bg-accent hover:text-accent-foreground visited:text-inherit"
               href="https://mozilla.slack.com/archives/C05N15KHCLC"
             >
-              <Hash className="mr-1" />
+              <Hash size={20} className="mr-1" />
               Help/Feedback
             </a>
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            <Menu className="mr-1" /> Messaging Info
+            <Menu size={20} className="mr-1" /> Messaging Info
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+            <ul className="grid gap-3 p-6 md:w-[300px] lg:w-[400px]">
               <ListItem
                 href="https://mozilla-hub.atlassian.net/wiki/spaces/FIREFOX/pages/11043366/Onboarding+Messaging+Communication+OMC+Engineering+Team"
                 title="OMC Team Info"
-              />
-              <ListItem
-                href="https://experimenter.info/messaging/desktop-messaging-surfaces/"
-                title="Messaging Surfaces"
-              />
-              <ListItem
-                href="https://firefox-source-docs.mozilla.org/browser/components/asrouter/docs/index.html"
-                title="Technical Documentation"
               />
               <ListItem
                 href="https://mozilla.cloud.looker.com/dashboards/1461?Normalized+Channel=release"
