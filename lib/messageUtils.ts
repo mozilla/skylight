@@ -54,6 +54,7 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
       docs: "https://experimenter.info/messaging/desktop-messaging-surfaces/#multistage-spotlight",
     },
     update_action: { surface: "Moments Page", tagColor: "bg-rose-400" },
+    whatsNewPage: { surface: "What's New Page", tagColor: "bg-fuchsia-300" },
   };
 
   if (template in surfaceData) {
