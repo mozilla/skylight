@@ -77,7 +77,7 @@ export class NimbusRecipe implements NimbusRecipeType {
     let template;
     if (feature.featureId === "aboutwelcome" && branch.slug != "control") {
       template = "aboutwelcome";
-    } else if (feature.featureId === "whatsNewPage") {
+    } else if (feature.featureId === "whatsNewPage" && branch.slug != "control") {
       // XXX whatsNewPage doesn't have a template property so we need to
       // assign it directly in order for it to display a surface
       template = "whatsNewPage";
