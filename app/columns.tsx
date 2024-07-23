@@ -7,6 +7,41 @@ import { ChevronsUpDown, ChevronDown, ChevronRight } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import { InfoPopover } from "@/components/ui/infopopover";
 
+function getSurfaceTagColor(template: string): string {
+  const surfaceTagColors: any = {
+    aboutwelcome: "bg-red-400",
+    defaultaboutwelcome: "bg-orange-400",
+    feature_callout: "bg-yellow-300",
+    infobar: "bg-lime-300",
+    milestone_message: "bg-green-400",
+    multi: "bg-teal-300",
+    pb_newtab: "bg-sky-400",
+    protections_panel: "bg-blue-500",
+    toast_notification: "bg-indigo-400",
+    toolbar_badge: "bg-purple-400",
+    spotlight: "bg-pink-400",
+    update_action: "bg-rose-400",
+  };
+
+  if (template in surfaceTagColors) {
+    return surfaceTagColors[template];
+  }
+
+  return "";
+}
+
+function SurfaceTag(template: string, surface: string) {
+  let surfaceTagClassName = "";
+  if (template !== "none") {
+    surfaceTagClassName =
+      "px-2 py-1 inline rounded-md " + getSurfaceTagColor(template);
+  }
+
+  return (
+    <div className={"text-xs/[180%] " + surfaceTagClassName}>{surface}</div>
+  );
+}
+
 function OffsiteLink(href: string, linkText: any) {
   return (
     <a
@@ -151,7 +186,10 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     accessorKey: "surface",
     header: "Surface",
     cell: (props: any) => {
-      return <div className="text-xs/[180%]">{props.row.original.surface}</div>;
+      return SurfaceTag(
+        props.row.original.template,
+        props.row.original.surface,
+      );
     },
   },
   {
@@ -341,7 +379,10 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     accessorKey: "surface",
     header: "Surface",
     cell: (props: any) => {
-      return <div className="text-xs/[180%]">{props.row.original.surface}</div>;
+      return SurfaceTag(
+        props.row.original.template,
+        props.row.original.surface,
+      );
     },
   },
   {
