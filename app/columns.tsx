@@ -6,55 +6,17 @@ import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
 import { ChevronsUpDown, ChevronDown, ChevronRight } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import { InfoPopover } from "@/components/ui/infopopover";
-
-function getSurfaceDocs(template: string): string | undefined {
-  const surfaceTagDocs: any = {
-    feature_callout:
-      "https://experimenter.info/messaging/desktop-messaging-surfaces/#feature-callouts",
-    infobar:
-      "https://experimenter.info/messaging/desktop-messaging-surfaces/#infobar",
-    pb_newtab:
-      "https://experimenter.info/messaging/desktop-messaging-surfaces/#privatebrowsing",
-    spotlight:
-      "https://experimenter.info/messaging/desktop-messaging-surfaces/#multistage-spotlight",
-  };
-
-  if (template in surfaceTagDocs) {
-    return surfaceTagDocs[template];
-  }
-}
-
-function getSurfaceTagColor(template: string): string {
-  const surfaceTagColors: any = {
-    aboutwelcome: "bg-red-400",
-    defaultaboutwelcome: "bg-orange-400",
-    feature_callout: "bg-yellow-300",
-    infobar: "bg-lime-300",
-    milestone_message: "bg-green-400",
-    multi: "bg-teal-300",
-    pb_newtab: "bg-sky-400",
-    protections_panel: "bg-blue-500",
-    toast_notification: "bg-indigo-400",
-    toolbar_badge: "bg-purple-400",
-    spotlight: "bg-pink-400",
-    update_action: "bg-rose-400",
-  };
-
-  if (template in surfaceTagColors) {
-    return surfaceTagColors[template];
-  }
-
-  return "";
-}
+import { getSurfaceDataForTemplate } from "@/lib/messageUtils";
 
 function SurfaceTag(template: string, surface: string) {
   let surfaceTagClassName = "";
   if (template !== "none") {
     surfaceTagClassName =
-      "px-2 py-1 inline rounded-md " + getSurfaceTagColor(template);
+      "px-2 py-1 inline rounded-md " +
+      getSurfaceDataForTemplate(template).tagColor;
   }
 
-  const surfaceDoc = getSurfaceDocs(template);
+  const surfaceDoc = getSurfaceDataForTemplate(template).docs;
   if (surfaceDoc) {
     return (
       <a

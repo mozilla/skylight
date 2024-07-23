@@ -2,7 +2,7 @@ import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "../app/columns.jsx";
 import {
   getDashboard,
-  getDisplayNameForTemplate,
+  getSurfaceDataForTemplate,
   getPreviewLink,
   getTemplateFromMessage,
 } from "../lib/messageUtils.ts";
@@ -83,7 +83,7 @@ export class NimbusRecipe implements NimbusRecipeType {
 
     branch.template = template;
     branchInfo.template = template;
-    branchInfo.surface = getDisplayNameForTemplate(template);
+    branchInfo.surface = getSurfaceDataForTemplate(template).surface;
 
     switch (template) {
       case "aboutwelcome":
