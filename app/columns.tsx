@@ -9,11 +9,27 @@ import { InfoPopover } from "@/components/ui/infopopover";
 import { getSurfaceDataForTemplate } from "@/lib/messageUtils";
 
 function SurfaceTag(template: string, surface: string) {
+  const tagColors = [
+    "bg-red-400",
+    "bg-orange-400",
+    "bg-yellow-300",
+    "bg-lime-300",
+    "bg-green-400",
+    "bg-teal-300",
+    "bg-sky-400",
+    "bg-blue-500",
+    "bg-indigo-400",
+    "bg-purple-400",
+    "bg-pink-400",
+    "bg-rose-400",
+    "bg-fuchsia-300",
+  ];
+
   let surfaceTagClassName = "";
-  if (template !== "none") {
+  const tagColorIndex = getSurfaceDataForTemplate(template).tagColorIndex;
+  if (template !== "none" && tagColorIndex >= 0) {
     surfaceTagClassName =
-      "px-2 py-1 inline rounded-md " +
-      getSurfaceDataForTemplate(template).tagColor;
+      "px-2 py-1 inline rounded-md " + tagColors[tagColorIndex];
   }
 
   const surfaceDoc = getSurfaceDataForTemplate(template).docs;
