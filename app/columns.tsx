@@ -59,9 +59,9 @@ function SurfaceTag(template: string, surface: string) {
     return (
       <a
         className={
-          "text-xs/[180%] " +
+          "text-xs/[180%] text-nowrap " +
           surfaceTagClassName +
-          " visited:text-secondary hover:text-primary hover:bg-opacity-80 cursor-pointer no-underline"
+          " visited:text-primary hover:text-secondary hover:bg-opacity-80 cursor-pointer no-underline"
         }
         href={surfaceDoc}
         target="_blank"
@@ -72,7 +72,9 @@ function SurfaceTag(template: string, surface: string) {
     );
   } else {
     return (
-      <div className={"text-xs/[180%] " + surfaceTagClassName}>{surface}</div>
+      <div className={"text-xs/[180%] text-nowrap " + surfaceTagClassName}>
+        {surface}
+      </div>
     );
   }
 }
