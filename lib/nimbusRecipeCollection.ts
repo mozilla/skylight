@@ -54,9 +54,9 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
   }
 
   async fetchRecipes(): Promise<Array<NimbusRecipe>> {
-    let experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL}`;
+    let experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL_LIVE}`;
     if (this.isCompleted) {
-      experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL_COMPLETE}`;
+      experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL_COMPLETED}`;
     }
 
     // console.log("experimenterURL = ", experimenterUrl)
