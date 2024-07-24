@@ -8,6 +8,7 @@ type NimbusExperiment = types.experiments.NimbusExperiment;
 
 type NimbusRecipeCollectionType = {
   recipes: Array<NimbusRecipe>;
+  isCompleted: boolean;
   fetchRecipes: () => Promise<Array<NimbusRecipe>>;
 };
 
@@ -45,13 +46,18 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
 
 export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
   recipes: Array<NimbusRecipe>;
+  isCompleted: boolean;
 
-  constructor() {
+  constructor(isCompleted: boolean = false) {
     this.recipes = [];
+    this.isCompleted = isCompleted;
   }
 
   async fetchRecipes(): Promise<Array<NimbusRecipe>> {
-    const experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL}`;
+    let experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL}`;
+    if (this.isCompleted) {
+      experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL_COMPLETE}`;
+    }
 
     // console.log("experimenterURL = ", experimenterUrl)
     const response = await fetch(experimenterUrl, {
