@@ -1,3 +1,24 @@
+## Wednesday, July 24th, 2024
+
+### Added
+
+- Displays impression data to the Metrics column when Looker is configured
+- Taught Skylight about `whatsNewPage` features
+- Added coloured tags to surfaces in the Surface column for more readability
+- Added a timeline component below each table title section to clarify relationship between tables
+- Added a new route `/complete` to show all completed experiments and rollouts on a separate page
+
+### Changed
+
+- CTR metrics are now shown for the entire duration of experiments/rollout lengths
+- Improve visibility for info and expand/collapse buttons by adding background colours
+- Moved links outside of the Messaging Info menu for more visibility
+
+## Internal
+
+- Enabled Prettier for VSCode users and added a Prettier check in the CI
+- Increased the static page generation timeout value
+
 ## Wednesday, July 10th, 2024
 
 ### Added
