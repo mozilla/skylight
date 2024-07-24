@@ -10,9 +10,7 @@ function toPrettyDate(dateString: string | null): string | null {
 
   let dateObj = new Date(dateString);
 
-  return dateObj.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
+  return dateObj.toLocaleDateString("eu", {
     timeZone: "UTC",
   });
 }
@@ -22,7 +20,7 @@ export function PrettyDateRange({ startDate, endDate }: DatesProps) {
     return (
       <>
         <div className="font-normal text-stone-600 text-base whitespace-nowrap">
-          {toPrettyDate(startDate)}-
+          {toPrettyDate(startDate)} -
         </div>
         <div className="font-normal text-stone-600 text-base whitespace-nowrap">
           {toPrettyDate(endDate)}

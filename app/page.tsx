@@ -27,6 +27,16 @@ import { Timeline } from "@/components/ui/timeline.tsx";
 
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
+function compareFn(a: any, b: any) {
+  if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
+    return -1;
+  } else if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
+}
+
 async function getASRouterLocalColumnFromJSON(
   messageDef: any,
 ): Promise<FxMSMessageInfo> {
@@ -105,9 +115,9 @@ async function getMsgExpRecipeCollection(
   console.log("expOnlyCollection.length = ", expOnlyCollection.recipes.length);
 
   const msgExpRecipeCollection = new NimbusRecipeCollection();
-  msgExpRecipeCollection.recipes = expOnlyCollection.recipes.filter((recipe) =>
-    recipe.usesMessagingFeatures(),
-  );
+  msgExpRecipeCollection.recipes = expOnlyCollection.recipes
+    .filter((recipe) => recipe.usesMessagingFeatures())
+    .sort(compareFn);
   console.log(
     "msgExpRecipeCollection.length = ",
     msgExpRecipeCollection.recipes.length,
@@ -120,9 +130,9 @@ async function getMsgRolloutCollection(
   recipeCollection: NimbusRecipeCollection,
 ): Promise<NimbusRecipeCollection> {
   const msgRolloutRecipeCollection = new NimbusRecipeCollection();
-  msgRolloutRecipeCollection.recipes = recipeCollection.recipes.filter(
-    (recipe) => recipe.usesMessagingFeatures() && !recipe.isExpRecipe(),
-  );
+  msgRolloutRecipeCollection.recipes = recipeCollection.recipes
+    .filter((recipe) => recipe.usesMessagingFeatures() && !recipe.isExpRecipe())
+    .sort(compareFn);
   console.log(
     "msgRolloutRecipeCollection.length = ",
     msgRolloutRecipeCollection.recipes.length,
