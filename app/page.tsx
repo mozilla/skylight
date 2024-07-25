@@ -179,7 +179,7 @@ export default async function Dashboard() {
     <div>
       <div className="flex justify-between mx-20 py-8">
         <h4 className="scroll-m-20 text-3xl font-semibold">Skylight</h4>
-        <MenuButton />
+        <MenuButton isComplete={false} />
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4 flex items-center justify-center gap-x-1">

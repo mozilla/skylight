@@ -40,7 +40,11 @@ const ListItem = React.forwardRef<
 });
 ListItem.displayName = "ListItem";
 
-export function MenuButton() {
+type MenuButtonProps = {
+  isComplete: boolean;
+};
+
+export function MenuButton({ isComplete }: MenuButtonProps) {
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -83,6 +87,10 @@ export function MenuButton() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[300px] lg:w-[400px]">
+              <ListItem
+                href={isComplete ? "/" : "/complete"}
+                title={`See ${isComplete ? "Current" : "Completed"} Experiments`}
+              />
               <ListItem
                 href="https://mozilla-hub.atlassian.net/wiki/spaces/FIREFOX/pages/11043366/Onboarding+Messaging+Communication+OMC+Engineering+Team"
                 title="OMC Team Info"
