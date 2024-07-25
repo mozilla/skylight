@@ -2,7 +2,7 @@ import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "../app/columns.jsx";
 import {
   getDashboard,
-  getDisplayNameForTemplate,
+  getSurfaceDataForTemplate,
   getPreviewLink,
   getTemplateFromMessage,
 } from "../lib/messageUtils.ts";
@@ -77,13 +77,20 @@ export class NimbusRecipe implements NimbusRecipeType {
     let template;
     if (feature.featureId === "aboutwelcome" && branch.slug != "control") {
       template = "aboutwelcome";
+    } else if (
+      feature.featureId === "whatsNewPage" &&
+      branch.slug != "control"
+    ) {
+      // XXX whatsNewPage doesn't have a template property so we need to
+      // assign it directly in order for it to display a surface
+      template = "whatsNewPage";
     } else {
       template = getTemplateFromMessage(feature.value);
     }
 
     branch.template = template;
     branchInfo.template = template;
-    branchInfo.surface = getDisplayNameForTemplate(template);
+    branchInfo.surface = getSurfaceDataForTemplate(template).surface;
 
     switch (template) {
       case "aboutwelcome":

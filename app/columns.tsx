@@ -6,40 +6,29 @@ import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
 import { ChevronsUpDown, ChevronDown, ChevronRight } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import { InfoPopover } from "@/components/ui/infopopover";
-
-function getSurfaceTagColor(template: string): string {
-  const surfaceTagColors: any = {
-    aboutwelcome: "bg-red-400",
-    defaultaboutwelcome: "bg-orange-400",
-    feature_callout: "bg-yellow-300",
-    infobar: "bg-lime-300",
-    milestone_message: "bg-green-400",
-    multi: "bg-teal-300",
-    pb_newtab: "bg-sky-400",
-    protections_panel: "bg-blue-500",
-    toast_notification: "bg-indigo-400",
-    toolbar_badge: "bg-purple-400",
-    spotlight: "bg-pink-400",
-    update_action: "bg-rose-400",
-  };
-
-  if (template in surfaceTagColors) {
-    return surfaceTagColors[template];
-  }
-
-  return "";
-}
+import { getSurfaceDataForTemplate } from "@/lib/messageUtils";
 
 function SurfaceTag(template: string, surface: string) {
-  let surfaceTagClassName = "";
-  if (template !== "none") {
-    surfaceTagClassName =
-      "px-2 py-1 inline rounded-md " + getSurfaceTagColor(template);
-  }
+  const { tagColor, docs } = getSurfaceDataForTemplate(template);
+  const anchorTagClassName =
+    "text-primary visited:text-primary hover:text-secondary hover:bg-opacity-80 cursor-pointer hover:no-underline ";
+  const surfaceTagClassName =
+    "text-xs/[180%] text-nowrap px-2 py-1 inline rounded-md " + tagColor;
 
-  return (
-    <div className={"text-xs/[180%] " + surfaceTagClassName}>{surface}</div>
-  );
+  if (docs) {
+    return (
+      <a
+        className={anchorTagClassName + surfaceTagClassName}
+        href={docs}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {surface}
+      </a>
+    );
+  } else {
+    return <div className={surfaceTagClassName}>{surface}</div>;
+  }
 }
 
 function OffsiteLink(href: string, linkText: any) {

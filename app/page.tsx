@@ -8,7 +8,7 @@ import {
 import { getCTRPercentData } from "@/lib/looker.ts";
 import {
   getDashboard,
-  getDisplayNameForTemplate,
+  getSurfaceDataForTemplate,
   getTemplateFromMessage,
   _isAboutWelcomeTemplate,
   maybeCreateWelcomePreview,
@@ -34,7 +34,8 @@ async function getASRouterLocalColumnFromJSON(
     product: "Desktop",
     id: messageDef.id,
     template: messageDef.template,
-    surface: getDisplayNameForTemplate(getTemplateFromMessage(messageDef)),
+    surface: getSurfaceDataForTemplate(getTemplateFromMessage(messageDef))
+      .surface,
     segment: "some segment",
     metrics: "some metrics",
     ctrPercent: undefined, // may be populated from Looker data
