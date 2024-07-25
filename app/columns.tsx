@@ -10,16 +10,15 @@ import { getSurfaceDataForTemplate } from "@/lib/messageUtils";
 
 function SurfaceTag(template: string, surface: string) {
   const { tagColor, docs } = getSurfaceDataForTemplate(template);
+  const anchorTagClassName =
+    "text-primary visited:text-primary hover:text-secondary hover:bg-opacity-80 cursor-pointer hover:no-underline ";
   const surfaceTagClassName =
     "text-xs/[180%] text-nowrap px-2 py-1 inline rounded-md " + tagColor;
 
   if (docs) {
     return (
       <a
-        className={
-          "visited:text-primary hover:text-secondary hover:bg-opacity-80 cursor-pointer hover:no-underline " +
-          surfaceTagClassName
-        }
+        className={anchorTagClassName + surfaceTagClassName}
         href={docs}
         target="_blank"
         rel="noreferrer"
