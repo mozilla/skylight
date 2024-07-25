@@ -9,39 +9,18 @@ import { InfoPopover } from "@/components/ui/infopopover";
 import { getSurfaceDataForTemplate } from "@/lib/messageUtils";
 
 function SurfaceTag(template: string, surface: string) {
-  const tagColors = [
-    "bg-red-400",
-    "bg-orange-400",
-    "bg-yellow-300",
-    "bg-lime-300",
-    "bg-green-400",
-    "bg-teal-300",
-    "bg-sky-400",
-    "bg-blue-500",
-    "bg-indigo-400",
-    "bg-purple-400",
-    "bg-pink-400",
-    "bg-rose-400",
-    "bg-fuchsia-300",
-  ];
+  const { tagColor, docs } = getSurfaceDataForTemplate(template);
+  const surfaceTagClassName =
+    "text-xs/[180%] text-nowrap px-2 py-1 inline rounded-md " + tagColor;
 
-  let surfaceTagClassName = "";
-  const tagColorIndex = getSurfaceDataForTemplate(template).tagColorIndex;
-  if (template !== "none" && tagColorIndex >= 0) {
-    surfaceTagClassName =
-      "px-2 py-1 inline rounded-md " + tagColors[tagColorIndex];
-  }
-
-  const surfaceDoc = getSurfaceDataForTemplate(template).docs;
-  if (surfaceDoc) {
+  if (docs) {
     return (
       <a
         className={
-          "text-xs/[180%] text-nowrap " +
-          surfaceTagClassName +
-          " visited:text-primary hover:text-secondary hover:bg-opacity-80 cursor-pointer hover:no-underline"
+          "visited:text-primary hover:text-secondary hover:bg-opacity-80 cursor-pointer hover:no-underline " +
+          surfaceTagClassName
         }
-        href={surfaceDoc}
+        href={docs}
         target="_blank"
         rel="noreferrer"
       >
@@ -49,11 +28,7 @@ function SurfaceTag(template: string, surface: string) {
       </a>
     );
   } else {
-    return (
-      <div className={"text-xs/[180%] text-nowrap " + surfaceTagClassName}>
-        {surface}
-      </div>
-    );
+    return <div className={surfaceTagClassName}>{surface}</div>;
   }
 }
 

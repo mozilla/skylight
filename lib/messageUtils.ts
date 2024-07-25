@@ -2,7 +2,7 @@ import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 
 export type SurfaceData = {
   surface: string;
-  tagColorIndex: number;
+  tagColor?: string;
   docs?: string;
 };
 
@@ -10,51 +10,55 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
   const surfaceData: Record<string, SurfaceData> = {
     aboutwelcome: {
       surface: "About:Welcome Page (1st screen)",
-      tagColorIndex: 0,
+      tagColor: "bg-red-400",
     },
     defaultaboutwelcome: {
       surface: "Default About:Welcome Message (1st screen)",
-      tagColorIndex: 1,
+      tagColor: "bg-orange-400",
     },
     feature_callout: {
       surface: "Feature Callout (1st screen)",
-      tagColorIndex: 2,
+      tagColor: "bg-yellow-300",
       docs: "https://experimenter.info/messaging/desktop-messaging-surfaces/#feature-callouts",
     },
     infobar: {
       surface: "InfoBar",
-      tagColorIndex: 3,
+      tagColor: "bg-lime-300",
       docs: "https://experimenter.info/messaging/desktop-messaging-surfaces/#infobar",
     },
     milestone_message: {
       surface: "Milestone Messages",
-      tagColorIndex: 4,
+      tagColor: "bg-green-400",
     },
     multi: {
       surface: "1st of Multiple Messages",
-      tagColorIndex: 5,
+      tagColor: "bg-teal-300",
     },
     pb_newtab: {
       surface: "Private Browsing New Tab",
-      tagColorIndex: 6,
+      tagColor: "bg-sky-400",
       docs: "https://experimenter.info/messaging/desktop-messaging-surfaces/#privatebrowsing",
     },
     protections_panel: {
       surface: "Protections Dropdown Panel",
-      tagColorIndex: 7,
+      tagColor: "bg-blue-500",
     },
     toast_notification: {
       surface: "Toast Notification",
-      tagColorIndex: 8,
+      tagColor: "bg-indigo-400",
     },
-    toolbar_badge: { surface: "Toolbar Badge", tagColorIndex: 9 },
+    toolbar_badge: { surface: "Toolbar Badge", tagColor: "bg-purple-400" },
     spotlight: {
       surface: "Spotlight Modal Dialog",
-      tagColorIndex: 10,
+      tagColor: "bg-pink-400",
       docs: "https://experimenter.info/messaging/desktop-messaging-surfaces/#multistage-spotlight",
     },
-    update_action: { surface: "Moments Page", tagColorIndex: 11 },
-    whatsNewPage: { surface: "What's New Page", tagColorIndex: 12 },
+    update_action: {
+      surface: "Moments Page",
+      tagColor: "bg-rose-400",
+      docs: "https://experimenter.info/messaging/desktop-messaging-surfaces/#moments-pages",
+    },
+    whatsNewPage: { surface: "What's New Page", tagColor: "bg-fuchsia-300" },
   };
 
   if (template in surfaceData) {
@@ -63,7 +67,6 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
 
   return {
     surface: template,
-    tagColorIndex: -1,
   };
 }
 
