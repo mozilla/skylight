@@ -111,7 +111,7 @@ export default async function CompleteExperimentsDashboard() {
         <MessageTable
           columns={experimentColumns}
           data={msgRolloutInfo}
-          defaultExpanded={true}
+          defaultExpanded={false}
         />
       </div>
 
@@ -128,7 +128,7 @@ export default async function CompleteExperimentsDashboard() {
         <MessageTable
           columns={experimentColumns}
           data={experimentAndBranchInfo}
-          defaultExpanded={true}
+          defaultExpanded={false}
         />
       </div>
     </div>
