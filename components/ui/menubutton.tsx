@@ -11,7 +11,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Menu, Hash, Book, AppWindow } from "lucide-react";
+import { Menu, Hash, Book, AppWindow, Table } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ListItem = React.forwardRef<
@@ -45,16 +45,30 @@ type MenuButtonProps = {
 };
 
 export function MenuButton({ isComplete }: MenuButtonProps) {
+  const navMenuItemClassName =
+    "no-underline flex gap-x-1 text-primary hover:bg-accent hover:text-accent-foreground visited:text-inherit";
+  const iconSize = 20;
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <a
-              className="no-underline flex text-primary hover:bg-accent hover:text-accent-foreground visited:text-inherit"
+              className={navMenuItemClassName}
+              href={isComplete ? "/" : "/complete"}
+            >
+              <Table size={iconSize} />
+              {`See ${isComplete ? "Live" : "Completed"} Experiments`}
+            </a>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <a
+              className={navMenuItemClassName}
               href="https://experimenter.info/messaging/desktop-messaging-surfaces/"
             >
-              <AppWindow size={20} className="mr-1" />
+              <AppWindow size={iconSize} />
               Messaging Surfaces
             </a>
           </NavigationMenuLink>
@@ -62,10 +76,10 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <a
-              className="no-underline flex text-primary hover:bg-accent hover:text-accent-foreground visited:text-inherit"
+              className={navMenuItemClassName}
               href="https://firefox-source-docs.mozilla.org/browser/components/asrouter/docs/index.html"
             >
-              <Book size={20} className="mr-1" />
+              <Book size={iconSize} />
               Technical Docs
             </a>
           </NavigationMenuLink>
@@ -73,24 +87,20 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <a
-              className="no-underline flex text-primary hover:bg-accent hover:text-accent-foreground visited:text-inherit"
+              className={navMenuItemClassName}
               href="https://mozilla.slack.com/archives/C05N15KHCLC"
             >
-              <Hash size={20} className="mr-1" />
+              <Hash size={iconSize} />
               Help/Feedback
             </a>
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            <Menu size={20} className="mr-1" /> Messaging Info
+            <Menu size={iconSize} className="mr-1" /> Messaging Info
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[300px] lg:w-[400px]">
-              <ListItem
-                href={isComplete ? "/" : "/complete"}
-                title={`See ${isComplete ? "Current" : "Completed"} Experiments`}
-              />
               <ListItem
                 href="https://mozilla-hub.atlassian.net/wiki/spaces/FIREFOX/pages/11043366/Onboarding+Messaging+Communication+OMC+Engineering+Team"
                 title="OMC Team Info"
