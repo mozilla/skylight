@@ -198,7 +198,10 @@ export default async function Dashboard() {
         <MessageTable columns={fxmsMessageColumns} data={localData} />
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+      <h5
+        id="live_rollouts"
+        className="scroll-m-20 text-xl font-semibold text-center pt-4"
+      >
         Current Desktop Message Rollouts
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">
@@ -215,7 +218,10 @@ export default async function Dashboard() {
         />
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+      <h5
+        id="live_experiments"
+        className="scroll-m-20 text-xl font-semibold text-center pt-4"
+      >
         Current Desktop Message Experiments
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">

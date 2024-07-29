@@ -98,7 +98,10 @@ export default async function CompleteExperimentsDashboard() {
         <MenuButton isComplete={true} />
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+      <h5
+        id="complete_rollouts"
+        className="scroll-m-20 text-xl font-semibold text-center pt-4"
+      >
         Complete Desktop Message Rollouts
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">
@@ -115,7 +118,10 @@ export default async function CompleteExperimentsDashboard() {
         />
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+      <h5
+        id="complete_experiments"
+        className="scroll-m-20 text-xl font-semibold text-center pt-4"
+      >
         Complete Desktop Message Experiments
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">

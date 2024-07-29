@@ -2,16 +2,17 @@
 
 ### Added
 
-- Displays impression data to the Metrics column when Looker is configured
-- Taught Skylight about `whatsNewPage` features
-- Added coloured tags to surfaces in the Surface column for more readability
-- Added a timeline component below each table title section to clarify relationship between tables
-- Added a new route `/complete` to show all completed experiments and rollouts on a separate page
+- Impression data is displayed in the Metrics column when Looker is configured
+- `whatsNewPage` features are enabled
+- Surfaces are displayed in the Surface column using coloured tags for more readability
+- Surface tags link to Experimenter docs with screenshots if available
+- Timeline components are displayed below each table title section to clarify relationship between tables
+- A new route `/complete` is created to show all completed experiments and rollouts on a separate page
 
 ### Changed
 
-- CTR metrics are now shown for the entire duration of experiments/rollout lengths
-- Improve visibility for info and expand/collapse buttons by adding background colours
+- CTR metrics are shown for the entire duration of experiments/rollout lengths
+- Background colours are Improve visibility for info and expand/collapse buttons by adding background colours
 - Moved links outside of the Messaging Info menu for more visibility
 
 ## Internal
