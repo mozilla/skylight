@@ -1,4 +1,8 @@
-import { RecipeOrBranchInfo, experimentColumns } from "./../columns";
+import {
+  RecipeOrBranchInfo,
+  completedExperimentColumns,
+  experimentColumns,
+} from "./../columns";
 import { _isAboutWelcomeTemplate } from "../../lib/messageUtils.ts";
 
 import { NimbusRecipeCollection } from "../../lib/nimbusRecipeCollection";
@@ -9,8 +13,6 @@ import { MessageTable } from "./../message-table";
 
 import { MenuButton } from "@/components/ui/menubutton.tsx";
 import { Timeline } from "@/components/ui/timeline.tsx";
-
-const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
 function compareFn(a: any, b: any) {
   if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
@@ -73,21 +75,17 @@ export default async function CompleteExperimentsDashboard() {
     await getMsgRolloutCollection(recipeCollection);
 
   // Get in format useable by MessageTable
-  const experimentAndBranchInfo: RecipeOrBranchInfo[] = isLookerEnabled
-    ? // Update branches inside recipe infos with CTR percents
-      await msgExpRecipeCollection.getExperimentAndBranchInfos()
-    : msgExpRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
-        recipe.getRecipeInfo(),
-      );
+  const experimentAndBranchInfo: RecipeOrBranchInfo[] =
+    msgExpRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
+      recipe.getRecipeInfo(),
+    );
 
   const totalExperiments = msgExpRecipeCollection.recipes.length;
 
-  const msgRolloutInfo: RecipeOrBranchInfo[] = isLookerEnabled
-    ? // Update branches inside recipe infos with CTR percents
-      await msgRolloutRecipeCollection.getExperimentAndBranchInfos()
-    : msgRolloutRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
-        recipe.getRecipeInfo(),
-      );
+  const msgRolloutInfo: RecipeOrBranchInfo[] =
+    msgRolloutRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
+      recipe.getRecipeInfo(),
+    );
 
   const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
 
@@ -132,7 +130,7 @@ export default async function CompleteExperimentsDashboard() {
       </div>
       <div className="space-y-5 container mx-auto py-10">
         <MessageTable
-          columns={experimentColumns}
+          columns={completedExperimentColumns}
           data={experimentAndBranchInfo}
           defaultExpanded={false}
         />
