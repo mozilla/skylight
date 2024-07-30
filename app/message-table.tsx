@@ -18,7 +18,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { BranchInfo } from "./columns.tsx";
 import { useState } from "react";
 
 interface MessageTableProps<TData, TValue> {
@@ -60,7 +59,7 @@ export function MessageTable<TData, TValue>({
   return (
     <div className="rounded-md border">
       <Table>
-        <TableHeader>
+        <TableHeader className="sticky top-32">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {

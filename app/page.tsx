@@ -177,7 +177,7 @@ export default async function Dashboard() {
 
   return (
     <div>
-      <div className="flex justify-between mx-20 py-8">
+      <div className="sticky top-0 z-10 bg-background flex justify-between px-20 py-8">
         <h4 className="scroll-m-20 text-3xl font-semibold">Skylight</h4>
         <MenuButton isComplete={false} />
       </div>
@@ -190,7 +190,7 @@ export default async function Dashboard() {
         />
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">(Partial List)</h5>
-      <div className="flex justify-center">
+      <div className="sticky top-20 z-10 bg-background py-2 flex justify-center">
         <Timeline active="firefox" />
       </div>
 
@@ -207,7 +207,7 @@ export default async function Dashboard() {
       <h5 className="scroll-m-20 text-sm text-center">
         Total: {totalRolloutExperiments}
       </h5>
-      <div className="flex justify-center">
+      <div className="sticky top-20 z-10 bg-background py-2 flex justify-center">
         <Timeline active="rollout" />
       </div>
       <div className="container mx-auto py-10">
@@ -227,7 +227,7 @@ export default async function Dashboard() {
       <h5 className="scroll-m-20 text-sm text-center">
         Total: {totalExperiments}
       </h5>
-      <div className="flex justify-center">
+      <div className="sticky top-20 z-10 bg-background py-2 flex justify-center">
         <Timeline active="experiment" />
       </div>
       <div className="space-y-5 container mx-auto py-10">
