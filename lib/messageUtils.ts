@@ -12,6 +12,11 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
       surface: "About:Welcome Page (1st screen)",
       tagColor: "bg-red-400",
     },
+    cfr_doorhanger: {
+      surface: "Doorhanger",
+      tagColor: "bg-orange-200",
+      docs: "https://experimenter.info/messaging/desktop-messaging-surfaces/#doorhanger",
+    },
     defaultaboutwelcome: {
       surface: "Default About:Welcome Message (1st screen)",
       tagColor: "bg-orange-400",
