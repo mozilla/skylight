@@ -59,7 +59,7 @@ export function MessageTable<TData, TValue>({
   return (
     <div className="rounded-md border">
       <Table>
-        <TableHeader className="sticky top-32">
+        <TableHeader className="sticky top-36">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
