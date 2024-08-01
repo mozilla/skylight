@@ -91,7 +91,7 @@ export default async function CompleteExperimentsDashboard() {
 
   return (
     <div>
-      <div className="flex justify-between mx-20 py-8">
+      <div className="sticky top-0 z-50 bg-background flex justify-between mx-20 py-8">
         <h4 className="scroll-m-20 text-3xl font-semibold">Skylight</h4>
         <MenuButton isComplete={true} />
       </div>
@@ -105,7 +105,7 @@ export default async function CompleteExperimentsDashboard() {
       <h5 className="scroll-m-20 text-sm text-center">
         Total: {totalRolloutExperiments}
       </h5>
-      <div className="flex justify-center">
+      <div className="sticky top-24 z-10 py-2 bg-background flex justify-center">
         <Timeline active="rollout" />
       </div>
       <div className="container mx-auto py-10">
@@ -125,7 +125,7 @@ export default async function CompleteExperimentsDashboard() {
       <h5 className="scroll-m-20 text-sm text-center">
         Total: {totalExperiments}
       </h5>
-      <div className="flex justify-center">
+      <div className="sticky top-24 z-10 py-2 bg-background flex justify-center">
         <Timeline active="experiment" />
       </div>
       <div className="space-y-5 container mx-auto py-10">
