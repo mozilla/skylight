@@ -11,7 +11,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Menu, Hash, Book, AppWindow, Table } from "lucide-react";
+import { Menu, Hash, Book, AppWindow, Table, FileSearch } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ListItem = React.forwardRef<
@@ -51,6 +51,17 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
   return (
     <NavigationMenu>
       <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <a
+              className={navMenuItemClassName}
+              href="https://drive.google.com/drive/u/0/folders/1Jx7X_aFqvVCQYah9eOALvypZJdMf21F2"
+            >
+              <FileSearch size={iconSize} />
+              Search Briefs
+            </a>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <a
