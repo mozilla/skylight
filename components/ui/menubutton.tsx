@@ -10,6 +10,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
+  navigationMenuItemStyle,
 } from "@/components/ui/navigation-menu";
 import { Menu, Hash, Book, AppWindow, Table, FileSearch } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -52,7 +53,7 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+          <NavigationMenuLink asChild className={navigationMenuItemStyle()}>
             <a
               className={navMenuItemClassName}
               href="https://drive.google.com/drive/u/0/folders/1Jx7X_aFqvVCQYah9eOALvypZJdMf21F2"
@@ -63,7 +64,7 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+          <NavigationMenuLink asChild className={navigationMenuItemStyle()}>
             <a
               className={navMenuItemClassName}
               href={isComplete ? "/" : "/complete"}
@@ -74,7 +75,7 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+          <NavigationMenuLink asChild className={navigationMenuItemStyle()}>
             <a
               className={navMenuItemClassName}
               href="https://mozilla.slack.com/archives/C05N15KHCLC"
