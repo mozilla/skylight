@@ -77,28 +77,6 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <a
               className={navMenuItemClassName}
-              href="https://experimenter.info/messaging/desktop-messaging-surfaces/"
-            >
-              <AppWindow size={iconSize} />
-              Messaging Surfaces
-            </a>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <a
-              className={navMenuItemClassName}
-              href="https://firefox-source-docs.mozilla.org/browser/components/asrouter/docs/index.html"
-            >
-              <Book size={iconSize} />
-              Technical Docs
-            </a>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <a
-              className={navMenuItemClassName}
               href="https://mozilla.slack.com/archives/C05N15KHCLC"
             >
               <Hash size={iconSize} />
@@ -111,7 +89,15 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
             <Menu size={iconSize} className="mr-1" /> Messaging Info
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[300px] lg:w-[400px]">
+            <ul className="grid gap-3 p-4 md:w-[300px] lg:w-[400px]">
+              <ListItem
+                href="https://experimenter.info/messaging/desktop-messaging-surfaces/"
+                title="Messaging Surfaces"
+              />
+              <ListItem
+                href="https://firefox-source-docs.mozilla.org/browser/components/asrouter/docs/index.html"
+                title="Technical Docs"
+              />
               <ListItem
                 href="https://mozilla-hub.atlassian.net/wiki/spaces/FIREFOX/pages/11043366/Onboarding+Messaging+Communication+OMC+Engineering+Team"
                 title="OMC Team Info"
