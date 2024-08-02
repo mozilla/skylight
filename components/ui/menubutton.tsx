@@ -10,8 +10,9 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
+  navigationMenuItemStyle,
 } from "@/components/ui/navigation-menu";
-import { Menu, Hash, Book, AppWindow, Table } from "lucide-react";
+import { Menu, Hash, Book, AppWindow, Table, FileSearch } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ListItem = React.forwardRef<
@@ -52,7 +53,18 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+          <NavigationMenuLink asChild className={navigationMenuItemStyle()}>
+            <a
+              className={navMenuItemClassName}
+              href="https://drive.google.com/drive/u/0/folders/1Jx7X_aFqvVCQYah9eOALvypZJdMf21F2"
+            >
+              <FileSearch size={iconSize} />
+              Search Briefs
+            </a>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuItemStyle()}>
             <a
               className={navMenuItemClassName}
               href={isComplete ? "/" : "/complete"}
@@ -63,29 +75,7 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <a
-              className={navMenuItemClassName}
-              href="https://experimenter.info/messaging/desktop-messaging-surfaces/"
-            >
-              <AppWindow size={iconSize} />
-              Messaging Surfaces
-            </a>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <a
-              className={navMenuItemClassName}
-              href="https://firefox-source-docs.mozilla.org/browser/components/asrouter/docs/index.html"
-            >
-              <Book size={iconSize} />
-              Technical Docs
-            </a>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+          <NavigationMenuLink asChild className={navigationMenuItemStyle()}>
             <a
               className={navMenuItemClassName}
               href="https://mozilla.slack.com/archives/C05N15KHCLC"
@@ -100,7 +90,15 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
             <Menu size={iconSize} className="mr-1" /> Messaging Info
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[300px] lg:w-[400px]">
+            <ul className="grid gap-3 p-4 md:w-[300px] lg:w-[400px]">
+              <ListItem
+                href="https://experimenter.info/messaging/desktop-messaging-surfaces/"
+                title="Messaging Surfaces"
+              />
+              <ListItem
+                href="https://firefox-source-docs.mozilla.org/browser/components/asrouter/docs/index.html"
+                title="Technical Docs"
+              />
               <ListItem
                 href="https://mozilla-hub.atlassian.net/wiki/spaces/FIREFOX/pages/11043366/Onboarding+Messaging+Communication+OMC+Engineering+Team"
                 title="OMC Team Info"
