@@ -1,21 +1,31 @@
+## Tuesday, August 6th, 2024
+
+### Added
+
+- Added a "Search Briefs" button in the header which links to a Google Drive with all past experiment/rollout briefs
+
+### Changed
+
+- Table headers and section timeline components are sticky
+
 ## Wednesday, July 24th, 2024
 
 ### Added
 
+- A new route `/complete` is created to show all completed experiments and rollouts on a separate page. This new page can be accessed by the "See Completed Experiments" button in the header which changes to "See Live Experiments" on the `/complete` page.
 - Impression data is displayed in the Metrics column when Looker is configured
-- `whatsNewPage` features are enabled
 - Surfaces are displayed in the Surface column using coloured tags for more readability
 - Surface tags link to Experimenter docs with screenshots if available
-- Timeline components are displayed below each table title section to clarify relationship between tables
-- A new route `/complete` is created to show all completed experiments and rollouts on a separate page
+- Timeline components are displayed below each table title section to clarify relationships between tables
+- Enabled `whatsNewPage` features
 
 ### Changed
 
 - CTR metrics are shown for the entire duration of experiments/rollout lengths
-- Background colours are Improve visibility for info and expand/collapse buttons by adding background colours
-- Moved links outside of the Messaging Info menu for more visibility
+- Improved visibility for info and expand/collapse buttons by adding background colours
+- Moved the "Help/Feedback" link to the Skylight slack channel outside of the Messaging Info menu for more visibility
 
-## Internal
+### Internal
 
 - Enabled Prettier for VSCode users and added a Prettier check in the CI
 - Increased the static page generation timeout value
