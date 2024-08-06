@@ -1,6 +1,7 @@
 ## Tuesday, August 6th, 2024
 
 ### Added
+
 - Added a "Search Briefs" button in the header which links to a Google Drive with all past experiment/rollout briefs
 
 ### Changed
