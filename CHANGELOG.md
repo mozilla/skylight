@@ -1,3 +1,25 @@
+## Wednesday, July 24th, 2024
+
+### Added
+
+- Impression data is displayed in the Metrics column when Looker is configured
+- `whatsNewPage` features are enabled
+- Surfaces are displayed in the Surface column using coloured tags for more readability
+- Surface tags link to Experimenter docs with screenshots if available
+- Timeline components are displayed below each table title section to clarify relationship between tables
+- A new route `/complete` is created to show all completed experiments and rollouts on a separate page
+
+### Changed
+
+- CTR metrics are shown for the entire duration of experiments/rollout lengths
+- Background colours are Improve visibility for info and expand/collapse buttons by adding background colours
+- Moved links outside of the Messaging Info menu for more visibility
+
+## Internal
+
+- Enabled Prettier for VSCode users and added a Prettier check in the CI
+- Increased the static page generation timeout value
+
 ## Wednesday, July 10th, 2024
 
 ### Added

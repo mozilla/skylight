@@ -8,7 +8,7 @@ import {
 import { getCTRPercentData } from "@/lib/looker.ts";
 import {
   getDashboard,
-  getDisplayNameForTemplate,
+  getSurfaceDataForTemplate,
   getTemplateFromMessage,
   _isAboutWelcomeTemplate,
   maybeCreateWelcomePreview,
@@ -27,6 +27,16 @@ import { Timeline } from "@/components/ui/timeline.tsx";
 
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
+function compareFn(a: any, b: any) {
+  if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
+    return -1;
+  } else if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
+}
+
 async function getASRouterLocalColumnFromJSON(
   messageDef: any,
 ): Promise<FxMSMessageInfo> {
@@ -34,7 +44,8 @@ async function getASRouterLocalColumnFromJSON(
     product: "Desktop",
     id: messageDef.id,
     template: messageDef.template,
-    surface: getDisplayNameForTemplate(getTemplateFromMessage(messageDef)),
+    surface: getSurfaceDataForTemplate(getTemplateFromMessage(messageDef))
+      .surface,
     segment: "some segment",
     metrics: "some metrics",
     ctrPercent: undefined, // may be populated from Looker data
@@ -104,9 +115,9 @@ async function getMsgExpRecipeCollection(
   console.log("expOnlyCollection.length = ", expOnlyCollection.recipes.length);
 
   const msgExpRecipeCollection = new NimbusRecipeCollection();
-  msgExpRecipeCollection.recipes = expOnlyCollection.recipes.filter((recipe) =>
-    recipe.usesMessagingFeatures(),
-  );
+  msgExpRecipeCollection.recipes = expOnlyCollection.recipes
+    .filter((recipe) => recipe.usesMessagingFeatures())
+    .sort(compareFn);
   console.log(
     "msgExpRecipeCollection.length = ",
     msgExpRecipeCollection.recipes.length,
@@ -119,9 +130,9 @@ async function getMsgRolloutCollection(
   recipeCollection: NimbusRecipeCollection,
 ): Promise<NimbusRecipeCollection> {
   const msgRolloutRecipeCollection = new NimbusRecipeCollection();
-  msgRolloutRecipeCollection.recipes = recipeCollection.recipes.filter(
-    (recipe) => recipe.usesMessagingFeatures() && !recipe.isExpRecipe(),
-  );
+  msgRolloutRecipeCollection.recipes = recipeCollection.recipes
+    .filter((recipe) => recipe.usesMessagingFeatures() && !recipe.isExpRecipe())
+    .sort(compareFn);
   console.log(
     "msgRolloutRecipeCollection.length = ",
     msgRolloutRecipeCollection.recipes.length,
@@ -166,9 +177,9 @@ export default async function Dashboard() {
 
   return (
     <div>
-      <div className="flex justify-between mx-20 py-8">
+      <div className="sticky top-0 z-50 bg-background flex justify-between px-20 py-8">
         <h4 className="scroll-m-20 text-3xl font-semibold">Skylight</h4>
-        <MenuButton />
+        <MenuButton isComplete={false} />
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4 flex items-center justify-center gap-x-1">
@@ -179,7 +190,7 @@ export default async function Dashboard() {
         />
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">(Partial List)</h5>
-      <div className="flex justify-center">
+      <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
         <Timeline active="firefox" />
       </div>
 
@@ -187,13 +198,16 @@ export default async function Dashboard() {
         <MessageTable columns={fxmsMessageColumns} data={localData} />
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+      <h5
+        id="live_rollouts"
+        className="scroll-m-20 text-xl font-semibold text-center pt-4"
+      >
         Current Desktop Message Rollouts
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">
         Total: {totalRolloutExperiments}
       </h5>
-      <div className="flex justify-center">
+      <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
         <Timeline active="rollout" />
       </div>
       <div className="container mx-auto py-10">
@@ -204,13 +218,16 @@ export default async function Dashboard() {
         />
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
+      <h5
+        id="live_experiments"
+        className="scroll-m-20 text-xl font-semibold text-center pt-4"
+      >
         Current Desktop Message Experiments
       </h5>
       <h5 className="scroll-m-20 text-sm text-center">
         Total: {totalExperiments}
       </h5>
-      <div className="flex justify-center">
+      <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
         <Timeline active="experiment" />
       </div>
       <div className="space-y-5 container mx-auto py-10">

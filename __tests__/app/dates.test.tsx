@@ -8,9 +8,9 @@ describe("PrettyDateRange", () => {
 
     render(<PrettyDateRange startDate={startDate} endDate={endDate} />);
 
-    const part1 = screen.getByText("Feb 1-");
+    const part1 = screen.getByText("2024/2/1 -");
     expect(part1).toBeInTheDocument();
-    const part2 = screen.getByText("Feb 4");
+    const part2 = screen.getByText("2024/2/4");
     expect(part2).toBeInTheDocument();
   });
 
