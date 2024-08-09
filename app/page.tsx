@@ -5,7 +5,7 @@ import {
   FxMSMessageInfo,
   fxmsMessageColumns,
 } from "./columns";
-import { getCTRPercentData } from "@/lib/looker.ts";
+import { getCTRPercentData, runLookQuery } from "@/lib/looker.ts";
 import {
   getDashboard,
   getSurfaceDataForTemplate,
@@ -41,17 +41,26 @@ function compareFn(a: any, b: any) {
 async function getASRouterLocalColumnFromJSON(
   messageDef: any,
 ): Promise<FxMSMessageInfo> {
+  let message = {
+    id: messageDef[
+      "messaging_system.metrics__text2__messaging_system_message_id"
+    ],
+    template:
+      messageDef[
+        "messaging_system.metrics__string__messaging_system_ping_type"
+      ],
+  };
+
   let fxmsMsgInfo: FxMSMessageInfo = {
     product: "Desktop",
-    id: messageDef.id,
-    template: messageDef.template,
-    surface: getSurfaceDataForTemplate(getTemplateFromMessage(messageDef))
-      .surface,
+    id: message.id,
+    template: message.template,
+    surface: getSurfaceDataForTemplate(getTemplateFromMessage(message)).surface,
     segment: "some segment",
     metrics: "some metrics",
     ctrPercent: undefined, // may be populated from Looker data
     ctrPercentChange: undefined, // may be populated from Looker data
-    previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
+    previewLink: getPreviewLink(maybeCreateWelcomePreview(message)),
     impressions: undefined, // may be populated from Looker data
     hasMicrosurvey: messageHasMicrosurvey(messageDef.id),
   };
@@ -60,7 +69,7 @@ async function getASRouterLocalColumnFromJSON(
 
   if (isLookerEnabled) {
     const ctrPercentData = await getCTRPercentData(
-      messageDef.id,
+      message.id,
       fxmsMsgInfo.template,
       channel,
     );
@@ -71,8 +80,8 @@ async function getASRouterLocalColumnFromJSON(
   }
 
   fxmsMsgInfo.ctrDashboardLink = getDashboard(
-    messageDef.template,
-    messageDef.id,
+    message.template,
+    message.id,
     channel,
   );
 
@@ -87,6 +96,38 @@ let columnsShown = false;
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
+async function updateLookerLiveMessagesList() {
+  let data = await runLookQuery();
+  const fs = require("fs");
+  let json = JSON.stringify(data);
+  fs.writeFileSync(
+    "lib/looker-local-prod-mressages/129-nightly.json",
+    json,
+    "utf8",
+  );
+}
+
+async function getLookerLiveMessages() {
+  let data = await runLookQuery();
+
+  let messages = await Promise.all(
+    data
+      .filter((messageDef: any) => {
+        const removeMessages = ["undefined", "", "test-id", "n/a"];
+        return !removeMessages.includes(
+          messageDef[
+            "messaging_system.metrics__text2__messaging_system_message_id"
+          ],
+        );
+      })
+      .map(async (messageDef: any): Promise<FxMSMessageInfo> => {
+        return await getASRouterLocalColumnFromJSON(messageDef);
+      }),
+  );
+
+  return messages;
+}
+
 async function getASRouterLocalMessageInfoFromFile(): Promise<
   FxMSMessageInfo[]
 > {
@@ -97,7 +138,6 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<
     "utf8",
   );
   let json_data = JSON.parse(data);
-
   let messages = await Promise.all(
     json_data.map(async (messageDef: any): Promise<FxMSMessageInfo> => {
       return await getASRouterLocalColumnFromJSON(messageDef);
