@@ -33,9 +33,12 @@ export function PreviewLinkButton(linkObject: any) {
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>
-            After clicking to copy, paste in (Fx 128+ &gt;= June 4th only) URL
-            bar for message preview
+          <p className="w-80">
+            To preview, set{" "}
+            <code>
+              browser.newtabpage.activity-stream.asrouter.devtoolsEnabled
+            </code>{" "}
+            to true; Firefox 128 or newer is required.
           </p>
         </TooltipContent>
       </Tooltip>
