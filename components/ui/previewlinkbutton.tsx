@@ -35,7 +35,9 @@ export function PreviewLinkButton(linkObject: any) {
         <TooltipContent>
           <p className="w-80">
             To preview, set{" "}
-            <code>browser.newtabpage.activity-stream.asrouter.devtoolsEnabled</code>{" "}
+            <code>
+              browser.newtabpage.activity-stream.asrouter.devtoolsEnabled
+            </code>{" "}
             to true; Firefox 128 or newer is required.
           </p>
         </TooltipContent>
