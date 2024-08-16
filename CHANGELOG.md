@@ -1,6 +1,6 @@
 ## Friday, August 16th, 2024
 
-### Changed 
+### Changed
 
 - Updated the preview button tooltips to be more comprehensive
 
