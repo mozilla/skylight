@@ -176,6 +176,19 @@ export function maybeCreateWelcomePreview(message: any): object {
   return message;
 }
 
+export function getEditableJSON(message: any): string {
+  // fallbacks for important properties
+  if (message.template === "spotlight") {
+    message.content.screens.forEach((screen: any) => {
+      if (!screen.id) {
+        screen.id = message.content.id;
+      }
+    })
+  }
+  
+  return message;
+}
+
 export function getPreviewLink(message: any): string {
   let previewLink = `about:messagepreview?json=${encodeURIComponent(
     toBinary(JSON.stringify(message)),
