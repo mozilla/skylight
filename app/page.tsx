@@ -96,6 +96,10 @@ let columnsShown = false;
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
+/**
+ * Updates the lib/looker-local-prod-messages/129-nightly.json file with the
+ * JSON data retrieved from the Looker query for live messages.
+ */
 async function updateLookerLiveMessagesList() {
   let data = await runLookQuery();
   const fs = require("fs");
@@ -107,6 +111,9 @@ async function updateLookerLiveMessagesList() {
   );
 }
 
+/**
+ * Returns the list of live messages to display in the live message table.
+ */
 async function getLookerLiveMessages() {
   let data = await runLookQuery();
 
