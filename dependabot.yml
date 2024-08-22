@@ -16,6 +16,7 @@ updates:
           applies-to: version-updates
           patterns:
             - "*next*"
+            - "eslint-config-next
           update-types:
             - "minor"
             - "patch"
