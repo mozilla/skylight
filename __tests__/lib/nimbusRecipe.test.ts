@@ -101,6 +101,7 @@ describe("NimbusRecipe", () => {
         userFacingName: rawRecipe.userFacingName,
         nimbusExperiment: rawRecipe,
         branches: branches,
+        isMicrosurvey: false,
       });
     });
   });
