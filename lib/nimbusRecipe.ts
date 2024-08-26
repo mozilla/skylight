@@ -92,6 +92,18 @@ export class NimbusRecipe implements NimbusRecipeType {
     branchInfo.template = template;
     branchInfo.surface = getSurfaceDataForTemplate(template).surface;
 
+    // Microsurvey check
+    if (
+      branchInfo.id.toLowerCase().includes("survey") ||
+      branchInfo.slug.toLowerCase().includes("survey") ||
+      (branchInfo.description &&
+        branchInfo.description.toLowerCase().includes("survey")) ||
+      (branchInfo.userFacingName &&
+        branchInfo.userFacingName.toLowerCase().includes("survey"))
+    ) {
+      branchInfo.isMicrosurvey = true;
+    }
+
     switch (template) {
       case "aboutwelcome":
         branchInfo.id = feature.value.id;
@@ -253,6 +265,11 @@ export class NimbusRecipe implements NimbusRecipeType {
    * @returns a RecipeInfo object, for display in the experiments table
    */
   getRecipeInfo(): RecipeInfo {
+    let branchInfos = this.getBranchInfos();
+    let isMicrosurvey = branchInfos.some(
+      (branchInfo) => branchInfo.isMicrosurvey === true,
+    );
+
     return {
       startDate: this._rawRecipe.startDate || null,
       endDate:
@@ -271,7 +288,8 @@ export class NimbusRecipe implements NimbusRecipeType {
       experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${this._rawRecipe.slug}`,
       userFacingName: this._rawRecipe.userFacingName,
       nimbusExperiment: this._rawRecipe,
-      branches: this.getBranchInfos(),
+      branches: branchInfos,
+      isMicrosurvey: isMicrosurvey,
     };
   }
 
