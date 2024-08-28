@@ -72,6 +72,7 @@ export type FxMSMessageInfo = {
   previewLink?: string;
   metrics: string;
   impressions?: number;
+  isMicrosurvey?: boolean;
 };
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
@@ -170,7 +171,18 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     accessorKey: "id",
     header: "Message ID",
     cell: (props: any) => {
-      return <div className="font-mono text-xs">{props.row.original.id}</div>;
+      return (
+        <>
+          <div className="font-mono text-xs inline">
+            {props.row.original.id}
+          </div>
+          {props.row.original.isMicrosurvey && (
+            <div className="inline ml-1 px-2 py-1 bg-slate-400 text-foreground text-3xs rounded-md font-medium">
+              Microsurvey
+            </div>
+          )}
+        </>
+      );
     },
   },
   {

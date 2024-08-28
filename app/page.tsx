@@ -74,6 +74,11 @@ async function getASRouterLocalColumnFromJSON(
     channel,
   );
 
+  // Microsurvey check
+  if (fxmsMsgInfo.id.toLowerCase().includes("survey")) {
+    fxmsMsgInfo.isMicrosurvey = true;
+  }
+
   // dashboard link -> dashboard id -> query id -> query -> ctr_percent_from_lastish_day
 
   // console.log("fxmsMsgInfo: ", fxmsMsgInfo)
