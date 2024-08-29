@@ -28,9 +28,9 @@ import { Timeline } from "@/components/ui/timeline.tsx";
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
 function compareFn(a: any, b: any) {
-  if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
+  if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
     return -1;
-  } else if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
+  } else if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
     return 1;
   }
   // a must be equal to b

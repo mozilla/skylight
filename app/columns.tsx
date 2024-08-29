@@ -167,7 +167,7 @@ const previewURLInfoButton = (
 );
 
 const microsurveyBadge = (
-  <div className="inline ml-1 px-2 py-1 bg-slate-400 text-foreground text-3xs rounded-md font-medium">
+  <div className="inline ml-1 px-2 py-1 bg-slate-300 text-foreground text-3xs rounded-md font-medium">
     Microsurvey
   </div>
 );
