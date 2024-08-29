@@ -235,6 +235,78 @@ describe("MessageTable", () => {
       expect(ctrMetrics).not.toBeInTheDocument();
       expect(dashboardLink).not.toBeInTheDocument();
     });
+
+    it("displays a 'Microsurvey' badge if the experiment recipe id contains a 'survey' substring", () => {
+      const rawRecipe = ExperimentFakes.recipe("microsurvey-recipe");
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+      const messageTableData: RecipeInfo[] = [nimbusRecipe.getRecipeInfo()];
+      console.log("isMicrosurvey: " + messageTableData[0].isMicrosurvey);
+      render(
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
+      );
+
+      const microsurveyBadge = screen.getByText("Microsurvey");
+
+      expect(microsurveyBadge).toBeInTheDocument();
+    });
+
+    it("displays a 'Microsurvey' badge if the experiment branch slug contains a 'survey' substring", () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        branches: [
+          {
+            slug: "Test-Micro-Survey",
+            description: "test description",
+            ratio: 1,
+            features: [
+              {
+                featureId: "testFeature",
+                value: { testInt: 123, enabled: true },
+              },
+            ],
+            screenshots: [],
+          },
+        ],
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+      const messageTableData: RecipeInfo[] = [nimbusRecipe.getRecipeInfo()];
+      console.log("isMicrosurvey: " + messageTableData[0].isMicrosurvey);
+      render(
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
+      );
+
+      const microsurveyBadge = screen.getByText("Microsurvey");
+
+      expect(microsurveyBadge).toBeInTheDocument();
+    });
+
+    it("displays a 'Microsurvey' badge if the experiment branch description contains a 'survey' substring", () => {
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        branches: [
+          {
+            slug: "test-slug",
+            description: "this is a description for a MICROSURVEY",
+            ratio: 1,
+            features: [
+              {
+                featureId: "testFeature",
+                value: { testInt: 123, enabled: true },
+              },
+            ],
+            screenshots: [],
+          },
+        ],
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+      const messageTableData: RecipeInfo[] = [nimbusRecipe.getRecipeInfo()];
+      console.log("isMicrosurvey: " + messageTableData[0].isMicrosurvey);
+      render(
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
+      );
+
+      const microsurveyBadge = screen.getByText("Microsurvey");
+
+      expect(microsurveyBadge).toBeInTheDocument();
+    });
   });
 
   describe("MessageColumns", () => {
@@ -302,5 +374,22 @@ describe("MessageTable", () => {
       expect(ctrMetrics).not.toBeInTheDocument();
       expect(dashboardLink).not.toBeInTheDocument();
     });
+  });
+
+  it("displays a 'Microsurvey' badge when the message id is a microsurvey", () => {
+    const fxmsMsgInfo: FxMSMessageInfo = {
+      product: "Desktop",
+      id: "test micro survey id",
+      template: "test template",
+      surface: "test surface",
+      segment: "test segment",
+      metrics: "test metrics",
+      isMicrosurvey: true,
+    };
+    render(<MessageTable columns={fxmsMessageColumns} data={[fxmsMsgInfo]} />);
+
+    const microsurveyBadge = screen.getByText("Microsurvey");
+
+    expect(microsurveyBadge).toBeInTheDocument();
   });
 });

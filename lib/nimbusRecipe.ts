@@ -269,6 +269,10 @@ export class NimbusRecipe implements NimbusRecipeType {
     let isMicrosurvey = branchInfos.some(
       (branchInfo) => branchInfo.isMicrosurvey === true,
     );
+    if (this._rawRecipe.slug) {
+      isMicrosurvey =
+        isMicrosurvey || this._rawRecipe.slug.toLowerCase().includes("survey");
+    }
 
     return {
       startDate: this._rawRecipe.startDate || null,
