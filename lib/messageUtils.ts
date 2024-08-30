@@ -186,5 +186,5 @@ export function getDashboardIdForTemplate(template: string) {
  * only involves looking for the "survey" subtring inside the message id.
  */
 export function messageHasMicrosurvey(messageId: string): boolean {
-  return messageId.toLowerCase().includes("survey")
+  return messageId.toLowerCase().includes("survey");
 }

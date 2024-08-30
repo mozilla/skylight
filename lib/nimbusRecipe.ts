@@ -32,7 +32,7 @@ function getFirstMessagingFeature(branch: any): any {
 /**
  * @returns true if branchInfo has a microsurvey. Currently, we are
  * doing a heuristic check over the branchInfo id, slug, description,
- * and userFacingName for the 'survey' substring. 
+ * and userFacingName for the 'survey' substring.
  */
 function _branchInfoHasMicrosurvey(branchInfo: BranchInfo): boolean {
   if (
@@ -45,7 +45,7 @@ function _branchInfoHasMicrosurvey(branchInfo: BranchInfo): boolean {
   ) {
     return true;
   }
-  return false
+  return false;
 }
 
 type NimbusRecipeType = {
