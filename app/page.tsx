@@ -13,6 +13,7 @@ import {
   _isAboutWelcomeTemplate,
   maybeCreateWelcomePreview,
   getPreviewLink,
+  messageHasMicrosurvey,
 } from "../lib/messageUtils.ts";
 
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection";
@@ -52,6 +53,7 @@ async function getASRouterLocalColumnFromJSON(
     ctrPercentChange: undefined, // may be populated from Looker data
     previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
     impressions: undefined, // may be populated from Looker data
+    hasMicrosurvey: messageHasMicrosurvey(messageDef.id),
   };
 
   const channel = "release";
@@ -73,11 +75,6 @@ async function getASRouterLocalColumnFromJSON(
     messageDef.id,
     channel,
   );
-
-  // Microsurvey check
-  if (fxmsMsgInfo.id.toLowerCase().includes("survey")) {
-    fxmsMsgInfo.isMicrosurvey = true;
-  }
 
   // dashboard link -> dashboard id -> query id -> query -> ctr_percent_from_lastish_day
 

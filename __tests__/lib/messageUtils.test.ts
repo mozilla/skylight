@@ -3,6 +3,7 @@ import {
   _isAboutWelcomeTemplate,
   toBinary,
   getDashboardIdForTemplate,
+  messageHasMicrosurvey,
 } from "@/lib/messageUtils";
 
 describe("isAboutWelcomeTemplate", () => {
@@ -175,5 +176,24 @@ describe("getDashboard", () => {
       null,
     );
     expect(result).toEqual(expectedLink);
+  });
+});
+
+describe("messageHasMicrosurvey", () => {
+  it("returns true if message id has substring 'survey'", () => {
+    const msgId1 = "microsurvey id";
+    const msgId2 = "SURVEY id";
+    const msgId3 = "MicroSurveyId";
+    const msgId4 = "test id";
+
+    const result1 = messageHasMicrosurvey(msgId1);
+    const result2 = messageHasMicrosurvey(msgId2);
+    const result3 = messageHasMicrosurvey(msgId3);
+    const result4 = messageHasMicrosurvey(msgId4);
+
+    expect(result1).toBe(true);
+    expect(result2).toBe(true);
+    expect(result3).toBe(true);
+    expect(result4).toBe(false);
   });
 });

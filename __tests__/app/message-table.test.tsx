@@ -240,7 +240,6 @@ describe("MessageTable", () => {
       const rawRecipe = ExperimentFakes.recipe("microsurvey-recipe");
       const nimbusRecipe = new NimbusRecipe(rawRecipe);
       const messageTableData: RecipeInfo[] = [nimbusRecipe.getRecipeInfo()];
-      console.log("isMicrosurvey: " + messageTableData[0].isMicrosurvey);
       render(
         <MessageTable columns={experimentColumns} data={messageTableData} />,
       );
@@ -269,7 +268,6 @@ describe("MessageTable", () => {
       });
       const nimbusRecipe = new NimbusRecipe(rawRecipe);
       const messageTableData: RecipeInfo[] = [nimbusRecipe.getRecipeInfo()];
-      console.log("isMicrosurvey: " + messageTableData[0].isMicrosurvey);
       render(
         <MessageTable columns={experimentColumns} data={messageTableData} />,
       );
@@ -298,7 +296,6 @@ describe("MessageTable", () => {
       });
       const nimbusRecipe = new NimbusRecipe(rawRecipe);
       const messageTableData: RecipeInfo[] = [nimbusRecipe.getRecipeInfo()];
-      console.log("isMicrosurvey: " + messageTableData[0].isMicrosurvey);
       render(
         <MessageTable columns={experimentColumns} data={messageTableData} />,
       );
@@ -384,7 +381,7 @@ describe("MessageTable", () => {
       surface: "test surface",
       segment: "test segment",
       metrics: "test metrics",
-      isMicrosurvey: true,
+      hasMicrosurvey: true,
     };
     render(<MessageTable columns={fxmsMessageColumns} data={[fxmsMsgInfo]} />);
 
