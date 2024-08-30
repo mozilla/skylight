@@ -95,7 +95,7 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<
   //   "utf8",
   // );
   let data = fs.readFileSync(
-    "lib/asrouter-local-prod-messages/129-release.json",
+    "lib/asrouter-local-prod-messages/124-release.json",
     "utf8",
   );
   let json_data = JSON.parse(data);
