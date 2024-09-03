@@ -93,28 +93,32 @@ Skylight gets their live message data from asrouter in mozilla-central. For ever
 2. In `mozilla-unified`, checkout to the release tag you want to pull data from.
 
    To fetch all the tags, run:
+
    ```
    git cinnabar fetch --tags
    ```
 
    Here is an example to checkout to a specific release:
+
    ```
    git checkout FIREFOX_129_0_RELEASE
    ```
+
 3. [This patch](https://phabricator.services.mozilla.com/D201646) contains a browser test that will pull the JSON data for live messages from asrouter. Apply the patch to the release.
 
-   ``` 
+   ```
    moz-phab patch --apply-to here D201646
    ```
 
    Run `git log` to verify that the HEAD is pointing to the patch that's been applied.
+
 4. Clobber, build, and run the browser test using the following commands:
    ```
    ./mach clobber
    ./mach build
    ./mach test --headless browser/components/newtab/test/browser/browser_dump-provider-state.js
    ```
-5. Assuming the test runs successfully, you will find the JSON output in `/tmp/file.json`. Commit the file into Skylight by moving the file to the appropriate location and renaming it. 
+5. Assuming the test runs successfully, you will find the JSON output in `/tmp/file.json`. Commit the file into Skylight by moving the file to the appropriate location and renaming it.
    ```
    cd /skylight-main/lib/asrouter-local-prod-messages/
    mv /tmp/file.json .

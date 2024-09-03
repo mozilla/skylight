@@ -17,9 +17,7 @@
   {
     "weight": 100,
     "id": "MILESTONE_MESSAGE_87",
-    "groups": [
-      "cfr"
-    ],
+    "groups": ["cfr"],
     "content": {
       "text": "",
       "layout": "short_message",
@@ -56,9 +54,7 @@
     },
     "trigger": {
       "id": "contentBlocking",
-      "params": [
-        "ContentBlockingMilestone"
-      ]
+      "params": ["ContentBlockingMilestone"]
     },
     "template": "milestone_message",
     "frequency": {
@@ -444,9 +440,7 @@
     "id": "PB_NEWTAB_FOCUS_PROMO",
     "type": "default",
     "template": "pb_newtab",
-    "groups": [
-      "pbNewtab"
-    ],
+    "groups": ["pbNewtab"],
     "content": {
       "infoBody": "fluent:about-private-browsing-info-description-simplified",
       "infoEnabled": true,
@@ -520,10 +514,7 @@
                             "string_id": "spotlight-focus-promo-qr-code"
                           }
                         },
-                        "marketplace_buttons": [
-                          "ios",
-                          "android"
-                        ]
+                        "marketplace_buttons": ["ios", "android"]
                       }
                     }
                   }
@@ -552,9 +543,7 @@
     "id": "PB_NEWTAB_KLAR_PROMO",
     "type": "default",
     "template": "pb_newtab",
-    "groups": [
-      "pbNewtab"
-    ],
+    "groups": ["pbNewtab"],
     "content": {
       "infoBody": "fluent:about-private-browsing-info-description-simplified",
       "infoEnabled": true,
@@ -625,10 +614,7 @@
                           "image_url": "chrome://browser/content/assets/klar-qr-code.svg",
                           "alt_text": "Scan the QR code to get Firefox Klar"
                         },
-                        "marketplace_buttons": [
-                          "ios",
-                          "android"
-                        ]
+                        "marketplace_buttons": ["ios", "android"]
                       }
                     }
                   }
@@ -657,9 +643,7 @@
     "id": "PB_NEWTAB_KLAR_PROMO_DE",
     "type": "default",
     "template": "pb_newtab",
-    "groups": [
-      "pbNewtab"
-    ],
+    "groups": ["pbNewtab"],
     "content": {
       "infoBody": "fluent:about-private-browsing-info-description-simplified",
       "infoEnabled": true,
@@ -733,10 +717,7 @@
                             "string_id": "spotlight-focus-promo-qr-code"
                           }
                         },
-                        "marketplace_buttons": [
-                          "ios",
-                          "android"
-                        ]
+                        "marketplace_buttons": ["ios", "android"]
                       }
                     }
                   }
@@ -765,9 +746,7 @@
     "id": "PB_NEWTAB_PIN_PROMO",
     "template": "pb_newtab",
     "type": "default",
-    "groups": [
-      "pbNewtab"
-    ],
+    "groups": ["pbNewtab"],
     "content": {
       "infoBody": "fluent:about-private-browsing-info-description-simplified",
       "infoEnabled": true,
@@ -840,9 +819,7 @@
     "id": "PB_NEWTAB_COOKIE_BANNERS_PROMO",
     "template": "pb_newtab",
     "type": "default",
-    "groups": [
-      "pbNewtab"
-    ],
+    "groups": ["pbNewtab"],
     "content": {
       "infoBody": "fluent:about-private-browsing-info-description-simplified",
       "infoEnabled": true,
@@ -898,9 +875,7 @@
   {
     "weight": 100,
     "id": "INFOBAR_LAUNCH_ON_LOGIN",
-    "groups": [
-      "cfr"
-    ],
+    "groups": ["cfr"],
     "template": "infobar",
     "content": {
       "type": "global",
@@ -964,9 +939,7 @@
   {
     "weight": 100,
     "id": "INFOBAR_LAUNCH_ON_LOGIN_FINAL",
-    "groups": [
-      "cfr"
-    ],
+    "groups": ["cfr"],
     "template": "infobar",
     "content": {
       "type": "global",
@@ -1037,9 +1010,7 @@
     "weight": 100,
     "id": "FOX_DOODLE_SET_DEFAULT",
     "template": "spotlight",
-    "groups": [
-      "eco"
-    ],
+    "groups": ["eco"],
     "skip_in_tests": "it fails unrelated tests",
     "content": {
       "backdrop": "transparent",
@@ -1114,9 +1085,7 @@
     "weight": 100,
     "id": "TAIL_FOX_SET_DEFAULT",
     "template": "spotlight",
-    "groups": [
-      "eco"
-    ],
+    "groups": ["eco"],
     "skip_in_tests": "it fails unrelated tests",
     "content": {
       "backdrop": "transparent",
@@ -2336,9 +2305,7 @@
     "targeting": "'browser.shopping.experience2023.autoOpen.enabled' | preferenceValue == true && 'browser.shopping.experience2023.autoOpen.userEnabled' | preferenceValue == false && 'browser.shopping.experience2023.optedIn' | preferenceValue == 1 && 'browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features' | preferenceValue != false",
     "trigger": {
       "id": "preferenceObserver",
-      "params": [
-        "browser.shopping.experience2023.autoOpen.userEnabled"
-      ]
+      "params": ["browser.shopping.experience2023.autoOpen.userEnabled"]
     },
     "frequency": {
       "lifetime": 1
@@ -2421,9 +2388,7 @@
     "targeting": "'browser.shopping.experience2023.autoOpen.enabled' | preferenceValue == true && 'browser.shopping.experience2023.optedIn' | preferenceValue == 2 && 'browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features' | preferenceValue != false",
     "trigger": {
       "id": "preferenceObserver",
-      "params": [
-        "browser.shopping.experience2023.optedIn"
-      ]
+      "params": ["browser.shopping.experience2023.optedIn"]
     },
     "frequency": {
       "lifetime": 1
@@ -2435,9 +2400,7 @@
   {
     "weight": 100,
     "id": "CFR_COOKIEBANNER",
-    "groups": [
-      "cfr"
-    ],
+    "groups": ["cfr"],
     "template": "feature_callout",
     "content": {
       "id": "CFR_COOKIEBANNER",
