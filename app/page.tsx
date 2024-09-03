@@ -91,7 +91,7 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<
   const fs = require("fs");
 
   let data = fs.readFileSync(
-    "lib/asrouter-local-prod-messages/129-release.json",
+    "lib/asrouter-local-prod-messages/data.json",
     "utf8",
   );
   let json_data = JSON.parse(data);

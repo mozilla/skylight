@@ -118,11 +118,13 @@ Skylight gets their live message data from asrouter in mozilla-central. For ever
    ./mach build
    ./mach test --headless browser/components/newtab/test/browser/browser_dump-provider-state.js
    ```
-5. Assuming the test runs successfully, you will find the JSON output in `/tmp/file.json`. Commit the file into Skylight by moving the file to the appropriate location and renaming it.
+5. Assuming the test runs successfully, you will find the JSON output in `/tmp/file.json`. Commit the file into Skylight by moving the file to the appropriate location and renaming it in the format `{VERSION_NUM}-release.json`.
    ```
    cd /skylight-main/lib/asrouter-local-prod-messages/
    mv /tmp/file.json .
+   ren file.json {VERSION_NUM}-release.json
    ```
+6. Run `lib/mergeASRouterData.js` using node to merge all the release data into one file. Make sure you add the latest version number you've just added into the `availableReleases` array in the script.
 
 ## Pull Requests
 
