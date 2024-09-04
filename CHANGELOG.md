@@ -1,3 +1,9 @@
+## Friday, August 30th, 2024
+
+### Added
+
+- Added Microsurvey badges next to messages or experiments that have microsurveys
+
 ## Friday, August 16th, 2024
 
 ### Changed

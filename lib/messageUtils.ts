@@ -180,3 +180,11 @@ export function getDashboardIdForTemplate(template: string) {
     return "1818";
   }
 }
+
+/**
+ * @returns true if the message has a microsurvey. Currently, this check
+ * only involves looking for the "survey" subtring inside the message id.
+ */
+export function messageHasMicrosurvey(messageId: string): boolean {
+  return messageId.toLowerCase().includes("survey");
+}

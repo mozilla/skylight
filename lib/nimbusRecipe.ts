@@ -29,6 +29,25 @@ function getFirstMessagingFeature(branch: any): any {
   return branch.features[index];
 }
 
+/**
+ * @returns true if branchInfo has a microsurvey. Currently, we are
+ * doing a heuristic check over the branchInfo id, slug, description,
+ * and userFacingName for the 'survey' substring.
+ */
+function _branchInfoHasMicrosurvey(branchInfo: BranchInfo): boolean {
+  if (
+    branchInfo.id.toLowerCase().includes("survey") ||
+    branchInfo.slug.toLowerCase().includes("survey") ||
+    (branchInfo.description &&
+      branchInfo.description.toLowerCase().includes("survey")) ||
+    (branchInfo.userFacingName &&
+      branchInfo.userFacingName.toLowerCase().includes("survey"))
+  ) {
+    return true;
+  }
+  return false;
+}
+
 type NimbusRecipeType = {
   _rawRecipe: NimbusExperiment;
 
@@ -91,6 +110,7 @@ export class NimbusRecipe implements NimbusRecipeType {
     branch.template = template;
     branchInfo.template = template;
     branchInfo.surface = getSurfaceDataForTemplate(template).surface;
+    branchInfo.hasMicrosurvey = _branchInfoHasMicrosurvey(branchInfo);
 
     switch (template) {
       case "aboutwelcome":
@@ -253,6 +273,15 @@ export class NimbusRecipe implements NimbusRecipeType {
    * @returns a RecipeInfo object, for display in the experiments table
    */
   getRecipeInfo(): RecipeInfo {
+    let branchInfos = this.getBranchInfos();
+    let hasMicrosurvey = branchInfos.some(
+      (branchInfo) => branchInfo.hasMicrosurvey === true,
+    );
+    if (this._rawRecipe.slug) {
+      hasMicrosurvey =
+        hasMicrosurvey || this._rawRecipe.slug.toLowerCase().includes("survey");
+    }
+
     return {
       startDate: this._rawRecipe.startDate || null,
       endDate:
@@ -271,7 +300,8 @@ export class NimbusRecipe implements NimbusRecipeType {
       experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${this._rawRecipe.slug}`,
       userFacingName: this._rawRecipe.userFacingName,
       nimbusExperiment: this._rawRecipe,
-      branches: this.getBranchInfos(),
+      branches: branchInfos,
+      hasMicrosurvey: hasMicrosurvey,
     };
   }
 

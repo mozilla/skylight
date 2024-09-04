@@ -13,6 +13,7 @@ import {
   _isAboutWelcomeTemplate,
   maybeCreateWelcomePreview,
   getPreviewLink,
+  messageHasMicrosurvey,
 } from "../lib/messageUtils.ts";
 
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection";
@@ -28,9 +29,9 @@ import { Timeline } from "@/components/ui/timeline.tsx";
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
 function compareFn(a: any, b: any) {
-  if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
+  if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
     return -1;
-  } else if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
+  } else if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
     return 1;
   }
   // a must be equal to b
@@ -52,6 +53,7 @@ async function getASRouterLocalColumnFromJSON(
     ctrPercentChange: undefined, // may be populated from Looker data
     previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
     impressions: undefined, // may be populated from Looker data
+    hasMicrosurvey: messageHasMicrosurvey(messageDef.id),
   };
 
   const channel = "release";

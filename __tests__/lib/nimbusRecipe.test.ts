@@ -101,6 +101,7 @@ describe("NimbusRecipe", () => {
         userFacingName: rawRecipe.userFacingName,
         nimbusExperiment: rawRecipe,
         branches: branches,
+        hasMicrosurvey: false,
       });
     });
   });
@@ -126,6 +127,7 @@ describe("NimbusRecipe", () => {
         template: "testTemplate",
         screenshots: ["screenshotURI"],
         description: "test description",
+        hasMicrosurvey: false,
       });
     });
 
@@ -152,6 +154,7 @@ describe("NimbusRecipe", () => {
           "about:messagepreview?json=ewAiAGkAZAAiADoAIgBhAGIAbwB1AHQAdwBlAGwAYwBvAG0AZQAtAHQAZQBzAHQALQByAGUAYwBpAHAAZQAiACwAIgB0AGUAbQBwAGwAYQB0AGUAIgA6ACIAcwBwAG8AdABsAGkAZwBoAHQAIgAsACIAdABhAHIAZwBlAHQAaQBuAGcAIgA6AHQAcgB1AGUALAAiAGMAbwBuAHQAZQBuAHQAIgA6AHsAIgBiAGEAYwBrAGQAcgBvAHAAIgA6ACIAdABlAHMAdAAtAGIAYQBjAGsAZAByAG8AcAAiACwAIgBpAGQAIgA6ACIAZgBlAGEAdAB1AHIAZQBfAHYAYQBsAHUAZQBfAGkAZAA6AHQAcgBlAGEAdABtAGUAbgB0AC0AYQAiACwAIgBzAGMAcgBlAGUAbgBzACIAOgBbAHsAIgBpAGQAIgA6ACIAVABFAFMAVABfAFMAQwBSAEUARQBOAF8ASQBEAF8AQQBfADAAIgB9AF0ALAAiAG0AbwBkAGEAbAAiADoAIgB0AGEAYgAiAH0AfQA%3D",
         screenshots: ["screenshotURI"],
         description: "treatment-a description",
+        hasMicrosurvey: false,
       });
     });
 
@@ -180,6 +183,7 @@ describe("NimbusRecipe", () => {
         template: "aboutwelcome",
         screenshots: ["screenshotURI"],
         description: "treatment-a description",
+        hasMicrosurvey: false,
       });
     });
   });
@@ -201,6 +205,7 @@ describe("NimbusRecipe", () => {
         template: "none",
         screenshots: [],
         description: "control description",
+        hasMicrosurvey: false,
       });
 
       expect(branchInfos[1]).toEqual({
@@ -213,6 +218,7 @@ describe("NimbusRecipe", () => {
         template: "testTemplate",
         screenshots: ["screenshotURI"],
         description: "test description",
+        hasMicrosurvey: false,
       });
     });
   });

@@ -15,9 +15,9 @@ import { MenuButton } from "@/components/ui/menubutton.tsx";
 import { Timeline } from "@/components/ui/timeline.tsx";
 
 function compareFn(a: any, b: any) {
-  if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
+  if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
     return -1;
-  } else if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
+  } else if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
     return 1;
   }
   // a must be equal to b
@@ -91,7 +91,7 @@ export default async function CompleteExperimentsDashboard() {
 
   return (
     <div>
-      <div className="sticky top-0 z-50 bg-background flex justify-between mx-20 py-8">
+      <div className="sticky top-0 z-50 bg-background flex justify-between px-20 py-8">
         <h4 className="scroll-m-20 text-3xl font-semibold">Skylight</h4>
         <MenuButton isComplete={true} />
       </div>
