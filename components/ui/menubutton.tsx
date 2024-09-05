@@ -56,7 +56,7 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
           <NavigationMenuLink asChild className={navigationMenuItemStyle()}>
             <a
               className={navMenuItemClassName}
-              href="https://drive.google.com/drive/u/0/folders/1Jx7X_aFqvVCQYah9eOALvypZJdMf21F2"
+              href="https://drive.google.com/drive/u/0/search?q=parent:1Jx7X_aFqvVCQYah9eOALvypZJdMf21F2"
             >
               <FileSearch size={iconSize} />
               Search Briefs
