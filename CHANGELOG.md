@@ -1,3 +1,9 @@
+## Thursday, September 5th, 2024
+
+### Fixed
+
+- Updated the URL in the "Search Briefs" button to start a search in Google Drive for experiment briefs
+
 ## Friday, August 30th, 2024
 
 ### Added
