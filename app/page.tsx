@@ -26,7 +26,6 @@ import { MenuButton } from "@/components/ui/menubutton.tsx";
 import { InfoPopover } from "@/components/ui/infopopover.tsx";
 import { Timeline } from "@/components/ui/timeline.tsx";
 
-// import { useUser } from "@auth0/nextjs-auth0/client";
 import { getSession } from "@auth0/nextjs-auth0";
 
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
