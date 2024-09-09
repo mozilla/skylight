@@ -13,6 +13,7 @@ import { MessageTable } from "./../message-table";
 
 import { MenuButton } from "@/components/ui/menubutton.tsx";
 import { Timeline } from "@/components/ui/timeline.tsx";
+import { getSession } from "@auth0/nextjs-auth0";
 
 function compareFn(a: any, b: any) {
   if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
@@ -63,6 +64,12 @@ async function getMsgRolloutCollection(
 export default async function CompleteExperimentsDashboard() {
   // Check to see if Auth is enabled
   const isAuthEnabled = process.env.IS_AUTH_ENABLED === "true";
+
+  // Auth0 session logging
+  const session = await getSession();
+  if (session) {
+    console.log("[/complete] Session user: " + session.user.email);
+  }
 
   const recipeCollection = new NimbusRecipeCollection(true);
   await recipeCollection.fetchRecipes();

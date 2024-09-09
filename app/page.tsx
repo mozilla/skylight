@@ -152,7 +152,7 @@ export default async function Dashboard() {
   // Auth0 session logging
   const session = await getSession();
   if (session) {
-    console.log("Session user: " + session.user.email);
+    console.log("[/] Session user: " + session.user.email);
   }
 
   const recipeCollection = new NimbusRecipeCollection();
