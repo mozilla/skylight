@@ -26,8 +26,6 @@ import { MenuButton } from "@/components/ui/menubutton.tsx";
 import { InfoPopover } from "@/components/ui/infopopover.tsx";
 import { Timeline } from "@/components/ui/timeline.tsx";
 
-import { getSession } from "@auth0/nextjs-auth0";
-
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
 function compareFn(a: any, b: any) {
@@ -148,12 +146,6 @@ async function getMsgRolloutCollection(
 export default async function Dashboard() {
   // Check to see if Auth is enabled
   const isAuthEnabled = process.env.IS_AUTH_ENABLED === "true";
-
-  // Auth0 session logging
-  const session = await getSession();
-  if (session) {
-    console.log("[/] Session user: " + session.user.email);
-  }
 
   const recipeCollection = new NimbusRecipeCollection();
   await recipeCollection.fetchRecipes();
