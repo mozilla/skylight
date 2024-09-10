@@ -203,9 +203,9 @@ export class NimbusRecipe implements NimbusRecipeType {
         // XXX only does first messages
         const firstMessage = feature.value.messages[0];
         if (!("content" in firstMessage)) {
-          console.warn(
-            'template "multi" first message does not contain content key details not rendered',
-          );
+          // console.warn(
+          //   'template "multi" first message does not contain content key details not rendered',
+          // );
           return branchInfo;
         }
 
@@ -228,8 +228,8 @@ export class NimbusRecipe implements NimbusRecipeType {
 
       default:
         if (!feature.value?.messages) {
-          console.log("v.messages is null");
-          console.log(", feature.value = ", feature.value);
+          // console.log("v.messages is null");
+          // console.log(", feature.value = ", feature.value);
           return branchInfo;
         }
         branchInfo.id = feature.value.messages[0].id;
@@ -249,10 +249,10 @@ export class NimbusRecipe implements NimbusRecipeType {
       branchInfo.nimbusExperiment.startDate,
       proposedEndDate,
     );
-    if (!feature.value.content) {
-      console.log("v.content is null");
-      // console.log("v= ", value)
-    }
+    // if (!feature.value.content) {
+    //   console.log("v.content is null");
+    //   console.log("v= ", value)
+    // }
 
     // console.log("branchInfo = ")
     // console.log(branchInfo)
