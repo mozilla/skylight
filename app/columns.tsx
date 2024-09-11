@@ -242,6 +242,9 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
       }
       return <></>;
     },
+    // filterFn: (row) => {
+    //   return row.original.ctrDashboardLink ? false : true;
+    // },
   },
   {
     accessorKey: "previewLink",

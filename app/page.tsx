@@ -197,7 +197,11 @@ export default async function Dashboard() {
       </div>
 
       <div className="container mx-auto py-10">
-        <MessageTable columns={fxmsMessageColumns} data={localData} />
+        <MessageTable
+          columns={fxmsMessageColumns}
+          data={localData}
+          canHideMessages={true}
+        />
       </div>
 
       <h5
