@@ -9,7 +9,6 @@ import {
   getExpandedRowModel,
   useReactTable,
   ExpandedState,
-  ColumnFiltersState,
   getFilteredRowModel,
 } from "@tanstack/react-table";
 
@@ -40,21 +39,20 @@ export function MessageTable<TData, TValue>({
   const [expanded, setExpanded] = useState<ExpandedState>(
     defaultExpanded || {},
   );
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const table = useReactTable({
     data,
     columns,
     state: {
       expanded,
-      columnFilters,
     },
-    onColumnFiltersChange: setColumnFilters,
     onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSubRows: (originalRow: any) => originalRow.branches,
     getExpandedRowModel: getExpandedRowModel(),
   });
+
+  const [hideMessages, setHideMessages] = useState(false);
 
   function getRowSpanForCell(cell: any) {
     // XXX is an experiment & the dates column
@@ -65,25 +63,8 @@ export function MessageTable<TData, TValue>({
     return 1;
   }
 
-  const [hideMessages, setHideMessages] = useState(false);
-
   return (
     <div>
-      {canHideMessages && (
-        <div className="flex items-center gap-x-1 m-2">
-          <Checkbox
-            id="hide"
-            checked={hideMessages}
-            onCheckedChange={() => setHideMessages(!hideMessages)}
-          />
-          <label
-            htmlFor="hide"
-            className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            Hide messages with fewer than 1000 impressions
-          </label>
-        </div>
-      )}
       <div className="rounded-md border">
         <Table>
           <TableHeader className="sticky top-36">
@@ -95,12 +76,34 @@ export function MessageTable<TData, TValue>({
                       className="bg-stone-100 text-slate-400"
                       key={header.id}
                     >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
+                      {header.isPlaceholder ? null : (
+                        <div>
+                          {flexRender(
                             header.column.columnDef.header,
                             header.getContext(),
                           )}
+                          {canHideMessages &&
+                          header.column.columnDef
+                            .header!.toString()
+                            .includes("Metrics") ? (
+                            <div className="flex items-center gap-x-1">
+                              <Checkbox
+                                id="hide"
+                                onCheckedChange={() => {
+                                  header.column.setFilterValue(!hideMessages);
+                                  setHideMessages(!hideMessages);
+                                }}
+                              />
+                              <label
+                                htmlFor="hide"
+                                className="text-3xs font-light leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                Hide messages with fewer than 1000 impressions
+                              </label>
+                            </div>
+                          ) : null}
+                        </div>
+                      )}
                     </TableHead>
                   );
                 })}
