@@ -391,6 +391,55 @@ describe("MessageTable", () => {
 
       expect(microsurveyBadge).toBeInTheDocument();
     });
+
+    it("filters message with less than 1000 impressions when canHideMessages is true", () => {
+      const fxmsMsgInfo1: FxMSMessageInfo = {
+        product: "Desktop",
+        id: "MESSAGE_1",
+        template: "test template",
+        surface: "test surface",
+        segment: "test segment",
+        metrics: "test metrics",
+        ctrPercent: 24.3,
+        impressions: 10000,
+        hasMicrosurvey: true,
+      };
+      const fxmsMsgInfo2: FxMSMessageInfo = {
+        product: "Desktop",
+        id: "MESSAGE_2",
+        template: "test template",
+        surface: "test surface",
+        segment: "test segment",
+        metrics: "test metrics",
+        ctrPercent: 24.3,
+        impressions: 100,
+        hasMicrosurvey: true,
+      };
+      const fxmsMsgInfo3: FxMSMessageInfo = {
+        product: "Desktop",
+        id: "MESSAGE_3",
+        template: "test template",
+        surface: "test surface",
+        segment: "test segment",
+        metrics: "test metrics",
+        ctrPercent: 24.3,
+        impressions: 1000,
+        hasMicrosurvey: true,
+      };
+      render(
+        <MessageTable
+          columns={fxmsMessageColumns}
+          data={[fxmsMsgInfo1, fxmsMsgInfo2, fxmsMsgInfo3]}
+          canHideMessages={true}
+        />,
+      );
+
+      const hideMessageButton = screen.getByText("TODO");
+      fireEvent.click(hideMessageButton);
+      const hiddenMessage = screen.queryByText("MESSAGE_2");
+
+      expect(hiddenMessage).not.toBeInTheDocument();
+    });
   });
 
   describe("CompletedExperimentColumns", () => {
