@@ -28,6 +28,8 @@ import { Timeline } from "@/components/ui/timeline.tsx";
 
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
+const impressions_threshold = process.env.IMPRESSIONS_THRESHOLD;
+
 function compareFn(a: any, b: any) {
   if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
     return -1;
@@ -201,6 +203,7 @@ export default async function Dashboard() {
           columns={fxmsMessageColumns}
           data={localData}
           canHideMessages={true}
+          impressionsThreshold={impressions_threshold}
         />
       </div>
 

@@ -27,6 +27,7 @@ interface MessageTableProps<TData, TValue> {
   data: TData[];
   defaultExpanded?: boolean;
   canHideMessages?: boolean;
+  impressionsThreshold?: string;
 }
 
 export function MessageTable<TData, TValue>({
@@ -34,6 +35,7 @@ export function MessageTable<TData, TValue>({
   data,
   defaultExpanded,
   canHideMessages,
+  impressionsThreshold,
 }: MessageTableProps<TData, TValue>) {
   // Tables will start collapsed if defaultExpanded is undefined
   const [expanded, setExpanded] = useState<ExpandedState>(
@@ -91,7 +93,13 @@ export function MessageTable<TData, TValue>({
                                 className="border-slate-500"
                                 id="hide"
                                 onCheckedChange={() => {
-                                  header.column.setFilterValue(!hideMessages);
+                                  if (!hideMessages) {
+                                    header.column.setFilterValue(
+                                      parseInt(impressionsThreshold!),
+                                    );
+                                  } else {
+                                    header.column.setFilterValue(null);
+                                  }
                                   setHideMessages(!hideMessages);
                                 }}
                               />
@@ -99,7 +107,8 @@ export function MessageTable<TData, TValue>({
                                 htmlFor="hide"
                                 className="text-3xs font-light leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                               >
-                                Hide messages with fewer than 1000 impressions
+                                Hide messages with fewer than{" "}
+                                {impressionsThreshold} impressions
                               </label>
                             </div>
                           ) : null}
