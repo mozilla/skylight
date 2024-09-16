@@ -28,52 +28,52 @@ To test Auth0 locally, start with these steps:
 
 1. Create an account at https://auth0.com/ by clicking the "Login" button and following the prompts
 2. Open the Applications section in the sidebar
-3. Create a new app and add the correct properties to `.env.local`:
+3. Create a new app and add the correct properties to `.env.local`
 
-### Auth0 properties
+   **Auth0 properties**
 
-#### A long, secret value used to encrypt the session cookie (use `openssl rand -hex 32` to generate a 32 byte value)
+   A long, secret value used to encrypt the session cookie (use `openssl rand -hex 32` to generate a 32 byte value):
 
-```
-AUTH0_SECRET='LONG_RANDOM_VALUE'
-```
+   ```
+   AUTH0_SECRET='LONG_RANDOM_VALUE'
+   ```
 
-#### The base url of the application
+   The base url of the application:
 
-```
-AUTH0_BASE_URL='http://localhost:3000'
-```
+   ```
+   AUTH0_BASE_URL='http://localhost:3000'
+   ```
 
-#### The url of the Auth0 tenant domain
+   The url of the Auth0 tenant domain:
 
-```
-AUTH0_ISSUER_BASE_URL='AUTH0_TENANT_URL'
-```
+   ```
+   AUTH0_ISSUER_BASE_URL='AUTH0_TENANT_URL'
+   ```
 
-#### The application's Client ID
+   The application's Client ID:
 
-```
-AUTH0_CLIENT_ID='YOUR_AUTH0_CLIENT_ID'
-```
+   ```
+   AUTH0_CLIENT_ID='YOUR_AUTH0_CLIENT_ID'
+   ```
 
-#### The application's Client Secret
+   The application's Client Secret:
 
-```
-AUTH0_CLIENT_SECRET='YOUR_AUTH0_CLIENT_SECRET'
-```
+   ```
+   AUTH0_CLIENT_SECRET='YOUR_AUTH0_CLIENT_SECRET'
+   ```
 
-Within the Application URIs section of the Auth0 application Settings pane, set the following properties:
+   Within the Application URIs section of the Auth0 application Settings pane, set the following properties:
 
-```
-Application Login URI: https://fxms-skylight.netlify.app/api/auth/login
+   ```
+   Application Login URI: https://fxms-skylight.netlify.app/api/auth/login
 
-Allowed Callback URLs: http://localhost:3000/api/auth/callback
+   Allowed Callback URLs: http://localhost:3000/api/auth/callback
 
-Allowed Logout URLs: http://localhost:3000
-```
+   Allowed Logout URLs: http://localhost:3000
+   ```
 
-URLs need to be exact or Auth0 will throw errors, including the `http` protocol. If something isn't working, check for typos!
-The Login URI must point at `https://fxms-skylight.netlify.app/api/auth/login`, Auth0 will not accept `http://` or `localhost` there.
+   URLs need to be exact or Auth0 will throw errors, including the `http` protocol. If something isn't working, check for typos!
+   The Login URI must point at `https://fxms-skylight.netlify.app/api/auth/login`, Auth0 will not accept `http://` or `localhost` there.
 
 4. Finally, create a test user in the Auth0 UI, (User Management > Users > Create User) and log in using the credentials you've created.
 
@@ -94,25 +94,25 @@ Skylight gets their live message data from asrouter in mozilla-central. For ever
 
    To fetch all the tags, run:
 
-   ```
+   ```bash
    git cinnabar fetch --tags
    ```
 
    To see what specific tags exist, you can use regex and run a command similar to:
 
-   ```
+   ```bash
    git tag -l | grep 'FIREFOX_12[0-9]_0_RELEASE' | less
    ```
 
    Here is an example to checkout to a specific release:
 
-   ```
+   ```bash
    git checkout FIREFOX_129_0_RELEASE
    ```
 
 3. [This patch](https://phabricator.services.mozilla.com/D201646) contains a browser test that will pull the JSON data for live messages from asrouter. Apply the patch to the release.
 
-   ```
+   ```bash
    moz-phab patch --apply-to here D201646
    ```
 
@@ -120,7 +120,7 @@ Skylight gets their live message data from asrouter in mozilla-central. For ever
 
 4. Clobber, build, and run the browser test using the following commands:
 
-   ```
+   ```bash
    ./mach clobber
    ./mach build
    ./mach test --headless browser/components/newtab/test/browser/browser_dump-provider-state.js
@@ -134,9 +134,13 @@ Skylight gets their live message data from asrouter in mozilla-central. For ever
    mv /tmp/file.json ./{VERSION_NUM}-release.json
    ```
 
-6. Run [`lib/mergeASRouterData.js`](/lib/mergeASRouterData.js) using node to merge all the release data into one file. Make sure you include the latest version number you've just collected data from into the `availableReleases` array inside the script.
+6. In the file [`lib/mergeASRouterData.js`](/lib/mergeASRouterData.js), add the version number you've just collected data from into the `availableReleases` array.
 
-   **❗Important note**: Make sure to update the template for the `MR_WELCOME_DEFAULT` message inside `data.json` to "defaultaboutwelcome". This is currently a manual step we must perform to ensure that the message preview for this unique message is working.
+7. Run [`lib/mergeASRouterData.js`](/lib/mergeASRouterData.js) using node to merge all the release data into one file.
+
+   ```bash
+   node lib/mergeASRouterData.js
+   ```
 
 ## Pull Requests
 
