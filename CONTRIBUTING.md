@@ -136,7 +136,9 @@ Skylight gets their live message data from asrouter in mozilla-central. For ever
 
 6. In the file [`lib/mergeASRouterData.js`](/lib/mergeASRouterData.js), add the version number you've just collected data from into the `availableReleases` array.
 
-7. Run [`lib/mergeASRouterData.js`](/lib/mergeASRouterData.js) using node to merge all the release data into one file.
+7. In the latest release data file, ensure that the message with id `MR_WELCOME_DEFAULT` has a template `defaultaboutwelcome`. This is required for the message preview for this message to work correctly.
+
+8. Run [`lib/mergeASRouterData.js`](/lib/mergeASRouterData.js) using node to merge all the release data into one file.
 
    ```bash
    node lib/mergeASRouterData.js
