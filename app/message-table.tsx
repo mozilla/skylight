@@ -88,6 +88,7 @@ export function MessageTable<TData, TValue>({
                             .includes("Metrics") ? (
                             <div className="flex items-center gap-x-1">
                               <Checkbox
+                                className="border-slate-500"
                                 id="hide"
                                 onCheckedChange={() => {
                                   header.column.setFilterValue(!hideMessages);
