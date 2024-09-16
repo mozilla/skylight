@@ -245,7 +245,9 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     filterFn: (row, columnId, filterValue) => {
       if (filterValue) {
         return (
-          (row.original.impressions && row.original.impressions > 1000) ||
+          (row.original.impressions &&
+            row.original.impressions >=
+              parseInt(process.env.IMPRESSIONS_THRESHOLD!)) ||
           !row.original.impressions
         );
       }
