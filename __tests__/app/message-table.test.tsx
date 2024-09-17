@@ -392,8 +392,8 @@ describe("MessageTable", () => {
       expect(microsurveyBadge).toBeInTheDocument();
     });
 
-    it("filters message with less than IMPRESSIONS_THRESHOLD impressions when canHideMessages is true", () => {
-      const impressions = process.env.IMPRESSIONS_THRESHOLD;
+    it("filters message with less than HIDDEN_MESSAGE_IMPRESSION_THRESHOLD impressions when canHideMessages is true", () => {
+      const impressions = process.env.HIDDEN_MESSAGE_IMPRESSION_THRESHOLD;
 
       const fxmsMsgInfo1: FxMSMessageInfo = {
         product: "Desktop",

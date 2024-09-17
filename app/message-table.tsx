@@ -30,6 +30,49 @@ interface MessageTableProps<TData, TValue> {
   impressionsThreshold?: string;
 }
 
+function MessageTableHead(
+  header: any,
+  hideMessages: boolean,
+  setHideMessages: any,
+  canHideMessages?: boolean,
+  impressionsThreshold?: string,
+) {
+  return (
+    <TableHead className="bg-stone-100 text-slate-400" key={header.id}>
+      {header.isPlaceholder ? null : (
+        <div>
+          {flexRender(header.column.columnDef.header, header.getContext())}
+          {canHideMessages &&
+          header.column.columnDef.header!.toString().includes("Metrics") ? (
+            <div className="flex items-center gap-x-1">
+              <Checkbox
+                className="border-slate-500"
+                id="hide"
+                onCheckedChange={() => {
+                  if (!hideMessages) {
+                    header.column.setFilterValue(
+                      parseInt(impressionsThreshold!),
+                    );
+                  } else {
+                    header.column.setFilterValue(null);
+                  }
+                  setHideMessages(!hideMessages);
+                }}
+              />
+              <label
+                htmlFor="hide"
+                className="text-3xs font-light leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Hide messages with fewer than {impressionsThreshold} impressions
+              </label>
+            </div>
+          ) : null}
+        </div>
+      )}
+    </TableHead>
+  );
+}
+
 export function MessageTable<TData, TValue>({
   columns,
   data,
@@ -73,48 +116,12 @@ export function MessageTable<TData, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      className="bg-stone-100 text-slate-400"
-                      key={header.id}
-                    >
-                      {header.isPlaceholder ? null : (
-                        <div>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                          {canHideMessages &&
-                          header.column.columnDef
-                            .header!.toString()
-                            .includes("Metrics") ? (
-                            <div className="flex items-center gap-x-1">
-                              <Checkbox
-                                className="border-slate-500"
-                                id="hide"
-                                onCheckedChange={() => {
-                                  if (!hideMessages) {
-                                    header.column.setFilterValue(
-                                      parseInt(impressionsThreshold!),
-                                    );
-                                  } else {
-                                    header.column.setFilterValue(null);
-                                  }
-                                  setHideMessages(!hideMessages);
-                                }}
-                              />
-                              <label
-                                htmlFor="hide"
-                                className="text-3xs font-light leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                              >
-                                Hide messages with fewer than{" "}
-                                {impressionsThreshold} impressions
-                              </label>
-                            </div>
-                          ) : null}
-                        </div>
-                      )}
-                    </TableHead>
+                  return MessageTableHead(
+                    header,
+                    hideMessages,
+                    setHideMessages,
+                    canHideMessages,
+                    impressionsThreshold,
                   );
                 })}
               </TableRow>
