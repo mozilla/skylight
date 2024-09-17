@@ -342,45 +342,5 @@
     "messaging_system.metrics__string__messaging_system_event_source": null,
     "messaging_system.metrics__string__messaging_system_source": null,
     "count_of_messaging_system_client_id": 1
-  },
-  {
-    "messaging_system.metrics__text2__messaging_system_message_id": "PB_NEWTAB_FOCUS_PROMO",
-    "messaging_system.metrics__string__messaging_system_ping_type": "pb_newtab"
-  },
-  {
-    "messaging_system.metrics__text2__messaging_system_message_id": "PB_NEWTAB_KLAR_PROMO",
-    "messaging_system.metrics__string__messaging_system_ping_type": "pb_newtab"
-  },
-  {
-    "messaging_system.metrics__text2__messaging_system_message_id": "PB_NEWTAB_KLAR_PROMO_DE",
-    "messaging_system.metrics__string__messaging_system_ping_type": "pb_newtab"
-  },
-  {
-    "messaging_system.metrics__text2__messaging_system_message_id": "PB_NEWTAB_PIN_PROMO",
-    "messaging_system.metrics__string__messaging_system_ping_type": "pb_newtab"
-  },
-  {
-    "messaging_system.metrics__text2__messaging_system_message_id": "PB_NEWTAB_COOKIE_BANNERS_PROMO",
-    "messaging_system.metrics__string__messaging_system_ping_type": "pb_newtab"
-  },
-  {
-    "messaging_system.metrics__text2__messaging_system_message_id": "PDFJS_FEATURE_TOUR_A",
-    "messaging_system.metrics__string__messaging_system_ping_type": "feature_callout"
-  },
-  {
-    "messaging_system.metrics__text2__messaging_system_message_id": "PDFJS_FEATURE_TOUR_B",
-    "messaging_system.metrics__string__messaging_system_ping_type": "feature_callout"
-  },
-  {
-    "messaging_system.metrics__text2__messaging_system_message_id": "FAKESPOT_CALLOUT_CLOSED_OPTED_IN_DEFAULT",
-    "messaging_system.metrics__string__messaging_system_ping_type": "feature_callout"
-  },
-  {
-    "messaging_system.metrics__text2__messaging_system_message_id": "FAKESPOT_CALLOUT_CLOSED_NOT_OPTED_IN_DEFAULT",
-    "messaging_system.metrics__string__messaging_system_ping_type": "feature_callout"
-  },
-  {
-    "messaging_system.metrics__text2__messaging_system_message_id": "FAKESPOT_CALLOUT_PDP_OPTED_IN_DEFAULT",
-    "messaging_system.metrics__string__messaging_system_ping_type": "feature_callout"
   }
 ]
