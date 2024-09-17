@@ -22,6 +22,13 @@ import {
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 
+interface HideMessageCheckboxProps {
+  header: any;
+  hideMessages: boolean;
+  setHideMessages: any;
+  impressionsThreshold?: string;
+}
+
 interface MessageTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -30,46 +37,34 @@ interface MessageTableProps<TData, TValue> {
   impressionsThreshold?: string;
 }
 
-function MessageTableHead(
-  header: any,
-  hideMessages: boolean,
-  setHideMessages: any,
-  canHideMessages?: boolean,
-  impressionsThreshold?: string,
-) {
+function HideMessageCheckbox({
+  header,
+  hideMessages,
+  setHideMessages,
+  impressionsThreshold,
+}: HideMessageCheckboxProps) {
   return (
-    <TableHead className="bg-stone-100 text-slate-400" key={header.id}>
-      {header.isPlaceholder ? null : (
-        <div>
-          {flexRender(header.column.columnDef.header, header.getContext())}
-          {canHideMessages &&
-          header.column.columnDef.header!.toString().includes("Metrics") ? (
-            <div className="flex items-center gap-x-1">
-              <Checkbox
-                className="border-slate-500"
-                id="hide"
-                onCheckedChange={() => {
-                  if (!hideMessages) {
-                    header.column.setFilterValue(
-                      parseInt(impressionsThreshold!),
-                    );
-                  } else {
-                    header.column.setFilterValue(null);
-                  }
-                  setHideMessages(!hideMessages);
-                }}
-              />
-              <label
-                htmlFor="hide"
-                className="text-3xs font-light leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Hide messages with fewer than {impressionsThreshold} impressions
-              </label>
-            </div>
-          ) : null}
-        </div>
-      )}
-    </TableHead>
+    <div className="flex items-center gap-x-1">
+      <Checkbox
+        className="border-slate-500"
+        id="hide"
+        onCheckedChange={() => {
+          if (!hideMessages) {
+            header.column.setFilterValue(parseInt(impressionsThreshold!));
+          } else {
+            header.column.setFilterValue(null);
+          }
+          setHideMessages(!hideMessages);
+        }}
+      />
+      <label
+        htmlFor="hide"
+        className="text-3xs font-light leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+      >
+        Hide messages with fewer than {impressionsThreshold || "1000"}{" "}
+        impressions
+      </label>
+    </div>
   );
 }
 
@@ -109,62 +104,76 @@ export function MessageTable<TData, TValue>({
   }
 
   return (
-    <div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader className="sticky top-36">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return MessageTableHead(
-                    header,
-                    hideMessages,
-                    setHideMessages,
-                    canHideMessages,
-                    impressionsThreshold,
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader className="sticky top-36">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead
+                    className="bg-stone-100 text-slate-400"
+                    key={header.id}
+                  >
+                    {header.isPlaceholder ? null : (
+                      <div>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {canHideMessages &&
+                          header.column.columnDef
+                            .header!.toString()
+                            .includes("Metrics") && (
+                            <HideMessageCheckbox
+                              header={header}
+                              hideMessages={hideMessages}
+                              setHideMessages={setHideMessages}
+                              impressionsThreshold={impressionsThreshold}
+                            />
+                          )}
+                      </div>
+                    )}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => {
+                  // if ((cell.row.original as any).isBranch)
+                  //   return ( <></> );
+                  return (
+                    <TableCell
+                      className="py-2"
+                      key={cell.id}
+                      rowSpan={getRowSpanForCell(cell)}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
                   );
                 })}
               </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => {
-                    // if ((cell.row.original as any).isBranch)
-                    //   return ( <></> );
-                    return (
-                      <TableCell
-                        className="py-2"
-                        key={cell.id}
-                        rowSpan={getRowSpanForCell(cell)}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 }
