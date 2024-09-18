@@ -391,6 +391,59 @@ describe("MessageTable", () => {
 
       expect(microsurveyBadge).toBeInTheDocument();
     });
+
+    it("filters message with less than HIDDEN_MESSAGE_IMPRESSION_THRESHOLD impressions when canHideMessages is true", () => {
+      const impressions = process.env.HIDDEN_MESSAGE_IMPRESSION_THRESHOLD;
+
+      const fxmsMsgInfo1: FxMSMessageInfo = {
+        product: "Desktop",
+        id: "MESSAGE_1",
+        template: "test template",
+        surface: "test surface",
+        segment: "test segment",
+        metrics: "test metrics",
+        ctrPercent: 24.3,
+        impressions: parseInt(impressions!) + 100,
+      };
+      const fxmsMsgInfo2: FxMSMessageInfo = {
+        product: "Desktop",
+        id: "MESSAGE_2",
+        template: "test template",
+        surface: "test surface",
+        segment: "test segment",
+        metrics: "test metrics",
+        ctrPercent: 24.3,
+        impressions: parseInt(impressions!) - 100,
+      };
+      const fxmsMsgInfo3: FxMSMessageInfo = {
+        product: "Desktop",
+        id: "MESSAGE_3",
+        template: "test template",
+        surface: "test surface",
+        segment: "test segment",
+        metrics: "test metrics",
+        ctrPercent: 24.3,
+        impressions: parseInt(impressions!),
+      };
+      render(
+        <MessageTable
+          columns={fxmsMessageColumns}
+          data={[fxmsMsgInfo1, fxmsMsgInfo2, fxmsMsgInfo3]}
+          canHideMessages={true}
+          impressionsThreshold={impressions}
+        />,
+      );
+
+      const hideMessageButton = screen.getByRole("checkbox");
+      fireEvent.click(hideMessageButton);
+      const hiddenMessage = screen.queryByText("MESSAGE_2");
+      const message1 = screen.getByText("MESSAGE_1");
+      const message3 = screen.getByText("MESSAGE_3");
+
+      expect(hiddenMessage).not.toBeInTheDocument();
+      expect(message1).toBeInTheDocument();
+      expect(message3).toBeInTheDocument();
+    });
   });
 
   describe("CompletedExperimentColumns", () => {

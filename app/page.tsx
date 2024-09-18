@@ -28,6 +28,9 @@ import { Timeline } from "@/components/ui/timeline.tsx";
 
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
+const hidden_message_impression_threshold =
+  process.env.HIDDEN_MESSAGE_IMPRESSION_THRESHOLD;
+
 function compareFn(a: any, b: any) {
   if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
     return -1;
@@ -197,7 +200,12 @@ export default async function Dashboard() {
       </div>
 
       <div className="container mx-auto py-10">
-        <MessageTable columns={fxmsMessageColumns} data={localData} />
+        <MessageTable
+          columns={fxmsMessageColumns}
+          data={localData}
+          canHideMessages={true}
+          impressionsThreshold={hidden_message_impression_threshold}
+        />
       </div>
 
       <h5
