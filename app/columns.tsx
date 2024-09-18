@@ -244,6 +244,9 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     },
     filterFn: (row, columnId, filterValue) => {
       if (filterValue) {
+        // If the filterValue is set, then the hide message toggle must be checked.
+        // This means we only want to display messages with over `filterValue`
+        // impressions or messages that already don't display any impressions.
         return (
           (row.original.impressions &&
             row.original.impressions >= filterValue) ||

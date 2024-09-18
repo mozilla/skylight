@@ -25,7 +25,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 interface HideMessageCheckboxProps {
   header: any;
   hideMessages: boolean;
-  setHideMessages: any;
+  setHideMessages: (shouldHide: boolean) => any;
   impressionsThreshold?: string;
 }
 
