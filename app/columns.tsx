@@ -74,6 +74,7 @@ export type FxMSMessageInfo = {
   metrics: string;
   impressions?: number;
   hasMicrosurvey?: boolean;
+  hidePreview?: boolean;
 };
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
@@ -243,6 +244,12 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         "PDFJS_FEATURE_TOUR_A",
         "PDFJS_FEATURE_TOUR_B",
         "FIREFOX_VIEW_SPOTLIGHT",
+        "RTAMO_DEFAULT_WELCOME_EXTENSION",
+        "RTAMO_DEFAULT_WELCOME_THEME",
+        "RTAMO_DEFAULT_WELCOME_LOCALE",
+        "RTAMO_DEFAULT_WELCOME_DICTIONARY",
+        "SPOTLIGHT_ADDONS_TEST",
+        "MULTISELECT_WITH_DESCRIPTIONS",
       ];
       if (hideDashboardMessages.includes(props.row.original.id)) {
         return <></>;
@@ -291,6 +298,11 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         "feature_callout",
       ];
       if (!supportedTypes.includes(props.row.original.template)) {
+        return <div />;
+      }
+
+      // Hide preview URL buttons for message data collected from Looker
+      if (props.row.original.hidePreview) {
         return <div />;
       }
 

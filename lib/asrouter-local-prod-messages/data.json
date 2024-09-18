@@ -2776,5 +2776,115 @@
     "trigger": { "id": "featureCalloutCheck" },
     "groups": [],
     "provider": "onboarding"
+  },
+  {
+    "id": "Q4_DEVICE_MIGRATION_BACKUP_SPOTLIGHT",
+    "template": "spotlight",
+    "hidePreview": true
+  },
+  {
+    "id": "EMBEDDED_IMPORT_SPOTLIGHT",
+    "template": "spotlight",
+    "hidePreview": true
+  },
+  {
+    "id": "INFOBAR_DEFAULT_AND_PIN_87",
+    "template": "infobar",
+    "hidePreview": true
+  },
+  {
+    "id": "TAIL_FOX_SET_DEFAULT_CONTENT",
+    "template": "spotlight",
+    "hidePreview": true
+  },
+  { "id": "CFR_FIREFOX_VIEW", "template": "cfr", "hidePreview": true },
+  { "id": "FIREFOX_VIEW_PROMO", "template": "spotlight", "hidePreview": true },
+  {
+    "id": "PROTECTIONS_PANEL_1",
+    "template": "protections_panel",
+    "hidePreview": true
+  },
+  {
+    "id": "RTAMO_DEFAULT_WELCOME_EXTENSION",
+    "template": "defaultaboutwelcome",
+    "hidePreview": true
+  },
+  {
+    "id": "MULTISTAGE_SPOTLIGHT_MESSAGE",
+    "template": "spotlight",
+    "hidePreview": true
+  },
+  {
+    "id": "WINDOWS_DEVICE_MIGRATION_SUMO_SWITCH_DEVICE",
+    "template": "spotlight",
+    "hidePreview": true
+  },
+  {
+    "id": "RTAMO_DEFAULT_WELCOME_THEME",
+    "template": "defaultaboutwelcome",
+    "hidePreview": true
+  },
+  { "id": "PDF_DEFAULT_PROMPT", "template": "infobar", "hidePreview": true },
+  { "id": "SAVE_LOGIN_72", "template": "cfr", "hidePreview": true },
+  {
+    "id": "SET_DEFAULT_PDF_HANDLER_MESSAGE",
+    "template": "infobar",
+    "hidePreview": true
+  },
+  {
+    "id": "PDFJS_FEATURE_TOUR",
+    "template": "feature_callout",
+    "hidePreview": true
+  },
+  {
+    "id": "RTAMO_DEFAULT_WELCOME_LOCALE",
+    "template": "defaultaboutwelcome",
+    "hidePreview": true
+  },
+  {
+    "id": "FACEBOOK_CONTAINER_ADDON_A",
+    "template": "cfr",
+    "hidePreview": true
+  },
+  { "id": "UPDATE_LOGIN", "template": "cfr", "hidePreview": true },
+  {
+    "id": "RTAMO_DEFAULT_WELCOME_DICTIONARY",
+    "template": "defaultaboutwelcome",
+    "hidePreview": true
+  },
+  { "id": "PIN_TAB_72", "template": "cfr", "hidePreview": true },
+  { "id": "PDF_URL_FFX_SEND", "template": "cfr", "hidePreview": true },
+  { "id": "SAVE_LOGIN", "template": "cfr", "hidePreview": true },
+  { "id": "BOOKMARK_SYNC_CFR", "template": "cfr", "hidePreview": true },
+  {
+    "id": "MILESTONE_MESSAGE",
+    "template": "milestone_message",
+    "hidePreview": true
+  },
+  { "id": "YOUTUBE_ENHANCE_3", "template": "cfr", "hidePreview": true },
+  { "id": "SEND_TAB_CFR", "template": "cfr", "hidePreview": true },
+  { "id": "PIN_TAB", "template": "cfr", "hidePreview": true },
+  { "id": "FACEBOOK_CONTAINER_3", "template": "cfr", "hidePreview": true },
+  {
+    "id": "SPOTLIGHT_ADDONS_TEST",
+    "template": "spotlight",
+    "hidePreview": true
+  },
+  { "id": "PERSONALIZED_CFR_MESSAGE", "template": "cfr", "hidePreview": true },
+  {
+    "id": "PDF_HANDLER_ANNOTATIONS_CONTENT",
+    "template": "feature_callout",
+    "hidePreview": true
+  },
+  { "id": "DICTIONARY_ADDON_B", "template": "cfr", "hidePreview": true },
+  {
+    "id": "MR2022_BACKGROUND_UPDATE_TOAST_NOTIFICATION",
+    "template": "toast_notification",
+    "hidePreview": true
+  },
+  {
+    "id": "MULTISELECT_WITH_DESCRIPTIONS",
+    "template": "spotlight",
+    "hidePreview": true
   }
 ]
