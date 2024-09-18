@@ -107,42 +107,30 @@ let columnsShown = false;
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
 /**
- * Updates the lib/looker-local-prod-messages/129-nightly.json file with the
+ * Updates the lib/looker-local-prod-messages/looker-data.json file with the
  * JSON data retrieved from the Looker query for live messages.
  */
 async function updateLookerLiveMessagesList() {
-  let data = await runLookQuery();
   const fs = require("fs");
-  let json = JSON.stringify(data);
+
+  // Clean up data by removing test messages
+  let data = await runLookQuery();
+  let clean_data = data.filter((messageDef: any) => {
+    const removeMessages = ["undefined", "", "test-id", "n/a"];
+    return !removeMessages.includes(
+      messageDef[
+        "messaging_system.metrics__text2__messaging_system_message_id"
+      ],
+    );
+  });
+
+  // Write clean data to looker-data.json
+  let json = JSON.stringify(clean_data);
   fs.writeFileSync(
-    "lib/looker-local-prod-mressages/129-nightly.json",
+    "lib/looker-local-prod-messages/looker-data-original.json",
     json,
     "utf8",
   );
-}
-
-/**
- * Returns the list of live messages to display in the live message table.
- */
-async function getLookerLiveMessages() {
-  let data = await runLookQuery();
-
-  let messages = await Promise.all(
-    data
-      .filter((messageDef: any) => {
-        const removeMessages = ["undefined", "", "test-id", "n/a"];
-        return !removeMessages.includes(
-          messageDef[
-            "messaging_system.metrics__text2__messaging_system_message_id"
-          ],
-        );
-      })
-      .map(async (messageDef: any): Promise<FxMSMessageInfo> => {
-        return await getASRouterLocalColumnFromJSON(messageDef);
-      }),
-  );
-
-  return messages;
 }
 
 async function getASRouterLocalMessageInfoFromFile(): Promise<
@@ -235,6 +223,8 @@ export default async function Dashboard() {
       );
 
   const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
+
+  // await updateLookerLiveMessagesList();
 
   return (
     <div>
