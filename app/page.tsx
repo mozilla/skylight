@@ -59,35 +59,27 @@ function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
 async function getASRouterLocalColumnFromJSON(
   messageDef: any,
 ): Promise<FxMSMessageInfo> {
-  let message = {
-    id: messageDef[
-      "messaging_system.metrics__text2__messaging_system_message_id"
-    ],
-    template:
-      messageDef[
-        "messaging_system.metrics__string__messaging_system_ping_type"
-      ],
-  };
-
   let fxmsMsgInfo: FxMSMessageInfo = {
     product: "Desktop",
-    id: message.id,
-    template: message.template,
-    surface: getSurfaceDataForTemplate(getTemplateFromMessage(message)).surface,
+    id: messageDef.id,
+    template: messageDef.template,
+    surface: getSurfaceDataForTemplate(getTemplateFromMessage(messageDef))
+      .surface,
     segment: "some segment",
     metrics: "some metrics",
     ctrPercent: undefined, // may be populated from Looker data
     ctrPercentChange: undefined, // may be populated from Looker data
-    previewLink: getPreviewLink(maybeCreateWelcomePreview(message)),
+    previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
     impressions: undefined, // may be populated from Looker data
     hasMicrosurvey: messageHasMicrosurvey(messageDef.id),
+    hidePreview: messageDef.hidePreview,
   };
 
   const channel = "release";
 
   if (isLookerEnabled) {
     const ctrPercentData = await getCTRPercentData(
-      message.id,
+      fxmsMsgInfo.id,
       fxmsMsgInfo.template,
       channel,
     );
@@ -98,8 +90,8 @@ async function getASRouterLocalColumnFromJSON(
   }
 
   fxmsMsgInfo.ctrDashboardLink = getDashboard(
-    message.template,
-    message.id,
+    fxmsMsgInfo.template,
+    fxmsMsgInfo.id,
     channel,
   );
 
