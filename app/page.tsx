@@ -116,7 +116,7 @@ async function updateLookerLiveMessagesList() {
   // Clean up data by removing test messages
   let data = await runLookQuery();
   let clean_data = data.filter((messageDef: any) => {
-    const removeMessages = ["undefined", "", "test-id", "n/a"];
+    const removeMessages = ["undefined", "", "test-id", "n/a", null];
     return !removeMessages.includes(
       messageDef[
         "messaging_system.metrics__text2__messaging_system_message_id"
@@ -131,6 +131,63 @@ async function updateLookerLiveMessagesList() {
     json,
     "utf8",
   );
+}
+
+function mergeLookerData() {
+  const fs = require("fs");
+
+  // Existing message data
+  let result = fs.readFileSync(
+    "lib/asrouter-local-prod-messages/data.json",
+    "utf8",
+  );
+  let json_result = JSON.parse(result);
+
+  // Collect Looker message data
+  let looker_data = fs.readFileSync(
+    "lib/looker-local-prod-messages/looker-data-original.json",
+    "utf8",
+  );
+  let json_looker_data = JSON.parse(looker_data);
+
+  // Add any message data with an id that does not already exist in data.json
+  for (let i = 0; i < json_looker_data.length; i++) {
+    if (
+      !json_result.find(
+        (x: any) =>
+          x.id ===
+          json_looker_data[i][
+            "messaging_system.metrics__text2__messaging_system_message_id"
+          ],
+      )
+    ) {
+      // Clean up objects to have properties `id` and `template`.
+      // `hidePreview` is included because the message data from Looker
+      // does not have enough information to enable message previews correctly.
+      let clean_looker_object = {
+        id: json_looker_data[i][
+          "messaging_system.metrics__text2__messaging_system_message_id"
+        ],
+        template:
+          json_looker_data[i][
+            "messaging_system.metrics__string__messaging_system_ping_type"
+          ],
+        hidePreview: true,
+      };
+
+      // // Clean up checks
+      // if (clean_looker_object.id.includes("RTAMO")) {
+      //   clean_looker_object.template = "RTAMO";
+      // }
+
+      json_result.push(clean_looker_object);
+    }
+
+    fs.writeFileSync(
+      "lib/asrouter-local-prod-messages/data.json",
+      JSON.stringify(json_result),
+    );
+  }
 }
 
 async function getASRouterLocalMessageInfoFromFile(): Promise<
@@ -196,6 +253,12 @@ export default async function Dashboard() {
   await recipeCollection.fetchRecipes();
   console.log("recipeCollection.length = ", recipeCollection.recipes.length);
 
+  // Update and merge Looker data
+  if (isLookerEnabled) {
+    await updateLookerLiveMessagesList();
+    mergeLookerData();
+  }
+
   // XXX await Promise.allSettled for all three loads concurrently
   const localData = (await getASRouterLocalMessageInfoFromFile()).sort(
     compareSurfacesFn,
@@ -223,8 +286,6 @@ export default async function Dashboard() {
       );
 
   const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
-
-  // await updateLookerLiveMessagesList();
 
   return (
     <div>
