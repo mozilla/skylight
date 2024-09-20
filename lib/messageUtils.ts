@@ -53,6 +53,10 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
       surface: "Protections Dropdown Panel",
       tagColor: "bg-blue-500",
     },
+    rtamo: {
+      surface: "Return to AMO",
+      tagColor: "bg-violet-200",
+    },
     toast_notification: {
       surface: "Toast Notification",
       tagColor: "bg-indigo-400",
