@@ -116,7 +116,14 @@ async function updateLookerLiveMessagesList() {
   // Clean up data by removing test messages
   let data = await runLookQuery();
   let clean_data = data.filter((messageDef: any) => {
-    const removeMessages = ["undefined", "", "test-id", "n/a", null];
+    const removeMessages = [
+      "undefined",
+      "",
+      "test-id",
+      "n/a",
+      null,
+      "DEFAULT_ID",
+    ];
     return !removeMessages.includes(
       messageDef[
         "messaging_system.metrics__text2__messaging_system_message_id"
@@ -152,6 +159,7 @@ function mergeLookerData() {
 
   // Add any message data with an id that does not already exist in data.json
   for (let i = 0; i < json_looker_data.length; i++) {
+    // Check that id does not already exist and does not contain a "test" substring
     if (
       !json_result.find(
         (x: any) =>
@@ -159,7 +167,12 @@ function mergeLookerData() {
           json_looker_data[i][
             "messaging_system.metrics__text2__messaging_system_message_id"
           ],
-      )
+      ) &&
+      !json_looker_data[i][
+        "messaging_system.metrics__text2__messaging_system_message_id"
+      ]
+        .toLowerCase()
+        .includes("test")
     ) {
       // Clean up objects to have properties `id` and `template`.
       // `hidePreview` is included because the message data from Looker
@@ -175,10 +188,20 @@ function mergeLookerData() {
         hidePreview: true,
       };
 
-      // // Clean up checks
-      // if (clean_looker_object.id.includes("RTAMO")) {
-      //   clean_looker_object.template = "RTAMO";
-      // }
+      // RTAMO checks
+      if (clean_looker_object.id.includes("RTAMO")) {
+        clean_looker_object.template = "rtamo";
+      }
+
+      // Feature callout checks
+      if (clean_looker_object.template === null) {
+        clean_looker_object.template = "feature_callout";
+      }
+
+      // FOCUS_PROMO
+      if (clean_looker_object.id === "FOCUS_PROMO") {
+        clean_looker_object.template = "pb_newtab";
+      }
 
       json_result.push(clean_looker_object);
     }
