@@ -110,7 +110,7 @@ type NimbusExperiment = types.experiments.NimbusExperiment;
  * Takes message data from `lib/asrouter-local-prod-messages/data.json` and
  * appends any message data collected from Looker that does not already exist
  * (ie. no duplicate message ids). The Looker message data is also cleaned up
- * to match the message data objects from asrouter, remove any test messages, 
+ * to match the message data objects from asrouter, remove any test messages,
  * and update surface tags.
  */
 async function mergeLookerData() {
