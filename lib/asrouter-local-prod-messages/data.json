@@ -2851,19 +2851,26 @@
     "template": "rtamo",
     "hidePreview": true
   },
-  { "id": "PDF_URL_FFX_SEND", "template": "cfr", "hidePreview": true },
   { "id": "UPDATE_LOGIN", "template": "cfr", "hidePreview": true },
+  { "id": "PDF_URL_FFX_SEND", "template": "cfr", "hidePreview": true },
   { "id": "PIN_TAB_72", "template": "cfr", "hidePreview": true },
   { "id": "SAVE_LOGIN", "template": "cfr", "hidePreview": true },
+  { "id": "BOOKMARK_SYNC_CFR", "template": "cfr", "hidePreview": true },
   {
     "id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_AND_BACKUP_CONTENT",
     "template": "spotlight",
     "hidePreview": true
   },
-  { "id": "BOOKMARK_SYNC_CFR", "template": "cfr", "hidePreview": true },
   {
     "id": "FACEBOOK_CONTAINER_ADDON_A",
     "template": "cfr",
+    "hidePreview": true
+  },
+  { "id": "SEND_TAB_CFR", "template": "cfr", "hidePreview": true },
+  { "id": "MILESTONE_MESSAGE", "template": "cfr", "hidePreview": true },
+  {
+    "id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_CONTENT",
+    "template": "spotlight",
     "hidePreview": true
   },
   {
@@ -2872,31 +2879,19 @@
     "hidePreview": true
   },
   {
-    "id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_CONTENT",
-    "template": "spotlight",
-    "hidePreview": true
-  },
-  { "id": "MILESTONE_MESSAGE", "template": "cfr", "hidePreview": true },
-  { "id": "SEND_TAB_CFR", "template": "cfr", "hidePreview": true },
-  {
     "id": "CFR_WINDOWS_DEVICE_MIGRATION_SUMO_SWITCH_DEVICE",
     "template": "cfr",
     "hidePreview": true
   },
   { "id": "YOUTUBE_ENHANCE_3", "template": "cfr", "hidePreview": true },
+  { "id": "FOCUS_PROMO", "template": "pb_newtab", "hidePreview": true },
   {
-    "id": "NEWTAB_POCKET_TOPICS_SURVEY",
+    "id": "NEWTAB_POCKET_CSAT_SURVEY",
     "template": "feature_callout",
     "hidePreview": true
   },
   {
     "id": "PDF_HANDLER_ANNOTATIONS_CONTENT",
-    "template": "feature_callout",
-    "hidePreview": true
-  },
-  { "id": "FOCUS_PROMO", "template": "pb_newtab", "hidePreview": true },
-  {
-    "id": "NEWTAB_POCKET_CSAT_SURVEY",
     "template": "feature_callout",
     "hidePreview": true
   }

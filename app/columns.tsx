@@ -244,11 +244,7 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         "PDFJS_FEATURE_TOUR_A",
         "PDFJS_FEATURE_TOUR_B",
         "FIREFOX_VIEW_SPOTLIGHT",
-        "RTAMO_DEFAULT_WELCOME_EXTENSION",
-        "RTAMO_DEFAULT_WELCOME_THEME",
-        "RTAMO_DEFAULT_WELCOME_LOCALE",
-        "RTAMO_DEFAULT_WELCOME_DICTIONARY",
-        "SPOTLIGHT_ADDONS_TEST",
+        "NEWTAB_POCKET_TOPICS_SURVEY",
         "MULTISELECT_WITH_DESCRIPTIONS",
       ];
       if (hideDashboardMessages.includes(props.row.original.id)) {

@@ -107,14 +107,26 @@ let columnsShown = false;
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
 /**
- * Updates the lib/looker-local-prod-messages/looker-data.json file with the
- * JSON data retrieved from the Looker query for live messages.
+ * Takes message data from `lib/asrouter-local-prod-messages/data.json` and
+ * appends any message data collected from Looker that does not already exist
+ * (ie. no duplicate message ids). The Looker message data is also cleaned up
+ * to match the message data objects from asrouter, remove any test messages, 
+ * and update surface tags.
  */
-async function updateLookerLiveMessagesList() {
+async function mergeLookerData() {
   const fs = require("fs");
 
-  // Clean up data by removing test messages
+  // Existing message data
+  let result = fs.readFileSync(
+    "lib/asrouter-local-prod-messages/data.json",
+    "utf8",
+  );
+  let json_result = JSON.parse(result);
+
+  // Looker message data
   let data = await runLookQuery();
+
+  // Manual check to remove messages with id defined inside `removeMessages`
   let clean_data = data.filter((messageDef: any) => {
     const removeMessages = [
       "undefined",
@@ -130,32 +142,7 @@ async function updateLookerLiveMessagesList() {
       ],
     );
   });
-
-  // Write clean data to looker-data.json
-  let json = JSON.stringify(clean_data);
-  fs.writeFileSync(
-    "lib/looker-local-prod-messages/looker-data-original.json",
-    json,
-    "utf8",
-  );
-}
-
-function mergeLookerData() {
-  const fs = require("fs");
-
-  // Existing message data
-  let result = fs.readFileSync(
-    "lib/asrouter-local-prod-messages/data.json",
-    "utf8",
-  );
-  let json_result = JSON.parse(result);
-
-  // Collect Looker message data
-  let looker_data = fs.readFileSync(
-    "lib/looker-local-prod-messages/looker-data-original.json",
-    "utf8",
-  );
-  let json_looker_data = JSON.parse(looker_data);
+  let json_looker_data = JSON.parse(JSON.stringify(clean_data));
 
   // Add any message data with an id that does not already exist in data.json
   for (let i = 0; i < json_looker_data.length; i++) {
@@ -174,9 +161,11 @@ function mergeLookerData() {
         .toLowerCase()
         .includes("test")
     ) {
-      // Clean up objects to have properties `id` and `template`.
-      // `hidePreview` is included because the message data from Looker
-      // does not have enough information to enable message previews correctly.
+      // Clean up objects to only include properties `id` and `template` since
+      // currently the other properties do not provide any value.
+      // NOTE: `hidePreview` is added because the message data from Looker
+      // does not have enough information to enable message previews correctly
+      // and we must manually hide the previews for now.
       let clean_looker_object = {
         id: json_looker_data[i][
           "messaging_system.metrics__text2__messaging_system_message_id"
@@ -188,17 +177,17 @@ function mergeLookerData() {
         hidePreview: true,
       };
 
-      // RTAMO checks
+      // Update surfaces for RTAMO messages
       if (clean_looker_object.id.includes("RTAMO")) {
         clean_looker_object.template = "rtamo";
       }
 
-      // Feature callout checks
+      // Update surfaces for feature callout messages
       if (clean_looker_object.template === null) {
         clean_looker_object.template = "feature_callout";
       }
 
-      // FOCUS_PROMO
+      // Update surface for FOCUS_PROMO message
       if (clean_looker_object.id === "FOCUS_PROMO") {
         clean_looker_object.template = "pb_newtab";
       }
@@ -278,8 +267,7 @@ export default async function Dashboard() {
 
   // Update and merge Looker data
   if (isLookerEnabled) {
-    await updateLookerLiveMessagesList();
-    mergeLookerData();
+    await mergeLookerData();
   }
 
   // XXX await Promise.allSettled for all three loads concurrently
