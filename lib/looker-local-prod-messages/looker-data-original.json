@@ -1,1 +1,492 @@
-[{"messaging_system.metrics__text2__messaging_system_message_id":"FXA_ACCOUNTS_BADGE_REVISED","messaging_system.metrics__string__messaging_system_ping_type":"toolbar-badge","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":68250732},{"messaging_system.metrics__text2__messaging_system_message_id":"MR_WELCOME_DEFAULT","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":14593928},{"messaging_system.metrics__text2__messaging_system_message_id":"Q4_DEVICE_MIGRATION_BACKUP_SPOTLIGHT","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":7153617},{"messaging_system.metrics__text2__messaging_system_message_id":"INFOBAR_LAUNCH_ON_LOGIN","messaging_system.metrics__string__messaging_system_ping_type":"infobar","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":4707042},{"messaging_system.metrics__text2__messaging_system_message_id":"DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":3870232},{"messaging_system.metrics__text2__messaging_system_message_id":"INFOBAR_LAUNCH_ON_LOGIN_FINAL","messaging_system.metrics__string__messaging_system_ping_type":"infobar","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":2910962},{"messaging_system.metrics__text2__messaging_system_message_id":"SET_DEFAULT_BROWSER_GUIDANCE_NOTIFICATION_WIN10","messaging_system.metrics__string__messaging_system_ping_type":"toast_notification","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":2101085},{"messaging_system.metrics__text2__messaging_system_message_id":"FOX_DOODLE_SET_DEFAULT","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1964738},{"messaging_system.metrics__text2__messaging_system_message_id":"INFOBAR_DEFAULT_AND_PIN_87","messaging_system.metrics__string__messaging_system_ping_type":"infobar","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1798839},{"messaging_system.metrics__text2__messaging_system_message_id":"SET_DEFAULT_BROWSER_GUIDANCE_NOTIFICATION_WIN11","messaging_system.metrics__string__messaging_system_ping_type":"toast_notification","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1639148},{"messaging_system.metrics__text2__messaging_system_message_id":"EMBEDDED_IMPORT_SPOTLIGHT","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":659635},{"messaging_system.metrics__text2__messaging_system_message_id":"FX_MR_106_UPGRADE","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":321129},{"messaging_system.metrics__text2__messaging_system_message_id":"FX_MR_106_UPGRADE","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":312598},{"messaging_system.metrics__text2__messaging_system_message_id":"MILESTONE_MESSAGE_87","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":253133},{"messaging_system.metrics__text2__messaging_system_message_id":"TAIL_FOX_SET_DEFAULT_CONTENT","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":233001},{"messaging_system.metrics__text2__messaging_system_message_id":"CFR_FIREFOX_VIEW","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":113951},{"messaging_system.metrics__text2__messaging_system_message_id":"FIREFOX_VIEW_PROMO","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":88442},{"messaging_system.metrics__text2__messaging_system_message_id":"FIREFOX_VIEW_PROMO","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":87942},{"messaging_system.metrics__text2__messaging_system_message_id":"RTAMO_DEFAULT_WELCOME_EXTENSION","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":49768},{"messaging_system.metrics__text2__messaging_system_message_id":"PROTECTIONS_PANEL_1","messaging_system.metrics__string__messaging_system_ping_type":"whats-new-panel","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":44592},{"messaging_system.metrics__text2__messaging_system_message_id":"FXA_ACCOUNTS_BADGE_REVISED","messaging_system.metrics__string__messaging_system_ping_type":"whats-new-panel","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":24879},{"messaging_system.metrics__text2__messaging_system_message_id":"WINDOWS_DEVICE_MIGRATION_SUMO_SWITCH_DEVICE","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":14288},{"messaging_system.metrics__text2__messaging_system_message_id":"WINDOWS_DEVICE_MIGRATION_SUMO_SWITCH_DEVICE","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":12335},{"messaging_system.metrics__text2__messaging_system_message_id":"FIREFOX_VIEW_FEATURE_TOUR","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":11061},{"messaging_system.metrics__text2__messaging_system_message_id":"DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":9295},{"messaging_system.metrics__text2__messaging_system_message_id":"FIREFOX_VIEW_TAB_PICKUP_REMINDER","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":6839},{"messaging_system.metrics__text2__messaging_system_message_id":"FXA_ACCOUNTS_BADGE","messaging_system.metrics__string__messaging_system_ping_type":"toolbar-badge","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":5565},{"messaging_system.metrics__text2__messaging_system_message_id":"MULTISTAGE_SPOTLIGHT_MESSAGE","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":4142},{"messaging_system.metrics__text2__messaging_system_message_id":"FXA_ACCOUNTS_BADGE","messaging_system.metrics__string__messaging_system_ping_type":"whats-new-panel","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":3123},{"messaging_system.metrics__text2__messaging_system_message_id":"RTAMO_DEFAULT_WELCOME_THEME","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1179},{"messaging_system.metrics__text2__messaging_system_message_id":"PDF_DEFAULT_PROMPT","messaging_system.metrics__string__messaging_system_ping_type":"infobar","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":608},{"messaging_system.metrics__text2__messaging_system_message_id":"SAVE_LOGIN_72","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":396},{"messaging_system.metrics__text2__messaging_system_message_id":"SET_DEFAULT_PDF_HANDLER_MESSAGE","messaging_system.metrics__string__messaging_system_ping_type":"infobar","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":100},{"messaging_system.metrics__text2__messaging_system_message_id":"Q4_DEVICE_MIGRATION_BACKUP_SPOTLIGHT","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":98},{"messaging_system.metrics__text2__messaging_system_message_id":"PDFJS_FEATURE_TOUR","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":96},{"messaging_system.metrics__text2__messaging_system_message_id":"RTAMO_DEFAULT_WELCOME_LOCALE","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":64},{"messaging_system.metrics__text2__messaging_system_message_id":"RTAMO_DEFAULT_WELCOME_DICTIONARY","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":43},{"messaging_system.metrics__text2__messaging_system_message_id":"test-infobar-name","messaging_system.metrics__string__messaging_system_ping_type":"infobar","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":37},{"messaging_system.metrics__text2__messaging_system_message_id":"PDF_URL_FFX_SEND","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":31},{"messaging_system.metrics__text2__messaging_system_message_id":"UPDATE_LOGIN","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":31},{"messaging_system.metrics__text2__messaging_system_message_id":"PIN_TAB_72","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":24},{"messaging_system.metrics__text2__messaging_system_message_id":"SAVE_LOGIN","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":24},{"messaging_system.metrics__text2__messaging_system_message_id":"DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_AND_BACKUP_CONTENT","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":21},{"messaging_system.metrics__text2__messaging_system_message_id":"BOOKMARK_SYNC_CFR","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":16},{"messaging_system.metrics__text2__messaging_system_message_id":"FACEBOOK_CONTAINER_ADDON_A","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":11},{"messaging_system.metrics__text2__messaging_system_message_id":"DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_BACKUP_CONTENT","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":8},{"messaging_system.metrics__text2__messaging_system_message_id":"DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_CONTENT","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":8},{"messaging_system.metrics__text2__messaging_system_message_id":"MILESTONE_MESSAGE","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":8},{"messaging_system.metrics__text2__messaging_system_message_id":"DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_AND_BACKUP_CONTENT","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":8},{"messaging_system.metrics__text2__messaging_system_message_id":"SEND_TAB_CFR","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":7},{"messaging_system.metrics__text2__messaging_system_message_id":"CFR_WINDOWS_DEVICE_MIGRATION_SUMO_SWITCH_DEVICE","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":4},{"messaging_system.metrics__text2__messaging_system_message_id":"DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_BACKUP_CONTENT","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":3},{"messaging_system.metrics__text2__messaging_system_message_id":"FX_MR_106_UPGRADE","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":2},{"messaging_system.metrics__text2__messaging_system_message_id":"DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_CONTENT","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":2},{"messaging_system.metrics__text2__messaging_system_message_id":"YOUTUBE_ENHANCE_3","messaging_system.metrics__string__messaging_system_ping_type":"cfr","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":"CFR","count_of_messaging_system_client_id":2},{"messaging_system.metrics__text2__messaging_system_message_id":"FX_100_UPGRADE","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":2},{"messaging_system.metrics__text2__messaging_system_message_id":"MR_WELCOME_DEFAULT","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-onboarding-modal-experiment-control","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"TEST_INFOBAR_MESSAGE","messaging_system.metrics__string__messaging_system_ping_type":"infobar","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"FXA_ACCOUNTS_BADGE_REVISED","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"NEWTAB_POCKET_TOPICS_SURVEY","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"MR_WELCOME_DEFAULT","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-onboarding-modal-experiment-treatment","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"TEST_TOAST_NOTIFICATION1","messaging_system.metrics__string__messaging_system_ping_type":"toast_notification","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"PDF_HANDLER_ANNOTATIONS_CONTENT","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"Q4_DEVICE_MIGRATION_BACKUP_SPOTLIGHT","messaging_system.metrics__string__messaging_system_ping_type":"spotlight","messaging_system.metrics__string__messaging_system_event_source":"additional_button","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"test-infobar-sample-strings","messaging_system.metrics__string__messaging_system_ping_type":"infobar","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"FOCUS_PROMO","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"test_info","messaging_system.metrics__string__messaging_system_ping_type":"infobar","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"test-infobar-rs-stage","messaging_system.metrics__string__messaging_system_ping_type":"infobar","messaging_system.metrics__string__messaging_system_event_source":null,"messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"MR_WELCOME_DEFAULT","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-1-click-pin-during-onboarding-pin-a","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1},{"messaging_system.metrics__text2__messaging_system_message_id":"NEWTAB_POCKET_CSAT_SURVEY","messaging_system.metrics__string__messaging_system_ping_type":null,"messaging_system.metrics__string__messaging_system_event_source":"aboutwelcome-default","messaging_system.metrics__string__messaging_system_source":null,"count_of_messaging_system_client_id":1}]
+[
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FXA_ACCOUNTS_BADGE_REVISED",
+    "messaging_system.metrics__string__messaging_system_ping_type": "toolbar-badge",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 68250732
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "MR_WELCOME_DEFAULT",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 14593928
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "Q4_DEVICE_MIGRATION_BACKUP_SPOTLIGHT",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 7153617
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "INFOBAR_LAUNCH_ON_LOGIN",
+    "messaging_system.metrics__string__messaging_system_ping_type": "infobar",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 4707042
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 3870232
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "INFOBAR_LAUNCH_ON_LOGIN_FINAL",
+    "messaging_system.metrics__string__messaging_system_ping_type": "infobar",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 2910962
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "SET_DEFAULT_BROWSER_GUIDANCE_NOTIFICATION_WIN10",
+    "messaging_system.metrics__string__messaging_system_ping_type": "toast_notification",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 2101085
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FOX_DOODLE_SET_DEFAULT",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1964738
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "INFOBAR_DEFAULT_AND_PIN_87",
+    "messaging_system.metrics__string__messaging_system_ping_type": "infobar",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1798839
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "SET_DEFAULT_BROWSER_GUIDANCE_NOTIFICATION_WIN11",
+    "messaging_system.metrics__string__messaging_system_ping_type": "toast_notification",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1639148
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "EMBEDDED_IMPORT_SPOTLIGHT",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 659635
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FX_MR_106_UPGRADE",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 321129
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FX_MR_106_UPGRADE",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 312598
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "MILESTONE_MESSAGE_87",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 253133
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "TAIL_FOX_SET_DEFAULT_CONTENT",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 233001
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "CFR_FIREFOX_VIEW",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 113951
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FIREFOX_VIEW_PROMO",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 88442
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FIREFOX_VIEW_PROMO",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 87942
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "RTAMO_DEFAULT_WELCOME_EXTENSION",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 49768
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "PROTECTIONS_PANEL_1",
+    "messaging_system.metrics__string__messaging_system_ping_type": "whats-new-panel",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 44592
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FXA_ACCOUNTS_BADGE_REVISED",
+    "messaging_system.metrics__string__messaging_system_ping_type": "whats-new-panel",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 24879
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "WINDOWS_DEVICE_MIGRATION_SUMO_SWITCH_DEVICE",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 14288
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "WINDOWS_DEVICE_MIGRATION_SUMO_SWITCH_DEVICE",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 12335
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FIREFOX_VIEW_FEATURE_TOUR",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 11061
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 9295
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FIREFOX_VIEW_TAB_PICKUP_REMINDER",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 6839
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FXA_ACCOUNTS_BADGE",
+    "messaging_system.metrics__string__messaging_system_ping_type": "toolbar-badge",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 5565
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "MULTISTAGE_SPOTLIGHT_MESSAGE",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 4142
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FXA_ACCOUNTS_BADGE",
+    "messaging_system.metrics__string__messaging_system_ping_type": "whats-new-panel",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 3123
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "RTAMO_DEFAULT_WELCOME_THEME",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1179
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "PDF_DEFAULT_PROMPT",
+    "messaging_system.metrics__string__messaging_system_ping_type": "infobar",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 608
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "SAVE_LOGIN_72",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 396
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "SET_DEFAULT_PDF_HANDLER_MESSAGE",
+    "messaging_system.metrics__string__messaging_system_ping_type": "infobar",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 100
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "Q4_DEVICE_MIGRATION_BACKUP_SPOTLIGHT",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 98
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "PDFJS_FEATURE_TOUR",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 96
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "RTAMO_DEFAULT_WELCOME_LOCALE",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 64
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "RTAMO_DEFAULT_WELCOME_DICTIONARY",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 43
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "test-infobar-name",
+    "messaging_system.metrics__string__messaging_system_ping_type": "infobar",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 37
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "PDF_URL_FFX_SEND",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 31
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "UPDATE_LOGIN",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 31
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "PIN_TAB_72",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 24
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "SAVE_LOGIN",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 24
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_AND_BACKUP_CONTENT",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 21
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "BOOKMARK_SYNC_CFR",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 16
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FACEBOOK_CONTAINER_ADDON_A",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 11
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_BACKUP_CONTENT",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 8
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_CONTENT",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 8
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "MILESTONE_MESSAGE",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 8
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_AND_BACKUP_CONTENT",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 8
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "SEND_TAB_CFR",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 7
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "CFR_WINDOWS_DEVICE_MIGRATION_SUMO_SWITCH_DEVICE",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 4
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_BACKUP_CONTENT",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 3
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FX_MR_106_UPGRADE",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 2
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_CONTENT",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 2
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "YOUTUBE_ENHANCE_3",
+    "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": "CFR",
+    "count_of_messaging_system_client_id": 2
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FX_100_UPGRADE",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 2
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "MR_WELCOME_DEFAULT",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-onboarding-modal-experiment-control",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "TEST_INFOBAR_MESSAGE",
+    "messaging_system.metrics__string__messaging_system_ping_type": "infobar",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FXA_ACCOUNTS_BADGE_REVISED",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "NEWTAB_POCKET_TOPICS_SURVEY",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "MR_WELCOME_DEFAULT",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-onboarding-modal-experiment-treatment",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "TEST_TOAST_NOTIFICATION1",
+    "messaging_system.metrics__string__messaging_system_ping_type": "toast_notification",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "PDF_HANDLER_ANNOTATIONS_CONTENT",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "Q4_DEVICE_MIGRATION_BACKUP_SPOTLIGHT",
+    "messaging_system.metrics__string__messaging_system_ping_type": "spotlight",
+    "messaging_system.metrics__string__messaging_system_event_source": "additional_button",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "test-infobar-sample-strings",
+    "messaging_system.metrics__string__messaging_system_ping_type": "infobar",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "FOCUS_PROMO",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "test_info",
+    "messaging_system.metrics__string__messaging_system_ping_type": "infobar",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "test-infobar-rs-stage",
+    "messaging_system.metrics__string__messaging_system_ping_type": "infobar",
+    "messaging_system.metrics__string__messaging_system_event_source": null,
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "MR_WELCOME_DEFAULT",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-1-click-pin-during-onboarding-pin-a",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  },
+  {
+    "messaging_system.metrics__text2__messaging_system_message_id": "NEWTAB_POCKET_CSAT_SURVEY",
+    "messaging_system.metrics__string__messaging_system_ping_type": null,
+    "messaging_system.metrics__string__messaging_system_event_source": "aboutwelcome-default",
+    "messaging_system.metrics__string__messaging_system_source": null,
+    "count_of_messaging_system_client_id": 1
+  }
+]
