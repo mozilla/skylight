@@ -31,7 +31,7 @@ export async function getAWDashboardElement0(
 }
 
 /**
- * @returns the query results in JSON format for https://mozilla.cloud.looker.com/looks/2162
+ * @returns the query results in JSON format for the Look query with lookId
  */
 export async function runLookQuery(lookId: string): Promise<string> {
   const results = await SDK.ok(

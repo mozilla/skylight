@@ -111,31 +111,29 @@ type NimbusExperiment = types.experiments.NimbusExperiment;
  * array and for ids with substring "test".
  */
 function cleanData(data: any) {
-  let clean_data = JSON.parse(JSON.stringify(data)).filter(
-    (messageDef: any) => {
-      const removeMessages = [
-        "undefined",
-        "",
-        "test-id",
-        "n/a",
-        null,
-        "DEFAULT_ID",
-      ];
-      return (
-        !removeMessages.includes(
-          messageDef[
-            "messaging_system.metrics__text2__messaging_system_message_id"
-          ],
-        ) &&
-        !messageDef[
+  let cleanData = JSON.parse(JSON.stringify(data)).filter((messageDef: any) => {
+    const removeMessages = [
+      "undefined",
+      "",
+      "test-id",
+      "n/a",
+      null,
+      "DEFAULT_ID",
+    ];
+    return (
+      !removeMessages.includes(
+        messageDef[
           "messaging_system.metrics__text2__messaging_system_message_id"
-        ]
-          .toLowerCase()
-          .includes("test")
-      );
-    },
-  );
-  return clean_data;
+        ],
+      ) &&
+      !messageDef[
+        "messaging_system.metrics__text2__messaging_system_message_id"
+      ]
+        .toLowerCase()
+        .includes("test")
+    );
+  });
+  return cleanData;
 }
 
 /**
@@ -209,7 +207,7 @@ function mergeData(originalData: any, newLookerData: any) {
  * to match the message data objects from asrouter, remove any test messages,
  * and update templates.
  */
-async function mergeLookerData() {
+async function getLookerData() {
   const fs = require("fs");
 
   // Get existing message data
@@ -301,7 +299,7 @@ export default async function Dashboard() {
 
   // Update and merge Looker data
   if (isLookerEnabled) {
-    await mergeLookerData();
+    await getLookerData();
   }
 
   // XXX await Promise.allSettled for all three loads concurrently
