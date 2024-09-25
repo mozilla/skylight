@@ -107,99 +107,133 @@ let columnsShown = false;
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
 /**
- * Takes message data from `lib/asrouter-local-prod-messages/data.json` and
+ * Removes any messages inside `data` for ids specified in the removeMessages
+ * array and for ids with substring "test".
+ */
+function cleanData(data: any) {
+  let clean_data = JSON.parse(JSON.stringify(data)).filter(
+    (messageDef: any) => {
+      const removeMessages = [
+        "undefined",
+        "",
+        "test-id",
+        "n/a",
+        null,
+        "DEFAULT_ID",
+      ];
+      return (
+        !removeMessages.includes(
+          messageDef[
+            "messaging_system.metrics__text2__messaging_system_message_id"
+          ],
+        ) &&
+        !messageDef[
+          "messaging_system.metrics__text2__messaging_system_message_id"
+        ]
+          .toLowerCase()
+          .includes("test")
+      );
+    },
+  );
+  return clean_data;
+}
+
+/**
+ * Appends any messages from `newLookerData` into `originalData` with an id
+ * that does not already exist in `originalData`. Updates the templates for
+ * any message that need some clean up.
+ *
+ * The message data in `newLookerData` has properties
+ * "messaging_system.metrics__text2__messaging_system_message_id" and
+ * "messaging_system.metrics__string__messaging_system_ping_type" to represent
+ * the message id and template. Before appending these messages into
+ * `originalData`, we must clean up the objects to have properties "id" and
+ * "template" instead, and exclude any other properties that do not currently
+ * provide any value.
+ */
+function mergeData(originalData: any, newLookerData: any) {
+  for (let i = 0; i < newLookerData.length; i++) {
+    if (
+      !originalData.find(
+        (x: any) =>
+          x.id ===
+          newLookerData[i][
+            "messaging_system.metrics__text2__messaging_system_message_id"
+          ],
+      )
+    ) {
+      // `hidePreview` is added because the message data from Looker does not
+      // have enough information to enable message previews correctly and we
+      // must manually hide the previews for now.
+      let clean_looker_object = {
+        id: newLookerData[i][
+          "messaging_system.metrics__text2__messaging_system_message_id"
+        ],
+        template:
+          newLookerData[i][
+            "messaging_system.metrics__string__messaging_system_ping_type"
+          ],
+        hidePreview: true,
+      };
+
+      // Update templates for RTAMO messages
+      if (clean_looker_object.id.includes("RTAMO")) {
+        clean_looker_object.template = "rtamo";
+      }
+
+      // Update template for FOCUS_PROMO message
+      if (clean_looker_object.id === "FOCUS_PROMO") {
+        clean_looker_object.template = "pb_newtab";
+      }
+
+      // Update template for MILESTONE_MESSAGE message
+      if (clean_looker_object.id === "MILESTONE_MESSAGE") {
+        clean_looker_object.template = "milestone_message";
+      }
+
+      // Update templates for feature callout messages
+      if (clean_looker_object.template === null) {
+        clean_looker_object.template = "feature_callout";
+      }
+
+      originalData.push(clean_looker_object);
+    }
+  }
+  return originalData;
+}
+
+/**
+ * Reads in message data from lib/asrouter-local-prod-messages/data.json and
  * appends any message data collected from Looker that does not already exist
  * (ie. no duplicate message ids). The Looker message data is also cleaned up
  * to match the message data objects from asrouter, remove any test messages,
- * and update surface tags.
+ * and update templates.
  */
 async function mergeLookerData() {
   const fs = require("fs");
 
-  // Existing message data
+  // Get existing message data
   let result = fs.readFileSync(
     "lib/asrouter-local-prod-messages/data.json",
     "utf8",
   );
   let json_result = JSON.parse(result);
 
-  // Looker message data
-  let data = await runLookQuery();
+  // Get Looker message data (taken from the Look query
+  // https://mozilla.cloud.looker.com/looks/2162)
+  const lookId = "2162";
+  let looker_data = await runLookQuery(lookId);
 
-  // Manual check to remove messages with id defined inside `removeMessages`
-  let clean_data = data.filter((messageDef: any) => {
-    const removeMessages = [
-      "undefined",
-      "",
-      "test-id",
-      "n/a",
-      null,
-      "DEFAULT_ID",
-    ];
-    return !removeMessages.includes(
-      messageDef[
-        "messaging_system.metrics__text2__messaging_system_message_id"
-      ],
-    );
-  });
-  let json_looker_data = JSON.parse(JSON.stringify(clean_data));
+  // Clean and merge Looker data with existing data
+  let json_looker_data = cleanData(looker_data);
+  mergeData(json_result, json_looker_data);
 
-  // Add any message data with an id that does not already exist in data.json
-  for (let i = 0; i < json_looker_data.length; i++) {
-    // Check that id does not already exist and does not contain a "test" substring
-    if (
-      !json_result.find(
-        (x: any) =>
-          x.id ===
-          json_looker_data[i][
-            "messaging_system.metrics__text2__messaging_system_message_id"
-          ],
-      ) &&
-      !json_looker_data[i][
-        "messaging_system.metrics__text2__messaging_system_message_id"
-      ]
-        .toLowerCase()
-        .includes("test")
-    ) {
-      // Clean up objects to only include properties `id` and `template` since
-      // currently the other properties do not provide any value.
-      // NOTE: `hidePreview` is added because the message data from Looker
-      // does not have enough information to enable message previews correctly
-      // and we must manually hide the previews for now.
-      let clean_looker_object = {
-        id: json_looker_data[i][
-          "messaging_system.metrics__text2__messaging_system_message_id"
-        ],
-        template:
-          json_looker_data[i][
-            "messaging_system.metrics__string__messaging_system_ping_type"
-          ],
-        hidePreview: true,
-      };
-
-      // Update surfaces for RTAMO messages
-      if (clean_looker_object.id.includes("RTAMO")) {
-        clean_looker_object.template = "rtamo";
-      }
-
-      // Update surfaces for feature callout messages
-      if (clean_looker_object.template === null) {
-        clean_looker_object.template = "feature_callout";
-      }
-
-      // Update surface for FOCUS_PROMO message
-      if (clean_looker_object.id === "FOCUS_PROMO") {
-        clean_looker_object.template = "pb_newtab";
-      }
-
-      json_result.push(clean_looker_object);
-    }
-
-    fs.writeFileSync(
-      "lib/asrouter-local-prod-messages/data.json",
-      JSON.stringify(json_result),
-    );
-  }
+  // Update data.json with new Looker data to cache the Looker data which will
+  // be generated at build time
+  fs.writeFileSync(
+    "lib/asrouter-local-prod-messages/data.json",
+    JSON.stringify(json_result),
+  );
 }
 
 async function getASRouterLocalMessageInfoFromFile(): Promise<

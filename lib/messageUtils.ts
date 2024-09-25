@@ -62,6 +62,7 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
       tagColor: "bg-indigo-400",
     },
     toolbar_badge: { surface: "Toolbar Badge", tagColor: "bg-purple-400" },
+    // XXX Consider removing after we start reading JSON from remote settings
     "toolbar-badge": { surface: "Toolbar Badge", tagColor: "bg-purple-400" },
     spotlight: {
       surface: "Spotlight Modal Dialog",
