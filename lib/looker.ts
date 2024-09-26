@@ -171,13 +171,7 @@ export async function getCTRPercentData(
  */
 export function cleanLookerData(data: any) {
   let cleanData = JSON.parse(JSON.stringify(data)).filter((messageDef: any) => {
-    const removeMessages = [
-      "undefined",
-      "",
-      "n/a",
-      null,
-      "DEFAULT_ID",
-    ];
+    const removeMessages = ["undefined", "", "n/a", null, "DEFAULT_ID"];
     return (
       !removeMessages.includes(
         messageDef[
