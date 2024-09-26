@@ -1,7 +1,8 @@
-## Thursday, Spetember 26th, 2024
+## Thursday, September 26th, 2024
 
 ### Added
 
+- Added default sorting by surface tags for the live message table
 - Exposed dashboard links to completed rollouts and experiments
 
 ## Monday, September 16th, 2024
