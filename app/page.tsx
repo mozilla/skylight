@@ -31,13 +31,22 @@ const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 const hidden_message_impression_threshold =
   process.env.HIDDEN_MESSAGE_IMPRESSION_THRESHOLD;
 
-function compareFn(a: any, b: any) {
+function compareDatesFn(a: any, b: any) {
   if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
     return -1;
   } else if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
     return 1;
   }
   // a must be equal to b
+  return 0;
+}
+
+function compareSurfacesFn(a: any, b: any) {
+  if (a.surface < b.surface) {
+    return -1;
+  } else if (a.surface > b.surface) {
+    return 1;
+  }
   return 0;
 }
 
@@ -122,7 +131,7 @@ async function getMsgExpRecipeCollection(
   const msgExpRecipeCollection = new NimbusRecipeCollection();
   msgExpRecipeCollection.recipes = expOnlyCollection.recipes
     .filter((recipe) => recipe.usesMessagingFeatures())
-    .sort(compareFn);
+    .sort(compareDatesFn);
   console.log(
     "msgExpRecipeCollection.length = ",
     msgExpRecipeCollection.recipes.length,
@@ -137,7 +146,7 @@ async function getMsgRolloutCollection(
   const msgRolloutRecipeCollection = new NimbusRecipeCollection();
   msgRolloutRecipeCollection.recipes = recipeCollection.recipes
     .filter((recipe) => recipe.usesMessagingFeatures() && !recipe.isExpRecipe())
-    .sort(compareFn);
+    .sort(compareDatesFn);
   console.log(
     "msgRolloutRecipeCollection.length = ",
     msgRolloutRecipeCollection.recipes.length,
@@ -155,7 +164,9 @@ export default async function Dashboard() {
   console.log("recipeCollection.length = ", recipeCollection.recipes.length);
 
   // XXX await Promise.allSettled for all three loads concurrently
-  const localData = await getASRouterLocalMessageInfoFromFile();
+  const localData = (await getASRouterLocalMessageInfoFromFile()).sort(
+    compareSurfacesFn,
+  );
   const msgExpRecipeCollection =
     await getMsgExpRecipeCollection(recipeCollection);
   const msgRolloutRecipeCollection =
