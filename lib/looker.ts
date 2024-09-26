@@ -164,3 +164,96 @@ export async function getCTRPercentData(
     };
   }
 }
+
+/**
+ * Removes any messages inside `data` for ids specified in the removeMessages
+ * array and for ids with substring "test".
+ */
+export function cleanLookerData(data: any) {
+  let cleanData = JSON.parse(JSON.stringify(data)).filter((messageDef: any) => {
+    const removeMessages = [
+      "undefined",
+      "",
+      "n/a",
+      null,
+      "DEFAULT_ID",
+    ];
+    return (
+      !removeMessages.includes(
+        messageDef[
+          "messaging_system.metrics__text2__messaging_system_message_id"
+        ],
+      ) &&
+      !messageDef[
+        "messaging_system.metrics__text2__messaging_system_message_id"
+      ]
+        .toLowerCase()
+        .includes("test")
+    );
+  });
+  return cleanData;
+}
+
+/**
+ * Appends any messages from `newLookerData` into `originalData` with an id
+ * that does not already exist in `originalData`. Updates the templates for
+ * any message that need some clean up.
+ *
+ * The message data in `newLookerData` has properties
+ * "messaging_system.metrics__text2__messaging_system_message_id" and
+ * "messaging_system.metrics__string__messaging_system_ping_type" to represent
+ * the message id and template. Before appending these messages into
+ * `originalData`, we must clean up the objects to have properties "id" and
+ * "template" instead, and exclude any other properties that do not currently
+ * provide any value.
+ */
+export function mergeLookerData(originalData: any, newLookerData: any) {
+  for (let i = 0; i < newLookerData.length; i++) {
+    if (
+      !originalData.find(
+        (x: any) =>
+          x.id ===
+          newLookerData[i][
+            "messaging_system.metrics__text2__messaging_system_message_id"
+          ],
+      )
+    ) {
+      // `hidePreview` is added because the message data from Looker does not
+      // have enough information to enable message previews correctly and we
+      // must manually hide the previews for now.
+      let clean_looker_object = {
+        id: newLookerData[i][
+          "messaging_system.metrics__text2__messaging_system_message_id"
+        ],
+        template:
+          newLookerData[i][
+            "messaging_system.metrics__string__messaging_system_ping_type"
+          ],
+        hidePreview: true,
+      };
+
+      // Update templates for RTAMO messages
+      if (clean_looker_object.id.includes("RTAMO")) {
+        clean_looker_object.template = "rtamo";
+      }
+
+      // Update template for FOCUS_PROMO message
+      if (clean_looker_object.id === "FOCUS_PROMO") {
+        clean_looker_object.template = "pb_newtab";
+      }
+
+      // Update template for MILESTONE_MESSAGE message
+      if (clean_looker_object.id === "MILESTONE_MESSAGE") {
+        clean_looker_object.template = "milestone_message";
+      }
+
+      // Update templates for feature callout messages
+      if (clean_looker_object.template === null) {
+        clean_looker_object.template = "feature_callout";
+      }
+
+      originalData.push(clean_looker_object);
+    }
+  }
+  return originalData;
+}
