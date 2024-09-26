@@ -68,7 +68,8 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
 
     // console.log('returned experiments', experiments)
     this.recipes = experiments.map(
-      (nimbusExp: NimbusExperiment) => new NimbusRecipe(nimbusExp),
+      (nimbusExp: NimbusExperiment) =>
+        new NimbusRecipe(nimbusExp, this.isCompleted),
     );
 
     return this.recipes;

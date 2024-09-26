@@ -30,11 +30,14 @@ export function getExperimentLookerDashboardDate(
 export function getLookerSubmissionTimestampDateFilter(
   startDate?: string | null,
   endDate?: string | null,
+  isCompleted?: boolean,
 ): string {
   // Showing the last 30 complete days to ensure the dashboard isn't including today which has no data yet
   let submission_timestamp_date = "30 day ago for 30 day";
 
-  if (startDate && endDate && new Date() < new Date(endDate)) {
+  if (!isCompleted && startDate && endDate && new Date() < new Date(endDate)) {
+    submission_timestamp_date = `${startDate} to ${endDate}`;
+  } else if (isCompleted && startDate && endDate) {
     submission_timestamp_date = `${startDate} to ${endDate}`;
   } else if (startDate) {
     submission_timestamp_date = `${startDate} to today`;

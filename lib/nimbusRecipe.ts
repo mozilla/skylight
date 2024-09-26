@@ -50,6 +50,7 @@ function _branchInfoHasMicrosurvey(branchInfo: BranchInfo): boolean {
 
 type NimbusRecipeType = {
   _rawRecipe: NimbusExperiment;
+  _isCompleted: boolean;
 
   getRecipeInfo(): RecipeInfo;
   getRecipeOrBranchInfos(): RecipeOrBranchInfo[];
@@ -63,9 +64,11 @@ type NimbusRecipeType = {
 
 export class NimbusRecipe implements NimbusRecipeType {
   _rawRecipe;
+  _isCompleted;
 
-  constructor(recipe: NimbusExperiment) {
+  constructor(recipe: NimbusExperiment, isCompleted: boolean = false) {
     this._rawRecipe = recipe;
+    this._isCompleted = isCompleted;
   }
 
   /**
@@ -240,6 +243,12 @@ export class NimbusRecipe implements NimbusRecipeType {
       branchInfo.nimbusExperiment.startDate,
       branchInfo.nimbusExperiment.proposedDuration,
     );
+    let formattedEndDate;
+    if (branchInfo.nimbusExperiment.endDate) {
+      const endDate = new Date(branchInfo.nimbusExperiment.endDate);
+      endDate.setUTCDate(endDate.getUTCDate() + 1);
+      formattedEndDate = endDate.toISOString().slice(0, 10);
+    }
     branchInfo.ctrDashboardLink = getDashboard(
       branch.template,
       branchInfo.id,
@@ -247,7 +256,8 @@ export class NimbusRecipe implements NimbusRecipeType {
       branchInfo.nimbusExperiment.slug,
       branch.slug,
       branchInfo.nimbusExperiment.startDate,
-      proposedEndDate,
+      branchInfo.nimbusExperiment.endDate ? formattedEndDate : proposedEndDate,
+      this._isCompleted,
     );
     // if (!feature.value.content) {
     //   console.log("v.content is null");

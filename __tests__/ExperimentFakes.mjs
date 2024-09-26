@@ -32,6 +32,7 @@ export const ExperimentFakes = {
         "testFeature",
       ],
       isRollout: false,
+      _isCompleted: false,
       ...props,
     };
   },

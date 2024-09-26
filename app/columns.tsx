@@ -608,6 +608,30 @@ export const completedExperimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     },
   },
   {
+    accessorKey: "metrics",
+    header: () => "Metrics",
+    cell: (props: any) => {
+      // XXX these dashboards are currently (incorrectly) empty.
+      // Until we fix the upcase bug, we'll hide them
+      const hideDashboardExperiments = [
+        "recommend-media-addons-feature-existing-users",
+        "recommend-media-addons-feature-callout",
+      ];
+      if (
+        hideDashboardExperiments.includes(
+          props.row.original?.nimbusExperiment?.slug,
+        )
+      ) {
+        return <></>;
+      }
+
+      if (props.row.original.ctrDashboardLink) {
+        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
+      }
+      return <></>;
+    },
+  },
+  {
     accessorKey: "other",
     header: () => (
       <div className="flex flex-row items-center">

@@ -105,6 +105,7 @@ export function getDashboard(
   branchSlug?: string,
   startDate?: string | null,
   endDate?: string | null,
+  isCompleted?: boolean,
 ): string | undefined {
   const encodedMsgId = encodeURIComponent(msgId);
   const encodedTemplate = encodeURIComponent(template);
@@ -112,7 +113,7 @@ export function getDashboard(
   const encodedExperiment = experiment ? encodeURIComponent(experiment) : "";
   const encodedBranchSlug = branchSlug ? encodeURIComponent(branchSlug) : "";
   const encodedSubmissionDate = encodeURIComponent(
-    getLookerSubmissionTimestampDateFilter(startDate, endDate),
+    getLookerSubmissionTimestampDateFilter(startDate, endDate, isCompleted),
   );
   const dashboardId = getDashboardIdForTemplate(template);
 
