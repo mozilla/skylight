@@ -1,3 +1,9 @@
+## Friday, September 27th, 2024
+
+### Added
+
+- Added a search bar in the Surface column to allow filtering by surfaces
+
 ## Thursday, September 26th, 2024
 
 ### Added
