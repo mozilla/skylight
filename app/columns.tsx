@@ -404,6 +404,14 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         props.row.original.surface,
       );
     },
+    filterFn: (row, columnId, filterValue) => {
+      if (row.original.surface) {
+        return row.original.surface
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
+      }
+      return false;
+    },
   },
   {
     //   accessorKey: "segment",
@@ -600,6 +608,14 @@ export const completedExperimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         props.row.original.template,
         props.row.original.surface,
       );
+    },
+    filterFn: (row, columnId, filterValue) => {
+      if (row.original.surface) {
+        return row.original.surface
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
+      }
+      return false;
     },
   },
   {

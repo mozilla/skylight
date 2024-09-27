@@ -46,7 +46,7 @@ function HideMessageCheckbox({
   return (
     <div className="flex items-center gap-x-1">
       <Checkbox
-        className="border-slate-500"
+        className="border-slate-400"
         id="hide"
         onCheckedChange={() => {
           if (!hideMessages) {
@@ -90,6 +90,7 @@ export function MessageTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     getSubRows: (originalRow: any) => originalRow.branches,
     getExpandedRowModel: getExpandedRowModel(),
+    filterFromLeafRows: true,
   });
 
   const [hideMessages, setHideMessages] = useState(false);
@@ -112,7 +113,7 @@ export function MessageTable<TData, TValue>({
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead
-                    className="bg-stone-100 text-slate-400"
+                    className="bg-stone-100 text-slate-400 py-2"
                     key={header.id}
                   >
                     {header.isPlaceholder ? null : (
@@ -132,6 +133,23 @@ export function MessageTable<TData, TValue>({
                               impressionsThreshold={impressionsThreshold}
                             />
                           )}
+                        {header.column.columnDef
+                          .header!.toString()
+                          .includes("Surface") && (
+                          <div>
+                            <input
+                              type="text"
+                              value={
+                                (header.column.getFilterValue() ?? "") as string
+                              }
+                              onChange={(e) =>
+                                header.column.setFilterValue(e.target.value)
+                              }
+                              placeholder={`Search...`}
+                              className="w-full border border-slate-400 font-light px-1 text-2xs rounded"
+                            />
+                          </div>
+                        )}
                       </div>
                     )}
                   </TableHead>
