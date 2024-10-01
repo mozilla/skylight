@@ -34,8 +34,8 @@ describe("getExperimentLookerDashboardDate", () => {
 });
 
 describe("getLookerSubmissionTimestampDateFilter", () => {
-  it("returns the default date filter when startDate and endDate are null", () => {
-    const result = getLookerSubmissionTimestampDateFilter(null, null);
+  it("returns the default date filter when startDate and endDate are undefined", () => {
+    const result = getLookerSubmissionTimestampDateFilter();
 
     expect(result).toEqual("30 day ago for 30 day");
   });

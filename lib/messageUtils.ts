@@ -112,6 +112,8 @@ export function getDashboard(
   const encodedChannel = channel ? encodeURIComponent(channel) : "";
   const encodedExperiment = experiment ? encodeURIComponent(experiment) : "";
   const encodedBranchSlug = branchSlug ? encodeURIComponent(branchSlug) : "";
+  // The isCompleted value can be useful for messages that used to be in remote
+  // settings or old versions of Firefox.
   const encodedSubmissionDate = encodeURIComponent(
     getLookerSubmissionTimestampDateFilter(startDate, endDate, isCompleted),
   );

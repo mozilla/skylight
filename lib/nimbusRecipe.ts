@@ -10,6 +10,7 @@ import {
   getProposedEndDate,
   MESSAGING_EXPERIMENTS_DEFAULT_FEATURES,
   _substituteLocalizations,
+  formatDate,
 } from "../lib/experimentUtils.ts";
 import { getExperimentLookerDashboardDate } from "./lookerUtils.ts";
 
@@ -245,9 +246,7 @@ export class NimbusRecipe implements NimbusRecipeType {
     );
     let formattedEndDate;
     if (branchInfo.nimbusExperiment.endDate) {
-      const endDate = new Date(branchInfo.nimbusExperiment.endDate);
-      endDate.setUTCDate(endDate.getUTCDate() + 1);
-      formattedEndDate = endDate.toISOString().slice(0, 10);
+      formattedEndDate = formatDate(branchInfo.nimbusExperiment.endDate, 1);
     }
     branchInfo.ctrDashboardLink = getDashboard(
       branch.template,
