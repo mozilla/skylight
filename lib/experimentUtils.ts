@@ -37,9 +37,9 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES: string[] = [
 ];
 
 /**
- * These are experiment with dashboard links that are currently (incorrectly 
+ * These are experiment with dashboard links that are currently (incorrectly
  * empty).
- * 
+ *
  * XXX Until we fix the upcase bug, we'll be hiding these dashboards.
  */
 export const HIDE_DASHBOARD_EXPERIMENTS: string[] = [
@@ -72,7 +72,7 @@ export function getProposedEndDate(
 }
 
 /**
- * 
+ *
  * @param dateString The date to format in a string.
  * @param daysToAdd Optional number of days to add from dateString. A
  *        negative value will result in days subtracted from dateString.
