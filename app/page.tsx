@@ -14,6 +14,7 @@ import {
   maybeCreateWelcomePreview,
   getPreviewLink,
   messageHasMicrosurvey,
+  compareSurfacesFn,
 } from "../lib/messageUtils.ts";
 
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection";
@@ -31,22 +32,16 @@ const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 const hidden_message_impression_threshold =
   process.env.HIDDEN_MESSAGE_IMPRESSION_THRESHOLD;
 
-function compareDatesFn(a: any, b: any) {
-  if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
-    return -1;
-  } else if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
-    return 1;
+function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
+  if (a._rawRecipe.startDate && b._rawRecipe.startDate) {
+    if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
+      return -1;
+    } else if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
+      return 1;
+    }
   }
-  // a must be equal to b
-  return 0;
-}
 
-function compareSurfacesFn(a: any, b: any) {
-  if (a.surface < b.surface) {
-    return -1;
-  } else if (a.surface > b.surface) {
-    return 1;
-  }
+  // a must be equal to b
   return 0;
 }
 
