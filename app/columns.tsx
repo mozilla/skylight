@@ -7,6 +7,7 @@ import { ChevronsUpDown, ChevronDown, ChevronRight } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import { InfoPopover } from "@/components/ui/infopopover";
 import { getSurfaceDataForTemplate } from "@/lib/messageUtils";
+import { HIDE_DASHBOARD_EXPERIMENTS } from "@/lib/experimentUtils";
 
 function SurfaceTag(template: string, surface: string) {
   const { tagColor, docs } = getSurfaceDataForTemplate(template);
@@ -426,14 +427,8 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       </div>
     ),
     cell: (props: any) => {
-      // XXX these dashboards are currently (incorrectly) empty.
-      // Until we fix the upcase bug, we'll hide them
-      const hideDashboardExperiments = [
-        "recommend-media-addons-feature-existing-users",
-        "recommend-media-addons-feature-callout",
-      ];
       if (
-        hideDashboardExperiments.includes(
+        HIDE_DASHBOARD_EXPERIMENTS.includes(
           props.row.original?.nimbusExperiment?.slug,
         )
       ) {
@@ -605,6 +600,24 @@ export const completedExperimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         props.row.original.template,
         props.row.original.surface,
       );
+    },
+  },
+  {
+    accessorKey: "metrics",
+    header: () => "Metrics",
+    cell: (props: any) => {
+      if (
+        HIDE_DASHBOARD_EXPERIMENTS.includes(
+          props.row.original?.nimbusExperiment?.slug,
+        )
+      ) {
+        return <></>;
+      }
+
+      if (props.row.original.ctrDashboardLink) {
+        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
+      }
+      return <></>;
     },
   },
   {

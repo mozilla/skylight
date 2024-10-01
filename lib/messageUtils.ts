@@ -105,14 +105,17 @@ export function getDashboard(
   branchSlug?: string,
   startDate?: string | null,
   endDate?: string | null,
+  isCompleted?: boolean,
 ): string | undefined {
   const encodedMsgId = encodeURIComponent(msgId);
   const encodedTemplate = encodeURIComponent(template);
   const encodedChannel = channel ? encodeURIComponent(channel) : "";
   const encodedExperiment = experiment ? encodeURIComponent(experiment) : "";
   const encodedBranchSlug = branchSlug ? encodeURIComponent(branchSlug) : "";
+  // The isCompleted value can be useful for messages that used to be in remote
+  // settings or old versions of Firefox.
   const encodedSubmissionDate = encodeURIComponent(
-    getLookerSubmissionTimestampDateFilter(startDate, endDate),
+    getLookerSubmissionTimestampDateFilter(startDate, endDate, isCompleted),
   );
   const dashboardId = getDashboardIdForTemplate(template);
 

@@ -1,3 +1,9 @@
+## Thursday, Spetember 26th, 2024
+
+### Added
+
+- Exposed dashboard links to completed rollouts and experiments
+
 ## Thursday, September 5th, 2024
 
 ### Fixed

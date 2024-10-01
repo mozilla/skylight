@@ -37,6 +37,17 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES: string[] = [
 ];
 
 /**
+ * These are experiment with dashboard links that are currently (incorrectly
+ * empty).
+ *
+ * XXX Until we fix the upcase bug, we'll be hiding these dashboards.
+ */
+export const HIDE_DASHBOARD_EXPERIMENTS: string[] = [
+  "recommend-media-addons-feature-existing-users",
+  "recommend-media-addons-feature-callout",
+];
+
+/**
  *
  * @param startDate - may be null, as NimbusExperiment types allow this.
  *                    returns null in this case.
@@ -58,6 +69,19 @@ export function getProposedEndDate(
   const formattedDate = jsDate.toISOString().slice(0, 10);
 
   return formattedDate;
+}
+
+/**
+ *
+ * @param dateString The date to format in a string.
+ * @param daysToAdd Optional number of days to add from dateString. A
+ *        negative value will result in days subtracted from dateString.
+ * @returns The dateString + daysToAdd as a string value in ISO format.
+ */
+export function formatDate(dateString: string, daysToAdd: number = 0) {
+  const date = new Date(dateString);
+  date.setUTCDate(date.getUTCDate() + daysToAdd);
+  return date.toISOString().slice(0, 10);
 }
 
 // XXX this should really be a method on NimbusRecipe, though it'll need some
