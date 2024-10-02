@@ -246,6 +246,8 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         "FIREFOX_VIEW_SPOTLIGHT",
         "NEWTAB_POCKET_TOPICS_SURVEY",
         "MULTISELECT_WITH_DESCRIPTIONS",
+        "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_CONTENT",
+        "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_AND_BACKUP_CONTENT",
       ];
       if (hideDashboardMessages.includes(props.row.original.id)) {
         return <></>;
