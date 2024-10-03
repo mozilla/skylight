@@ -113,11 +113,11 @@ export function MessageTable<TData, TValue>({
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead
-                    className="bg-stone-100 text-slate-400 py-2"
+                    className="py-4 bg-stone-100 text-slate-400"
                     key={header.id}
                   >
                     {header.isPlaceholder ? null : (
-                      <div>
+                      <div className="flex flex-col gap-y-1">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext(),
@@ -146,7 +146,7 @@ export function MessageTable<TData, TValue>({
                                 header.column.setFilterValue(e.target.value)
                               }
                               placeholder={`Search...`}
-                              className="w-full border border-slate-400 font-light px-1 text-2xs rounded"
+                              className="w-full border border-slate-400 font-light p-1 text-2xs rounded"
                             />
                           </div>
                         )}
