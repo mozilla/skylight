@@ -1,3 +1,4 @@
+import { FxMSMessageInfo } from "@/app/columns";
 import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 
 export type SurfaceData = {
@@ -190,4 +191,22 @@ export function getDashboardIdForTemplate(template: string) {
  */
 export function messageHasMicrosurvey(messageId: string): boolean {
   return messageId.toLowerCase().includes("survey");
+}
+
+/**
+ * A sorting function to determine the order of the message by their surfaces.
+ *
+ * @returns -1 if the surface for message a is alphabetically before the
+ *          surface for message b, zero if they're equal, and 1 otherwise.
+ */
+export function compareSurfacesFn(
+  a: FxMSMessageInfo,
+  b: FxMSMessageInfo,
+): number {
+  if (a.surface < b.surface) {
+    return -1;
+  } else if (a.surface > b.surface) {
+    return 1;
+  }
+  return 0;
 }

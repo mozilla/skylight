@@ -11,6 +11,7 @@ import {
 import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
 import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
+import { compareSurfacesFn } from "@/lib/messageUtils";
 
 jest.mock("../../lib/sdk");
 
@@ -443,6 +444,60 @@ describe("MessageTable", () => {
       expect(hiddenMessage).not.toBeInTheDocument();
       expect(message1).toBeInTheDocument();
       expect(message3).toBeInTheDocument();
+    });
+
+    it("compareSurfacesFn sorts the messages by surface types in MessageTable", () => {
+      const fxmsMsgInfo1: FxMSMessageInfo = {
+        product: "Desktop",
+        id: "MESSAGE_1",
+        template: "feature_callout",
+        surface: "Feature Callout (1st screen)",
+        segment: "test segment",
+        metrics: "test metrics",
+        ctrPercent: 24.3,
+        impressions: 1000,
+      };
+      const fxmsMsgInfo2: FxMSMessageInfo = {
+        product: "Desktop",
+        id: "MESSAGE_2",
+        template: "defaultaboutwelcome",
+        surface: "Default About:Welcome Message (1st screen)",
+        segment: "test segment",
+        metrics: "test metrics",
+        ctrPercent: 24.3,
+        impressions: 1000,
+      };
+      const fxmsMsgInfo3: FxMSMessageInfo = {
+        product: "Desktop",
+        id: "MESSAGE_3",
+        template: "pb_newtab",
+        surface: "Private Browsing New Tab",
+        segment: "test segment",
+        metrics: "test metrics",
+        ctrPercent: 24.3,
+        impressions: 1000,
+      };
+
+      render(
+        <MessageTable
+          columns={fxmsMessageColumns}
+          data={[fxmsMsgInfo1, fxmsMsgInfo2, fxmsMsgInfo3].sort(
+            compareSurfacesFn,
+          )}
+        />,
+      );
+
+      const featureCalloutMsg = screen.getByText("MESSAGE_1");
+      const defaultAboutWelcomeMsg = screen.getByText("MESSAGE_2");
+      const privateBrowsingMsg = screen.getByText("MESSAGE_3");
+
+      // See https://developer.mozilla.org/en-US/docs/Web/API/Node/compareDocumentPosition for more details
+      expect(
+        defaultAboutWelcomeMsg.compareDocumentPosition(featureCalloutMsg),
+      ).toBe(4);
+      expect(
+        featureCalloutMsg.compareDocumentPosition(privateBrowsingMsg),
+      ).toBe(4);
     });
   });
 

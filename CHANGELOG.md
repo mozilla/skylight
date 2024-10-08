@@ -1,8 +1,16 @@
-## Thursday, Spetember 26th, 2024
+## Thursday, September 26th, 2024
 
 ### Added
 
+- Added default sorting by surface tags for the live message table
 - Exposed dashboard links to completed rollouts and experiments
+
+## Monday, September 16th, 2024
+
+### Added
+
+- Added a toggle option in the Metrics column to hide live messages with low impressions (ie. messages with less than 1000 impressions)
+- Added a script to pull live message data from Firefox versions after 123 and to update the production table with those new messages
 
 ## Thursday, September 5th, 2024
 
