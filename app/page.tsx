@@ -35,9 +35,9 @@ const hidden_message_impression_threshold =
 /**
  * A sorting function to sort messages by their start dates in descending order.
  * If one or both of the recipes is missing a start date, they will be ordered
- * identically since there's not enough information to properly sort them by 
- * date. 
- * 
+ * identically since there's not enough information to properly sort them by
+ * date.
+ *
  * @param a Nimbus recipe to compare with `b`.
  * @param b Nimbus recipe to compare with `a`.
  * @returns -1 if the start date for message a is after the start date for
