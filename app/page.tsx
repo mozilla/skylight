@@ -32,6 +32,17 @@ const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 const hidden_message_impression_threshold =
   process.env.HIDDEN_MESSAGE_IMPRESSION_THRESHOLD;
 
+/**
+ * A sorting function to sort messages by their start dates in descending order.
+ * If one or both of the recipes is missing a start date, they will be ordered
+ * identically since there's not enough information to properly sort them by 
+ * date. 
+ * 
+ * @param a Nimbus recipe to compare with `b`.
+ * @param b Nimbus recipe to compare with `a`.
+ * @returns -1 if the start date for message a is after the start date for
+ *          message b, zero if they're equal, and 1 otherwise.
+ */
 function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
   if (a._rawRecipe.startDate && b._rawRecipe.startDate) {
     if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
