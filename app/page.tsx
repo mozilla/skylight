@@ -14,6 +14,7 @@ import {
   maybeCreateWelcomePreview,
   getPreviewLink,
   messageHasMicrosurvey,
+  compareSurfacesFn,
 } from "../lib/messageUtils.ts";
 
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection";
@@ -31,12 +32,26 @@ const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 const hidden_message_impression_threshold =
   process.env.HIDDEN_MESSAGE_IMPRESSION_THRESHOLD;
 
-function compareFn(a: any, b: any) {
-  if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
-    return -1;
-  } else if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
-    return 1;
+/**
+ * A sorting function to sort messages by their start dates in descending order.
+ * If one or both of the recipes is missing a start date, they will be ordered
+ * identically since there's not enough information to properly sort them by
+ * date.
+ *
+ * @param a Nimbus recipe to compare with `b`.
+ * @param b Nimbus recipe to compare with `a`.
+ * @returns -1 if the start date for message a is after the start date for
+ *          message b, zero if they're equal, and 1 otherwise.
+ */
+function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
+  if (a._rawRecipe.startDate && b._rawRecipe.startDate) {
+    if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
+      return -1;
+    } else if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
+      return 1;
+    }
   }
+
   // a must be equal to b
   return 0;
 }
@@ -122,7 +137,7 @@ async function getMsgExpRecipeCollection(
   const msgExpRecipeCollection = new NimbusRecipeCollection();
   msgExpRecipeCollection.recipes = expOnlyCollection.recipes
     .filter((recipe) => recipe.usesMessagingFeatures())
-    .sort(compareFn);
+    .sort(compareDatesFn);
   console.log(
     "msgExpRecipeCollection.length = ",
     msgExpRecipeCollection.recipes.length,
@@ -137,7 +152,7 @@ async function getMsgRolloutCollection(
   const msgRolloutRecipeCollection = new NimbusRecipeCollection();
   msgRolloutRecipeCollection.recipes = recipeCollection.recipes
     .filter((recipe) => recipe.usesMessagingFeatures() && !recipe.isExpRecipe())
-    .sort(compareFn);
+    .sort(compareDatesFn);
   console.log(
     "msgRolloutRecipeCollection.length = ",
     msgRolloutRecipeCollection.recipes.length,
@@ -155,7 +170,9 @@ export default async function Dashboard() {
   console.log("recipeCollection.length = ", recipeCollection.recipes.length);
 
   // XXX await Promise.allSettled for all three loads concurrently
-  const localData = await getASRouterLocalMessageInfoFromFile();
+  const localData = (await getASRouterLocalMessageInfoFromFile()).sort(
+    compareSurfacesFn,
+  );
   const msgExpRecipeCollection =
     await getMsgExpRecipeCollection(recipeCollection);
   const msgRolloutRecipeCollection =
