@@ -537,14 +537,12 @@ describe("MessageTable", () => {
         render(
           <MessageTable
             columns={fxmsMessageColumns}
-            data={[fxmsMsgInfo1, fxmsMsgInfo2, fxmsMsgInfo3].sort(
-              compareSurfacesFn,
-            )}
+            data={[fxmsMsgInfo1, fxmsMsgInfo2, fxmsMsgInfo3]}
           />,
         );
       });
 
-      it("filters messages by surface without case sensitivity", async () => {
+      it("filters messages by surface without any case sensitivity", async () => {
         const user = userEvent.setup();
         const surfaceFilterTextBox = screen.getByRole("textbox");
         await act(async () => {
@@ -558,6 +556,22 @@ describe("MessageTable", () => {
         expect(featureCalloutMsg).toBeInTheDocument();
         expect(infoBarMsg).not.toBeInTheDocument();
         expect(defaultAboutWelcomeMsg).not.toBeInTheDocument();
+      });
+
+      it("filters messages by surface for any substring", async () => {
+        const user = userEvent.setup();
+        const surfaceFilterTextBox = screen.getByRole("textbox");
+        await act(async () => {
+          await user.type(surfaceFilterTextBox, "1st");
+        });
+
+        const featureCalloutMsg = screen.queryByText("MESSAGE_1");
+        const infoBarMsg = screen.queryByText("MESSAGE_2");
+        const defaultAboutWelcomeMsg = screen.queryByText("MESSAGE_3");
+
+        expect(featureCalloutMsg).toBeInTheDocument();
+        expect(infoBarMsg).not.toBeInTheDocument();
+        expect(defaultAboutWelcomeMsg).toBeInTheDocument();
       });
     });
   });
