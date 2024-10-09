@@ -211,9 +211,11 @@ export default async function Dashboard() {
           iconStyle="h-7 w-7 p-1 rounded-full cursor-pointer border-0 bg-slate-100 hover:bg-slate-200"
         />
       </h5>
-      <h5 className="scroll-m-20 text-sm text-center">(Partial List)</h5>
+      <h5 id="firefox" className="scroll-m-20 text-sm text-center">
+        (Partial List)
+      </h5>
       <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
-        <Timeline active="firefox" />
+        <Timeline active="firefox" isCompleted={false} />
       </div>
 
       <div className="container mx-auto py-10">
@@ -225,17 +227,14 @@ export default async function Dashboard() {
         />
       </div>
 
-      <h5
-        id="live_rollouts"
-        className="scroll-m-20 text-xl font-semibold text-center pt-4"
-      >
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Current Desktop Message Rollouts
       </h5>
-      <h5 className="scroll-m-20 text-sm text-center">
+      <h5 id="live_rollouts" className="scroll-m-20 text-sm text-center">
         Total: {totalRolloutExperiments}
       </h5>
       <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
-        <Timeline active="rollout" />
+        <Timeline active="rollout" isCompleted={false} />
       </div>
       <div className="container mx-auto py-10">
         <MessageTable
@@ -245,17 +244,14 @@ export default async function Dashboard() {
         />
       </div>
 
-      <h5
-        id="live_experiments"
-        className="scroll-m-20 text-xl font-semibold text-center pt-4"
-      >
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Current Desktop Message Experiments
       </h5>
-      <h5 className="scroll-m-20 text-sm text-center">
+      <h5 id="live_experiments" className="scroll-m-20 text-sm text-center">
         Total: {totalExperiments}
       </h5>
       <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
-        <Timeline active="experiment" />
+        <Timeline active="experiment" isCompleted={false} />
       </div>
       <div className="space-y-5 container mx-auto py-10">
         <MessageTable
