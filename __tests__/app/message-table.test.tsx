@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { MessageTable } from "@/app/message-table";
 import {
   completedExperimentColumns,
@@ -12,6 +12,7 @@ import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
 import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { compareSurfacesFn } from "@/lib/messageUtils";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("../../lib/sdk");
 
@@ -498,6 +499,66 @@ describe("MessageTable", () => {
       expect(
         featureCalloutMsg.compareDocumentPosition(privateBrowsingMsg),
       ).toBe(4);
+    });
+
+    describe("filtering messages by surface", () => {
+      beforeEach(() => {
+        const fxmsMsgInfo1: FxMSMessageInfo = {
+          product: "Desktop",
+          id: "MESSAGE_1",
+          template: "feature_callout",
+          surface: "Feature Callout (1st screen)",
+          segment: "test segment",
+          metrics: "test metrics",
+          ctrPercent: 24.3,
+          impressions: 1000,
+        };
+        const fxmsMsgInfo2: FxMSMessageInfo = {
+          product: "Desktop",
+          id: "MESSAGE_2",
+          template: "infobar",
+          surface: "InfoBar",
+          segment: "test segment",
+          metrics: "test metrics",
+          ctrPercent: 24.3,
+          impressions: 1000,
+        };
+        const fxmsMsgInfo3: FxMSMessageInfo = {
+          product: "Desktop",
+          id: "MESSAGE_3",
+          template: "defaultaboutwelcome",
+          surface: "Default About:Welcome Message (1st screen)",
+          segment: "test segment",
+          metrics: "test metrics",
+          ctrPercent: 24.3,
+          impressions: 1000,
+        };
+
+        render(
+          <MessageTable
+            columns={fxmsMessageColumns}
+            data={[fxmsMsgInfo1, fxmsMsgInfo2, fxmsMsgInfo3].sort(
+              compareSurfacesFn,
+            )}
+          />,
+        );
+      });
+
+      it("filters messages by surface without case sensitivity", async () => {
+        const user = userEvent.setup();
+        const surfaceFilterTextBox = screen.getByRole("textbox");
+        await act(async () => {
+          await user.type(surfaceFilterTextBox, "feature");
+        });
+
+        const featureCalloutMsg = screen.queryByText("MESSAGE_1");
+        const infoBarMsg = screen.queryByText("MESSAGE_2");
+        const defaultAboutWelcomeMsg = screen.queryByText("MESSAGE_3");
+
+        expect(featureCalloutMsg).toBeInTheDocument();
+        expect(infoBarMsg).not.toBeInTheDocument();
+        expect(defaultAboutWelcomeMsg).not.toBeInTheDocument();
+      });
     });
   });
 

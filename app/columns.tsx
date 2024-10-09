@@ -209,6 +209,9 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         props.row.original.surface,
       );
     },
+    meta: {
+      filterVariant: "text",
+    },
   },
   {
     //   accessorKey: "segment",
@@ -267,6 +270,9 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         );
       }
       return true;
+    },
+    meta: {
+      filterVariant: "checkbox",
     },
   },
   {
@@ -417,6 +423,9 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       );
     },
     filterFn: (row, columnId, filterValue) => filterBySurface(row, filterValue),
+    meta: {
+      filterVariant: "text",
+    },
   },
   {
     //   accessorKey: "segment",
@@ -615,6 +624,9 @@ export const completedExperimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
       );
     },
     filterFn: (row, columnId, filterValue) => filterBySurface(row, filterValue),
+    meta: {
+      filterVariant: "text",
+    },
   },
   {
     accessorKey: "metrics",

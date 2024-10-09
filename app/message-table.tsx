@@ -10,6 +10,8 @@ import {
   useReactTable,
   ExpandedState,
   getFilteredRowModel,
+  Column,
+  RowData,
 } from "@tanstack/react-table";
 
 import {
@@ -22,8 +24,14 @@ import {
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 
+declare module "@tanstack/react-table" {
+  interface ColumnMeta<TData extends RowData, TValue> {
+    filterVariant?: "text" | "checkbox";
+  }
+}
+
 interface HideMessageCheckboxProps {
-  header: any;
+  column: any;
   hideMessages: boolean;
   setHideMessages: (shouldHide: boolean) => any;
   impressionsThreshold?: string;
@@ -38,7 +46,7 @@ interface MessageTableProps<TData, TValue> {
 }
 
 function HideMessageCheckbox({
-  header,
+  column,
   hideMessages,
   setHideMessages,
   impressionsThreshold,
@@ -50,9 +58,9 @@ function HideMessageCheckbox({
         id="hide"
         onCheckedChange={() => {
           if (!hideMessages) {
-            header.column.setFilterValue(parseInt(impressionsThreshold!));
+            column.setFilterValue(parseInt(impressionsThreshold!));
           } else {
-            header.column.setFilterValue(null);
+            column.setFilterValue(null);
           }
           setHideMessages(!hideMessages);
         }}
@@ -93,8 +101,6 @@ export function MessageTable<TData, TValue>({
     filterFromLeafRows: true,
   });
 
-  const [hideMessages, setHideMessages] = useState(false);
-
   function getRowSpanForCell(cell: any) {
     // XXX is an experiment & the dates column
     // if (cell.row.original.recipe && cell.column.id == 'dates') {
@@ -122,34 +128,13 @@ export function MessageTable<TData, TValue>({
                           header.column.columnDef.header,
                           header.getContext(),
                         )}
-                        {canHideMessages &&
-                          header.column.columnDef
-                            .header!.toString()
-                            .includes("Metrics") && (
-                            <HideMessageCheckbox
-                              header={header}
-                              hideMessages={hideMessages}
-                              setHideMessages={setHideMessages}
-                              impressionsThreshold={impressionsThreshold}
-                            />
-                          )}
-                        {header.column.columnDef
-                          .header!.toString()
-                          .includes("Surface") && (
-                          <div>
-                            <input
-                              type="text"
-                              value={
-                                (header.column.getFilterValue() ?? "") as string
-                              }
-                              onChange={(e) =>
-                                header.column.setFilterValue(e.target.value)
-                              }
-                              placeholder={`Search...`}
-                              className="w-full border border-slate-400 font-light p-1 text-2xs rounded"
-                            />
-                          </div>
-                        )}
+                        {header.column.getCanFilter() ? (
+                          <Filter
+                            column={header.column}
+                            impressionsThreshold={impressionsThreshold}
+                            canHideMessages={canHideMessages}
+                          />
+                        ) : null}
                       </div>
                     )}
                   </TableHead>
@@ -194,4 +179,42 @@ export function MessageTable<TData, TValue>({
       </Table>
     </div>
   );
+}
+
+function Filter({
+  column,
+  impressionsThreshold,
+  canHideMessages,
+}: {
+  column: Column<any, unknown>;
+  impressionsThreshold?: string;
+  canHideMessages?: boolean;
+}) {
+  const { filterVariant } = column.columnDef.meta ?? {};
+  const [hideMessages, setHideMessages] = useState(false);
+
+  if (filterVariant === "text") {
+    return (
+      <div>
+        <input
+          type="text"
+          value={(column.getFilterValue() ?? "") as string}
+          onChange={(e) => column.setFilterValue(e.target.value)}
+          placeholder={`Search...`}
+          className="w-full border border-slate-400 font-light p-1 text-2xs rounded"
+        />
+      </div>
+    );
+  } else if (filterVariant === "checkbox" && canHideMessages) {
+    return (
+      <HideMessageCheckbox
+        column={column}
+        hideMessages={hideMessages}
+        setHideMessages={setHideMessages}
+        impressionsThreshold={impressionsThreshold}
+      />
+    );
+  } else {
+    return <></>;
+  }
 }
