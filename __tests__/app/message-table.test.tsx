@@ -541,6 +541,7 @@ describe("MessageTable", () => {
 
       it("filters messages by surface without any case sensitivity", async () => {
         const user = userEvent.setup();
+
         render(<MessageTable columns={fxmsMessageColumns} data={messages} />);
         const surfaceFilterTextBox = await screen.findByRole("textbox");
         await user.type(surfaceFilterTextBox, "feature");
@@ -556,6 +557,7 @@ describe("MessageTable", () => {
 
       it("filters messages by surface for any substring", async () => {
         const user = userEvent.setup();
+
         render(<MessageTable columns={fxmsMessageColumns} data={messages} />);
         const surfaceFilterTextBox = await screen.findByRole("textbox");
         await user.type(surfaceFilterTextBox, "1st");
