@@ -96,17 +96,14 @@ export default async function CompleteExperimentsDashboard() {
         <MenuButton isComplete={true} />
       </div>
 
-      <h5
-        id="complete_rollouts"
-        className="scroll-m-20 text-xl font-semibold text-center pt-4"
-      >
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Complete Desktop Message Rollouts
       </h5>
-      <h5 className="scroll-m-20 text-sm text-center">
+      <h5 id="complete_rollouts" className="scroll-m-20 text-sm text-center">
         Total: {totalRolloutExperiments}
       </h5>
       <div className="sticky top-24 z-10 py-2 bg-background flex justify-center">
-        <Timeline active="rollout" />
+        <Timeline active="rollout" isCompleted={true} />
       </div>
       <div className="container mx-auto py-10">
         <MessageTable
@@ -116,17 +113,14 @@ export default async function CompleteExperimentsDashboard() {
         />
       </div>
 
-      <h5
-        id="complete_experiments"
-        className="scroll-m-20 text-xl font-semibold text-center pt-4"
-      >
+      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Complete Desktop Message Experiments
       </h5>
-      <h5 className="scroll-m-20 text-sm text-center">
+      <h5 id="complete_experiments" className="scroll-m-20 text-sm text-center">
         Total: {totalExperiments}
       </h5>
       <div className="sticky top-24 z-10 py-2 bg-background flex justify-center">
-        <Timeline active="experiment" />
+        <Timeline active="experiment" isCompleted={true} />
       </div>
       <div className="space-y-5 container mx-auto py-10">
         <MessageTable
