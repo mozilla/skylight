@@ -1,6 +1,6 @@
 "use client";
 import { types } from "@mozilla/nimbus-shared";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
 import { ChevronsUpDown, ChevronDown, ChevronRight } from "lucide-react";
@@ -173,6 +173,18 @@ const microsurveyBadge = (
   </div>
 );
 
+function filterBySurface(
+  row: Row<RecipeOrBranchInfo>,
+  filterValue: string,
+): boolean {
+  if (row.original.surface) {
+    return row.original.surface
+      .toLowerCase()
+      .includes(filterValue.toLowerCase());
+  }
+  return false;
+}
+
 export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   {
     accessorKey: "id",
@@ -196,6 +208,9 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         props.row.original.template,
         props.row.original.surface,
       );
+    },
+    meta: {
+      filterVariant: "text",
     },
   },
   {
@@ -255,6 +270,9 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         );
       }
       return true;
+    },
+    meta: {
+      filterVariant: "checkbox",
     },
   },
   {
@@ -403,6 +421,10 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         props.row.original.template,
         props.row.original.surface,
       );
+    },
+    filterFn: (row, columnId, filterValue) => filterBySurface(row, filterValue),
+    meta: {
+      filterVariant: "text",
     },
   },
   {
@@ -600,6 +622,10 @@ export const completedExperimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         props.row.original.template,
         props.row.original.surface,
       );
+    },
+    filterFn: (row, columnId, filterValue) => filterBySurface(row, filterValue),
+    meta: {
+      filterVariant: "text",
     },
   },
   {
