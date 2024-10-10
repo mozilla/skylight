@@ -6,7 +6,7 @@ type TimelineStepProps = {
 
 type TimelineProps = {
   active: string;
-  isCompleted: boolean;
+  isCompleted?: boolean;
 };
 
 function TimelineStep({ isActive, stepName, href }: TimelineStepProps) {
@@ -26,7 +26,7 @@ function TimelineStep({ isActive, stepName, href }: TimelineStepProps) {
   );
 }
 
-export function Timeline({ active, isCompleted }: TimelineProps) {
+export function Timeline({ active, isCompleted = false }: TimelineProps) {
   return (
     <div className="flex flex-row items-center justify-center mt-2">
       <TimelineStep

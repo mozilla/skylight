@@ -215,7 +215,7 @@ export default async function Dashboard() {
         (Partial List)
       </h5>
       <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
-        <Timeline active="firefox" isCompleted={false} />
+        <Timeline active="firefox" />
       </div>
 
       <div className="container mx-auto py-10">
@@ -234,7 +234,7 @@ export default async function Dashboard() {
         Total: {totalRolloutExperiments}
       </h5>
       <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
-        <Timeline active="rollout" isCompleted={false} />
+        <Timeline active="rollout" />
       </div>
       <div className="container mx-auto py-10">
         <MessageTable
@@ -251,7 +251,7 @@ export default async function Dashboard() {
         Total: {totalExperiments}
       </h5>
       <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
-        <Timeline active="experiment" isCompleted={false} />
+        <Timeline active="experiment" />
       </div>
       <div className="space-y-5 container mx-auto py-10">
         <MessageTable
