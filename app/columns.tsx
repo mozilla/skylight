@@ -175,7 +175,7 @@ const microsurveyBadge = (
 
 function filterBySurface(
   row: Row<RecipeOrBranchInfo>,
-  filterValue: any,
+  filterValue: string,
 ): boolean {
   if (row.original.surface) {
     return row.original.surface

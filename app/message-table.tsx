@@ -30,8 +30,8 @@ declare module "@tanstack/react-table" {
   }
 }
 
-interface HideMessageCheckboxProps {
-  column: any;
+interface HideMessageCheckboxProps<TData, Value> {
+  column: Column<TData, Value>;
   hideMessages: boolean;
   setHideMessages: (shouldHide: boolean) => any;
   impressionsThreshold?: string;
@@ -45,12 +45,13 @@ interface MessageTableProps<TData, TValue> {
   impressionsThreshold?: string;
 }
 
-function HideMessageCheckbox({
+function HideMessageCheckbox<TData, Value>({
   column,
   hideMessages,
   setHideMessages,
   impressionsThreshold,
-}: HideMessageCheckboxProps) {
+}: HideMessageCheckboxProps<TData, Value>) {
+  // XXX fix assertion that impressionsThreshold won't be undefined here
   return (
     <div className="flex items-center gap-x-1">
       <Checkbox
@@ -181,12 +182,12 @@ export function MessageTable<TData, TValue>({
   );
 }
 
-function Filter({
+function Filter<TData, TValue>({
   column,
   impressionsThreshold,
   canHideMessages,
 }: {
-  column: Column<any, unknown>;
+  column: Column<TData, TValue>;
   impressionsThreshold?: string;
   canHideMessages?: boolean;
 }) {
@@ -201,7 +202,7 @@ function Filter({
           value={(column.getFilterValue() ?? "") as string}
           onChange={(e) => column.setFilterValue(e.target.value)}
           placeholder={`Search...`}
-          className="w-full border border-slate-400 font-light p-1 text-2xs rounded"
+          className="w-full border border-slate-400 font-medium p-1 text-2xs rounded text-primary placeholder:font-light"
         />
       </div>
     );

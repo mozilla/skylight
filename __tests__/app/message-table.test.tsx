@@ -502,6 +502,8 @@ describe("MessageTable", () => {
     });
 
     describe("filtering messages by surface", () => {
+      let messages: FxMSMessageInfo[];
+
       beforeEach(() => {
         const fxmsMsgInfo1: FxMSMessageInfo = {
           product: "Desktop",
@@ -534,22 +536,16 @@ describe("MessageTable", () => {
           impressions: 1000,
         };
 
-        render(
-          <MessageTable
-            columns={fxmsMessageColumns}
-            data={[fxmsMsgInfo1, fxmsMsgInfo2, fxmsMsgInfo3]}
-          />,
-        );
+        messages = [fxmsMsgInfo1, fxmsMsgInfo2, fxmsMsgInfo3];
       });
 
       it("filters messages by surface without any case sensitivity", async () => {
         const user = userEvent.setup();
-        const surfaceFilterTextBox = screen.getByRole("textbox");
-        await act(async () => {
-          await user.type(surfaceFilterTextBox, "feature");
-        });
+        render(<MessageTable columns={fxmsMessageColumns} data={messages} />);
+        const surfaceFilterTextBox = await screen.findByRole("textbox");
+        await user.type(surfaceFilterTextBox, "feature");
 
-        const featureCalloutMsg = screen.queryByText("MESSAGE_1");
+        const featureCalloutMsg = await screen.findByText("MESSAGE_1");
         const infoBarMsg = screen.queryByText("MESSAGE_2");
         const defaultAboutWelcomeMsg = screen.queryByText("MESSAGE_3");
 
@@ -560,14 +556,13 @@ describe("MessageTable", () => {
 
       it("filters messages by surface for any substring", async () => {
         const user = userEvent.setup();
-        const surfaceFilterTextBox = screen.getByRole("textbox");
-        await act(async () => {
-          await user.type(surfaceFilterTextBox, "1st");
-        });
+        render(<MessageTable columns={fxmsMessageColumns} data={messages} />);
+        const surfaceFilterTextBox = await screen.findByRole("textbox");
+        await user.type(surfaceFilterTextBox, "1st");
 
-        const featureCalloutMsg = screen.queryByText("MESSAGE_1");
+        const featureCalloutMsg = await screen.findByText("MESSAGE_1");
         const infoBarMsg = screen.queryByText("MESSAGE_2");
-        const defaultAboutWelcomeMsg = screen.queryByText("MESSAGE_3");
+        const defaultAboutWelcomeMsg = await screen.findByText("MESSAGE_3");
 
         expect(featureCalloutMsg).toBeInTheDocument();
         expect(infoBarMsg).not.toBeInTheDocument();
