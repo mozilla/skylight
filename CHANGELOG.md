@@ -1,3 +1,9 @@
+## Tuesday, October 15th, 2024
+
+### Updated
+
+- Updated the timeline component so that the pills link to appropriate tables
+
 ## Friday, September 27th, 2024
 
 ### Added
