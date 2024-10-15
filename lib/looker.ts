@@ -182,7 +182,9 @@ export function cleanLookerData(data: any) {
         "messaging_system.metrics__text2__messaging_system_message_id"
       ]
         .toLowerCase()
-        .includes("test")
+        .includes("test") &&
+      messageDef["messaging_system.metrics__text2__messaging_system_message_id"]
+        .length > 1
     );
   });
   return cleanData;

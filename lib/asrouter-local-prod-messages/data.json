@@ -2778,8 +2778,8 @@
     "provider": "onboarding"
   },
   {
-    "id": "Q4_DEVICE_MIGRATION_BACKUP_SPOTLIGHT",
-    "template": "spotlight",
+    "id": "INFOBAR_DEFAULT_AND_PIN_87",
+    "template": "infobar",
     "hidePreview": true
   },
   {
@@ -2788,12 +2788,7 @@
     "hidePreview": true
   },
   {
-    "id": "INFOBAR_DEFAULT_AND_PIN_87",
-    "template": "infobar",
-    "hidePreview": true
-  },
-  {
-    "id": "EMBEDDED_IMPORT_SPOTLIGHT",
+    "id": "Q4_DEVICE_MIGRATION_BACKUP_SPOTLIGHT",
     "template": "spotlight",
     "hidePreview": true
   },
@@ -2804,6 +2799,11 @@
   },
   { "id": "CFR_FIREFOX_VIEW", "template": "cfr", "hidePreview": true },
   { "id": "FIREFOX_VIEW_PROMO", "template": "spotlight", "hidePreview": true },
+  {
+    "id": "EMBEDDED_IMPORT_SPOTLIGHT",
+    "template": "spotlight",
+    "hidePreview": true
+  },
   {
     "id": "RTAMO_DEFAULT_WELCOME_EXTENSION",
     "template": "rtamo",
@@ -2851,25 +2851,30 @@
     "template": "rtamo",
     "hidePreview": true
   },
-  { "id": "PDF_URL_FFX_SEND", "template": "cfr", "hidePreview": true },
   { "id": "UPDATE_LOGIN", "template": "cfr", "hidePreview": true },
+  { "id": "PDF_URL_FFX_SEND", "template": "cfr", "hidePreview": true },
   { "id": "PIN_TAB_72", "template": "cfr", "hidePreview": true },
-  { "id": "SAVE_LOGIN", "template": "cfr", "hidePreview": true },
   { "id": "BOOKMARK_SYNC_CFR", "template": "cfr", "hidePreview": true },
+  { "id": "SAVE_LOGIN", "template": "cfr", "hidePreview": true },
+  {
+    "id": "FOX_DOODLE_MULTI_ACTION_SINGLE_BUTTON",
+    "template": "spotlight",
+    "hidePreview": true
+  },
   {
     "id": "FACEBOOK_CONTAINER_ADDON_A",
     "template": "cfr",
     "hidePreview": true
   },
-  { "id": "SEND_TAB_CFR", "template": "cfr", "hidePreview": true },
   {
     "id": "MILESTONE_MESSAGE",
     "template": "milestone_message",
     "hidePreview": true
   },
+  { "id": "SEND_TAB_CFR", "template": "cfr", "hidePreview": true },
   {
-    "id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_CONTENT",
-    "template": "spotlight",
+    "id": "PDF_HANDLER_ANNOTATIONS_CONTENT",
+    "template": "feature_callout",
     "hidePreview": true
   },
   {
@@ -2877,27 +2882,9 @@
     "template": "cfr",
     "hidePreview": true
   },
+  { "id": "FOX_DOODLE_MSIX", "template": "spotlight", "hidePreview": true },
   {
-    "id": "NEWTAB_POCKET_CSAT_SURVEY",
-    "template": "feature_callout",
-    "hidePreview": true
-  },
-  {
-    "id": "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_AND_BACKUP_CONTENT",
-    "template": "spotlight",
-    "hidePreview": true
-  },
-  { "id": "YOUTUBE_ENHANCE_3", "template": "cfr", "hidePreview": true },
-  { "id": "FOCUS_PROMO", "template": "pb_newtab", "hidePreview": true },
-  {
-    "id": "PDF_HANDLER_ANNOTATIONS_CONTENT",
-    "template": "feature_callout",
-    "hidePreview": true
-  },
-  { "id": "a", "template": "spotlight", "hidePreview": true },
-  { "id": "c", "template": "spotlight", "hidePreview": true },
-  {
-    "id": "FOX_DOODLE_MULTI_ACTION_SINGLE_BUTTON",
+    "id": "FOX_DOODLE_MULTI_ACTION_CHECKBOXES",
     "template": "spotlight",
     "hidePreview": true
   },
@@ -2908,9 +2895,8 @@
   },
   { "id": "PIN_TAB", "template": "cfr", "hidePreview": true },
   {
-    "id": "FOX_DOODLE_MULTI_ACTION_CHECKBOXES",
-    "template": "spotlight",
+    "id": "NEWTAB_POCKET_CSAT_SURVEY",
+    "template": "feature_callout",
     "hidePreview": true
-  },
-  { "id": "FOX_DOODLE_MSIX", "template": "spotlight", "hidePreview": true }
+  }
 ]

@@ -103,6 +103,13 @@ describe("Looker", () => {
         "messaging_system.metrics__string__messaging_system_source": "CFR",
         count_of_messaging_system_client_id: 1,
       },
+      {
+        "messaging_system.metrics__text2__messaging_system_message_id": "a",
+        "messaging_system.metrics__string__messaging_system_ping_type": "cfr",
+        "messaging_system.metrics__string__messaging_system_event_source": null,
+        "messaging_system.metrics__string__messaging_system_source": "CFR",
+        count_of_messaging_system_client_id: 1,
+      },
     ];
 
     const cleanData = looker.cleanLookerData(data);
