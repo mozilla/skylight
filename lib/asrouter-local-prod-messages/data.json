@@ -2893,5 +2893,24 @@
     "id": "PDF_HANDLER_ANNOTATIONS_CONTENT",
     "template": "feature_callout",
     "hidePreview": true
-  }
+  },
+  { "id": "a", "template": "spotlight", "hidePreview": true },
+  { "id": "c", "template": "spotlight", "hidePreview": true },
+  {
+    "id": "FOX_DOODLE_MULTI_ACTION_SINGLE_BUTTON",
+    "template": "spotlight",
+    "hidePreview": true
+  },
+  {
+    "id": "MR2022_BACKGROUND_UPDATE_TOAST_NOTIFICATION",
+    "template": "toast_notification",
+    "hidePreview": true
+  },
+  { "id": "PIN_TAB", "template": "cfr", "hidePreview": true },
+  {
+    "id": "FOX_DOODLE_MULTI_ACTION_CHECKBOXES",
+    "template": "spotlight",
+    "hidePreview": true
+  },
+  { "id": "FOX_DOODLE_MSIX", "template": "spotlight", "hidePreview": true }
 ]
