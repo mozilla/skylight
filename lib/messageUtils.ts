@@ -13,6 +13,10 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
       surface: "About:Welcome Page (1st screen)",
       tagColor: "bg-red-400",
     },
+    cfr: {
+      surface: "Contextual Feature Recommendation",
+      tagColor: "bg-red-200",
+    },
     cfr_doorhanger: {
       surface: "Doorhanger",
       tagColor: "bg-orange-200",
@@ -54,6 +58,7 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
       tagColor: "bg-indigo-400",
     },
     toolbar_badge: { surface: "Toolbar Badge", tagColor: "bg-purple-400" },
+    "toolbar-badge": { surface: "Toolbar Badge", tagColor: "bg-purple-400" },
     spotlight: {
       surface: "Spotlight Modal Dialog",
       tagColor: "bg-pink-400",
@@ -64,6 +69,7 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
       tagColor: "bg-rose-400",
       docs: "https://experimenter.info/messaging/desktop-messaging-surfaces/#moments-pages",
     },
+    "whats-new-panel": { surface: "What's New Panel", tagColor: "bg-sky-200" },
     whatsNewPage: { surface: "What's New Page", tagColor: "bg-fuchsia-300" },
   };
 
