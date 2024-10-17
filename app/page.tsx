@@ -112,39 +112,30 @@ let columnsShown = false;
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
 /**
- * Reads in message data from lib/asrouter-local-prod-messages/data.json and
- * appends any message data collected from Looker that does not already exist
- * (ie. no duplicate message ids). The Looker message data is also cleaned up
- * to match the message data objects from asrouter, remove any test messages,
- * and update templates.
+ * Appends any FxMS telemetry message data from the query in Look
+ * https://mozilla.cloud.looker.com/looks/2162 that does not already exist (ie.
+ * no duplicate message ids) in existingMessageData and returns the resut. The
+ * message data is also cleaned up to match the message data objects from
+ * ASRouter, remove any test messages, and update templates.
  */
-async function getLookerData() {
-  const fs = require("fs");
-
-  // Get existing message data
-  let result = fs.readFileSync(
-    "lib/asrouter-local-prod-messages/data.json",
-    "utf8",
-  );
-  let json_result = JSON.parse(result);
-
-  // Get Looker message data (taken from the Look query
+async function appendFxMSTelemetryData(existingMessageData: any) {
+  // Get Looker message data (taken from the query in Look
   // https://mozilla.cloud.looker.com/looks/2162)
   const lookId = "2162";
-  let looker_data = await runLookQuery(lookId);
+  let lookerData = await runLookQuery(lookId);
 
   // Clean and merge Looker data with existing data
-  let json_looker_data = cleanLookerData(looker_data);
-  mergeLookerData(json_result, json_looker_data);
+  let jsonLookerData = cleanLookerData(lookerData);
+  let mergedData = mergeLookerData(existingMessageData, jsonLookerData);
 
-  // Update data.json with new Looker data to cache the Looker data which will
-  // be generated at build time
-  fs.writeFileSync(
-    "lib/asrouter-local-prod-messages/data.json",
-    JSON.stringify(json_result),
-  );
+  return mergedData;
 }
 
+/**
+ * @returns message data in the form of FxMSMessageInfo from
+ * lib/asrouter-local-prod-messages/data.json and also FxMS telemetry data if
+ * Looker credentials are enabled.
+ */
 async function getASRouterLocalMessageInfoFromFile(): Promise<
   FxMSMessageInfo[]
 > {
@@ -155,6 +146,11 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<
     "utf8",
   );
   let json_data = JSON.parse(data);
+
+  if (isLookerEnabled) {
+    json_data = await appendFxMSTelemetryData(json_data);
+  }
+
   let messages = await Promise.all(
     json_data.map(async (messageDef: any): Promise<FxMSMessageInfo> => {
       return await getASRouterLocalColumnFromJSON(messageDef);
@@ -207,11 +203,6 @@ export default async function Dashboard() {
   const recipeCollection = new NimbusRecipeCollection();
   await recipeCollection.fetchRecipes();
   console.log("recipeCollection.length = ", recipeCollection.recipes.length);
-
-  // Update and merge Looker data
-  if (isLookerEnabled) {
-    await getLookerData();
-  }
 
   // XXX await Promise.allSettled for all three loads concurrently
   const localData = (await getASRouterLocalMessageInfoFromFile()).sort(

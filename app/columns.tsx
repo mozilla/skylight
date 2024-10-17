@@ -299,7 +299,7 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         return <div />;
       }
 
-      // Hide preview URL buttons for message data collected from Looker
+      // Hide preview URL buttons for messages where we don't have the JSON
       if (props.row.original.hidePreview) {
         return <div />;
       }
