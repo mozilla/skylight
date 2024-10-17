@@ -114,7 +114,7 @@ type NimbusExperiment = types.experiments.NimbusExperiment;
 /**
  * Appends any FxMS telemetry message data from the query in Look
  * https://mozilla.cloud.looker.com/looks/2162 that does not already exist (ie.
- * no duplicate message ids) in existingMessageData and returns the resut. The
+ * no duplicate message ids) in existingMessageData and returns the result. The
  * message data is also cleaned up to match the message data objects from
  * ASRouter, remove any test messages, and update templates.
  */
