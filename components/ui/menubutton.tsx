@@ -12,7 +12,15 @@ import {
   navigationMenuTriggerStyle,
   navigationMenuItemStyle,
 } from "@/components/ui/navigation-menu";
-import { Menu, Hash, Book, AppWindow, Table, FileSearch, Lightbulb } from "lucide-react";
+import {
+  Menu,
+  Hash,
+  Book,
+  AppWindow,
+  Table,
+  FileSearch,
+  Lightbulb,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ListItem = React.forwardRef<
