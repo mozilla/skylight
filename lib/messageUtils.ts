@@ -183,9 +183,8 @@ export function getEditableJSON(message: any): string {
       if (!screen.id) {
         screen.id = message.content.id;
       }
-    })
+    });
   }
-  
   return message;
 }
 
