@@ -26,6 +26,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm ci
-      - run: npm run prettier:check
+      - run: npm run prettier:write
+      - run: git diff 
+      - run: exit 1
       - run: npm run build --if-present
       - run: npm test
