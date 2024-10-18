@@ -144,7 +144,7 @@ function postMessageToLimelight(
       if (event.origin !== "https://mozilla.github.io/limelight/") {
         return;
       }
-      (win as WindowProxy | null).postMessage({
+      (win as WindowProxy | null)?.postMessage({
         type: "import",
         value: editableJson,
       }, "https://mozilla.github.io/limelight/")
