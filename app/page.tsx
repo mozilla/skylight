@@ -5,7 +5,12 @@ import {
   FxMSMessageInfo,
   fxmsMessageColumns,
 } from "./columns";
-import { getCTRPercentData } from "@/lib/looker.ts";
+import {
+  cleanLookerData,
+  getCTRPercentData,
+  mergeLookerData,
+  runLookQuery,
+} from "@/lib/looker.ts";
 import {
   getDashboard,
   getSurfaceDataForTemplate,
@@ -72,13 +77,14 @@ async function getASRouterLocalColumnFromJSON(
     previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
     impressions: undefined, // may be populated from Looker data
     hasMicrosurvey: messageHasMicrosurvey(messageDef.id),
+    hidePreview: messageDef.hidePreview,
   };
 
   const channel = "release";
 
   if (isLookerEnabled) {
     const ctrPercentData = await getCTRPercentData(
-      messageDef.id,
+      fxmsMsgInfo.id,
       fxmsMsgInfo.template,
       channel,
     );
@@ -89,8 +95,8 @@ async function getASRouterLocalColumnFromJSON(
   }
 
   fxmsMsgInfo.ctrDashboardLink = getDashboard(
-    messageDef.template,
-    messageDef.id,
+    fxmsMsgInfo.template,
+    fxmsMsgInfo.id,
     channel,
   );
 
@@ -105,6 +111,31 @@ let columnsShown = false;
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
+/**
+ * Appends any FxMS telemetry message data from the query in Look
+ * https://mozilla.cloud.looker.com/looks/2162 that does not already exist (ie.
+ * no duplicate message ids) in existingMessageData and returns the result. The
+ * message data is also cleaned up to match the message data objects from
+ * ASRouter, remove any test messages, and update templates.
+ */
+async function appendFxMSTelemetryData(existingMessageData: any) {
+  // Get Looker message data (taken from the query in Look
+  // https://mozilla.cloud.looker.com/looks/2162)
+  const lookId = "2162";
+  let lookerData = await runLookQuery(lookId);
+
+  // Clean and merge Looker data with existing data
+  let jsonLookerData = cleanLookerData(lookerData);
+  let mergedData = mergeLookerData(existingMessageData, jsonLookerData);
+
+  return mergedData;
+}
+
+/**
+ * @returns message data in the form of FxMSMessageInfo from
+ * lib/asrouter-local-prod-messages/data.json and also FxMS telemetry data if
+ * Looker credentials are enabled.
+ */
 async function getASRouterLocalMessageInfoFromFile(): Promise<
   FxMSMessageInfo[]
 > {
@@ -115,6 +146,10 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<
     "utf8",
   );
   let json_data = JSON.parse(data);
+
+  if (isLookerEnabled) {
+    json_data = await appendFxMSTelemetryData(json_data);
+  }
 
   let messages = await Promise.all(
     json_data.map(async (messageDef: any): Promise<FxMSMessageInfo> => {

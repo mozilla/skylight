@@ -30,6 +30,20 @@ export async function getAWDashboardElement0(
   return elements[0];
 }
 
+/**
+ * @returns the query results in JSON format for the Look query with lookId
+ */
+export async function runLookQuery(lookId: string): Promise<string> {
+  const results = await SDK.ok(
+    SDK.run_look({
+      look_id: lookId,
+      result_format: "json",
+    }),
+  );
+
+  return results;
+}
+
 export async function runQueryForTemplate(
   template: string,
   filters: any,
@@ -149,4 +163,97 @@ export async function getCTRPercentData(
       impressions: impressions,
     };
   }
+}
+
+/**
+ * Removes any messages inside `data` for ids specified in the removeMessages
+ * array, ids with substring "test", and ids that are single characters.
+ */
+export function cleanLookerData(data: any): any {
+  let cleanData = data.filter((messageDef: any) => {
+    const removeMessages = ["undefined", "", "n/a", null, "DEFAULT_ID"];
+    const messageId =
+      messageDef[
+        "messaging_system.metrics__text2__messaging_system_message_id"
+      ];
+
+    if (removeMessages.includes(messageId)) {
+      return false;
+    } else if (messageId.toLowerCase().includes("test")) {
+      return false;
+    } else if (messageId.length === 1) {
+      return false;
+    } else {
+      return true;
+    }
+  });
+  return cleanData;
+}
+
+/**
+ * Appends any messages from `newLookerData` into `originalData` with an id
+ * that does not already exist in `originalData`. Updates the templates for
+ * any message that need some clean up.
+ *
+ * The message data in `newLookerData` has properties
+ * "messaging_system.metrics__text2__messaging_system_message_id" and
+ * "messaging_system.metrics__string__messaging_system_ping_type" to represent
+ * the message id and template. Before appending these messages into
+ * `originalData`, we must clean up the objects to have properties "id" and
+ * "template" instead, and exclude any other properties that do not currently
+ * provide any value.
+ */
+export function mergeLookerData(originalData: any, newLookerData: any): any {
+  for (let i = 0; i < newLookerData.length; i++) {
+    const lookerDataMessageId =
+      newLookerData[i][
+        "messaging_system.metrics__text2__messaging_system_message_id"
+      ];
+    const lookerDataMessageTemplate =
+      newLookerData[i][
+        "messaging_system.metrics__string__messaging_system_ping_type"
+      ];
+
+    // Check if the id for newLookerData[i] already exists in originalData
+    if (originalData.find((x: any) => x.id === lookerDataMessageId)) {
+      continue;
+    }
+
+    // `hidePreview` is added because the message data from Looker does not
+    // have enough information to enable message previews correctly and we
+    // must manually hide the previews for now.
+    let clean_looker_object = {
+      id: lookerDataMessageId,
+      template: lookerDataMessageTemplate,
+      hidePreview: true,
+    };
+
+    // This is a heuristic for updating templates for RTAMO messages. This can
+    // fail if an RTAMO message does not happen to include this substring.
+    if (clean_looker_object.id.includes("RTAMO")) {
+      clean_looker_object.template = "rtamo";
+    }
+
+    // This is a specific check for updating the template for the FOCUS_PROMO
+    // message.
+    if (clean_looker_object.id === "FOCUS_PROMO") {
+      clean_looker_object.template = "pb_newtab";
+    }
+
+    // This is a specific check for updating the template for the
+    // MILESTONE_MESSAGE message.
+    if (clean_looker_object.id === "MILESTONE_MESSAGE") {
+      clean_looker_object.template = "milestone_message";
+    }
+
+    // This is a heuristic for updating templates for feature callouts. Most
+    // messages with a null template after the other heuristics should be
+    // feature callouts, but the check can still fail if we missed an edge case.
+    if (clean_looker_object.template === null) {
+      clean_looker_object.template = "feature_callout";
+    }
+
+    originalData.push(clean_looker_object);
+  }
+  return originalData;
 }
