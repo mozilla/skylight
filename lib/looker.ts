@@ -33,6 +33,7 @@ export async function getAWDashboardElement0(
 export async function runQueryForTemplate(
   template: string,
   filters: any,
+  filter_expression?: any,
   startDate?: string | null,
   endDate?: string | null,
 ): Promise<any> {
@@ -65,6 +66,7 @@ export async function runQueryForTemplate(
       filters,
     );
   }
+  newQueryBody.filter_expression = filter_expression;
 
   const newQuery = await SDK.ok(SDK.create_query(newQueryBody));
   const result = await SDK.ok(
@@ -106,13 +108,19 @@ export async function getCTRPercentData(
     queryResult = await runQueryForTemplate(
       template,
       {
-        "messaging_system.metrics__text2__messaging_system_message_id": id,
         "messaging_system.normalized_channel": channel,
         "messaging_system.metrics__string__messaging_system_ping_type":
           template,
         "messaging_system__ping_info__experiments.key": experiment,
         "messaging_system__ping_info__experiments.value__branch": branch,
       },
+      "matches_filter(${messaging_system.metrics__text2__messaging_system_message_id}, `" +
+        id +
+        "`) OR matches_filter(${messaging_system.metrics__text2__messaging_system_message_id}, `" +
+        id.toUpperCase() +
+        "`) OR matches_filter(${messaging_system.metrics__text2__messaging_system_message_id}, `" +
+        id.toLowerCase() +
+        "`)",
       startDate,
       endDate,
     );
@@ -120,11 +128,17 @@ export async function getCTRPercentData(
     queryResult = await runQueryForTemplate(
       template,
       {
-        "event_counts.message_id": "%" + id + "%",
         "event_counts.normalized_channel": channel,
         "onboarding_v1__experiments.experiment": experiment,
         "onboarding_v1__experiments.branch": branch,
       },
+      "(matches_filter(${event_counts.message_id}, `%" +
+        id +
+        "%`) OR matches_filter(${event_counts.message_id}, `%" +
+        id.toUpperCase() +
+        "%`) OR matches_filter(${event_counts.message_id}, `%" +
+        id.toLowerCase() +
+        "%`)) AND matches_filter(${event_counts.message_id}, `%^_0^_%`)",
       startDate,
       endDate,
     );
