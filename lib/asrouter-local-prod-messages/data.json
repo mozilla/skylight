@@ -774,7 +774,7 @@
   },
   {
     "weight": 100,
-    "id": "INFOBAR_LAUNCH_ON_LOGIN",
+    "id": "infobar_launch_on_login",
     "groups": ["cfr"],
     "template": "infobar",
     "content": {
@@ -1980,7 +1980,7 @@
     "provider": "onboarding"
   },
   {
-    "id": "MR_WELCOME_DEFAULT",
+    "id": "mr_welcome_default",
     "template": "defaultaboutwelcome",
     "transitions": true,
     "backdrop": "var(--mr-welcome-background-color) var(--mr-welcome-background-gradient)",
