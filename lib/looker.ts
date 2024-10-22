@@ -1,4 +1,4 @@
-import { IDashboardElement, IWriteQuery } from "@looker/sdk";
+import { IDashboardElement, IWriteQuery, ILookWithQuery } from "@looker/sdk";
 import { SDK } from "./sdk";
 import { getDashboardIdForTemplate } from "./messageUtils";
 import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
@@ -30,6 +30,21 @@ export async function getAWDashboardElement0(
   return elements[0];
 }
 
+/**
+ * @returns the query results in JSON format for https://mozilla.cloud.looker.com/looks/2162
+ */
+export async function runLookQuery(): Promise<any> {
+  const lookId = "2162";
+  const results = await SDK.ok(
+    SDK.run_look({
+      look_id: lookId,
+      result_format: "json",
+    }),
+  );
+
+  return results;
+}
+
 export async function runQueryForTemplate(
   template: string,
   filters: any,
@@ -50,7 +65,7 @@ export async function runQueryForTemplate(
   );
 
   // override the filters
-  if (template === "infobar") {
+  if (template === "infobar" || template === "live") {
     newQueryBody.filters = Object.assign(
       {
         "messaging_system.submission_date": submission_timestamp_date,
