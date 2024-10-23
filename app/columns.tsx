@@ -74,6 +74,7 @@ export type FxMSMessageInfo = {
   metrics: string;
   impressions?: number;
   hasMicrosurvey?: boolean;
+  hidePreview?: boolean;
 };
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
@@ -243,6 +244,10 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         "PDFJS_FEATURE_TOUR_A",
         "PDFJS_FEATURE_TOUR_B",
         "FIREFOX_VIEW_SPOTLIGHT",
+        "NEWTAB_POCKET_TOPICS_SURVEY",
+        "MULTISELECT_WITH_DESCRIPTIONS",
+        "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_CONTENT",
+        "DEVICE_MIGRATION_BACKUP_AND_SYNC_SPOTLIGHT_SYNC_AND_BACKUP_CONTENT",
       ];
       if (hideDashboardMessages.includes(props.row.original.id)) {
         return <></>;
@@ -291,6 +296,11 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         "feature_callout",
       ];
       if (!supportedTypes.includes(props.row.original.template)) {
+        return <div />;
+      }
+
+      // Hide preview URL buttons for messages where we don't have the JSON
+      if (props.row.original.hidePreview) {
         return <div />;
       }
 
