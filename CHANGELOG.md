@@ -1,3 +1,9 @@
+## Wednesday, October 23rd, 2024
+
+### Added
+
+- Added FxMS telemetry data from Looker (query can be found [here](https://mozilla.cloud.looker.com/looks/2162)) to the live message table
+
 ## Friday, September 27th, 2024
 
 ### Added
