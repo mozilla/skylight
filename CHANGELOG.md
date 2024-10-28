@@ -4,6 +4,7 @@
 
 - Added a `postMessageToLimelight` function which uses the `window.postMessage` utility to open Limelight and send message JSON for editing
 - Added a link to edit messages to Spotlights and Infobars in the production table
+- Added a "Create a New Message" link to the navigation header, which links to the New Message page in Limelight
 
 ### Fixed
 
