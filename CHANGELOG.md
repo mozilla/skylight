@@ -1,3 +1,14 @@
+## Monday, October 28th, 2024
+
+### Added
+
+- Added a `postMessageToLimelight` function which uses the `window.postMessage` utility to open Limelight and send message JSON for editing
+- Added a link to edit messages to Spotlights and Infobars in the production table
+
+### Fixed
+
+- Fixed a missing message ID in the local JSON, and added a function to safeguard similar errors
+
 ## Wednesday, October 23rd, 2024
 
 ### Added

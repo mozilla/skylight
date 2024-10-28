@@ -137,7 +137,6 @@ function postMessageToLimelight(editableJson: string) {
   window.addEventListener(
     "message",
     (event) => {
-      console.log("RECEIVED EVENT FROM LIMELIGHT: ", event);
       if (event.origin !== "https://mozilla.github.io/limelight/") {
         return;
       }
