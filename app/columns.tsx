@@ -245,7 +245,10 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
     header: "",
     cell: (props: any) => {
       const supportedTypes = ["infobar", "spotlight"];
-      if (supportedTypes.includes(props.row.original.template)) {
+      if (
+        supportedTypes.includes(props.row.original.template) &&
+        props.row.original.editableJson
+      ) {
         return (
           <button
             onClick={() =>
