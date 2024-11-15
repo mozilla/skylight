@@ -164,6 +164,7 @@ describe("NimbusRecipe", () => {
       const AW_RECIPE_NO_SCREENS = JSON.parse(JSON.stringify(AW_RECIPE));
       AW_RECIPE_NO_SCREENS.branches[1].features[0].value = {
         id: "feature_value_id:treatment-a",
+        backdrop: "XXX-no-msg-test-hack-deleteme-see-getBranchInfo",
       };
 
       const nimbusRecipe = new NimbusRecipe(AW_RECIPE_NO_SCREENS);
