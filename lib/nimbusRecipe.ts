@@ -99,6 +99,15 @@ export class NimbusRecipe implements NimbusRecipeType {
     // a surface to it.
     let template;
     if (feature.featureId === "aboutwelcome" && branch.slug != "control") {
+      // XXXdmose nasty hack to prevent what I'm calling
+      // "non-messaging-aboutwelcome" features from breaking
+      // Skylight completely. Need to talk to Jason and Meg to
+      // understand more details and figure out what to do here...
+      if (Object.keys(feature.value).length <= 1) {
+        branchInfo.template = branch.template = "non-messaging-aboutwelcome";
+        return branchInfo;
+      }
+
       template = "aboutwelcome";
     } else if (
       feature.featureId === "whatsNewPage" &&
