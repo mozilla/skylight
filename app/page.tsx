@@ -246,9 +246,6 @@ export default async function Dashboard() {
           iconStyle="h-7 w-7 p-1 rounded-full cursor-pointer border-0 bg-slate-100 hover:bg-slate-200"
         />
       </h5>
-      <h5 id="firefox" className="scroll-m-20 text-sm text-center">
-        (Partial List)
-      </h5>
       <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
         <Timeline active="firefox" />
       </div>
