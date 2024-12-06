@@ -143,7 +143,7 @@ describe("NimbusRecipe", () => {
       // use deepEqual and check for the existence of object properties instead.
       expect(branchInfo).toEqual({
         product: "Desktop",
-        ctrDashboardLink: `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30%20day%20ago%20for%2030%20day&Message+ID=%25${"feature_value_id%3Atreatment-a".toUpperCase()}%25&Normalized+Channel=&Experiment=aboutwelcome-test-recipe&Branch=treatment-a`,
+        ctrDashboardLink: `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30%20day%20ago%20for%2030%20day&Message+ID=%25feature_value_id%3Atreatment-a%25%2C+%25${"feature_value_id%3Atreatment-a".toLowerCase()}%25%2C+%25${"feature_value_id%3Atreatment-a".toUpperCase()}%25&Normalized+Channel=&Experiment=aboutwelcome-test-recipe&Branch=treatment-a`,
         id: "feature_value_id:treatment-a",
         isBranch: true,
         nimbusExperiment: AW_RECIPE,
@@ -175,7 +175,7 @@ describe("NimbusRecipe", () => {
 
       expect(branchInfo).toEqual({
         product: "Desktop",
-        ctrDashboardLink: `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30%20day%20ago%20for%2030%20day&Message+ID=%25FEATURE_VALUE_ID%3ATREATMENT-A%25&Normalized+Channel=&Experiment=aboutwelcome-test-recipe&Branch=treatment-a`,
+        ctrDashboardLink: `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30%20day%20ago%20for%2030%20day&Message+ID=%25feature_value_id%3Atreatment-a%25%2C+%25${"feature_value_id%3Atreatment-a".toLowerCase()}%25%2C+%25${"feature_value_id%3Atreatment-a".toUpperCase()}%25&Normalized+Channel=&Experiment=aboutwelcome-test-recipe&Branch=treatment-a`,
         id: "feature_value_id:treatment-a",
         isBranch: true,
         nimbusExperiment: AW_RECIPE_NO_SCREENS,

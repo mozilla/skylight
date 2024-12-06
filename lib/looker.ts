@@ -44,9 +44,22 @@ export async function runLookQuery(lookId: string): Promise<string> {
   return results;
 }
 
+/**
+ * Currently, we use the filter_expression so that we can add an OR condition
+ * for the message id to check for the original casing, lower casing, and
+ * upper casing. See the `getCTRPercentData` function for an example of the
+ * filter_expression.
+ * @param template the message template
+ * @param filters an object containing any filters used in the Looker query (eg. channel, templates, experiment, branch)
+ * @param filter_expression filter data with "or" conditions
+ * @param startDate the experiment start date
+ * @param endDate the experiment proposed end date
+ * @returns the result of the query that is created by the given filters and filter_expression, and the appropriate template and submission timestamp
+ */
 export async function runQueryForTemplate(
   template: string,
   filters: any,
+  filter_expression?: string,
   startDate?: string | null,
   endDate?: string | null,
 ): Promise<any> {
@@ -79,6 +92,7 @@ export async function runQueryForTemplate(
       filters,
     );
   }
+  newQueryBody.filter_expression = filter_expression;
 
   const newQuery = await SDK.ok(SDK.create_query(newQueryBody));
   const result = await SDK.ok(
@@ -114,19 +128,26 @@ export async function getCTRPercentData(
 ): Promise<CTRData | undefined> {
   // XXX the filters are currently defined to match the filters in getDashboard.
   // It would be more ideal to consider a different approach when definining
-  // those filters to sync up the data in both places.
+  // those filters to sync up the data in both places. Non-trivial changes to
+  // this code are worth applying some manual performance checking.
   let queryResult;
   if (template === "infobar") {
     queryResult = await runQueryForTemplate(
       template,
       {
-        "messaging_system.metrics__text2__messaging_system_message_id": id,
         "messaging_system.normalized_channel": channel,
         "messaging_system.metrics__string__messaging_system_ping_type":
           template,
         "messaging_system__ping_info__experiments.key": experiment,
         "messaging_system__ping_info__experiments.value__branch": branch,
       },
+      "matches_filter(${messaging_system.metrics__text2__messaging_system_message_id}, `" +
+        id +
+        "`) OR matches_filter(${messaging_system.metrics__text2__messaging_system_message_id}, `" +
+        id.toUpperCase() +
+        "`) OR matches_filter(${messaging_system.metrics__text2__messaging_system_message_id}, `" +
+        id.toLowerCase() +
+        "`)",
       startDate,
       endDate,
     );
@@ -134,11 +155,17 @@ export async function getCTRPercentData(
     queryResult = await runQueryForTemplate(
       template,
       {
-        "event_counts.message_id": "%" + id + "%",
         "event_counts.normalized_channel": channel,
         "onboarding_v1__experiments.experiment": experiment,
         "onboarding_v1__experiments.branch": branch,
       },
+      "(matches_filter(${event_counts.message_id}, `%" +
+        id +
+        "%`) OR matches_filter(${event_counts.message_id}, `%" +
+        id.toUpperCase() +
+        "%`) OR matches_filter(${event_counts.message_id}, `%" +
+        id.toLowerCase() +
+        "%`)) AND matches_filter(${event_counts.message_id}, `%^_0^_%`)",
       startDate,
       endDate,
     );
