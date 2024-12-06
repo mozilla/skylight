@@ -12,7 +12,15 @@ import {
   navigationMenuTriggerStyle,
   navigationMenuItemStyle,
 } from "@/components/ui/navigation-menu";
-import { Menu, Hash, Book, AppWindow, Table, FileSearch } from "lucide-react";
+import {
+  Menu,
+  Hash,
+  Book,
+  AppWindow,
+  Table,
+  FileSearch,
+  Lightbulb,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ListItem = React.forwardRef<
@@ -60,6 +68,17 @@ export function MenuButton({ isComplete }: MenuButtonProps) {
             >
               <FileSearch size={iconSize} />
               Search Briefs
+            </a>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuItemStyle()}>
+            <a
+              className={navMenuItemClassName}
+              href="https://mozilla.github.io/limelight/"
+            >
+              <Lightbulb size={iconSize} />
+              Create A New Message
             </a>
           </NavigationMenuLink>
         </NavigationMenuItem>
