@@ -44,10 +44,19 @@ export async function runLookQuery(lookId: string): Promise<string> {
   return results;
 }
 
+/**
+ * 
+ * @param template the message template
+ * @param filters an object containing any filters used in the Looker query (eg. channel, templates, experiment, branch)
+ * @param filter_expression filter data with "or" conditions
+ * @param startDate the experiment start date
+ * @param endDate the experiment proposed end date
+ * @returns the result of the query that is created by the given filters and filter_expression, and the appropriate template and submission timestamp
+ */
 export async function runQueryForTemplate(
   template: string,
   filters: any,
-  filter_expression?: any,
+  filter_expression?: string,
   startDate?: string | null,
   endDate?: string | null,
 ): Promise<any> {
@@ -116,7 +125,8 @@ export async function getCTRPercentData(
 ): Promise<CTRData | undefined> {
   // XXX the filters are currently defined to match the filters in getDashboard.
   // It would be more ideal to consider a different approach when definining
-  // those filters to sync up the data in both places.
+  // those filters to sync up the data in both places. Non-trivial changes to
+  // this code are worth applying some manual performance checking.
   let queryResult;
   if (template === "infobar") {
     queryResult = await runQueryForTemplate(
