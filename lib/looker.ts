@@ -45,7 +45,10 @@ export async function runLookQuery(lookId: string): Promise<string> {
 }
 
 /**
- * 
+ * Currently, we use the filter_expression so that we can add an OR condition
+ * for the message id to check for the original casing, lower casing, and
+ * upper casing. See the `getCTRPercentData` function for an example of the
+ * filter_expression.
  * @param template the message template
  * @param filters an object containing any filters used in the Looker query (eg. channel, templates, experiment, branch)
  * @param filter_expression filter data with "or" conditions
