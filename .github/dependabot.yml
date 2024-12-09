@@ -17,20 +17,20 @@ updates:
       # from https://github.com/vercel/next.js/tree/canary/packages
       # that's not captured by "*next*" and isn't a dep of an existing top-level
       # package we use if we start using it.
-      groups:
-        next:
-          applies-to: version-updates
-          patterns:
-            - "*next*"
-            - "eslint-config-next"
-          update-types:
-            - "minor"
-            - "patch"
-        react:
-          applies-to: version-updates
-          patterns:
-            - "react"
-            - "react-dom"
-          update-types:
-            - "minor"
-            - "patch"
+    groups:
+      next:
+        applies-to: version-updates
+        patterns:
+          - "*next*"
+          - "eslint-config-next"
+        update-types:
+          - "minor"
+          - "patch"
+      react:
+        applies-to: version-updates
+        patterns:
+          - "react"
+          - "react-dom"
+        update-types:
+          - "minor"
+          - "patch"
