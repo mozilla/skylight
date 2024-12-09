@@ -13,18 +13,12 @@ updates:
       # package we use if we start using it.
       groups:
         next:
-          applies-to: version-updates
+          applies-to: all-updates
           patterns:
             - "*next*"
             - "eslint-config-next"
-          update-types:
-            - "minor"
-            - "patch"
         react:
-          applies-to: version-updates
+          applies-to: all-updates
           patterns:
             - "react"
             - "react-dom"
-          update-types:
-            - "minor"
-            - "patch"
