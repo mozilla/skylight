@@ -24,6 +24,7 @@ updates:
           - "*next*"
           - "eslint-config-next"
         update-types:
+          - "major"
           - "minor"
           - "patch"
       react:
@@ -32,5 +33,6 @@ updates:
           - "react"
           - "react-dom"
         update-types:
+          - "major"
           - "minor"
           - "patch"
