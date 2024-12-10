@@ -1,7 +1,9 @@
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
 import { BranchInfo } from "@/app/columns.jsx";
-import { getDashboardIdForTemplate } from "@/lib/messageUtils";
+import { getDashboard, getDashboardIdForTemplate } from "@/lib/messageUtils";
+import { getExperimentLookerDashboardDate } from "@/lib/lookerUtils";
+import { formatDate } from "@/lib/experimentUtils";
 
 //XXX We're passing this custom object for about:welcome, since ExperimentFakes
 // doesn't quite give us what we want in that case. We probably want to tweak
@@ -136,14 +138,34 @@ describe("NimbusRecipe", () => {
       const branch = AW_RECIPE.branches[1];
 
       const branchInfo = nimbusRecipe.getBranchInfo(branch);
-      const dashboardId = getDashboardIdForTemplate("aboutwelcome");
+      const proposedEndDate = getExperimentLookerDashboardDate(
+        branchInfo.nimbusExperiment.startDate,
+        branchInfo.nimbusExperiment.proposedDuration,
+      );
+      const formattedEndDate = formatDate(
+        branchInfo.nimbusExperiment.endDate as string,
+        1,
+      );
+
+      const dashboardLink = getDashboard(
+        branchInfo.template as string,
+        branchInfo.id,
+        undefined,
+        branchInfo.nimbusExperiment.slug,
+        branch.slug,
+        branchInfo.nimbusExperiment.startDate,
+        branchInfo.nimbusExperiment.endDate
+          ? formattedEndDate
+          : proposedEndDate,
+        false, // default for isCompleted in constructor
+      );
 
       // XXX getBranchInfo is actually going to return a previewLink, which
       // makes this test kind of brittle. We could refactor this to no longer
       // use deepEqual and check for the existence of object properties instead.
       expect(branchInfo).toEqual({
         product: "Desktop",
-        ctrDashboardLink: `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30%20day%20ago%20for%2030%20day&Message+ID=%25${"feature_value_id%3Atreatment-a".toUpperCase()}%25&Normalized+Channel=&Experiment=aboutwelcome-test-recipe&Branch=treatment-a`,
+        ctrDashboardLink: dashboardLink,
         id: "feature_value_id:treatment-a",
         isBranch: true,
         nimbusExperiment: AW_RECIPE,
@@ -171,11 +193,31 @@ describe("NimbusRecipe", () => {
       const branch = AW_RECIPE_NO_SCREENS.branches[1];
 
       const branchInfo = nimbusRecipe.getBranchInfo(branch);
-      const dashboardId = getDashboardIdForTemplate("aboutwelcome");
+      const proposedEndDate = getExperimentLookerDashboardDate(
+        branchInfo.nimbusExperiment.startDate,
+        branchInfo.nimbusExperiment.proposedDuration,
+      );
+      const formattedEndDate = formatDate(
+        branchInfo.nimbusExperiment.endDate as string,
+        1,
+      );
+
+      const dashboardLink = getDashboard(
+        branchInfo.template as string,
+        branchInfo.id,
+        undefined,
+        branchInfo.nimbusExperiment.slug,
+        branch.slug,
+        branchInfo.nimbusExperiment.startDate,
+        branchInfo.nimbusExperiment.endDate
+          ? formattedEndDate
+          : proposedEndDate,
+        false, // default for isCompleted in constructor
+      );
 
       expect(branchInfo).toEqual({
         product: "Desktop",
-        ctrDashboardLink: `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30%20day%20ago%20for%2030%20day&Message+ID=%25FEATURE_VALUE_ID%3ATREATMENT-A%25&Normalized+Channel=&Experiment=aboutwelcome-test-recipe&Branch=treatment-a`,
+        ctrDashboardLink: dashboardLink,
         id: "feature_value_id:treatment-a",
         isBranch: true,
         nimbusExperiment: AW_RECIPE_NO_SCREENS,
