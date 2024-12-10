@@ -17,6 +17,7 @@ import {
   getTemplateFromMessage,
   _isAboutWelcomeTemplate,
   maybeCreateWelcomePreview,
+  getEditableJSON,
   getPreviewLink,
   messageHasMicrosurvey,
   compareSurfacesFn,
@@ -74,6 +75,7 @@ async function getASRouterLocalColumnFromJSON(
     metrics: "some metrics",
     ctrPercent: undefined, // may be populated from Looker data
     ctrPercentChange: undefined, // may be populated from Looker data
+    editableJson: getEditableJSON(messageDef), // message JSON for Limelight
     previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
     impressions: undefined, // may be populated from Looker data
     hasMicrosurvey: messageHasMicrosurvey(messageDef.id),
