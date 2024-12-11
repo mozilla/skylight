@@ -131,11 +131,9 @@ export function getDashboard(
   let paramObj;
 
   if (_isAboutWelcomeTemplate(template)) {
-    const multiCaseMessageIds =
-      `%${msgId}%,` + `%${msgId.toLowerCase()}%,` + `%${msgId.toUpperCase()}%`;
     paramObj = {
       "Submission Timestamp Date": submissionDate,
-      "Message ID": multiCaseMessageIds,
+      "Message ID": `%${msgId}%`,
       "Normalized Channel": channel ? channel : "",
       Experiment: experiment ? experiment : "",
       Branch: branchSlug ? branchSlug : "",
@@ -143,12 +141,10 @@ export function getDashboard(
   }
 
   if (template === "infobar") {
-    const multiCaseMessageIds =
-      `${msgId},` + `${msgId.toLowerCase()},` + `${msgId.toUpperCase()}`;
     paramObj = {
       "Messaging System Ping Type": template,
       "Submission Date": submissionDate,
-      "Messaging System Message Id": multiCaseMessageIds,
+      "Messaging System Message Id": msgId,
       "Normalized Channel": channel ? channel : "",
       "Normalized OS": "",
       "Client Info App Display Version": "",

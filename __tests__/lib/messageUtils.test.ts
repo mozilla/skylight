@@ -80,22 +80,17 @@ describe("getDashboard", () => {
       channel,
       experiment,
       branchSlug,
-    );
-    const resultUrl = new URL(result!);
-    const resultParams = new URLSearchParams(resultUrl.search);
+    ) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
 
-    expect(resultUrl.pathname.includes(dashboardId)).toBe(true);
-    expect(resultParams.has("Messaging System Ping Type", template)).toBe(true);
-    expect(resultParams.has("Submission Date", submissionDate)).toBe(true);
-    expect(
-      resultParams.has(
-        "Messaging System Message Id",
-        `${msgId},` + `${msgId.toLowerCase()},` + `${msgId.toUpperCase()}`,
-      ),
-    ).toBe(true);
-    expect(resultParams.has("Normalized Channel", channel)).toBe(true);
-    expect(resultParams.has("Experiment", experiment)).toBe(true);
-    expect(resultParams.has("Experiment Branch", branchSlug)).toBe(true);
+    expect(url.pathname.includes(dashboardId)).toBe(true);
+    expect(params.get("Messaging System Ping Type")).toBe(template);
+    expect(params.get("Submission Date")).toBe(submissionDate);
+    expect(params.get("Messaging System Message Id")).toBe(msgId);
+    expect(params.get("Normalized Channel")).toBe(channel);
+    expect(params.get("Experiment")).toBe(experiment);
+    expect(params.get("Experiment Branch")).toBe(branchSlug);
   });
 
   it("returns a correct featureCallout dashboard link", () => {
@@ -104,25 +99,16 @@ describe("getDashboard", () => {
     const dashboardId = getDashboardIdForTemplate(template);
     const submissionDate = "30 day ago for 30 day";
 
-    const result = getDashboard(template, msgId);
-    const resultUrl = new URL(result!);
-    const resultParams = new URLSearchParams(resultUrl.search);
+    const result = getDashboard(template, msgId) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
 
-    expect(resultUrl.pathname.includes(dashboardId)).toBe(true);
-    expect(resultParams.has("Submission Timestamp Date", submissionDate)).toBe(
-      true,
-    );
-    expect(
-      resultParams.has(
-        "Message ID",
-        `%${msgId}%,` +
-          `%${msgId.toLowerCase()}%,` +
-          `%${msgId.toUpperCase()}%`,
-      ),
-    ).toBe(true);
-    expect(resultParams.has("Normalized Channel", "")).toBe(true);
-    expect(resultParams.has("Experiment", "")).toBe(true);
-    expect(resultParams.has("Branch", "")).toBe(true);
+    expect(url.pathname.includes(dashboardId)).toBe(true);
+    expect(params.has("Submission Timestamp Date", submissionDate)).toBe(true);
+    expect(params.get("Message ID")).toBe(`%${msgId}%`);
+    expect(params.get("Normalized Channel")).toBe("");
+    expect(params.get("Experiment")).toBe("");
+    expect(params.get("Branch")).toBe("");
   });
 
   // XXX should this be "about:welcome" to be consistent with featureIds?
@@ -140,25 +126,16 @@ describe("getDashboard", () => {
       undefined,
       experiment,
       branchSlug,
-    );
-    const resultUrl = new URL(result!);
-    const resultParams = new URLSearchParams(resultUrl.search);
+    ) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
 
-    expect(resultUrl.pathname.includes(dashboardId)).toBe(true);
-    expect(resultParams.has("Submission Timestamp Date", submissionDate)).toBe(
-      true,
-    );
-    expect(
-      resultParams.has(
-        "Message ID",
-        `%${msgId}%,` +
-          `%${msgId.toLowerCase()}%,` +
-          `%${msgId.toUpperCase()}%`,
-      ),
-    ).toBe(true);
-    expect(resultParams.has("Normalized Channel", "")).toBe(true);
-    expect(resultParams.has("Experiment", experiment)).toBe(true);
-    expect(resultParams.has("Branch", branchSlug)).toBe(true);
+    expect(url.pathname.includes(dashboardId)).toBe(true);
+    expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
+    expect(params.get("Message ID")).toBe(`%${msgId}%`);
+    expect(params.get("Normalized Channel")).toBe("");
+    expect(params.get("Experiment")).toBe(experiment);
+    expect(params.get("Branch")).toBe(branchSlug);
   });
 
   it("returns a correct dashboard link with defined start and end dates where the end date is in the future", () => {
@@ -177,25 +154,16 @@ describe("getDashboard", () => {
       undefined,
       startDate,
       endDate,
-    );
-    const resultUrl = new URL(result!);
-    const resultParams = new URLSearchParams(resultUrl.search);
+    ) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
 
-    expect(resultUrl.pathname.includes(dashboardId)).toBe(true);
-    expect(resultParams.has("Submission Timestamp Date", submissionDate)).toBe(
-      true,
-    );
-    expect(
-      resultParams.has(
-        "Message ID",
-        `%${msgId}%,` +
-          `%${msgId.toLowerCase()}%,` +
-          `%${msgId.toUpperCase()}%`,
-      ),
-    ).toBe(true);
-    expect(resultParams.has("Normalized Channel", "")).toBe(true);
-    expect(resultParams.has("Experiment", "")).toBe(true);
-    expect(resultParams.has("Branch", "")).toBe(true);
+    expect(url.pathname.includes(dashboardId)).toBe(true);
+    expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
+    expect(params.get("Message ID")).toBe(`%${msgId}%`);
+    expect(params.get("Normalized Channel")).toBe("");
+    expect(params.get("Experiment")).toBe("");
+    expect(params.get("Branch")).toBe("");
   });
 
   it("returns a correct dashboard link with defined start and end dates where the end date is in the past", () => {
@@ -214,25 +182,16 @@ describe("getDashboard", () => {
       undefined,
       startDate,
       endDate,
-    );
-    const resultUrl = new URL(result!);
-    const resultParams = new URLSearchParams(resultUrl.search);
+    ) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
 
-    expect(resultUrl.pathname.includes(dashboardId)).toBe(true);
-    expect(resultParams.has("Submission Timestamp Date", submissionDate)).toBe(
-      true,
-    );
-    expect(
-      resultParams.has(
-        "Message ID",
-        `%${msgId}%,` +
-          `%${msgId.toLowerCase()}%,` +
-          `%${msgId.toUpperCase()}%`,
-      ),
-    ).toBe(true);
-    expect(resultParams.has("Normalized Channel", "")).toBe(true);
-    expect(resultParams.has("Experiment", "")).toBe(true);
-    expect(resultParams.has("Branch", "")).toBe(true);
+    expect(url.pathname.includes(dashboardId)).toBe(true);
+    expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
+    expect(params.get("Message ID")).toBe(`%${msgId}%`);
+    expect(params.get("Normalized Channel")).toBe("");
+    expect(params.get("Experiment")).toBe("");
+    expect(params.get("Branch")).toBe("");
   });
 
   it("returns a correct dashboard link with a defined start date", () => {
@@ -250,25 +209,16 @@ describe("getDashboard", () => {
       undefined,
       startDate,
       null,
-    );
-    const resultUrl = new URL(result!);
-    const resultParams = new URLSearchParams(resultUrl.search);
+    ) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
 
-    expect(resultUrl.pathname.includes(dashboardId)).toBe(true);
-    expect(resultParams.has("Submission Timestamp Date", submissionDate)).toBe(
-      true,
-    );
-    expect(
-      resultParams.has(
-        "Message ID",
-        `%${msgId}%,` +
-          `%${msgId.toLowerCase()}%,` +
-          `%${msgId.toUpperCase()}%`,
-      ),
-    ).toBe(true);
-    expect(resultParams.has("Normalized Channel", "")).toBe(true);
-    expect(resultParams.has("Experiment", "")).toBe(true);
-    expect(resultParams.has("Branch", "")).toBe(true);
+    expect(url.pathname.includes(dashboardId)).toBe(true);
+    expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
+    expect(params.get("Message ID")).toBe(`%${msgId}%`);
+    expect(params.get("Normalized Channel")).toBe("");
+    expect(params.get("Experiment")).toBe("");
+    expect(params.get("Branch")).toBe("");
   });
 });
 

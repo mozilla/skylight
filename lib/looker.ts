@@ -128,6 +128,7 @@ export async function getCTRPercentData(
     queryResult = await runQueryForTemplate(
       template,
       {
+        "messaging_system.metrics__text2__messaging_system_message_id": id,
         "messaging_system.normalized_channel": channel,
         "messaging_system.metrics__string__messaging_system_ping_type":
           template,
@@ -141,6 +142,7 @@ export async function getCTRPercentData(
     queryResult = await runQueryForTemplate(
       template,
       {
+        "event_counts.message_id": "%" + id + "%",
         "event_counts.normalized_channel": channel,
         "onboarding_v1__experiments.experiment": experiment,
         "onboarding_v1__experiments.branch": branch,
