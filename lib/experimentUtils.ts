@@ -42,10 +42,7 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES: string[] = [
  *
  * XXX Until we fix the upcase bug, we'll be hiding these dashboards.
  */
-export const HIDE_DASHBOARD_EXPERIMENTS: string[] = [
-  "recommend-media-addons-feature-existing-users",
-  "recommend-media-addons-feature-callout",
-];
+export const HIDE_DASHBOARD_EXPERIMENTS: string[] = [];
 
 /**
  *
