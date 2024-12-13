@@ -21,7 +21,7 @@
     "@looker/sdk-node": "24.20.0",
     "@mozilla/nimbus-shared": "^2.5.2",
     "@radix-ui/react-checkbox": "^1.1.2",
-    "@radix-ui/react-navigation-menu": "^1.2.1",
+    "@radix-ui/react-navigation-menu": "^1.2.2",
     "@radix-ui/react-popover": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.4",
