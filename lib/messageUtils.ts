@@ -119,24 +119,46 @@ export function getDashboard(
   endDate?: string | null,
   isCompleted?: boolean,
 ): string | undefined {
-  const encodedMsgId = encodeURIComponent(msgId);
-  const encodedTemplate = encodeURIComponent(template);
-  const encodedChannel = channel ? encodeURIComponent(channel) : "";
-  const encodedExperiment = experiment ? encodeURIComponent(experiment) : "";
-  const encodedBranchSlug = branchSlug ? encodeURIComponent(branchSlug) : "";
   // The isCompleted value can be useful for messages that used to be in remote
   // settings or old versions of Firefox.
-  const encodedSubmissionDate = encodeURIComponent(
-    getLookerSubmissionTimestampDateFilter(startDate, endDate, isCompleted),
+  const submissionDate = getLookerSubmissionTimestampDateFilter(
+    startDate,
+    endDate,
+    isCompleted,
   );
   const dashboardId = getDashboardIdForTemplate(template);
+  let baseUrl = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}`;
+  let paramObj;
 
   if (_isAboutWelcomeTemplate(template)) {
-    return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=${encodedSubmissionDate}&Message+ID=%25${encodedMsgId?.toUpperCase()}%25&Normalized+Channel=${encodedChannel}&Experiment=${encodedExperiment}&Branch=${encodedBranchSlug}`;
+    paramObj = {
+      "Submission Timestamp Date": submissionDate,
+      "Message ID": `%${msgId}%`,
+      "Normalized Channel": channel ? channel : "",
+      Experiment: experiment ? experiment : "",
+      Branch: branchSlug ? branchSlug : "",
+    };
   }
 
   if (template === "infobar") {
-    return `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Messaging+System+Ping+Type=${encodedTemplate}&Submission+Date=${encodedSubmissionDate}&Messaging+System+Message+Id=${encodedMsgId}&Normalized+Channel=${encodedChannel}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodedExperiment}&Experiment+Branch=${encodedBranchSlug}`;
+    paramObj = {
+      "Messaging System Ping Type": template,
+      "Submission Date": submissionDate,
+      "Messaging System Message Id": msgId,
+      "Normalized Channel": channel ? channel : "",
+      "Normalized OS": "",
+      "Client Info App Display Version": "",
+      "Normalized Country Code": "",
+      Experiment: experiment ? experiment : "",
+      "Experiment Branch": branchSlug ? branchSlug : "",
+    };
+  }
+
+  if (paramObj) {
+    const params = new URLSearchParams(Object.entries(paramObj));
+    let url = new URL(baseUrl);
+    url.search = params.toString();
+    return url.toString();
   }
 
   return undefined;

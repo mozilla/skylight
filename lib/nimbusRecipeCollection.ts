@@ -27,7 +27,7 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
         // We are making all branch ids upper case to make up for
         // Looker being case sensitive
         const ctrPercentData = await getCTRPercentData(
-          branchInfo.id.toUpperCase(),
+          branchInfo.id,
           branchInfo.template!,
           undefined,
           branchInfo.nimbusExperiment.slug,

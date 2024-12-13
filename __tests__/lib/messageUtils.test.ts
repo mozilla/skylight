@@ -67,11 +67,12 @@ describe("toBinary", () => {
 describe("getDashboard", () => {
   it("returns a correct infobar dashboard link w/exp & branch", () => {
     const template = "infobar";
-    const msgId = "12`3"; // weird chars to test URI encoding
+    const msgId = "ab`c"; // weird chars to test URI encoding
     const channel = "release";
     const experiment = "experiment:test";
     const branchSlug = "treatment:a";
     const dashboardId = getDashboardIdForTemplate(template);
+    const submissionDate = "30 day ago for 30 day";
 
     const result = getDashboard(
       template,
@@ -79,32 +80,45 @@ describe("getDashboard", () => {
       channel,
       experiment,
       branchSlug,
-    );
+    ) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Messaging+System+Ping+Type=${encodeURIComponent(template)}&Submission+Date=30%20day%20ago%20for%2030%20day&Messaging+System+Message+Id=${encodeURIComponent(msgId)}&Normalized+Channel=${encodeURIComponent(channel)}&Normalized+OS=&Client+Info+App+Display+Version=&Normalized+Country+Code=&Experiment=${encodeURIComponent(experiment)}&Experiment+Branch=${encodeURIComponent(branchSlug)}`;
-    expect(result).toEqual(expectedLink);
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
+    expect(params.get("Messaging System Ping Type")).toBe(template);
+    expect(params.get("Submission Date")).toBe(submissionDate);
+    expect(params.get("Messaging System Message Id")).toBe(msgId);
+    expect(params.get("Normalized Channel")).toBe(channel);
+    expect(params.get("Experiment")).toBe(experiment);
+    expect(params.get("Experiment Branch")).toBe(branchSlug);
   });
 
   it("returns a correct featureCallout dashboard link", () => {
     const template = "feature_callout";
-    const msgId = "1:23"; // weird chars to test URI encoding
+    const msgId = "a:bc"; // weird chars to test URI encoding
     const dashboardId = getDashboardIdForTemplate(template);
+    const submissionDate = "30 day ago for 30 day";
 
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30%20day%20ago%20for%2030%20day&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`;
+    const result = getDashboard(template, msgId) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
 
-    const result = getDashboard(template, msgId);
-    expect(result).toEqual(expectedLink);
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
+    expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
+    expect(params.get("Message ID")).toBe(`%${msgId}%`);
+    expect(params.get("Normalized Channel")).toBe("");
+    expect(params.get("Experiment")).toBe("");
+    expect(params.get("Branch")).toBe("");
   });
 
   // XXX should this be "about:welcome" to be consistent with featureIds?
   it("returns a correct aboutwelcome dashboard link w/exp & branch", () => {
     const template = "aboutwelcome";
-    const msgId = "1:23"; // weird chars to test URI encoding
+    const msgId = "a:bc"; // weird chars to test URI encoding
     const experiment = "experiment:test";
     const branchSlug = "treatment:a";
     const dashboardId = getDashboardIdForTemplate(template);
-
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=30%20day%20ago%20for%2030%20day&Message+ID=%25${encodeURIComponent(msgId.toUpperCase())}%25&Normalized+Channel=&Experiment=${encodeURIComponent(experiment)}&Branch=${encodeURIComponent(branchSlug)}`;
+    const submissionDate = "30 day ago for 30 day";
 
     const result = getDashboard(
       template,
@@ -112,18 +126,25 @@ describe("getDashboard", () => {
       undefined,
       experiment,
       branchSlug,
-    );
-    expect(result).toEqual(expectedLink);
+    ) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
+
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
+    expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
+    expect(params.get("Message ID")).toBe(`%${msgId}%`);
+    expect(params.get("Normalized Channel")).toBe("");
+    expect(params.get("Experiment")).toBe(experiment);
+    expect(params.get("Branch")).toBe(branchSlug);
   });
 
   it("returns a correct dashboard link with defined start and end dates where the end date is in the future", () => {
     const template = "feature_callout";
-    const msgId = "1:23"; // weird chars to test URI encoding
+    const msgId = "a:bc"; // weird chars to test URI encoding
     const startDate = "2024-03-08";
     const endDate = "2025-06-28";
     const dashboardId = getDashboardIdForTemplate(template);
-
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=2024-03-08%20to%202025-06-28&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`;
+    const submissionDate = "2024-03-08 to 2025-06-28";
 
     const result = getDashboard(
       template,
@@ -133,18 +154,25 @@ describe("getDashboard", () => {
       undefined,
       startDate,
       endDate,
-    );
-    expect(result).toEqual(expectedLink);
+    ) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
+
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
+    expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
+    expect(params.get("Message ID")).toBe(`%${msgId}%`);
+    expect(params.get("Normalized Channel")).toBe("");
+    expect(params.get("Experiment")).toBe("");
+    expect(params.get("Branch")).toBe("");
   });
 
   it("returns a correct dashboard link with defined start and end dates where the end date is in the past", () => {
     const template = "feature_callout";
-    const msgId = "1:23"; // weird chars to test URI encoding
+    const msgId = "a:bc"; // weird chars to test URI encoding
     const startDate = "2024-03-08";
     const endDate = "2024-05-28";
     const dashboardId = getDashboardIdForTemplate(template);
-
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=2024-03-08%20to%20today&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`;
+    const submissionDate = "2024-03-08 to today";
 
     const result = getDashboard(
       template,
@@ -154,17 +182,24 @@ describe("getDashboard", () => {
       undefined,
       startDate,
       endDate,
-    );
-    expect(result).toEqual(expectedLink);
+    ) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
+
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
+    expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
+    expect(params.get("Message ID")).toBe(`%${msgId}%`);
+    expect(params.get("Normalized Channel")).toBe("");
+    expect(params.get("Experiment")).toBe("");
+    expect(params.get("Branch")).toBe("");
   });
 
   it("returns a correct dashboard link with a defined start date", () => {
     const template = "feature_callout";
-    const msgId = "1:23"; // weird chars to test URI encoding
+    const msgId = "a:bc"; // weird chars to test URI encoding
     const startDate = "2024-03-08";
     const dashboardId = getDashboardIdForTemplate(template);
-
-    const expectedLink = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}?Submission+Timestamp+Date=2024-03-08%20to%20today&Message+ID=%25${encodeURIComponent(msgId)}%25&Normalized+Channel=&Experiment=&Branch=`;
+    const submissionDate = "2024-03-08 to today";
 
     const result = getDashboard(
       template,
@@ -174,8 +209,16 @@ describe("getDashboard", () => {
       undefined,
       startDate,
       null,
-    );
-    expect(result).toEqual(expectedLink);
+    ) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
+
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
+    expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
+    expect(params.get("Message ID")).toBe(`%${msgId}%`);
+    expect(params.get("Normalized Channel")).toBe("");
+    expect(params.get("Experiment")).toBe("");
+    expect(params.get("Branch")).toBe("");
   });
 });
 

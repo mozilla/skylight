@@ -37,15 +37,10 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES: string[] = [
 ];
 
 /**
- * These are experiment with dashboard links that are currently (incorrectly
- * empty).
- *
- * XXX Until we fix the upcase bug, we'll be hiding these dashboards.
+ * If we have experiment dashboards with serious problems, we can hide those
+ * dashboards by adding the experiment slugs to this array.
  */
-export const HIDE_DASHBOARD_EXPERIMENTS: string[] = [
-  "recommend-media-addons-feature-existing-users",
-  "recommend-media-addons-feature-callout",
-];
+export const HIDE_DASHBOARD_EXPERIMENTS: string[] = [];
 
 /**
  *
