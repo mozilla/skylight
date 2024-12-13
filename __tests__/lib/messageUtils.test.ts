@@ -84,7 +84,7 @@ describe("getDashboard", () => {
     const url = new URL(result);
     const params = url.searchParams;
 
-    expect(url.pathname.includes(dashboardId)).toBe(true);
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
     expect(params.get("Messaging System Ping Type")).toBe(template);
     expect(params.get("Submission Date")).toBe(submissionDate);
     expect(params.get("Messaging System Message Id")).toBe(msgId);
@@ -103,8 +103,8 @@ describe("getDashboard", () => {
     const url = new URL(result);
     const params = url.searchParams;
 
-    expect(url.pathname.includes(dashboardId)).toBe(true);
-    expect(params.has("Submission Timestamp Date", submissionDate)).toBe(true);
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
+    expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
     expect(params.get("Message ID")).toBe(`%${msgId}%`);
     expect(params.get("Normalized Channel")).toBe("");
     expect(params.get("Experiment")).toBe("");
@@ -130,7 +130,7 @@ describe("getDashboard", () => {
     const url = new URL(result);
     const params = url.searchParams;
 
-    expect(url.pathname.includes(dashboardId)).toBe(true);
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
     expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
     expect(params.get("Message ID")).toBe(`%${msgId}%`);
     expect(params.get("Normalized Channel")).toBe("");
@@ -158,7 +158,7 @@ describe("getDashboard", () => {
     const url = new URL(result);
     const params = url.searchParams;
 
-    expect(url.pathname.includes(dashboardId)).toBe(true);
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
     expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
     expect(params.get("Message ID")).toBe(`%${msgId}%`);
     expect(params.get("Normalized Channel")).toBe("");
@@ -186,7 +186,7 @@ describe("getDashboard", () => {
     const url = new URL(result);
     const params = url.searchParams;
 
-    expect(url.pathname.includes(dashboardId)).toBe(true);
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
     expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
     expect(params.get("Message ID")).toBe(`%${msgId}%`);
     expect(params.get("Normalized Channel")).toBe("");
@@ -213,7 +213,7 @@ describe("getDashboard", () => {
     const url = new URL(result);
     const params = url.searchParams;
 
-    expect(url.pathname.includes(dashboardId)).toBe(true);
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
     expect(params.get("Submission Timestamp Date")).toBe(submissionDate);
     expect(params.get("Message ID")).toBe(`%${msgId}%`);
     expect(params.get("Normalized Channel")).toBe("");
