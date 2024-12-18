@@ -16,6 +16,11 @@ import { getExperimentLookerDashboardDate } from "./lookerUtils.ts";
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
+type DocumentationLink = {
+  title: string;
+  link: string;
+};
+
 function isMessagingFeature(featureId: string): boolean {
   return MESSAGING_EXPERIMENTS_DEFAULT_FEATURES.includes(featureId);
 }
@@ -320,6 +325,9 @@ export class NimbusRecipe implements NimbusRecipeType {
       nimbusExperiment: this._rawRecipe,
       branches: branchInfos,
       hasMicrosurvey: hasMicrosurvey,
+      experimentBriefLink: this.getExperimentBriefLink(
+        this._rawRecipe.documentationLinks,
+      ),
     };
   }
 
@@ -381,5 +389,27 @@ export class NimbusRecipe implements NimbusRecipeType {
     return `https://experimenter.services.mozilla.com/nimbus/${encodeURIComponent(
       this._rawRecipe.slug,
     )}/summary#${branchSlug}`;
+  }
+
+  /**
+   * @param documentationLinks a list of documentation links provided for this Nimbus recipe
+   * @returns the first documentation link of the experiment brief Google Doc if it exists
+   */
+  getExperimentBriefLink(
+    documentationLinks: DocumentationLink[] | undefined,
+  ): string | undefined {
+    if (documentationLinks) {
+      const brief = documentationLinks.find(
+        (documentationLink: DocumentationLink) => {
+          return (
+            documentationLink.title === "DESIGN_DOC" &&
+            documentationLink.link.startsWith(
+              "https://docs.google.com/document",
+            )
+          );
+        },
+      );
+      return brief && brief.link;
+    }
   }
 }
