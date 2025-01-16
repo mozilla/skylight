@@ -239,7 +239,10 @@ export default async function Dashboard() {
         <MenuButton isComplete={false} />
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4 flex items-center justify-center gap-x-1">
+      <h5
+        id="firefox"
+        className="scroll-m-20 text-xl font-semibold text-center pt-6 flex items-center justify-center gap-x-1"
+      >
         Desktop Messages Released on Firefox
         <InfoPopover
           content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
