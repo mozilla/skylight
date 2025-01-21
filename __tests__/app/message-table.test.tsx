@@ -571,6 +571,31 @@ describe("MessageTable", () => {
         expect(defaultAboutWelcomeMsg).toBeInTheDocument();
       });
     });
+
+    it("truncates message ID if it's over 50 characters long", () => {
+      const messageId =
+        "12345678901234567890123456789012345678901234567890 is 50 characters long";
+      const fakeMsgInfo: FxMSMessageInfo = {
+        product: "Desktop",
+        id: messageId,
+        template: "test template",
+        surface: "test surface",
+        segment: "test segment",
+        metrics: "test metrics",
+        ctrDashboardLink: "test link",
+      };
+      render(
+        <MessageTable columns={fxmsMessageColumns} data={[fakeMsgInfo]} />,
+      );
+
+      const message = screen.queryByText(messageId);
+      const truncatedMessage = screen.queryByText(
+        "12345678901234567890123456789012345678901234567890...",
+      );
+
+      expect(message).not.toBeInTheDocument();
+      expect(truncatedMessage).toBeInTheDocument();
+    });
   });
 
   describe("CompletedExperimentColumns", () => {
