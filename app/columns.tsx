@@ -194,7 +194,10 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
       return (
         <>
           <div className="font-mono text-xs inline">
-            {props.row.original.id}
+            {/* Quick fix for long message IDs that can break the UI */}
+            {props.row.original.id.length <= 50
+              ? props.row.original.id
+              : props.row.original.id.substring(0, 50) + "…"}
           </div>
           {props.row.original.hasMicrosurvey && <> {microsurveyBadge} </>}
         </>
