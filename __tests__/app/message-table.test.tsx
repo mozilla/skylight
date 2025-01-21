@@ -590,7 +590,7 @@ describe("MessageTable", () => {
 
       const message = screen.queryByText(messageId);
       const truncatedMessage = screen.queryByText(
-        "12345678901234567890123456789012345678901234567890...",
+        "12345678901234567890123456789012345678901234567890…",
       );
 
       expect(message).not.toBeInTheDocument();
