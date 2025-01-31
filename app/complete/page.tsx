@@ -99,7 +99,11 @@ export default async function CompleteExperimentsDashboard() {
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Complete Desktop Message Rollouts
       </h5>
-      <h5 id="complete_rollouts" className="scroll-m-20 text-sm text-center">
+      <h5
+        id="complete_rollouts"
+        data-testid="complete_rollouts"
+        className="scroll-m-20 text-sm text-center"
+      >
         Total: {totalRolloutExperiments}
       </h5>
       <div className="sticky top-24 z-10 py-2 bg-background flex justify-center">
@@ -116,7 +120,11 @@ export default async function CompleteExperimentsDashboard() {
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Complete Desktop Message Experiments
       </h5>
-      <h5 id="complete_experiments" className="scroll-m-20 text-sm text-center">
+      <h5
+        id="complete_experiments"
+        data-testid="complete_experiments"
+        className="scroll-m-20 text-sm text-center"
+      >
         Total: {totalExperiments}
       </h5>
       <div className="sticky top-24 z-10 py-2 bg-background flex justify-center">
