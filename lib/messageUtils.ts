@@ -36,6 +36,10 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
       tagColor: "bg-lime-300",
       docs: "https://experimenter.info/messaging/desktop-messaging-surfaces/#infobar",
     },
+    menu: {
+      surface: "Menu Messages",
+      tagColor: "bg-pink-300",
+    },
     milestone_message: {
       surface: "Milestone Messages",
       tagColor: "bg-green-400",
