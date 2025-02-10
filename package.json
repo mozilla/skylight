@@ -13,18 +13,18 @@
     "prettier:write": "npx --no prettier . --write"
   },
   "engines": {
-    "node": "20.11.*",
-    "npm": "10.5.*"
+    "node": "22.13.*",
+    "npm": "10.9.*"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
-    "@looker/sdk-node": "25.0.0",
+    "@looker/sdk-node": "25.0.1",
     "@mozilla/nimbus-shared": "^2.5.2",
-    "@radix-ui/react-checkbox": "^1.1.3",
-    "@radix-ui/react-navigation-menu": "^1.2.4",
-    "@radix-ui/react-popover": "^1.1.5",
-    "@radix-ui/react-slot": "^1.1.1",
-    "@radix-ui/react-tooltip": "^1.1.7",
+    "@radix-ui/react-checkbox": "^1.1.4",
+    "@radix-ui/react-navigation-menu": "^1.2.5",
+    "@radix-ui/react-popover": "^1.1.6",
+    "@radix-ui/react-slot": "^1.1.2",
+    "@radix-ui/react-tooltip": "^1.1.8",
     "@tanstack/react-table": "^8.20.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
