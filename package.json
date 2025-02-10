@@ -13,8 +13,8 @@
     "prettier:write": "npx --no prettier . --write"
   },
   "engines": {
-    "node": "20.11.*",
-    "npm": "10.5.*"
+    "node": "22.13.*",
+    "npm": "10.9.*"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",
