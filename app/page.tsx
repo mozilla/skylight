@@ -239,7 +239,11 @@ export default async function Dashboard() {
         <MenuButton isComplete={false} />
       </div>
 
-      <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4 flex items-center justify-center gap-x-1">
+      <h5
+        id="firefox"
+        data-testid="firefox"
+        className="scroll-m-20 text-xl font-semibold text-center pt-6 flex items-center justify-center gap-x-1"
+      >
         Desktop Messages Released on Firefox
         <InfoPopover
           content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
@@ -262,7 +266,11 @@ export default async function Dashboard() {
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Current Desktop Message Rollouts
       </h5>
-      <h5 id="live_rollouts" className="scroll-m-20 text-sm text-center">
+      <h5
+        id="live_rollouts"
+        data-testid="live_rollouts"
+        className="scroll-m-20 text-sm text-center"
+      >
         Total: {totalRolloutExperiments}
       </h5>
       <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
@@ -279,7 +287,11 @@ export default async function Dashboard() {
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Current Desktop Message Experiments
       </h5>
-      <h5 id="live_experiments" className="scroll-m-20 text-sm text-center">
+      <h5
+        id="live_experiments"
+        data-testid="live_experiments"
+        className="scroll-m-20 text-sm text-center"
+      >
         Total: {totalExperiments}
       </h5>
       <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
