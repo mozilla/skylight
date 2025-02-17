@@ -17,7 +17,7 @@
     "npm": "10.9.*"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^3.6.0",
+    "@auth0/nextjs-auth0": "^4.0.1",
     "@looker/sdk-node": "25.2.0",
     "@mozilla/nimbus-shared": "^2.5.2",
     "@radix-ui/react-checkbox": "^1.1.4",
@@ -29,7 +29,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.468.0",
-    "next": "14.2.22",
+    "next": "15.1.7",
     "react": "^18",
     "react-dom": "^18",
     "remark": "^15.0.1",
@@ -48,7 +48,7 @@
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
-    "eslint-config-next": "14.2.15",
+    "eslint-config-next": "15.1.7",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-jest": "^28.11.0",
     "eslint-plugin-jest-dom": "^5.5.0",
