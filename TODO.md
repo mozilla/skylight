@@ -42,26 +42,26 @@ User Story: As a mobile PM, I should be able to understand what things are in ex
 
    1. Build Android page
       1. Review existing clone for "completed" (DONE)
-      2. ?Consider options for cloning, since we'll want Android completed page too, and iOS pages
-         1. Clean way:
-                3. Create new dir with new page.tsx (MUST)
-            4. TDD Factor out dashboard (prob MUST)
-            5. Factor "application=" out of env (MUST)
+      2. ?Consider options for cloning, since we'll want Android completed page too, and iOS pages (DONE)
 
-         2. Add cases / refactor messageUtils.getDashboard (MUST)
-         3. Add cases / refactor experimentUtils.ts (MUST)
-         4. Update / move messageUtils.getDashboardIdForTemplate (MUST)
-         5. Add cases / refactor nimbusRecipe.ts:getBranchInfo (MUST)
-         6. Add cases / refactor templates & getSurfaceDataForTemplate (MUST)
-         7. Add cases / refactor looker.ts:getCTRPercentData (LATER)
-         8. Update columns.tsx:filterBySurface (LATER)
-         9. TDD Factor Out NimbusMessageTable (NICE)
-         10. TDD Factor out high-level data fetching (NICE)
+      3. Create new dir with new page.tsx (MUST)
 
-      3. Pull in Android experiments using that URL
-      4. Build dashboard link
+      4. TDD Factor out dashboard (prob MUST)
+      5. Factor "application=" out of env (MUST)
+      6. Add cases / refactor messageUtils.getDashboard (MUST)
+      7. Add cases / refactor experimentUtils.ts (MUST)
+      8. Update / move messageUtils.getDashboardIdForTemplate (MUST)
+      9.  Add cases / refactor nimbusRecipe.ts:getBranchInfo (MUST)
+      10. Add cases / refactor templates & getSurfaceDataForTemplate (MUST)
+      11. Add cases / refactor looker.ts:getCTRPercentData (LATER)
+      12. Update columns.tsx:filterBySurface (LATER)
+      13. TDD Factor Out NimbusMessageTable (NICE)
+      14. TDD Factor out high-level data fetching (NICE)
+
+      15. Pull in Android experiments using that URL
+      16. Build dashboard link
          1. How to handle multi types
-      5. Build CTR
+      17. Build CTR
          1. How to handle multi types
 
 
