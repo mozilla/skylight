@@ -1,4 +1,4 @@
-import Dashboard from "@/app/page";
+import { Dashboard } from "@/app/dashboard";
 import CompleteExperimentsDashboard from "@/app/complete/page";
 import { render } from "@testing-library/react";
 import { ExperimentFakes } from "../ExperimentFakes.mjs";
@@ -11,7 +11,7 @@ global.fetch = jest.fn(() =>
   }),
 ) as jest.Mock;
 
-describe("Page", () => {
+describe("Dashboard", () => {
   it("all timeline pill ids exist in the Dashboard component in /", async () => {
     const dashboard = render(await Dashboard());
 
@@ -19,9 +19,9 @@ describe("Page", () => {
     const experiments = dashboard.getByTestId("live_experiments");
     const rollouts = dashboard.getByTestId("live_rollouts");
 
-    expect(firefox).toBeDefined();
-    expect(experiments).toBeDefined();
-    expect(rollouts).toBeDefined();
+    expect(firefox).toBeInTheDocument();
+    expect(experiments).toBeInTheDocument();
+    expect(rollouts).toBeInTheDocument();
   });
 
   it("all timeline pill ids exist in the Dashboard component in /complete", async () => {
@@ -30,7 +30,7 @@ describe("Page", () => {
     const experiments = dashboard.getByTestId("complete_experiments");
     const rollouts = dashboard.getByTestId("complete_rollouts");
 
-    expect(experiments).toBeDefined();
-    expect(rollouts).toBeDefined();
+    expect(experiments).toBeInTheDocument();
+    expect(rollouts).toBeInTheDocument();
   });
 });
