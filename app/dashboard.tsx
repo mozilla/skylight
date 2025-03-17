@@ -248,28 +248,30 @@ export async function Dashboard({ platform = "desktop" }: { platform?: string })
         <MenuButton isComplete={false} />
       </div>
 
-      <h5
-        id="firefox"
-        data-testid="firefox"
-        className="scroll-m-20 text-xl font-semibold text-center pt-6 flex items-center justify-center gap-x-1"
-      >
-        {platform} Messages Released on Firefox
-        <InfoPopover
-          content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
-          iconStyle="h-7 w-7 p-1 rounded-full cursor-pointer border-0 bg-slate-100 hover:bg-slate-200"
-        />
-      </h5>
-      <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
-        <Timeline active="firefox" />
-      </div>
+      <div>
+        <h5
+          id="firefox"
+          data-testid="firefox"
+          className="scroll-m-20 text-xl font-semibold text-center pt-6 flex items-center justify-center gap-x-1"
+        >
+          {platform} Messages Released on Firefox
+          <InfoPopover
+            content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
+            iconStyle="h-7 w-7 p-1 rounded-full cursor-pointer border-0 bg-slate-100 hover:bg-slate-200"
+          />
+        </h5>
+        <div className="sticky top-24 z-10 bg-background py-2 flex justify-center">
+          <Timeline active="firefox" />
+        </div>
 
-      <div className="container mx-auto py-10">
-        <MessageTable
-          columns={fxmsMessageColumns}
-          data={localData}
-          canHideMessages={true}
-          impressionsThreshold={hidden_message_impression_threshold}
-        />
+        <div className="container mx-auto py-10">
+          <MessageTable
+            columns={fxmsMessageColumns}
+            data={localData}
+            canHideMessages={true}
+            impressionsThreshold={hidden_message_impression_threshold}
+          />
+        </div>
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
