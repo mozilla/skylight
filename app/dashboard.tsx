@@ -231,8 +231,7 @@ async function fetchData() {
   };
 }
 
-export async function Dashboard({ platform = "desktop" }): Promise<JSX.Element> {
-  platform = platform || "desktop"; // Ensure platform is always defined
+export async function Dashboard({ platform = "desktop" }: { platform?: string }): Promise<JSX.Element> {
 
   const {
     localData,
@@ -254,7 +253,7 @@ export async function Dashboard({ platform = "desktop" }): Promise<JSX.Element> 
         data-testid="firefox"
         className="scroll-m-20 text-xl font-semibold text-center pt-6 flex items-center justify-center gap-x-1"
       >
-        Desktop Messages Released on Firefox
+        {platform} Messages Released on Firefox
         <InfoPopover
           content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
           iconStyle="h-7 w-7 p-1 rounded-full cursor-pointer border-0 bg-slate-100 hover:bg-slate-200"
@@ -274,7 +273,7 @@ export async function Dashboard({ platform = "desktop" }): Promise<JSX.Element> 
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
-        Current Desktop Message Rollouts
+        Current {platform} Message Rollouts
       </h5>
       <h5
         id="live_rollouts"
@@ -295,7 +294,7 @@ export async function Dashboard({ platform = "desktop" }): Promise<JSX.Element> 
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
-        Current Desktop Message Experiments
+        Current {platform} Message Experiments
       </h5>
       <h5
         id="live_experiments"
