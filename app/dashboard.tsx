@@ -196,44 +196,54 @@ async function getMsgRolloutCollection(
   return msgRolloutRecipeCollection;
 }
 
-export async function Dashboard() {
-  // Check to see if Auth is enabled
-  const isAuthEnabled = process.env.IS_AUTH_ENABLED === "true";
-
+async function fetchData() {
   const recipeCollection = new NimbusRecipeCollection();
   await recipeCollection.fetchRecipes();
   console.log("recipeCollection.length = ", recipeCollection.recipes.length);
 
-  // XXX await Promise.allSettled for all three loads concurrently
   const localData = (await getASRouterLocalMessageInfoFromFile()).sort(
     compareSurfacesFn,
   );
-  const msgExpRecipeCollection =
-    await getMsgExpRecipeCollection(recipeCollection);
-  const msgRolloutRecipeCollection =
-    await getMsgRolloutCollection(recipeCollection);
 
-  // Get in format useable by MessageTable
-  const experimentAndBranchInfo: RecipeOrBranchInfo[] = isLookerEnabled
-    ? // Update branches inside recipe infos with CTR percents
-      await msgExpRecipeCollection.getExperimentAndBranchInfos()
+  const msgExpRecipeCollection = await getMsgExpRecipeCollection(recipeCollection);
+  const msgRolloutRecipeCollection = await getMsgRolloutCollection(recipeCollection);
+
+  const experimentAndBranchInfo = isLookerEnabled
+    ? await msgExpRecipeCollection.getExperimentAndBranchInfos()
     : msgExpRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
-        recipe.getRecipeInfo(),
-      );
+        recipe.getRecipeInfo());
 
   const totalExperiments = msgExpRecipeCollection.recipes.length;
 
-  const msgRolloutInfo: RecipeOrBranchInfo[] = isLookerEnabled
-    ? // Update branches inside recipe infos with CTR percents
-      await msgRolloutRecipeCollection.getExperimentAndBranchInfos()
+  const msgRolloutInfo = isLookerEnabled
+    ? await msgRolloutRecipeCollection.getExperimentAndBranchInfos()
     : msgRolloutRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
-        recipe.getRecipeInfo(),
-      );
+        recipe.getRecipeInfo());
 
   const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
 
+  return {
+    localData,
+    experimentAndBranchInfo,
+    totalExperiments,
+    msgRolloutInfo,
+    totalRolloutExperiments,
+  };
+}
+
+export async function Dashboard({ platform = "desktop" }): Promise<JSX.Element> {
+  platform = platform || "desktop"; // Ensure platform is always defined
+
+  const {
+    localData,
+    experimentAndBranchInfo,
+    totalExperiments,
+    msgRolloutInfo,
+    totalRolloutExperiments,
+  } = await fetchData();
+
   return (
-    <div>
+    <div role="main" data-testid="dashboard">
       <div className="sticky top-0 z-50 bg-background flex justify-between px-20 py-8">
         <h4 className="scroll-m-20 text-3xl font-semibold">Skylight</h4>
         <MenuButton isComplete={false} />
