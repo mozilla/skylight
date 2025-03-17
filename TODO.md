@@ -46,7 +46,7 @@ User Story: As a mobile PM, I should be able to understand what things are in ex
 
       3. Create new dir with new page.tsx (MUST)
 
-      4. TDD Factor out dashboard (prob MUST)
+      4. TDD Factor out dashboard (STARTED)
       5. Factor "application=" out of env (MUST)
       6. Add cases / refactor messageUtils.getDashboard (MUST)
       7. Add cases / refactor experimentUtils.ts (MUST)
