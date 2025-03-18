@@ -13,7 +13,7 @@ global.fetch = jest.fn(() =>
 
 describe("Dashboard", () => {
   it("all timeline pill ids exist in the Dashboard component in /", async () => {
-    const dashboard = render(await <Dashboard platform="desktop" />);
+    const dashboard = render(await (<Dashboard platform="desktop" />));
 
     const firefox = dashboard.getByTestId("firefox");
     const experiments = dashboard.getByTestId("live_experiments");
