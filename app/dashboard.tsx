@@ -271,7 +271,7 @@ const ReleasedTable = async ({ platform, localData }: ReleasedTableProps) => {
 };
 
 interface DashboardProps {
-  platform?: string;
+  platform: string;
 }
 
 export const Dashboard = async ({ platform }: DashboardProps) => {
