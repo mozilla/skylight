@@ -65,12 +65,13 @@ User Stories. As an Android PM, I should
        4. TDD Factor out dashboard (DONE)
           1. Use platform search param (TRIED; TOO FIDDLY, MAYBE LATER)
           2. Put in separate android/ route (DONE)
+
        5. Make test & code updates to not display local table (WIP)
        6. Factor "application=" out of env (MUST)
-       7. Add cases / refactor nimbusRecipe.ts:getBranchInfo (MUST)
-       8. Add cases / refactor multiple feature ID list in experimentUtils.ts (MUST)
+       7. Add cases / refactor multiple feature ID list in experimentUtils.ts (MUST)
+       8. Add cases / refactor nimbusRecipe.ts:getBranchInfo (MUST)
 
-       9. Add cases / refactor messageUtils.getDashboard (LATER)
+       9.  Add cases / refactor messageUtils.getDashboard (LATER)
        10. Update / move messageUtils.getDashboardIdForTemplate (LATER)
        11. Add cases / refactor templates & getSurfaceDataForTemplate (LATER)
        12. Add cases / refactor looker.ts:getCTRPercentData (LATER)
