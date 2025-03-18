@@ -205,20 +205,24 @@ async function fetchData() {
     compareSurfacesFn,
   );
 
-  const msgExpRecipeCollection = await getMsgExpRecipeCollection(recipeCollection);
-  const msgRolloutRecipeCollection = await getMsgRolloutCollection(recipeCollection);
+  const msgExpRecipeCollection =
+    await getMsgExpRecipeCollection(recipeCollection);
+  const msgRolloutRecipeCollection =
+    await getMsgRolloutCollection(recipeCollection);
 
   const experimentAndBranchInfo = isLookerEnabled
     ? await msgExpRecipeCollection.getExperimentAndBranchInfos()
     : msgExpRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
-        recipe.getRecipeInfo());
+        recipe.getRecipeInfo(),
+      );
 
   const totalExperiments = msgExpRecipeCollection.recipes.length;
 
   const msgRolloutInfo = isLookerEnabled
     ? await msgRolloutRecipeCollection.getExperimentAndBranchInfos()
     : msgRolloutRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
-        recipe.getRecipeInfo());
+        recipe.getRecipeInfo(),
+      );
 
   const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
 
@@ -264,14 +268,13 @@ const ReleasedTable = async ({ platform, localData }: ReleasedTableProps) => {
       </div>
     </div>
   );
-}
+};
 
 interface DashboardProps {
   platform?: string;
 }
 
 export const Dashboard = async ({ platform }: DashboardProps) => {
-
   const {
     localData,
     experimentAndBranchInfo,
@@ -332,4 +335,4 @@ export const Dashboard = async ({ platform }: DashboardProps) => {
       </div>
     </div>
   );
-}
+};
