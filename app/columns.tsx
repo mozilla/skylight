@@ -207,12 +207,12 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   {
     accessorKey: "surface",
     header: "Surface",
-    cell: (props: any) => {
-      return SurfaceTag(
-        props.row.original.template,
-        props.row.original.surface,
-      );
-    },
+    // cell: (props: any) => {
+    //   return SurfaceTag(
+    //     props.row.original.template,
+    //     props.row.original.surface,
+    //   );
+    // },
     meta: {
       filterVariant: "text",
     },
