@@ -6,10 +6,10 @@ Epics:
 - stand up android
   - messaging surface
   - onboarding surface
-  - others?
+  - UNKNOWN: enumerate other surfaces
 - stand up iOS
   - UNKNOWN: sort out surfaces
-  - split here
+  - redo android steps, but without all the refactoring
 
 User Stories. As an Android PM, I should
 
@@ -59,9 +59,9 @@ User Stories. As an Android PM, I should
 
     6. Build Android page
 
-       1. Review existing clone for "completed" (DONE)
-       2. ?Consider options for cloning, since we'll want Android completed page too, and iOS pages (DONE)
-       3. Create new dir with new page.tsx (MUST)
+       1. ~~Review existing clone for "completed" (DONE)~~
+       2. ~~?Consider options for cloning, since we'll want Android completed page too, and iOS pages (DONE)~~
+       3. ~~Create new dir with new page.tsx (MUST)~~
        4. TDD Factor out dashboard (DONE)
           1. Use platform search param (TRIED; TOO FIDDLY, MAYBE LATER)
           2. Put in separate android/ route (DONE)
