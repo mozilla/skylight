@@ -3,9 +3,6 @@ import {
   _substituteLocalizations,
 } from "../../lib/experimentUtils.ts";
 
-import { types } from "@mozilla/nimbus-shared";
-type NimbusExperiment = types.experiments.NimbusExperiment;
-
 const LOCALIZATIONS = {
   foo: "localized foo text",
   qux: "localized qux text",

@@ -88,7 +88,9 @@ export type FxMSMessageInfo = {
   hidePreview?: boolean;
 };
 
-type NimbusExperiment = types.experiments.NimbusExperiment;
+// type NimbusExperiment = types.experiments.NimbusExperiment;
+const nimbusExperimentV7Schema = require("@mozilla/nimbus-schemas/schemas/NimbusExperimentV7.schema.json");
+type NimbusExperiment = typeof nimbusExperimentV7Schema.properties;
 
 export type RecipeInfo = {
   product: "Desktop" | "Android";
@@ -192,7 +194,7 @@ function experimentBriefTooltip(link: string) {
       <Tooltip>
         <TooltipTrigger asChild>
           <a
-            className="flex items-center justify-center rounded-md text-primary hover:text-primary/80 visited:text-inherit"
+            className="flex items-center justify-center p-1 rounded-full text-primary bg-gray-200/70 hover:bg-gray-200/40 hover:text-primary/80 visited:text-inherit"
             href={link}
             target="_blank"
             rel="noreferrer"
