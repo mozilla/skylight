@@ -1,5 +1,4 @@
 "use client";
-import { types } from "@mozilla/nimbus-shared";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { PreviewLinkButton } from "@/components/ui/previewlinkbutton";
@@ -88,7 +87,6 @@ export type FxMSMessageInfo = {
   hidePreview?: boolean;
 };
 
-// type NimbusExperiment = types.experiments.NimbusExperiment;
 const nimbusExperimentV7Schema = require("@mozilla/nimbus-schemas/schemas/NimbusExperimentV7.schema.json");
 type NimbusExperiment = typeof nimbusExperimentV7Schema.properties;
 
