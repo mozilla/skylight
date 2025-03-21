@@ -1,4 +1,3 @@
-import { types } from "@mozilla/nimbus-shared";
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "../app/columns.jsx";
 import {
   getDashboard,
@@ -14,14 +13,10 @@ import {
 } from "../lib/experimentUtils.ts";
 import { getExperimentLookerDashboardDate } from "./lookerUtils.ts";
 
-// type NimbusExperiment = types.experiments.NimbusExperiment;
 const nimbusExperimentV7Schema = require("@mozilla/nimbus-schemas/schemas/NimbusExperimentV7.schema.json");
 type NimbusExperiment = typeof nimbusExperimentV7Schema.properties;
-
-type DocumentationLink = {
-  title: string;
-  link: string;
-};
+type DocumentationLink =
+  typeof nimbusExperimentV7Schema.properties.documentationLinks;
 
 function isMessagingFeature(featureId: string): boolean {
   return MESSAGING_EXPERIMENTS_DEFAULT_FEATURES.includes(featureId);
