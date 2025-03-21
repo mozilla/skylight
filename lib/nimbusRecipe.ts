@@ -14,7 +14,9 @@ import {
 } from "../lib/experimentUtils.ts";
 import { getExperimentLookerDashboardDate } from "./lookerUtils.ts";
 
-type NimbusExperiment = types.experiments.NimbusExperiment;
+// type NimbusExperiment = types.experiments.NimbusExperiment;
+const nimbusExperimentV7Schema = require("@mozilla/nimbus-schemas/schemas/NimbusExperimentV7.schema.json");
+type NimbusExperiment = typeof nimbusExperimentV7Schema.properties;
 
 type DocumentationLink = {
   title: string;
