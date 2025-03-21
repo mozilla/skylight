@@ -1,10 +1,10 @@
-import { types } from "@mozilla/nimbus-shared";
 import { NimbusRecipe } from "../lib/nimbusRecipe";
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "@/app/columns";
 import { getCTRPercentData } from "./looker";
 import { getExperimentLookerDashboardDate } from "./lookerUtils";
 
-type NimbusExperiment = types.experiments.NimbusExperiment;
+const nimbusExperimentV7Schema = require("@mozilla/nimbus-schemas/schemas/NimbusExperimentV7.schema.json");
+type NimbusExperiment = typeof nimbusExperimentV7Schema.properties;
 
 type NimbusRecipeCollectionType = {
   recipes: Array<NimbusRecipe>;
