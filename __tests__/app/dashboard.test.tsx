@@ -11,10 +11,18 @@ global.fetch = jest.fn(() =>
   }),
 ) as jest.Mock;
 
+const mockFetchData = {
+  localData: [],
+  experimentAndBranchInfo: [],
+  totalExperiments: 0,
+  msgRolloutInfo: [],
+  totalRolloutExperiments: 0,
+};
+
 describe.skip("Dashboard", () => {
   it("all timeline pill ids exist in the Dashboard component in /", async () => {
     const dashboard = await render(
-        await <Dashboard />
+        await <Dashboard {...mockFetchData} />
     );
 
     const firefox = dashboard.getByTestId("firefox");
