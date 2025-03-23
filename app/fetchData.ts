@@ -1,14 +1,22 @@
-import { compareSurfacesFn } from "@/lib/messageUtils";
+import {
+  compareSurfacesFn,
+  getDashboard,
+  getPreviewLink,
+  getSurfaceDataForTemplate,
+  getTemplateFromMessage,
+  maybeCreateWelcomePreview,
+  messageHasMicrosurvey,
+} from "@/lib/messageUtils";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import {
   appendFxMSTelemetryData,
   compareDatesFn,
-  getASRouterLocalColumnFromJSON,
   getMsgRolloutCollection,
   isLookerEnabled,
 } from "@/app/dashboard";
 import { FxMSMessageInfo } from "./columns";
+import { getCTRPercentData } from "@/lib/looker";
 
 export async function fetchData() {
   const recipeCollection = new NimbusRecipeCollection();
@@ -96,4 +104,47 @@ export async function getASRouterLocalMessageInfoFromFile(): Promise<
   );
 
   return messages;
+}
+export async function getASRouterLocalColumnFromJSON(
+  messageDef: any,
+): Promise<FxMSMessageInfo> {
+  let fxmsMsgInfo: FxMSMessageInfo = {
+    product: "Desktop",
+    id: messageDef.id,
+    template: messageDef.template,
+    surface: getSurfaceDataForTemplate(getTemplateFromMessage(messageDef))
+      .surface,
+    segment: "some segment",
+    metrics: "some metrics",
+    ctrPercent: undefined, // may be populated from Looker data
+    ctrPercentChange: undefined, // may be populated from Looker data
+    previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
+    impressions: undefined, // may be populated from Looker data
+    hasMicrosurvey: messageHasMicrosurvey(messageDef.id),
+    hidePreview: messageDef.hidePreview,
+  };
+
+  const channel = "release";
+
+  if (isLookerEnabled) {
+    const ctrPercentData = await getCTRPercentData(
+      fxmsMsgInfo.id,
+      fxmsMsgInfo.template,
+      channel,
+    );
+    if (ctrPercentData) {
+      fxmsMsgInfo.ctrPercent = ctrPercentData.ctrPercent;
+      fxmsMsgInfo.impressions = ctrPercentData.impressions;
+    }
+  }
+
+  fxmsMsgInfo.ctrDashboardLink = getDashboard(
+    fxmsMsgInfo.template,
+    fxmsMsgInfo.id,
+    channel,
+  );
+
+  // dashboard link -> dashboard id -> query id -> query -> ctr_percent_from_lastish_day
+  // console.log("fxmsMsgInfo: ", fxmsMsgInfo)
+  return fxmsMsgInfo;
 }
