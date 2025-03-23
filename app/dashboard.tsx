@@ -59,7 +59,7 @@ export function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
   return 0;
 }
 
-async function getASRouterLocalColumnFromJSON(
+export async function getASRouterLocalColumnFromJSON(
   messageDef: any,
 ): Promise<FxMSMessageInfo> {
   let fxmsMsgInfo: FxMSMessageInfo = {
@@ -114,7 +114,7 @@ let columnsShown = false;
  * message data is also cleaned up to match the message data objects from
  * ASRouter, remove any test messages, and update templates.
  */
-async function appendFxMSTelemetryData(existingMessageData: any) {
+export async function appendFxMSTelemetryData(existingMessageData: any) {
   // Get Looker message data (taken from the query in Look
   // https://mozilla.cloud.looker.com/looks/2162)
   const lookId = "2162";
@@ -125,35 +125,6 @@ async function appendFxMSTelemetryData(existingMessageData: any) {
   let mergedData = mergeLookerData(existingMessageData, jsonLookerData);
 
   return mergedData;
-}
-
-/**
- * @returns message data in the form of FxMSMessageInfo from
- * lib/asrouter-local-prod-messages/data.json and also FxMS telemetry data if
- * Looker credentials are enabled.
- */
-export async function getASRouterLocalMessageInfoFromFile(): Promise<
-  FxMSMessageInfo[]
-> {
-  const fs = require("fs");
-
-  let data = fs.readFileSync(
-    "lib/asrouter-local-prod-messages/data.json",
-    "utf8",
-  );
-  let json_data = JSON.parse(data);
-
-  if (isLookerEnabled) {
-    json_data = await appendFxMSTelemetryData(json_data);
-  }
-
-  let messages = await Promise.all(
-    json_data.map(async (messageDef: any): Promise<FxMSMessageInfo> => {
-      return await getASRouterLocalColumnFromJSON(messageDef);
-    }),
-  );
-
-  return messages;
 }
 
 export async function getMsgExpRecipeCollection(
