@@ -44,7 +44,7 @@ User Stories. As an Android PM, I should
   - what does telemetry look like for onboarding? other surfaces? similar to messaging?
   - Does Click telemetry on both iOS and Android alwyas mean CTA? Or something else?
   - What is action_uuid extra key (see docs)?
-  - ## **Do non-experimental message send pings on iOS or Android?**
+  - **Do non-experimental message send pings on iOS or Android?**
 
 1.  Draft plan for Android page
 
@@ -66,7 +66,7 @@ User Stories. As an Android PM, I should
           1. Use platform search param (TRIED; TOO FIDDLY, MAYBE LATER)
           2. ~~Put in separate android/ route (DONE)~~
 
-       5. Make test & code updates to not display local table (WIP)
+       5. Make test & code updates to not display local table (DONE)
        6. Factor "application=" out of env (MUST)
        7. Add cases / refactor multiple feature ID list in experimentUtils.ts (MUST)
        8. Add cases / refactor nimbusRecipe.ts:getBranchInfo (MUST)
