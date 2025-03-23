@@ -10,14 +10,17 @@ import {
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import {
-  appendFxMSTelemetryData,
   compareDatesFn,
   getMsgRolloutCollection,
   isLookerEnabled,
 } from "@/app/dashboard";
 import { FxMSMessageInfo } from "./columns";
-import { getCTRPercentData } from "@/lib/looker";
-
+import {
+  cleanLookerData,
+  getCTRPercentData,
+  mergeLookerData,
+  runLookQuery,
+} from "@/lib/looker.ts";
 export async function fetchData() {
   const recipeCollection = new NimbusRecipeCollection();
   await recipeCollection.fetchRecipes();
@@ -147,4 +150,24 @@ export async function getASRouterLocalColumnFromJSON(
   // dashboard link -> dashboard id -> query id -> query -> ctr_percent_from_lastish_day
   // console.log("fxmsMsgInfo: ", fxmsMsgInfo)
   return fxmsMsgInfo;
+}
+
+/**
+ * Appends any FxMS telemetry message data from the query in Look
+ * https://mozilla.cloud.looker.com/looks/2162 that does not already exist (ie.
+ * no duplicate message ids) in existingMessageData and returns the result. The
+ * message data is also cleaned up to match the message data objects from
+ * ASRouter, remove any test messages, and update templates.
+ */
+export async function appendFxMSTelemetryData(existingMessageData: any) {
+  // Get Looker message data (taken from the query in Look
+  // https://mozilla.cloud.looker.com/looks/2162)
+  const lookId = "2162";
+  let lookerData = await runLookQuery(lookId);
+
+  // Clean and merge Looker data with existing data
+  let jsonLookerData = cleanLookerData(lookerData);
+  let mergedData = mergeLookerData(existingMessageData, jsonLookerData);
+
+  return mergedData;
 }
