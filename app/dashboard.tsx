@@ -268,7 +268,7 @@ const ReleasedTable = async ({ platform, localData }: ReleasedTableProps) => {
 
 interface DashboardProps {
   platform?: string;
-  localData: FxMSMessageInfo[];
+  localData?: FxMSMessageInfo[];
   experimentAndBranchInfo: any[];
   totalExperiments: number;
   msgRolloutInfo: any[];
@@ -290,7 +290,8 @@ export const Dashboard = async ({
         <MenuButton isComplete={false} />
       </div>
 
-      <ReleasedTable platform={platform as string} localData={localData} />
+      {localData
+        ? <ReleasedTable platform={platform as string} localData={localData} /> : null}
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Current {platform} Message Rollouts
