@@ -271,10 +271,11 @@ const ReleasedTable = async ({ platform, localData }: ReleasedTableProps) => {
 };
 
 interface DashboardProps {
-  platform: string;
+  platform?: string;
 }
 
-export const Dashboard = async ({ platform }: DashboardProps) => {
+export const Dashboard =
+  async ({ platform }: DashboardProps= {platform: "desktop"} ) => {
   const {
     localData,
     experimentAndBranchInfo,
@@ -290,7 +291,7 @@ export const Dashboard = async ({ platform }: DashboardProps) => {
         <MenuButton isComplete={false} />
       </div>
 
-      <ReleasedTable platform={platform} localData={localData} />
+      <ReleasedTable platform={platform as string} localData={localData} />
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Current {platform} Message Rollouts
