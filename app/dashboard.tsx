@@ -17,7 +17,6 @@ import {
   maybeCreateWelcomePreview,
   getPreviewLink,
   messageHasMicrosurvey,
-  compareSurfacesFn,
 } from "../lib/messageUtils.ts";
 
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection";
@@ -31,7 +30,7 @@ import { InfoPopover } from "@/components/ui/infopopover.tsx";
 import { Timeline } from "@/components/ui/timeline.tsx";
 import { Platform } from "@/lib/types";
 
-const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
+export const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
 const hidden_message_impression_threshold =
   process.env.HIDDEN_MESSAGE_IMPRESSION_THRESHOLD;
@@ -133,7 +132,7 @@ async function appendFxMSTelemetryData(existingMessageData: any) {
  * lib/asrouter-local-prod-messages/data.json and also FxMS telemetry data if
  * Looker credentials are enabled.
  */
-async function getASRouterLocalMessageInfoFromFile(): Promise<
+export async function getASRouterLocalMessageInfoFromFile(): Promise<
   FxMSMessageInfo[]
 > {
   const fs = require("fs");
@@ -157,7 +156,7 @@ async function getASRouterLocalMessageInfoFromFile(): Promise<
   return messages;
 }
 
-async function getMsgExpRecipeCollection(
+export async function getMsgExpRecipeCollection(
   recipeCollection: NimbusRecipeCollection,
 ): Promise<NimbusRecipeCollection> {
   const expOnlyCollection = new NimbusRecipeCollection();
@@ -178,7 +177,7 @@ async function getMsgExpRecipeCollection(
   return msgExpRecipeCollection;
 }
 
-async function getMsgRolloutCollection(
+export async function getMsgRolloutCollection(
   recipeCollection: NimbusRecipeCollection,
 ): Promise<NimbusRecipeCollection> {
   const msgRolloutRecipeCollection = new NimbusRecipeCollection();
@@ -191,45 +190,6 @@ async function getMsgRolloutCollection(
   );
 
   return msgRolloutRecipeCollection;
-}
-
-export async function fetchData() {
-  const recipeCollection = new NimbusRecipeCollection();
-  await recipeCollection.fetchRecipes();
-  console.log("recipeCollection.length = ", recipeCollection.recipes.length);
-
-  const localData = (await getASRouterLocalMessageInfoFromFile()).sort(
-    compareSurfacesFn,
-  );
-
-  const msgExpRecipeCollection =
-    await getMsgExpRecipeCollection(recipeCollection);
-  const msgRolloutRecipeCollection =
-    await getMsgRolloutCollection(recipeCollection);
-
-  const experimentAndBranchInfo = isLookerEnabled
-    ? await msgExpRecipeCollection.getExperimentAndBranchInfos()
-    : msgExpRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
-        recipe.getRecipeInfo(),
-      );
-
-  const totalExperiments = msgExpRecipeCollection.recipes.length;
-
-  const msgRolloutInfo = isLookerEnabled
-    ? await msgRolloutRecipeCollection.getExperimentAndBranchInfos()
-    : msgRolloutRecipeCollection.recipes.map((recipe: NimbusRecipe) =>
-        recipe.getRecipeInfo(),
-      );
-
-  const totalRolloutExperiments = msgRolloutRecipeCollection.recipes.length;
-
-  return {
-    localData,
-    experimentAndBranchInfo,
-    totalExperiments,
-    msgRolloutInfo,
-    totalRolloutExperiments,
-  };
 }
 
 interface ReleasedTableProps {
