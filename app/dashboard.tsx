@@ -7,18 +7,11 @@ import {
 } from "./columns";
 import {
   cleanLookerData,
-  getCTRPercentData,
   mergeLookerData,
   runLookQuery,
 } from "@/lib/looker.ts";
 import {
-  getDashboard,
-  getSurfaceDataForTemplate,
-  getTemplateFromMessage,
   _isAboutWelcomeTemplate,
-  maybeCreateWelcomePreview,
-  getPreviewLink,
-  messageHasMicrosurvey,
 } from "../lib/messageUtils.ts";
 
 import { NimbusRecipeCollection } from "../lib/nimbusRecipeCollection";
@@ -59,52 +52,6 @@ export function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
 
   // a must be equal to b
   return 0;
-}
-
-export async function getASRouterLocalColumnFromJSON(
-  messageDef: any,
-): Promise<FxMSMessageInfo> {
-  let fxmsMsgInfo: FxMSMessageInfo = {
-    product: "Desktop",
-    id: messageDef.id,
-    template: messageDef.template,
-    surface: getSurfaceDataForTemplate(getTemplateFromMessage(messageDef))
-      .surface,
-    segment: "some segment",
-    metrics: "some metrics",
-    ctrPercent: undefined, // may be populated from Looker data
-    ctrPercentChange: undefined, // may be populated from Looker data
-    previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
-    impressions: undefined, // may be populated from Looker data
-    hasMicrosurvey: messageHasMicrosurvey(messageDef.id),
-    hidePreview: messageDef.hidePreview,
-  };
-
-  const channel = "release";
-
-  if (isLookerEnabled) {
-    const ctrPercentData = await getCTRPercentData(
-      fxmsMsgInfo.id,
-      fxmsMsgInfo.template,
-      channel,
-    );
-    if (ctrPercentData) {
-      fxmsMsgInfo.ctrPercent = ctrPercentData.ctrPercent;
-      fxmsMsgInfo.impressions = ctrPercentData.impressions;
-    }
-  }
-
-  fxmsMsgInfo.ctrDashboardLink = getDashboard(
-    fxmsMsgInfo.template,
-    fxmsMsgInfo.id,
-    channel,
-  );
-
-  // dashboard link -> dashboard id -> query id -> query -> ctr_percent_from_lastish_day
-
-  // console.log("fxmsMsgInfo: ", fxmsMsgInfo)
-
-  return fxmsMsgInfo;
 }
 
 let columnsShown = false;
