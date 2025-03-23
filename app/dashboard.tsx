@@ -192,7 +192,7 @@ async function getMsgRolloutCollection(
   return msgRolloutRecipeCollection;
 }
 
-async function fetchData() {
+export async function fetchData() {
   const recipeCollection = new NimbusRecipeCollection();
   await recipeCollection.fetchRecipes();
   console.log("recipeCollection.length = ", recipeCollection.recipes.length);
@@ -268,19 +268,21 @@ const ReleasedTable = async ({ platform, localData }: ReleasedTableProps) => {
 
 interface DashboardProps {
   platform?: string;
+  localData: FxMSMessageInfo[];
+  experimentAndBranchInfo: any[];
+  totalExperiments: number;
+  msgRolloutInfo: any[];
+  totalRolloutExperiments: number;
 }
 
-export const Dashboard = async (
-  { platform }: DashboardProps = { platform: "desktop" },
-) => {
-  const {
-    localData,
-    experimentAndBranchInfo,
-    totalExperiments,
-    msgRolloutInfo,
-    totalRolloutExperiments,
-  } = await fetchData();
-
+export const Dashboard = async ({
+  platform = "desktop",
+  localData,
+  experimentAndBranchInfo,
+  totalExperiments,
+  msgRolloutInfo,
+  totalRolloutExperiments,
+}: DashboardProps) => {
   return (
     <div role="main" data-testid="dashboard">
       <div className="sticky top-0 z-50 bg-background flex justify-between px-20 py-8">
