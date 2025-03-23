@@ -3,9 +3,7 @@ import {
   FxMSMessageInfo,
   fxmsMessageColumns,
 } from "./columns";
-import {
-  _isAboutWelcomeTemplate,
-} from "../lib/messageUtils.ts";
+import { _isAboutWelcomeTemplate } from "../lib/messageUtils.ts";
 
 import { _substituteLocalizations } from "../lib/experimentUtils.ts";
 
@@ -78,8 +76,9 @@ export const Dashboard = async ({
         <MenuButton isComplete={false} />
       </div>
 
-      {localData
-        ? <ReleasedTable platform={platform as string} localData={localData} /> : null}
+      {localData ? (
+        <ReleasedTable platform={platform as string} localData={localData} />
+      ) : null}
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
         Current {platform} Message Rollouts
