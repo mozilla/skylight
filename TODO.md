@@ -62,37 +62,46 @@ User Stories. As an Android PM, I should
        2. ~~?Consider options for cloning, since we'll want Android completed page too, and iOS pages (DONE)~~
        3. ~~Create new dir with new page.tsx (MUST)~~
        4. ~~TDD Factor out dashboard (DONE)~~
-
           1. Use platform search param (TRIED; TOO FIDDLY, MAYBE LATER)
           2. ~~Put in separate android/ route (DONE)~~
+       5. ~~Refactor to not display local table on Android (DONE)~~
 
-       5. Make test & code updates to not display local table (DONE)
        6. Factor "application=" out of env (MUST)
-       7. Add cases / refactor multiple feature ID list in experimentUtils.ts (MUST)
-       8. Add cases / refactor nimbusRecipe.ts:getBranchInfo (MUST)
+          1. Create PlatformInfo interface
+             1. application name
+          2. Create PlatformInfoDict containing (android, desktop)
+          3. pull experiments path component into EXPERIMENTER_API_PREFIX
+          4. Get application param from PlatformInfoDict; remove from env
+          5. Get status param from appropriate files; remove from env
+       7. Pull platform-specific-feature-list from experimentUtils into
+        PlatformInfo (MUST)
+       8. Move nimbusRecipe.ts:getBranchInfo into own file included into PlatformInfo? (add messaging case for now and push to later or SPIKE)
 
-       9. Add cases / refactor messageUtils.getDashboard (LATER)
-       10. Update / move messageUtils.getDashboardIdForTemplate (LATER)
-       11. Add cases / refactor templates & getSurfaceDataForTemplate (LATER)
-       12. Add cases / refactor looker.ts:getCTRPercentData (LATER)
-       13. Make pills exclude local if not on desktop (LATER)
+       9.  Add cases / refactor messageUtils.getDashboard (IMPT)
+       10. Update / move messageUtils.getDashboardIdForTemplate (IMPT)
 
-       14. Update columns.tsx:filterBySurface (LATER)
-       15. Add l10n (LATER)
-       16. Factor Out NimbusMessageTable (NICE)
-       17. Factor out high-level data fetching (NICE)
+       11. Make pills exclude local if not on desktop (NICE)
+.      2.  Add cases / refactor looker.ts:getCTRPercentData (NICE)
 
-       18. Pull in Android experiments using that URL
-       19. Build dashboard link
-       20. How to handle multi types
-       21. Build CTR
-       22. How to handle multi types
+       1.  Add cases / refactor templates & getSurfaceDataForTemplate (LATER)
+       2.  Support microsurveys badge, if sensible on mobile (LATER)
+       3.  Update columns.tsx:filterBySurface (LATER)
+       4.  Add l10n (LATER)
 
-2.  standup 2nd page
+       5.  Factor Out NimbusMessageTable (EVEN LATER)
+       6.  Factor out high-level data fetching (EVEN LATER)
+
+       7.  Pull in Android experiments using that URL
+       8.  Build dashboard link
+       9.  How to handle multi types
+       10. Build CTR
+       11. How to handle multi types
+
+1.  standup 2nd page
 
     - TDD? clone for mobile
 
-3.  standup 2nd dashboard
+2.  standup 2nd dashboard
 
         * review mobile telemetry using glean dict
         * look at explores available for those tables
