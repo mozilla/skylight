@@ -78,27 +78,6 @@ export async function appendFxMSTelemetryData(existingMessageData: any) {
   return mergedData;
 }
 
-export async function getMsgExpRecipeCollection(
-  recipeCollection: NimbusRecipeCollection,
-): Promise<NimbusRecipeCollection> {
-  const expOnlyCollection = new NimbusRecipeCollection();
-  expOnlyCollection.recipes = recipeCollection.recipes.filter((recipe) =>
-    recipe.isExpRecipe(),
-  );
-  console.log("expOnlyCollection.length = ", expOnlyCollection.recipes.length);
-
-  const msgExpRecipeCollection = new NimbusRecipeCollection();
-  msgExpRecipeCollection.recipes = expOnlyCollection.recipes
-    .filter((recipe) => recipe.usesMessagingFeatures())
-    .sort(compareDatesFn);
-  console.log(
-    "msgExpRecipeCollection.length = ",
-    msgExpRecipeCollection.recipes.length,
-  );
-
-  return msgExpRecipeCollection;
-}
-
 export async function getMsgRolloutCollection(
   recipeCollection: NimbusRecipeCollection,
 ): Promise<NimbusRecipeCollection> {
