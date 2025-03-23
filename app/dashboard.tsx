@@ -48,7 +48,7 @@ const hidden_message_impression_threshold =
  * @returns -1 if the start date for message a is after the start date for
  *          message b, zero if they're equal, and 1 otherwise.
  */
-function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
+export function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
   if (a._rawRecipe.startDate && b._rawRecipe.startDate) {
     if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
       return -1;
