@@ -21,9 +21,7 @@ const mockFetchData = {
 
 describe.skip("Dashboard", () => {
   it("all timeline pill ids exist in the Dashboard component in /", async () => {
-    const dashboard = await render(
-        await <Dashboard {...mockFetchData} />
-    );
+    const dashboard = await render(await (<Dashboard {...mockFetchData} />));
 
     const firefox = dashboard.getByTestId("firefox");
     const experiments = dashboard.getByTestId("live_experiments");
