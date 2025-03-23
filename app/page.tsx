@@ -1,5 +1,22 @@
-import { Dashboard } from "@/app/dashboard";
+import { fetchData, Dashboard } from "@/app/dashboard";
 
-export default function Page() {
-  return <Dashboard platform={"desktop"} />;
+export default async function Page() {
+  const {
+    localData,
+    experimentAndBranchInfo,
+    totalExperiments,
+    msgRolloutInfo,
+    totalRolloutExperiments,
+  } = await fetchData();
+
+  return (
+    <Dashboard
+      platform="desktop"
+      localData={localData}
+      experimentAndBranchInfo={experimentAndBranchInfo}
+      totalExperiments={totalExperiments}
+      msgRolloutInfo={msgRolloutInfo}
+      totalRolloutExperiments={totalRolloutExperiments}
+    />
+  );
 }

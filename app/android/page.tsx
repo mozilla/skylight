@@ -1,5 +1,6 @@
-import { Dashboard } from "@/app/dashboard";
+import { fetchData, Dashboard } from "@/app/dashboard";
 
-export default function Page() {
-  return <Dashboard platform={"android"} />;
+export default async function Page() {
+  const data = await fetchData();
+  return <Dashboard platform={"android"} {...data} />;
 }
