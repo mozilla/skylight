@@ -52,8 +52,6 @@ export function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
   return 0;
 }
 
-let columnsShown = false;
-
 /**
  * Appends any FxMS telemetry message data from the query in Look
  * https://mozilla.cloud.looker.com/looks/2162 that does not already exist (ie.
