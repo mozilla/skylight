@@ -9,11 +9,6 @@ import {
 } from "@/lib/messageUtils";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
-import {
-  compareDatesFn,
-  getMsgRolloutCollection,
-  isLookerEnabled,
-} from "@/app/dashboard";
 import { FxMSMessageInfo } from "./columns";
 import {
   cleanLookerData,
@@ -21,6 +16,9 @@ import {
   mergeLookerData,
   runLookQuery,
 } from "@/lib/looker.ts";
+
+const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
+
 export async function fetchData() {
   const recipeCollection = new NimbusRecipeCollection();
   await recipeCollection.fetchRecipes();
@@ -170,4 +168,44 @@ export async function appendFxMSTelemetryData(existingMessageData: any) {
   let mergedData = mergeLookerData(existingMessageData, jsonLookerData);
 
   return mergedData;
+}
+
+/**
+ * A sorting function to sort messages by their start dates in descending order.
+ * If one or both of the recipes is missing a start date, they will be ordered
+ * identically since there's not enough information to properly sort them by
+ * date.
+ *
+ * @param a Nimbus recipe to compare with `b`.
+ * @param b Nimbus recipe to compare with `a`.
+ * @returns -1 if the start date for message a is after the start date for
+ *          message b, zero if they're equal, and 1 otherwise.
+ */
+
+export function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
+  if (a._rawRecipe.startDate && b._rawRecipe.startDate) {
+    if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
+      return -1;
+    } else if (a._rawRecipe.startDate < b._rawRecipe.startDate) {
+      return 1;
+    }
+  }
+
+  // a must be equal to b
+  return 0;
+}
+
+export async function getMsgRolloutCollection(
+  recipeCollection: NimbusRecipeCollection,
+): Promise<NimbusRecipeCollection> {
+  const msgRolloutRecipeCollection = new NimbusRecipeCollection();
+  msgRolloutRecipeCollection.recipes = recipeCollection.recipes
+    .filter((recipe) => recipe.usesMessagingFeatures() && !recipe.isExpRecipe())
+    .sort(compareDatesFn);
+  console.log(
+    "msgRolloutRecipeCollection.length = ",
+    msgRolloutRecipeCollection.recipes.length,
+  );
+
+  return msgRolloutRecipeCollection;
 }
