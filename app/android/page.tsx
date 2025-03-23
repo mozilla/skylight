@@ -12,7 +12,6 @@ export default async function Page() {
   return (
     <Dashboard
       platform="android"
-      localData={localData}
       experimentAndBranchInfo={experimentAndBranchInfo}
       totalExperiments={totalExperiments}
       msgRolloutInfo={msgRolloutInfo}
