@@ -62,9 +62,9 @@ User Stories. As an Android PM, I should
        1. ~~Review existing clone for "completed" (DONE)~~
        2. ~~?Consider options for cloning, since we'll want Android completed page too, and iOS pages (DONE)~~
        3. ~~Create new dir with new page.tsx (MUST)~~
-       4. TDD Factor out dashboard (DONE)
+       4. ~~TDD Factor out dashboard (DONE)~~
           1. Use platform search param (TRIED; TOO FIDDLY, MAYBE LATER)
-          2. Put in separate android/ route (DONE)
+          2. ~~Put in separate android/ route (DONE)~~
 
        5. Make test & code updates to not display local table (WIP)
        6. Factor "application=" out of env (MUST)
