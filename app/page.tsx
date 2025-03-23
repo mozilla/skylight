@@ -1,4 +1,5 @@
-import { fetchData, Dashboard } from "@/app/dashboard";
+import { Dashboard } from "@/app/dashboard";
+import { fetchData } from "@/app/fetchData";
 
 export default async function Page() {
   const {

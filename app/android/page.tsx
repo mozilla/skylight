@@ -1,7 +1,5 @@
-import { fetchData, Dashboard } from "@/app/dashboard";
-import { Platform } from "@/lib/types";
-
-
+import { Dashboard } from "@/app/dashboard";
+import { fetchData } from "@/app/fetchData";
 
 export default async function Page() {
   const {
