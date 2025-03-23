@@ -1,6 +1,5 @@
 import { types } from "@mozilla/nimbus-shared";
 import {
-  RecipeOrBranchInfo,
   experimentColumns,
   FxMSMessageInfo,
   fxmsMessageColumns,
@@ -54,9 +53,6 @@ export function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
   return 0;
 }
 
-let columnsShown = false;
-
-type NimbusExperiment = types.experiments.NimbusExperiment;
 
 /**
  * Appends any FxMS telemetry message data from the query in Look
