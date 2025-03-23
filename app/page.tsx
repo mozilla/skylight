@@ -11,7 +11,7 @@ export default async function Page() {
 
   return (
     <Dashboard
-      platform="desktop"
+      platform="Desktop"
       localData={localData}
       experimentAndBranchInfo={experimentAndBranchInfo}
       totalExperiments={totalExperiments}

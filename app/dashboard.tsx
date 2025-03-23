@@ -31,6 +31,7 @@ import { MessageTable } from "./message-table";
 import { MenuButton } from "@/components/ui/menubutton.tsx";
 import { InfoPopover } from "@/components/ui/infopopover.tsx";
 import { Timeline } from "@/components/ui/timeline.tsx";
+import { Platform } from "@/lib/types";
 
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
@@ -271,7 +272,7 @@ const ReleasedTable = async ({ platform, localData }: ReleasedTableProps) => {
 };
 
 interface DashboardProps {
-  platform?: string;
+  platform?: Platform;
   localData?: FxMSMessageInfo[];
   experimentAndBranchInfo: any[];
   totalExperiments: number;
@@ -280,7 +281,7 @@ interface DashboardProps {
 }
 
 export const Dashboard = async ({
-  platform = "desktop",
+  platform = "Desktop",
   localData,
   experimentAndBranchInfo,
   totalExperiments,
