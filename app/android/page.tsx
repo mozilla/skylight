@@ -1,4 +1,7 @@
 import { fetchData, Dashboard } from "@/app/dashboard";
+import { Platform } from "@/lib/types";
+
+
 
 export default async function Page() {
   const {
@@ -11,7 +14,7 @@ export default async function Page() {
 
   return (
     <Dashboard
-      platform="android"
+      platform="Android"
       experimentAndBranchInfo={experimentAndBranchInfo}
       totalExperiments={totalExperiments}
       msgRolloutInfo={msgRolloutInfo}
