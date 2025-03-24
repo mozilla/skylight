@@ -1,6 +1,3 @@
-import { types } from "@mozilla/nimbus-shared";
-type NimbusExperiment = types.experiments.NimbusExperiment;
-
 /**
  * These are the Nimbus feature IDs that correspond to messaging experiments.
  * Other Nimbus features contain specific variables whose keys are enumerated in
