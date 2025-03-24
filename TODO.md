@@ -67,7 +67,7 @@ User Stories. As an Android PM, I should
        5. ~~Refactor to not display local table on Android (DONE)~~
 
        6. Factor "application=" out of env (MUST)
-          1. Create PlatformInfo interface
+          1.  Create PlatformInfo interface
              1. application name
           2. Create PlatformInfoDict containing (android, desktop)
           3. pull experiments path component into EXPERIMENTER_API_PREFIX
@@ -75,7 +75,7 @@ User Stories. As an Android PM, I should
           5. Get status param from appropriate files; remove from env
        7. Pull platform-specific-feature-list from experimentUtils into
         PlatformInfo (MUST)
-       8. Move nimbusRecipe.ts:getBranchInfo into own file included into PlatformInfo? (add messaging case for now and push to later or SPIKE)
+       8. Move nimbusRecipe.ts:getBranchInfo into own file included into PlatformInfo? (fallback: add messaging case for now; move to PlatformInfo later)
 
        9.  Add cases / refactor messageUtils.getDashboard (IMPT)
        10. Update / move messageUtils.getDashboardIdForTemplate (IMPT)
