@@ -48,60 +48,61 @@ User Stories. As an Android PM, I should
 
 1.  Draft plan for Android page
 
-    1. ?File ticket
-    2. Build chart for Android messaging (DONE)
-    3. Build 2nd chart (LATER)
-    4. Build dashboard (DONE: id = 2191)
-    5. Move to shared folder (LATER)
+        1. ?File ticket
+        2. Build chart for Android messaging (DONE)
+        3. Build 2nd chart (LATER)
+        4. Build dashboard (DONE: id = 2191)
+        5. Move to shared folder (LATER)
 
-    XXX FINISH BUILDING todo list; XXX plan team work; XXX map to calendar
+        XXX FINISH BUILDING todo list; XXX plan team work; XXX map to calendar
 
-    6. Build Android page
+        6. Build Android page
 
-       1. ~~Review existing clone for "completed" (DONE)~~
-       2. ~~?Consider options for cloning, since we'll want Android completed page too, and iOS pages (DONE)~~
-       3. ~~Create new dir with new page.tsx (MUST)~~
-       4. ~~TDD Factor out dashboard (DONE)~~
-          1. Use platform search param (TRIED; TOO FIDDLY, MAYBE LATER)
-          2. ~~Put in separate android/ route (DONE)~~
-       5. ~~Refactor to not display local table on Android (DONE)~~
+           1. ~~Review existing clone for "completed" (DONE)~~
+           2. ~~?Consider options for cloning, since we'll want Android completed page too, and iOS pages (DONE)~~
+           3. ~~Create new dir with new page.tsx (MUST)~~
+           4. ~~TDD Factor out dashboard (DONE)~~
+              1. Use platform search param (TRIED; TOO FIDDLY, MAYBE LATER)
+              2. ~~Put in separate android/ route (DONE)~~
+           5. ~~Refactor to not display local table on Android (DONE)~~
 
-       6. Factor "application=" out of env (MUST)
-          1.  Create PlatformInfo interface
-             1. application name
-          2. Create PlatformInfoDict containing (android, desktop)
-          3. pull experiments path component into EXPERIMENTER_API_PREFIX
-          4. Get application param from PlatformInfoDict; remove from env
-          5. Get status param from appropriate files; remove from env
-       7. Pull platform-specific-feature-list from experimentUtils into
-        PlatformInfo (MUST)
-       8. Move nimbusRecipe.ts:getBranchInfo into own file included into PlatformInfo? (fallback: add messaging case for now; move to PlatformInfo later)
+           6. Factor "application=" out of env (MUST)
+              1.  Create PlatformInfo interface
+                 1. application name
+              2. Create PlatformInfoDict containing (android, desktop)
+              3. pull experiments path component into EXPERIMENTER_API_PREFIX
+              4. Get application param from PlatformInfoDict; remove from env
+              5. Get status param from appropriate files; remove from env
+           7. Pull platform-specific-feature-list from experimentUtils into
+            PlatformInfo (MUST)
+           8. Move nimbusRecipe.ts:getBranchInfo into own file included into PlatformInfo? (fallback: add messaging case for now; move to PlatformInfo later)
 
-       9.  Add cases / refactor messageUtils.getDashboard (IMPT)
-       10. Update / move messageUtils.getDashboardIdForTemplate (IMPT)
+           9.  Add cases / refactor messageUtils.getDashboard (IMPT)
+           10. Update / move messageUtils.getDashboardIdForTemplate (IMPT)
 
-       11. Make pills exclude local if not on desktop (NICE)
-.      2.  Add cases / refactor looker.ts:getCTRPercentData (NICE)
+           11. Make pills exclude local if not on desktop (NICE)
 
-       1.  Add cases / refactor templates & getSurfaceDataForTemplate (LATER)
-       2.  Support microsurveys badge, if sensible on mobile (LATER)
-       3.  Update columns.tsx:filterBySurface (LATER)
-       4.  Add l10n (LATER)
+    . 2. Add cases / refactor looker.ts:getCTRPercentData (NICE)
 
-       5.  Factor Out NimbusMessageTable (EVEN LATER)
-       6.  Factor out high-level data fetching (EVEN LATER)
+           1.  Add cases / refactor templates & getSurfaceDataForTemplate (LATER)
+           2.  Support microsurveys badge, if sensible on mobile (LATER)
+           3.  Update columns.tsx:filterBySurface (LATER)
+           4.  Add l10n (LATER)
 
-       7.  Pull in Android experiments using that URL
-       8.  Build dashboard link
-       9.  How to handle multi types
-       10. Build CTR
-       11. How to handle multi types
+           5.  Factor Out NimbusMessageTable (EVEN LATER)
+           6.  Factor out high-level data fetching (EVEN LATER)
+
+           7.  Pull in Android experiments using that URL
+           8.  Build dashboard link
+           9.  How to handle multi types
+           10. Build CTR
+           11. How to handle multi types
 
 1.  standup 2nd page
 
     - TDD? clone for mobile
 
-2.  standup 2nd dashboard
+1.  standup 2nd dashboard
 
         * review mobile telemetry using glean dict
         * look at explores available for those tables
