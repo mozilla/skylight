@@ -404,13 +404,13 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
     cell: (props: any) => {
       if (props.row.original.userFacingName) {
         return (
-          <div className="flex flex-row gap-x-2 items-center">
+          <div className="flex flex-row gap-x-2 items-start">
             {props.row.original.experimentBriefLink &&
               experimentBriefTooltip(props.row.original.experimentBriefLink)}
             <div className="flex flex-col gap-y-1 w-[24rem] overflow-visible">
               <a
                 href={props.row.original.experimenterLink}
-                className="font-semibold text-sm text-primary visited:text-inherit hover:text-blue-800 no-underline whitespace-nowrap"
+                className="font-semibold text-sm flex flex-row items-center gap-x-1 text-primary visited:text-inherit hover:text-blue-800 no-underline whitespace-nowrap"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -421,7 +421,7 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
                   fill="currentColor"
                   fillOpacity="0.6"
                   viewBox="0 0 8 8"
-                  className="inline h-[1.2rem] w-[1.2rem] px-1"
+                  className="inline h-3 w-3"
                   aria-hidden="true"
                   style={{
                     marginInline: "0.1rem 0",
