@@ -13,16 +13,17 @@ import { MenuButton } from "@/components/ui/menubutton.tsx";
 import { InfoPopover } from "@/components/ui/infopopover.tsx";
 import { Timeline } from "@/components/ui/timeline.tsx";
 import { Platform } from "@/lib/types";
+import { platformDictionary } from "@/lib/platformInfo.ts";
 
 const hidden_message_impression_threshold =
   process.env.HIDDEN_MESSAGE_IMPRESSION_THRESHOLD;
 
 interface ReleasedTableProps {
-  platform: string;
+  platformDisplayName: string;
   localData: FxMSMessageInfo[];
 }
 
-const ReleasedTable = async ({ platform, localData }: ReleasedTableProps) => {
+const ReleasedTable = async ({ platformDisplayName, localData }: ReleasedTableProps) => {
   return (
     <div>
       <h5
@@ -30,7 +31,7 @@ const ReleasedTable = async ({ platform, localData }: ReleasedTableProps) => {
         data-testid="firefox"
         className="scroll-m-20 text-xl font-semibold text-center pt-6 flex items-center justify-center gap-x-1"
       >
-        {platform} Messages Released on Firefox
+        {platformDisplayName} Messages Released on Firefox
         <InfoPopover
           content="All messages listed in this table are in the release channel and are either currently live or have been live on Firefox at one time."
           iconStyle="h-7 w-7 p-1 rounded-full cursor-pointer border-0 bg-slate-100 hover:bg-slate-200"
@@ -69,6 +70,9 @@ export const Dashboard = async ({
   msgRolloutInfo,
   totalRolloutExperiments,
 }: DashboardProps) => {
+
+  const platformDisplayName = platformDictionary[platform].displayName;
+
   return (
     <div role="main" data-testid="dashboard">
       <div className="sticky top-0 z-50 bg-background flex justify-between px-20 py-8">
@@ -77,11 +81,11 @@ export const Dashboard = async ({
       </div>
 
       {localData ? (
-        <ReleasedTable platform={platform as string} localData={localData} />
+        <ReleasedTable platformDisplayName={platformDisplayName} localData={localData} />
       ) : null}
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
-        Current {platform} Message Rollouts
+        Current {platformDisplayName} Message Rollouts
       </h5>
       <h5
         id="live_rollouts"
@@ -102,7 +106,7 @@ export const Dashboard = async ({
       </div>
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
-        Current {platform} Message Experiments
+        Current {platformDisplayName} Message Experiments
       </h5>
       <h5
         id="live_experiments"
