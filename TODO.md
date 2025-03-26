@@ -67,12 +67,13 @@ User Stories. As an Android PM, I should
            5. ~~Refactor to not display local table on Android (DONE)~~
 
            6. Factor "application=" out of env (MUST)
-              1.  Create PlatformInfo interface
-                 1. application name
-              2. Create PlatformInfoDict containing (android, desktop)
-              3. pull experiments path component into EXPERIMENTER_API_PREFIX
-              4. Get application param from PlatformInfoDict; remove from env
-              5. Get status param from appropriate files; remove from env
+              1.  ~~Create PlatformInfo interface~~
+                 1. ~~application name~~
+              2. ~~Create PlatformInfoDict containing (android, desktop)~~
+              3. ~~pull experiments path component into EXPERIMENTER_API_PREFIX~~
+              4. Figure out how to resolve NimbusAppSlug and Platform param stuff
+              5. Get application param from PlatformInfoDict; remove from env
+              6. Get status param from appropriate files; remove from env
            7. Pull platform-specific-feature-list from experimentUtils into
             PlatformInfo (MUST)
            8. Move nimbusRecipe.ts:getBranchInfo into own file included into PlatformInfo? (fallback: add messaging case for now; move to PlatformInfo later)
@@ -84,25 +85,25 @@ User Stories. As an Android PM, I should
 
     . 2. Add cases / refactor looker.ts:getCTRPercentData (NICE)
 
-           1.  Add cases / refactor templates & getSurfaceDataForTemplate (LATER)
-           2.  Support microsurveys badge, if sensible on mobile (LATER)
-           3.  Update columns.tsx:filterBySurface (LATER)
-           4.  Add l10n (LATER)
+           12. Add cases / refactor templates & getSurfaceDataForTemplate (LATER)
+           13. Support microsurveys badge, if sensible on mobile (LATER)
+           14. Update columns.tsx:filterBySurface (LATER)
+           15. Add l10n (LATER)
 
-           5.  Factor Out NimbusMessageTable (EVEN LATER)
-           6.  Factor out high-level data fetching (EVEN LATER)
+           16. Factor Out NimbusMessageTable (EVEN LATER)
+           17. Factor out high-level data fetching (EVEN LATER)
 
-           7.  Pull in Android experiments using that URL
-           8.  Build dashboard link
-           9.  How to handle multi types
-           10. Build CTR
-           11. How to handle multi types
+           18. Pull in Android experiments using that URL
+           19. Build dashboard link
+           20. How to handle multi types
+           21. Build CTR
+           22. How to handle multi types
 
-1.  standup 2nd page
+2.  standup 2nd page
 
     - TDD? clone for mobile
 
-1.  standup 2nd dashboard
+3.  standup 2nd dashboard
 
         * review mobile telemetry using glean dict
         * look at explores available for those tables
