@@ -1,21 +1,16 @@
-
+import { Platform } from "./types";
 interface PlatformInfo {
-    nimbusAppSlug: string;
-    displayName: string;
+  displayName: string;
 }
 
-export const platformDictionary: { [key: string]: PlatformInfo } = {
-  android: {
-    nimbusAppSlug: "fenix",
+export const platformDictionary: Record<Platform, PlatformInfo> = {
+  fenix: {
     displayName: "Android",
   },
   ios: {
-    nimbusAppSlug: "ios",
     displayName: "iOS",
   },
-  desktop: {
-    nimbusAppSlug: "firefox-desktop",
+  "firefox-desktop": {
     displayName: "Desktop",
   },
 };
-

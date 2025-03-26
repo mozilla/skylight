@@ -12,7 +12,7 @@ export default async function Page() {
 
   return (
     <Dashboard
-      platform="Android"
+      platform="fenix"
       experimentAndBranchInfo={experimentAndBranchInfo}
       totalExperiments={totalExperiments}
       msgRolloutInfo={msgRolloutInfo}
