@@ -62,7 +62,7 @@ interface DashboardProps {
 }
 
 export const Dashboard = async ({
-  platform = "Desktop",
+  platform = "firefox-desktop",
   localData,
   experimentAndBranchInfo,
   totalExperiments,

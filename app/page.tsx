@@ -12,7 +12,7 @@ export default async function Page() {
 
   return (
     <Dashboard
-      platform="Desktop"
+      platform="firefox-desktop"
       localData={localData}
       experimentAndBranchInfo={experimentAndBranchInfo}
       totalExperiments={totalExperiments}
