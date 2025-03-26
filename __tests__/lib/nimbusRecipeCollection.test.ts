@@ -27,6 +27,26 @@ describe("NimbusRecipeCollection", () => {
 
       expect(recipes).toEqual([new NimbusRecipe(fakeFetchData[0])]);
     });
+
+    it("constructs the correct URL for live experiments", async () => {
+      const nimbusRecipeCollection = new NimbusRecipeCollection();
+      await nimbusRecipeCollection.fetchRecipes();
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL_LIVE}`,
+        { credentials: "omit" },
+      );
+    });
+
+    it("constructs the correct URL for completed experiments", async () => {
+      const nimbusRecipeCollection = new NimbusRecipeCollection(true);
+      await nimbusRecipeCollection.fetchRecipes();
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL_COMPLETED}`,
+        { credentials: "omit" },
+      );
+    });
   });
 
   describe("getExperimentAndBranchInfos", () => {
