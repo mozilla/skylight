@@ -23,7 +23,10 @@ interface ReleasedTableProps {
   localData: FxMSMessageInfo[];
 }
 
-const ReleasedTable = async ({ platformDisplayName, localData }: ReleasedTableProps) => {
+const ReleasedTable = async ({
+  platformDisplayName,
+  localData,
+}: ReleasedTableProps) => {
   return (
     <div>
       <h5
@@ -70,7 +73,6 @@ export const Dashboard = async ({
   msgRolloutInfo,
   totalRolloutExperiments,
 }: DashboardProps) => {
-
   const platformDisplayName = platformDictionary[platform].displayName;
 
   return (
@@ -81,7 +83,10 @@ export const Dashboard = async ({
       </div>
 
       {localData ? (
-        <ReleasedTable platformDisplayName={platformDisplayName} localData={localData} />
+        <ReleasedTable
+          platformDisplayName={platformDisplayName}
+          localData={localData}
+        />
       ) : null}
 
       <h5 className="scroll-m-20 text-xl font-semibold text-center pt-4">
