@@ -13,7 +13,6 @@ export default async function Page() {
     totalRolloutExperiments,
   } = await fetchData(platform);
 
-
   return (
     <Dashboard
       platform={platform}
