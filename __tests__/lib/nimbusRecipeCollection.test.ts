@@ -2,6 +2,9 @@ import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
 import { RecipeInfo } from "@/app/columns";
+import { Platform } from "@/lib/types";
+
+const platform: Platform = "firefox-desktop";
 
 const fakeFetchData = [ExperimentFakes.recipe()];
 global.fetch = jest.fn(() =>
@@ -29,11 +32,14 @@ describe("NimbusRecipeCollection", () => {
     });
 
     it("constructs the correct URL for live experiments", async () => {
-      const nimbusRecipeCollection = new NimbusRecipeCollection();
+      const nimbusRecipeCollection = new NimbusRecipeCollection(
+        false,
+        platform,
+      ); //XXX YYY
       await nimbusRecipeCollection.fetchRecipes();
 
       expect(global.fetch).toHaveBeenCalledWith(
-        `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL_LIVE}`,
+        `${process.env.EXPERIMENTER_API_PREFIX}?status=Live&application=${platform}`,
         { credentials: "omit" },
       );
     });
@@ -43,7 +49,7 @@ describe("NimbusRecipeCollection", () => {
       await nimbusRecipeCollection.fetchRecipes();
 
       expect(global.fetch).toHaveBeenCalledWith(
-        `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL_COMPLETED}`,
+        `${process.env.EXPERIMENTER_API_PREFIX}?status=Complete&application=${platform}`,
         { credentials: "omit" },
       );
     });

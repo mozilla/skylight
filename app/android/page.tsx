@@ -1,5 +1,8 @@
 import { Dashboard } from "@/app/dashboard";
 import { fetchData } from "@/app/fetchData";
+import { Platform } from "@/lib/types";
+
+const platform: Platform = "fenix";
 
 export default async function Page() {
   const {
@@ -8,11 +11,12 @@ export default async function Page() {
     totalExperiments,
     msgRolloutInfo,
     totalRolloutExperiments,
-  } = await fetchData();
+  } = await fetchData(platform);
+
 
   return (
     <Dashboard
-      platform="fenix"
+      platform={platform}
       experimentAndBranchInfo={experimentAndBranchInfo}
       totalExperiments={totalExperiments}
       msgRolloutInfo={msgRolloutInfo}
