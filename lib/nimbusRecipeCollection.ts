@@ -3,6 +3,7 @@ import { NimbusRecipe } from "../lib/nimbusRecipe";
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "@/app/columns";
 import { getCTRPercentData } from "./looker";
 import { getExperimentLookerDashboardDate } from "./lookerUtils";
+import { Platform } from "./types";
 
 type NimbusExperiment = types.experiments.NimbusExperiment;
 
@@ -10,6 +11,7 @@ type NimbusRecipeCollectionType = {
   recipes: Array<NimbusRecipe>;
   isCompleted: boolean;
   fetchRecipes: () => Promise<Array<NimbusRecipe>>;
+  platform: Platform;
 };
 
 /**
@@ -47,16 +49,25 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
 export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
   recipes: Array<NimbusRecipe>;
   isCompleted: boolean;
+  platform: Platform;
 
-  constructor(isCompleted: boolean = false) {
+  // XXX XXX remove this default platform, it's a total footgun
+  constructor(
+    isCompleted: boolean = false,
+    platform: Platform = "firefox-desktop",
+  ) {
     this.recipes = [];
     this.isCompleted = isCompleted;
+    this.platform = platform;
   }
 
   async fetchRecipes(): Promise<Array<NimbusRecipe>> {
-    let experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL_LIVE}`;
+    // XXX should really be using URL.parse and URLSearchParams to manage all
+    //  this stuff
+    let experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}?status=Live&application=${this.platform}`;
     if (this.isCompleted) {
-      experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}${process.env.EXPERIMENTER_API_CALL_COMPLETED}`;
+      // XXX rename to isComplete for consistency
+      experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}?status=Complete&application=${this.platform}`;
     }
 
     // console.log("experimenterURL = ", experimenterUrl)
