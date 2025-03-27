@@ -17,11 +17,12 @@ import {
   mergeLookerData,
   runLookQuery,
 } from "@/lib/looker.ts";
+import { Platform } from "@/lib/types";
 
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
-export async function fetchData() {
-  const recipeCollection = new NimbusRecipeCollection();
+export async function fetchData(platform: Platform) {
+  const recipeCollection = new NimbusRecipeCollection(true, platform); //XXX YYY
   await recipeCollection.fetchRecipes();
   console.log("recipeCollection.length = ", recipeCollection.recipes.length);
 
