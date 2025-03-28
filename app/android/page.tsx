@@ -1,7 +1,8 @@
 import { Dashboard } from "@/app/dashboard";
 import { fetchData } from "@/app/fetchData";
+import { Platform } from "@/lib/types";
 
-const platform = "firefox-desktop";
+const platform: Platform = "fenix";
 
 export default async function Page() {
   const {
@@ -15,7 +16,6 @@ export default async function Page() {
   return (
     <Dashboard
       platform={platform}
-      localData={localData}
       experimentAndBranchInfo={experimentAndBranchInfo}
       totalExperiments={totalExperiments}
       msgRolloutInfo={msgRolloutInfo}

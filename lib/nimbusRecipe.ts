@@ -239,7 +239,16 @@ export class NimbusRecipe implements NimbusRecipeType {
         console.warn(`we don't fully support moments messages yet`);
         return branchInfo;
 
+      case "messaging":
+        console.warn(`we don't fully support messaging messages yet`);
+        return branchInfo;
+
+      case "onboarding":
+        console.warn(`we don't fully support onboarding messages yet`);
+        return branchInfo;
+
       default:
+        console.log("template = ", template);
         if (!feature.value?.messages) {
           // console.log("v.messages is null");
           // console.log(", feature.value = ", feature.value);

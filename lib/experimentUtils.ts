@@ -29,7 +29,9 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES: string[] = [
   "fxms-message-10",
   "fxms-message-11",
   "infobar",
+  "messaging", // XXX YYY
   "moments-page",
+  "onboarding", // XXX YYY
   "pbNewtab",
   "spotlight",
   "testFeature",
