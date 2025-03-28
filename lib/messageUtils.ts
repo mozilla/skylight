@@ -40,6 +40,10 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
       surface: "Menu Messages",
       tagColor: "bg-pink-300",
     },
+    menu_message: {
+      surface: "Menu Messages",
+      tagColor: "bg-pink-300",
+    },
     milestone_message: {
       surface: "Milestone Messages",
       tagColor: "bg-green-400",

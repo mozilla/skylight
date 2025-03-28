@@ -363,4 +363,59 @@ describe("NimbusRecipe", () => {
       );
     });
   });
+
+  describe("getExperimentBriefLink", () => {
+    it("returns the correct experiment brief link", () => {
+      const documentationLinks = [
+        {
+          title: "DESIGN_DOC",
+          link: "https://docs.google.com/document/d/1mKXnU-qbStb1OUNHmDOQY5Awb-Wz5e8wit28jkUKP-4/edit#heading=h.uoblsnu302hk",
+        },
+        {
+          title: "ENG_TICKET",
+          link: "https://mozilla-hub.atlassian.net/browse/OMC-811",
+        },
+        {
+          title: "DESIGN_DOC",
+          link: "https://www.figma.com/design/V2alIUZh1C4UXoWacJjZCA/Bookmarks-improvements?node-id=2073-16689&node-type=canvas&t=yXRpQavvJl25GGbF-0",
+        },
+      ];
+      const rawRecipe = ExperimentFakes.recipe("test-recipe");
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+
+      const result = nimbusRecipe.getExperimentBriefLink(documentationLinks);
+
+      expect(result).toBe(
+        "https://docs.google.com/document/d/1mKXnU-qbStb1OUNHmDOQY5Awb-Wz5e8wit28jkUKP-4/edit#heading=h.uoblsnu302hk",
+      );
+    });
+
+    it("returns undefined if no experiment brief document exists", () => {
+      const documentationLinks = [
+        {
+          title: "DS_JIRA",
+          link: "https://mozilla-hub.atlassian.net/browse/DS-3819",
+        },
+        {
+          title: "ENG_TICKET",
+          link: "https://mozilla-hub.atlassian.net/browse/FXE-952",
+        },
+      ];
+      const rawRecipe = ExperimentFakes.recipe("test-recipe");
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+
+      const result = nimbusRecipe.getExperimentBriefLink(documentationLinks);
+
+      expect(result).toBeUndefined();
+    });
+  });
+
+  it("returns undefined if no documentation link exists", () => {
+    const rawRecipe = ExperimentFakes.recipe("test-recipe");
+    const nimbusRecipe = new NimbusRecipe(rawRecipe);
+
+    const result = nimbusRecipe.getExperimentBriefLink(undefined);
+
+    expect(result).toBeUndefined();
+  });
 });
