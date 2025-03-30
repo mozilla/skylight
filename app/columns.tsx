@@ -82,8 +82,8 @@ type NimbusExperiment = types.experiments.NimbusExperiment;
 export type RecipeInfo = {
   product: "Desktop" | "Android";
   id: string;
-  template?: string;
-  surface?: string;
+  template?: string; // XXX template JSON name
+  surface?: string; // XXX template display name
   segment?: string;
   ctrPercent?: number;
   ctrPercentChange?: number;
