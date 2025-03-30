@@ -22,7 +22,10 @@ import { Platform } from "@/lib/types";
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
 export async function fetchData(platform: Platform) {
-  const recipeCollection = new NimbusRecipeCollection(true, platform); //XXX YYY
+  // XXX at some point, once the completed experiments get ported to use
+  // the new <Dashboard> infra including this, we're going to need to do
+  // something better than just pass "false" as the first param here.
+  const recipeCollection = new NimbusRecipeCollection(false, platform);
   await recipeCollection.fetchRecipes();
   console.log("recipeCollection.length = ", recipeCollection.recipes.length);
 
