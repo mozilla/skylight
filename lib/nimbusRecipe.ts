@@ -78,10 +78,85 @@ export class NimbusRecipe implements NimbusRecipeType {
     this._isCompleted = isCompleted;
   }
 
-  /**
-   * @returns an array of BranchInfo objects, one per branch in this recipe
-   */
+  getAndroidBranchInfo(branch: any): BranchInfo {
+    let branchInfo: BranchInfo = {
+      product: "Android",
+      id: branch.slug,
+      isBranch: true,
+      // The raw experiment data can be automatically serialized to
+      // the client by NextJS (but classes can't), and any
+      // needed NimbusRecipe class rewrapping can be done there.
+      nimbusExperiment: this._rawRecipe,
+      slug: branch.slug,
+      screenshots: branch.screenshots,
+      description: branch.description,
+    };
+
+    // XXX need to handle multi branches
+    const feature = branch.features[0];
+
+    switch (feature.featureId) {
+      case "messaging":
+        // console.log("in messaging feature, feature = ", feature);
+
+        // console.log("feature.value = ", feature.value);
+        if (Object.keys(feature.value).length === 0) {
+          console.warn(
+            "empty feature value, returning error, branch.slug = ",
+            branch.slug,
+          );
+          return branchInfo;
+        }
+
+        const message0: any = Object.values(feature.value.messages)[0];
+        // console.log("message0 = ", message0);
+
+        const surface = message0.surface;
+
+        // XXX need to rename template & surface somehow
+        branchInfo.template = surface;
+        branchInfo.surface = surface;
+
+        switch (surface) {
+          case "messages":
+            console.warn(`we don't fully support messaging messages yet`);
+            branchInfo.id = Object.keys(branch.feature.value.id.messages)[0];
+          default:
+            console.warn("unhandled message surface: ", branchInfo.surface);
+        }
+
+      case "juno-onboarding":
+        console.warn(`we don't fully support juno-onboarding messages yet`);
+
+      default:
+        console.warn("default hit");
+        console.warn("branch.slug = ", branch.slug);
+        console.warn("We don't support feature = ", feature);
+      //   JSON.stringify(branch.features),
+      // );
+    }
+
+    const proposedEndDate = getExperimentLookerDashboardDate(
+      branchInfo.nimbusExperiment.startDate,
+      branchInfo.nimbusExperiment.proposedDuration,
+    );
+    let formattedEndDate;
+    if (branchInfo.nimbusExperiment.endDate) {
+      formattedEndDate = formatDate(branchInfo.nimbusExperiment.endDate, 1);
+    }
+
+    return branchInfo;
+  }
   getBranchInfo(branch: any): BranchInfo {
+    switch (this._rawRecipe.appName) {
+      case "fenix":
+        return this.getAndroidBranchInfo(branch);
+      default:
+        return this.getDesktopBranchInfo(branch);
+    }
+  }
+
+  getDesktopBranchInfo(branch: any): BranchInfo {
     let branchInfo: BranchInfo = {
       product: "Desktop",
       id: branch.slug,
@@ -245,16 +320,8 @@ export class NimbusRecipe implements NimbusRecipeType {
         console.warn(`we don't fully support moments messages yet`);
         return branchInfo;
 
-      case "messaging":
-        console.warn(`we don't fully support messaging messages yet`);
-        return branchInfo;
-
-      case "onboarding":
-        console.warn(`we don't fully support onboarding messages yet`);
-        return branchInfo;
-
       default:
-        console.log("template = ", template);
+        //console.log("Hit default case, template = ", template);
         if (!feature.value?.messages) {
           // console.log("v.messages is null");
           // console.log(", feature.value = ", feature.value);
