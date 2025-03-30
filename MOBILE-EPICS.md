@@ -10,30 +10,31 @@ Top-level bullets are user story epics, 2nd-level bullet are regular user storie
 
    1. Page route/dashboard component (5: DONE)
    2. Data fetching: (5: DONE)
-   3. Experimenter API client work (5)
-   4. Feature ID list (3)
-   5. Nimbus.GetBranchInfo (5)
+   3. Experimenter API client work (DONE)
+   4. Feature ID list (LATER)
+   5. Nimbus.GetBranchInfo (5: DONE)
 
-4. Add experiments - or hide and LATER if interesting amount of work (3)
-5. Key Unknowns to research
+4. Add experiments - or hide and LATER if interesting amount of work (2: DONE)
+5. Get simple dashboard links for surfaces we support (3)
+6. Handle production telemetry (waiting on research)
+
+7. Key Unknowns to research
    1. Make a list of all-subsurfaces with links to telemetry
    2. How to handle production telemetry
    3. How much work is adding messaging sub-surfaces?
    4. Which other feature ids (eg onboarding) are desired? How much work will they be
-6. Basic usability fix
+8. Basic usability fix
    1. Make pills exclude "Firefox" on Android page (3?)
-7. Handle production telemetry (waiting on research)
-8. Rapidly Port features
-   1. Add at least one other subsurface now? (waiting on research)
-   2. Dashboard links (5)
-   3. Add monthly Impressions/CTR chart to Looker dashboard (2)
-   4. Inline Impressions/CTR (8 - needs breakdown or SPIKE)
-   5. Fully useful surface columns ()
-   6. Completed page
-9. Maybe
-   1. Add other feature IDs? Prob at least onboarding
-   2. Microsurveys badge?
-   3. Surface-based filtering?
+9. Rapidly Port features
+10. Add at least one other subsurface now? (DONE)
+11. Add monthly Impressions/CTR chart to Looker dashboard (2)
+12. Inline Impressions/CTR (8 - needs breakdown or SPIKE)
+13. Fully useful surface columns ()
+14. Completed page
+15. Maybe
+16. Add other feature IDs? Prob at least onboarding
+17. Microsurveys badge?
+18. Surface-based filtering?
 
 # iOS
 
