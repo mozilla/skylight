@@ -65,39 +65,46 @@ User Stories. As an Android PM, I should
               1. Use platform search param (TRIED; TOO FIDDLY, MAYBE LATER)
               2. ~~Put in separate android/ route (DONE)~~
            5. ~~Refactor to not display local table on Android (DONE)~~
-
-           6. Factor "application=" out of env (MUST)
+           6. Factor "application=" out of env (DONE)
               1.  ~~Create PlatformInfo interface~~
                  1. ~~application name~~
               2. ~~Create PlatformInfoDict containing (android, desktop)~~
               3. ~~pull experiments path component into EXPERIMENTER_API_PREFIX~~
-              4. Figure out how to resolve NimbusAppSlug and Platform param stuff
-              5. Get application param from PlatformInfoDict; remove from env
-              6. Get status param from appropriate files; remove from env
+              4. ~~Figure out how to resolve NimbusAppSlug and Platform param stuff~~
+              5. ~~Get application param from PlatformInfoDict; remove from env~~
+              6. ~~Get status param from appropriate files; remove from env~~
            7. Pull platform-specific-feature-list from experimentUtils into
-            PlatformInfo (MUST)
-           8. Move nimbusRecipe.ts:getBranchInfo into own file included into PlatformInfo? (fallback: add messaging case for now; move to PlatformInfo later)
+            PlatformInfo (LATER)
+           8. Move nimbusRecipe.ts:getBranchInfo into own file included into PlatformInfo? (fallback: add messaging cases for now; move to PlatformInfo later - XXX DONE)
+              1. Detect by surface
+              2. Call into GetAndroidBranchInfo
+                 1. Move existing code
+                 2. Copy-paste proposedEndDate
+                 3. ...
+           9. Fix exeriments (DONE -- for messaging & juno-onboarding)
 
-           9.  Add cases / refactor messageUtils.getDashboard (IMPT)
-           10. Update / move messageUtils.getDashboardIdForTemplate (IMPT)
+           10.COMMIT STUFF
+           11. Add cases / refactor messageUtils.getDashboard (IMPT)
+           12. Update / move messageUtils.getDashboardIdForTemplate (IMPT)
 
-           11. Make pills exclude local if not on desktop (NICE)
+           13. Visual polish on surfaces?
+           14. Make pills exclude local if not on desktop (NICE)
 
     . 2. Add cases / refactor looker.ts:getCTRPercentData (NICE)
 
-           12. Add cases / refactor templates & getSurfaceDataForTemplate (LATER)
-           13. Support microsurveys badge, if sensible on mobile (LATER)
-           14. Update columns.tsx:filterBySurface (LATER)
-           15. Add l10n (LATER)
+           15. Add cases / refactor templates & getSurfaceDataForTemplate (LATER)
+           16. Support microsurveys badge, if sensible on mobile (LATER)
+           17. Update columns.tsx:filterBySurface (LATER)
+           18. Add l10n (LATER)
 
-           16. Factor Out NimbusMessageTable (EVEN LATER)
-           17. Factor out high-level data fetching (EVEN LATER)
+           19. Factor Out NimbusMessageTable (EVEN LATER)
+           20. Factor out high-level data fetching (EVEN LATER)
 
-           18. Pull in Android experiments using that URL
-           19. Build dashboard link
-           20. How to handle multi types
-           21. Build CTR
-           22. How to handle multi types
+           21. Pull in Android experiments using that URL
+           22. Build dashboard link
+           23. How to handle multi types
+           24. Build CTR
+           25. How to handle multi types
 
 2.  standup 2nd page
 
