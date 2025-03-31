@@ -83,28 +83,34 @@ User Stories. As an Android PM, I should
                  3. ...
            9. Fix exeriments (DONE -- for messaging & juno-onboarding)
 
-           10.COMMIT STUFF
-           11. Add cases / refactor messageUtils.getDashboard (IMPT)
-           12. Update / move messageUtils.getDashboardIdForTemplate (IMPT)
+           10. Deploy to web (ALREADY WORKING)
+           11. Add getAndroidDashboard
+           12. Add getAndroidDashboardIdForTemplate
+           13. --
+           14. Build onBoarding dashboard in Amplitude
+           15. Link in
 
-           13. Visual polish on surfaces?
-           14. Make pills exclude local if not on desktop (NICE)
+           16. Add cases / refactor messageUtils.getDashboard (IMPT)
+           17. Update / move messageUtils.getDashboardIdForTemplate (IMPT)
+
+           18. Visual polish on surfaces?
+           19. Make pills exclude local if not on desktop (NICE)
 
     . 2. Add cases / refactor looker.ts:getCTRPercentData (NICE)
 
-           15. Add cases / refactor templates & getSurfaceDataForTemplate (LATER)
-           16. Support microsurveys badge, if sensible on mobile (LATER)
-           17. Update columns.tsx:filterBySurface (LATER)
-           18. Add l10n (LATER)
+           20. Add cases / refactor templates & getSurfaceDataForTemplate (LATER)
+           21. Support microsurveys badge, if sensible on mobile (LATER)
+           22. Update columns.tsx:filterBySurface (LATER)
+           23. Add l10n (LATER)
 
-           19. Factor Out NimbusMessageTable (EVEN LATER)
-           20. Factor out high-level data fetching (EVEN LATER)
+           24. Factor Out NimbusMessageTable (EVEN LATER)
+           25. Factor out high-level data fetching (EVEN LATER)
 
-           21. Pull in Android experiments using that URL
-           22. Build dashboard link
-           23. How to handle multi types
-           24. Build CTR
-           25. How to handle multi types
+           26. Pull in Android experiments using that URL
+           27. Build dashboard link
+           28. How to handle multi types
+           29. Build CTR
+           30. How to handle multi types
 
 2.  standup 2nd page
 

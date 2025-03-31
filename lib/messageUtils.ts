@@ -113,6 +113,59 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
   return aboutWelcomeSurfaces.includes(template);
 }
 
+//mozilla.cloud.looker.com/dashboards/2191?Normalized+Channel=release&Submission+Date=2025%2F02%2F13+to+2025%2F03%2F13&Experiment+Slug=rootca-info-card-hcr1-fenix&Value+Branch=treatment-a&Sample+ID=%3C%3D10&Value=info%5E_card%5E_rootCA%5E_HCR1%25
+
+export function getAndroidDashboard(
+  surface: string,
+  msgIdPrefix: string,
+  channel?: string,
+  experiment?: string,
+  branchSlug?: string,
+  startDate?: string | null,
+  endDate?: string | null,
+  isCompleted?: boolean,
+): string | undefined {
+  // The isCompleted value can be useful for messages that used to be in remote
+  // settings or old versions of Firefox.
+  const submissionDate = getLookerSubmissionTimestampDateFilter(
+    startDate,
+    endDate,
+    isCompleted,
+  );
+
+  const dashboardId = 2191; // messages/push notification
+  // XXXgetDashboardIdForTemplate(surface);
+  let baseUrl = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}`;
+  let paramObj;
+
+  paramObj = {
+    "Submission Date": submissionDate,
+    //"Messaging System Message Id": msgIdPrefix,
+    "Normalized Channel": channel ? channel : "",
+    "Normalized OS": "",
+    "Client Info App Display Version": "",
+    "Normalized Country Code": "",
+    "Experiment Slug": experiment ? experiment : "", // XXX
+    "Experiment Branch": branchSlug ? branchSlug : "",
+    // XXX assumes last part of message id is something like
+    // "-en-us" and chops that off, since we want to know about
+    // all the messages in the experiment. Will break
+    // (in "no results" way) on experiment with messages not configured
+    // like that.
+
+    Value: msgIdPrefix.slice(0, -5) + "%", // XXX
+  };
+
+  if (paramObj) {
+    const params = new URLSearchParams(Object.entries(paramObj));
+    let url = new URL(baseUrl);
+    url.search = params.toString();
+    return url.toString();
+  }
+
+  return undefined;
+}
+
 export function getDashboard(
   template: string,
   msgId: string,
