@@ -1,5 +1,6 @@
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "../app/columns.jsx";
 import {
+  getAndroidDashboard,
   getDashboard,
   getSurfaceDataForTemplate,
   getPreviewLink,
@@ -109,24 +110,33 @@ export class NimbusRecipe implements NimbusRecipeType {
         }
 
         const message0: any = Object.values(feature.value.messages)[0];
+        const message0Id: string = Object.keys(feature.value.messages)[0];
+        branchInfo.id = message0Id;
+
         // console.log("message0 = ", message0);
 
         const surface = message0.surface;
-
         // XXX need to rename template & surface somehow
         branchInfo.template = surface;
         branchInfo.surface = surface;
 
         switch (surface) {
           case "messages":
-            console.warn(`we don't fully support messaging messages yet`);
-            branchInfo.id = Object.keys(branch.feature.value.id.messages)[0];
+            // XXX I don' tthink this a real case
+            console.log("in messages surface case");
+            break;
+
+          case "survey":
+            break;
+
           default:
             console.warn("unhandled message surface: ", branchInfo.surface);
         }
+        break;
 
       case "juno-onboarding":
         console.warn(`we don't fully support juno-onboarding messages yet`);
+        break;
 
       default:
         console.warn("default hit");
@@ -144,6 +154,19 @@ export class NimbusRecipe implements NimbusRecipeType {
     if (branchInfo.nimbusExperiment.endDate) {
       formattedEndDate = formatDate(branchInfo.nimbusExperiment.endDate, 1);
     }
+
+    branchInfo.ctrDashboardLink = getAndroidDashboard(
+      branchInfo.surface as string,
+      branchInfo.id,
+      undefined,
+      branchInfo.nimbusExperiment.slug,
+      branch.slug,
+      branchInfo.nimbusExperiment.startDate,
+      branchInfo.nimbusExperiment.endDate ? formattedEndDate : proposedEndDate,
+      this._isCompleted,
+    );
+
+    console.log("Android Dashboard:", branchInfo.ctrDashboardLink);
 
     return branchInfo;
   }
