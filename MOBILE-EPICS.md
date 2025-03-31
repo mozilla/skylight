@@ -16,25 +16,28 @@ Top-level bullets are user story epics, 2nd-level bullet are regular user storie
 
 4. Add experiments - or hide and LATER if interesting amount of work (2: DONE)
 5. Get simple dashboard links for surfaces we support (3)
-6. Handle production telemetry (waiting on research)
+6. Publish to web so they can test
+7. Get Amplitude onboarding dashboard
 
-7. Key Unknowns to research
-   1. Make a list of all-subsurfaces with links to telemetry
-   2. How to handle production telemetry
-   3. How much work is adding messaging sub-surfaces?
-   4. Which other feature ids (eg onboarding) are desired? How much work will they be
-8. Basic usability fix
-   1. Make pills exclude "Firefox" on Android page (3?)
-9. Rapidly Port features
-10. Add at least one other subsurface now? (DONE)
-11. Add monthly Impressions/CTR chart to Looker dashboard (2)
-12. Inline Impressions/CTR (8 - needs breakdown or SPIKE)
-13. Fully useful surface columns ()
-14. Completed page
-15. Maybe
-16. Add other feature IDs? Prob at least onboarding
-17. Microsurveys badge?
-18. Surface-based filtering?
+8. Handle production telemetry (waiting on research)
+
+9. Key Unknowns to research
+10. Make a list of all-subsurfaces with links to telemetry
+11. How to handle production telemetry
+12. How much work is adding messaging sub-surfaces?
+13. Which other feature ids (eg onboarding) are desired? How much work will they be
+14. Basic usability fix
+15. Make pills exclude "Firefox" on Android page (3?)
+16. Rapidly Port features
+17. Add at least one other subsurface now? (DONE)
+18. Add monthly Impressions/CTR chart to Looker dashboard (2)
+19. Inline Impressions/CTR (8 - needs breakdown or SPIKE)
+20. Fully useful surface columns ()
+21. Completed page
+22. Maybe
+23. Add other feature IDs? Prob at least onboarding
+24. Microsurveys badge?
+25. Surface-based filtering?
 
 # iOS
 
