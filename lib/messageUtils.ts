@@ -156,6 +156,9 @@ export function getAndroidDashboard(
     Value: msgIdPrefix.slice(0, -5) + "%", // XXX
   };
 
+  // XXX we really handle all messaging surfaces, at least in theory
+  if (surface !== "survey") return undefined;
+
   if (paramObj) {
     const params = new URLSearchParams(Object.entries(paramObj));
     let url = new URL(baseUrl);
