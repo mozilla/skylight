@@ -82,8 +82,8 @@ type NimbusExperiment = types.experiments.NimbusExperiment;
 export type RecipeInfo = {
   product: "Desktop" | "Android";
   id: string;
-  template?: string;
-  surface?: string;
+  template?: string; // XXX template JSON name
+  surface?: string; // XXX template display name
   segment?: string;
   ctrPercent?: number;
   ctrPercentChange?: number;
@@ -207,12 +207,12 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
   {
     accessorKey: "surface",
     header: "Surface",
-    cell: (props: any) => {
-      return SurfaceTag(
-        props.row.original.template,
-        props.row.original.surface,
-      );
-    },
+    // cell: (props: any) => {
+    //   return SurfaceTag(
+    //     props.row.original.template,
+    //     props.row.original.surface,
+    //   );
+    // },
     meta: {
       filterVariant: "text",
     },
