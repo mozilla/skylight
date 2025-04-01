@@ -202,6 +202,35 @@ export function maybeCreateWelcomePreview(message: any): object {
   return message;
 }
 
+export function getEditableJSON(message: any): string | undefined {
+  // fallbacks for important properties
+  switch (message.template) {
+    case "spotlight":
+      try {
+        message.content.screens.forEach((screen: any) => {
+          if (!screen.id) {
+            screen.id = message.content.id;
+          }
+        });
+        return message;
+      } catch (e) {
+        console.log("Could not generate editable JSON: ", e);
+      }
+      break;
+    case "infobar":
+      try {
+        if (message.content && message.content.buttons) {
+          return message;
+        }
+      } catch (e) {
+        console.log("Could note generate editable JSON: ", e);
+      }
+      break;
+    default:
+      return undefined;
+  }
+}
+
 export function getPreviewLink(message: any): string {
   let previewLink = `about:messagepreview?json=${encodeURIComponent(
     toBinary(JSON.stringify(message)),
