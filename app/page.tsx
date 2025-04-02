@@ -1,5 +1,5 @@
 import { Dashboard } from "@/app/dashboard";
 
 export default function Page() {
-  return <Dashboard platform={"desktop"} />;
+  return <Dashboard platform={"Desktop"} />;
 }

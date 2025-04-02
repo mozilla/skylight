@@ -1,6 +1,5 @@
 import { types } from "@mozilla/nimbus-shared";
 import {
-  RecipeOrBranchInfo,
   experimentColumns,
   FxMSMessageInfo,
   fxmsMessageColumns,
