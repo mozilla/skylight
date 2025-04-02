@@ -274,8 +274,9 @@ interface DashboardProps {
   platform?: string;
 }
 
-export const Dashboard =
-  async ({ platform }: DashboardProps= {platform: "desktop"} ) => {
+export const Dashboard = async (
+  { platform }: DashboardProps = { platform: "desktop" },
+) => {
   const {
     localData,
     experimentAndBranchInfo,
