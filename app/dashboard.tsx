@@ -1,4 +1,3 @@
-import { types } from "@mozilla/nimbus-shared";
 import {
   experimentColumns,
   FxMSMessageInfo,
@@ -107,8 +106,6 @@ async function getASRouterLocalColumnFromJSON(
 }
 
 let columnsShown = false;
-
-type NimbusExperiment = types.experiments.NimbusExperiment;
 
 /**
  * Appends any FxMS telemetry message data from the query in Look
