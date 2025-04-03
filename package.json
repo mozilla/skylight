@@ -19,7 +19,7 @@
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.6.0",
     "@looker/sdk-node": "25.4.0",
-    "@mozilla/nimbus-shared": "^2.5.2",
+    "@mozilla/nimbus-schemas": "^3001.0.0",
     "@radix-ui/react-checkbox": "^1.1.4",
     "@radix-ui/react-navigation-menu": "^1.2.5",
     "@radix-ui/react-popover": "^1.1.6",
