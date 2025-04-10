@@ -1,3 +1,13 @@
+## Thursday, April 10th, 2025
+
+### Added
+- Added buttons to link to experiment brief pages for each experiment/rollout
+- Added tooltips over experiment brief buttons and experiment/rollout names
+- Added live message data from releases 131-135
+
+### Fixed
+- Fixed CTR calculations for infobar dashboards
+
 ## Wednesday, October 23rd, 2024
 
 ### Added
