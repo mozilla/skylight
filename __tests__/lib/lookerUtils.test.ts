@@ -63,7 +63,7 @@ describe("getLookerSubmissionTimestampDateFilter", () => {
 
     const result = getLookerSubmissionTimestampDateFilter(startDate, endDate);
 
-    expect(result).toEqual("2024-05-08 to 3024-06-10");
+    expect(result).toEqual("2024-05-08 to today");
   });
 
   it("returns a date filter from the startDate to endDate when startDate and endDate are defined and the message is completed", () => {

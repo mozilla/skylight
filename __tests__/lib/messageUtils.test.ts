@@ -142,9 +142,9 @@ describe("getDashboard", () => {
     const template = "feature_callout";
     const msgId = "a:bc"; // weird chars to test URI encoding
     const startDate = "2024-03-08";
-    const endDate = "2025-06-28";
+    const endDate = "3025-06-28";
     const dashboardId = getDashboardIdForTemplate(template);
-    const submissionDate = "2024-03-08 to 2025-06-28";
+    const submissionDate = "2024-03-08 to today";
 
     const result = getDashboard(
       template,
