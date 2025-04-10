@@ -307,6 +307,26 @@ describe("MessageTable", () => {
 
       expect(microsurveyBadge).toBeInTheDocument();
     });
+
+    it("displays a tooltip when hovering on an experiment name", async () => {
+      const user = userEvent.setup();
+      const rawRecipe = ExperimentFakes.recipe("test-recipe", {
+        userFacingName: "Test Experiment Name",
+      });
+      const nimbusRecipe = new NimbusRecipe(rawRecipe);
+      const messageTableData: RecipeInfo[] = [nimbusRecipe.getRecipeInfo()];
+      render(
+        <MessageTable columns={experimentColumns} data={messageTableData} />,
+      );
+
+      await act(async () => {
+        await user.hover(screen.getByText("Test Experiment Name"));
+      });
+      const tooltip = await screen.findByRole("tooltip");
+
+      expect(tooltip).toBeInTheDocument();
+      expect(tooltip).toHaveTextContent("Go to Experimenter page");
+    });
   });
 
   describe("MessageColumns", () => {
