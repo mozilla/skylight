@@ -7,39 +7,59 @@ Top-level bullets are user story epics, 2nd-level bullet are regular user storie
    2. Shared folder, permissions & docs) (LATER)
 2. Stand up viewable (though incorrect) Skylight dashboard route (3: DONE)
 3. Make things work for Android & Desktop enough to see Android msg rollouts:
-
    1. Page route/dashboard component (5: DONE)
    2. Data fetching: (5: DONE)
 
-4. Diagnose Viewpoint Dashboard link 0/0 CTR
-5. Prototype (timebox) simple onboarding dashboard (funnel?)
+4. Diagnose Viewpoint Dashboard link 0/0 CTR (DONE)
 
-6. Start landing pieces of android branch incrementally: 4. Experimenter API client work (DONE) - move to main 5. Feature ID list (CLEAN UP) - Update comments in file. "Cross-platform list of Nimbus feature IDs" 6. Nimbus.GetBranchInfo (5: DONE) - Write tests 4. Add experiments - or hide and LATER if interesting amount of work (2: DONE) - Tests? 5. Get simple dashboard links for surfaces we support (3: DONE) - Tests? 6. Publish to web so they can test (DONE)
-7. Add at least one other subsurface now? (DONE) - Tests?
+5. Start landing pieces of android branch incrementally:
+   1. Experimenter API client work (DONE) - landed on main
+   2. Publish to web so they can test (DONE)
 
-8. Fix $pivot by index numbers stuff in Looker dashboard
-9. Make pills exclude "Firefox" on Android page (3?)
-10. Handle production telemetry (waiting on research)
-11. Key Unknowns to research
+   3. Env var changes - landed on branch
+      1. Draft plan; ask Emily to review
+      2. Create PR for main for this one change
+      3. Netlify deploy should be failing
+      4. Add new env variable to Netlify
+      5. Netlify deploy should start succeeding
+      6. Update docs (README and .env* and CONTRIBUTING?)
+      7. Merge branch change
+   4. Feature ID list (DONE on branch)
+      1. CLEAN UP slightly: Update comments in file & land eg "Cross-platform list of Nimbus feature IDs"
+   5. Fix existing dashboard tests on branch
+   6. Nimbus.GetBranchInfo (5: DONE) - Write tests & review
+   7. Show experiments & rollouts for a few key surfaces (DONE on branch) - Tests?
+   8. Get simple dashboard links for messaging surface (DONE on branch) - Tests?
 
-    1. Enumerate Nimbus telemetry feature ids to show 2. Enumerate production teletry that can be shown for each surface 3.
-    2. Make a list of all-subsurfaces (of messaging) with links to telemetry
-    3. Which other feature ids (eg onboarding) are desired? How much work will they be
-    4. Make Amplitude choices
-    5. TODO (Dan): talk to JB re Amplitude rollout
-    6. MAKE
+6. Onboarding dashboard - desktop-equivalent (WIP on branch)
+7.  Add monthly Impressions/CTR chart to Looker `messaging` dashboard (2)
+    1.  Correctly label these "users impressed",
+8.  Add Inline Impressions/CTR to Skylight `messaging` (8 - needs breakdown or SPIKE)
+   ** TODO (Dan): draft checklist & plan for this
 
-    7.
+9.  Clean up dashboards with separate stats: users impressed & clicks / User Impression Rate & CTR
+   1.  Separate chart?
 
-12. Rapidly Port features
-13. Add monthly Impressions/CTR chart to Looker dashboard (2)
-14. Inline Impressions/CTR (8 - needs breakdown or SPIKE)
-15. Fully useful surface columns ()
-16. Completed page
-17. Maybe
-18. Add other feature IDs? Prob at least onboarding
-19. Microsurveys badge?
-20. Surface-based filtering?
+
+---
+
+1.  Fix $pivot by index numbers stuff in Looker dashboard
+2.  Make pills exclude "Firefox" on Android page, since we don't yet have production section (3?)
+3.  Onboarding funnel (XXXdmose add notes)
+4.  Fully useful surface columns
+5.  Completed page
+
+6.  Key Unknowns to research
+   1. Enumerate Nimbus telemetry feature ids to show
+      1. Enumerate production teletry that can be shown for each surface
+   2. Make a list of all-subsurfaces (of messaging) with links to telemetry
+   3. Which other feature ids (eg onboarding) are desired? How much work will they be?
+7.   Handle production telemetry (waiting on research; chat with Vasant)
+
+8.  Maybe immediate; maybe iOS first
+    1.  Add other feature IDs? Prob at least onboarding
+    2.  Microsurveys badge?
+    3.  Surface-based filtering?
 
 # iOS
 
