@@ -1,3 +1,9 @@
+## Friday, April 11th, 2025
+
+### Fixed
+
+- Fixed submission timestamp filter calculations for Looker dashboards so that any dates in the future won't be showing null data
+
 ## Thursday, April 10th, 2025
 
 ### Added

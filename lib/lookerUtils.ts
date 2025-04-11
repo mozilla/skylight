@@ -41,19 +41,13 @@ export function getLookerSubmissionTimestampDateFilter(
 ): string {
   if (isCompleted && startDate && endDate) {
     // This case covers completed experiments with defined startDate and
-    // endDate from the Experimenter API.
-    return `${startDate} to ${endDate}`;
-  } else if (
-    !isCompleted &&
-    startDate &&
-    endDate &&
-    new Date() < new Date(endDate)
-  ) {
-    // This case covers experiments that haven't reached their proposed end date.
+    // endDate from the Experimenter API, with the endDate being today or earlier.
     return `${startDate} to ${endDate}`;
   } else if (startDate) {
-    // This case covers experiments that are still ongoing past their proposed
-    // end date.
+    // This case covers experiments that haven't reached their proposed end date.
+    // This case also covers experiments that are still ongoing past their proposed
+    // to prevent issues with the Looker dashboards showing no data for to dates in
+    // the future.
     return `${startDate} to today`;
   } else {
     // This case covers any messages with undefined startDate and endDate.

@@ -47,12 +47,12 @@ function OffsiteLink(href: string, linkText: any) {
   return (
     <a
       href={href}
-      className="text-xs/[180%] whitespace-nowrap flex flex-row items-center gap-x-1"
+      className="text-xs/[180%] whitespace-nowrap"
       target="_blank"
       rel="noreferrer"
     >
       {linkText}
-      <SquareArrowOutUpRight size={10} />
+      <SquareArrowOutUpRight size={10} className="inline ml-1" />
     </a>
   );
 }
