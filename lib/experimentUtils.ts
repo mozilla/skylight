@@ -31,6 +31,13 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES: string[] = [
   "spotlight",
   "testFeature",
   "whatsNewPage",
+
+  // XXX these should live elsewhere; they are Android features
+  "cfr",
+  "encourage-search-cfr",
+  "messaging",
+  "juno-onboarding",
+  "set-to-default-prompt",
 ];
 
 /**
