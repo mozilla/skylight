@@ -144,6 +144,7 @@ describe("getDashboard", () => {
     const startDate = "2024-03-08";
     const endDate = "3025-06-28";
     const dashboardId = getDashboardIdForTemplate(template);
+    // The end date should be today to avoid showing null data for dates in the future
     const submissionDate = "2024-03-08 to today";
 
     const result = getDashboard(
