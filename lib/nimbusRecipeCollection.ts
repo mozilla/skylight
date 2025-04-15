@@ -51,7 +51,7 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
   isCompleted: boolean;
   platform: Platform;
 
-  // XXX XXX remove this default platform, it's a total footgun
+  // XXX remove this default platform, it's a total footgun
   constructor(
     isCompleted: boolean = false,
     platform: Platform = "firefox-desktop",
@@ -63,10 +63,10 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
 
   async fetchRecipes(): Promise<Array<NimbusRecipe>> {
     // XXX should really be using URL.parse and URLSearchParams to manage all
-    //  this stuff
+    // this stuff
     let experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}?status=Live&application=${this.platform}`;
     if (this.isCompleted) {
-      // XXX rename to isComplete for consistency
+      // XXX rename isCompleted to isComplete for consistency
       experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}?status=Complete&application=${this.platform}`;
     }
 

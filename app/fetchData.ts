@@ -21,8 +21,15 @@ import { Platform } from "@/lib/types";
 
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
 
+/**
+ * A function to fetch the data to render in Dashboard components in pages.
+ * @param platform A specified Platform (ie. fenix, ios, or firefox-desktop)
+ * @returns any local live message data, experiment data, total number of
+ * experiments, rollout data, and total number of rollouts for a given 
+ * platform.
+ */
 export async function fetchData(platform: Platform) {
-  const recipeCollection = new NimbusRecipeCollection(true, platform); //XXX YYY
+  const recipeCollection = new NimbusRecipeCollection(false, platform); // XXX YYY
   await recipeCollection.fetchRecipes();
   console.log("recipeCollection.length = ", recipeCollection.recipes.length);
 
@@ -59,6 +66,13 @@ export async function fetchData(platform: Platform) {
     totalRolloutExperiments,
   };
 }
+
+/**
+ * A function to fetch a collection of Nimbus experiments.
+ * @param recipeCollection a collection of Nimbus recipes
+ * @returns recipeCollection after filtering out any rollouts, filtering out
+ * non accepting feature ids, and sorted based on dates. 
+ */
 export async function getMsgExpRecipeCollection(
   recipeCollection: NimbusRecipeCollection,
 ): Promise<NimbusRecipeCollection> {
@@ -79,6 +93,28 @@ export async function getMsgExpRecipeCollection(
 
   return msgExpRecipeCollection;
 }
+
+/**
+ * A function to fetch a collection of Nimbus rollouts.
+ * @param recipeCollection a collection of Nimbus recipes
+ * @returns recipeCollection after filtering out any experiments, filtering out
+ * non accepting feature ids, and sorted based on dates. 
+ */
+export async function getMsgRolloutCollection(
+  recipeCollection: NimbusRecipeCollection,
+): Promise<NimbusRecipeCollection> {
+  const msgRolloutRecipeCollection = new NimbusRecipeCollection();
+  msgRolloutRecipeCollection.recipes = recipeCollection.recipes
+    .filter((recipe) => recipe.usesMessagingFeatures() && !recipe.isExpRecipe())
+    .sort(compareDatesFn);
+  console.log(
+    "msgRolloutRecipeCollection.length = ",
+    msgRolloutRecipeCollection.recipes.length,
+  );
+
+  return msgRolloutRecipeCollection;
+}
+
 /**
  * @returns message data in the form of FxMSMessageInfo from
  * lib/asrouter-local-prod-messages/data.json and also FxMS telemetry data if
@@ -108,6 +144,14 @@ export async function getASRouterLocalMessageInfoFromFile(): Promise<
 
   return messages;
 }
+
+/**
+ * Given a message JSON, this function fetches the message data as an
+ * FxMSMessageInfo object and populating it with surface data, preview links,
+ * microsurvey tags, CTR data, and dashboard links when available.
+ * @param messageDef the JSON for a single message collected from local data
+ * @returns the information in messageDef in FxMSMessageInfo type
+ */
 export async function getASRouterLocalColumnFromJSON(
   messageDef: any,
 ): Promise<FxMSMessageInfo> {
@@ -147,8 +191,6 @@ export async function getASRouterLocalColumnFromJSON(
     channel,
   );
 
-  // dashboard link -> dashboard id -> query id -> query -> ctr_percent_from_lastish_day
-  // console.log("fxmsMsgInfo: ", fxmsMsgInfo)
   return fxmsMsgInfo;
 }
 
@@ -183,7 +225,6 @@ export async function appendFxMSTelemetryData(existingMessageData: any) {
  * @returns -1 if the start date for message a is after the start date for
  *          message b, zero if they're equal, and 1 otherwise.
  */
-
 export function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
   if (a._rawRecipe.startDate && b._rawRecipe.startDate) {
     if (a._rawRecipe.startDate > b._rawRecipe.startDate) {
@@ -195,19 +236,4 @@ export function compareDatesFn(a: NimbusRecipe, b: NimbusRecipe): number {
 
   // a must be equal to b
   return 0;
-}
-
-export async function getMsgRolloutCollection(
-  recipeCollection: NimbusRecipeCollection,
-): Promise<NimbusRecipeCollection> {
-  const msgRolloutRecipeCollection = new NimbusRecipeCollection();
-  msgRolloutRecipeCollection.recipes = recipeCollection.recipes
-    .filter((recipe) => recipe.usesMessagingFeatures() && !recipe.isExpRecipe())
-    .sort(compareDatesFn);
-  console.log(
-    "msgRolloutRecipeCollection.length = ",
-    msgRolloutRecipeCollection.recipes.length,
-  );
-
-  return msgRolloutRecipeCollection;
 }
