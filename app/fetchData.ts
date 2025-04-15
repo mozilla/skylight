@@ -25,7 +25,7 @@ const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
  * A function to fetch the data to render in Dashboard components in pages.
  * @param platform A specified Platform (ie. fenix, ios, or firefox-desktop)
  * @returns any local live message data, experiment data, total number of
- * experiments, rollout data, and total number of rollouts for a given 
+ * experiments, rollout data, and total number of rollouts for a given
  * platform.
  */
 export async function fetchData(platform: Platform) {
@@ -71,7 +71,7 @@ export async function fetchData(platform: Platform) {
  * A function to fetch a collection of Nimbus experiments.
  * @param recipeCollection a collection of Nimbus recipes
  * @returns recipeCollection after filtering out any rollouts, filtering out
- * non accepting feature ids, and sorted based on dates. 
+ * non accepting feature ids, and sorted based on dates.
  */
 export async function getMsgExpRecipeCollection(
   recipeCollection: NimbusRecipeCollection,
@@ -98,7 +98,7 @@ export async function getMsgExpRecipeCollection(
  * A function to fetch a collection of Nimbus rollouts.
  * @param recipeCollection a collection of Nimbus recipes
  * @returns recipeCollection after filtering out any experiments, filtering out
- * non accepting feature ids, and sorted based on dates. 
+ * non accepting feature ids, and sorted based on dates.
  */
 export async function getMsgRolloutCollection(
   recipeCollection: NimbusRecipeCollection,
@@ -120,7 +120,6 @@ export async function getMsgRolloutCollection(
  * lib/asrouter-local-prod-messages/data.json and also FxMS telemetry data if
  * Looker credentials are enabled.
  */
-
 export async function getASRouterLocalMessageInfoFromFile(): Promise<
   FxMSMessageInfo[]
 > {

@@ -1,3 +1,9 @@
+## Tueday, April 15th, 2025
+
+### Updated
+
+- Updated the environment variables to use an `EXPERIMENTER_API_PREFIX`. Instead of having separately defined environment variables for live and completed experiments, we are now using this prefix and adding on required parameters in the code when necessary.
+
 ## Friday, April 11th, 2025
 
 ### Fixed
