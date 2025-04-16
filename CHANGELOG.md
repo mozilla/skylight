@@ -3,6 +3,7 @@
 ### Added
 
 - Added new feature IDs to the `MESSAGING_EXPERIMENTS_DEFAULT_FEATURES` list for android messaging experiments
+- Added support for android experiments with `messaging` featureIds in `getAndroidBranchInfo`
 
 ## Tueday, April 15th, 2025
 
