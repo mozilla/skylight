@@ -8,8 +8,8 @@ A bunch of the code, ideas, and links come from the OMC team's work week Hackath
 
    `cp .env.sample .env.local`
 
-1. Modify variables in .env.local, e.g. uncommenting the `EXPERIMENTER_API_CALL`
-   line will switch from the default of live experiments to preview experiments
+1. Modify variables in .env.local
+   1. The `EXPERIMENTER_API_PREFIX` environment variable is the base URL for the experimenter API and it defaults to the production instance. Paramaters like `status` and `application` are added to this base URL in the code to specify live/completed status and different platforms (ie. fenix, ios. firefox-desktop).
 
 ## Running the development server
 
