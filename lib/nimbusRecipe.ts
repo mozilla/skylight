@@ -147,6 +147,7 @@ export class NimbusRecipe implements NimbusRecipeType {
 
     return branchInfo;
   }
+
   getBranchInfo(branch: any): BranchInfo {
     switch (this._rawRecipe.appName) {
       case "fenix":
@@ -180,7 +181,7 @@ export class NimbusRecipe implements NimbusRecipeType {
     // a surface to it.
     let template;
     if (feature.featureId === "aboutwelcome" && branch.slug != "control") {
-      // XXXdmose nasty hack to prevent what I'm calling
+      // XXX dmose nasty hack to prevent what I'm calling
       // "non-messaging-aboutwelcome" features from breaking
       // Skylight completely. Need to talk to Jason and Meg to
       // understand more details and figure out what to do here...
@@ -321,7 +322,7 @@ export class NimbusRecipe implements NimbusRecipeType {
         return branchInfo;
 
       default:
-        //console.log("Hit default case, template = ", template);
+        // console.log("Hit default case, template = ", template);
         if (!feature.value?.messages) {
           // console.log("v.messages is null");
           // console.log(", feature.value = ", feature.value);

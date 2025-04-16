@@ -1,3 +1,9 @@
+## Wednesday, April 16th, 2025
+
+### Added
+
+- Added new feature IDs to the `MESSAGING_EXPERIMENTS_DEFAULT_FEATURES` list for android messaging experiments
+
 ## Tueday, April 15th, 2025
 
 ### Updated
