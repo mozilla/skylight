@@ -118,11 +118,11 @@ export class NimbusRecipe implements NimbusRecipeType {
         const surface = message0.surface;
         // XXX need to rename template & surface somehow
         branchInfo.template = surface;
-        branchInfo.surface = surface;
+        branchInfo.surface = getSurfaceDataForTemplate(surface).surface;
 
         switch (surface) {
           case "messages":
-            // XXX I don' tthink this a real case
+            // XXX I don' think this a real case
             console.log("in messages surface case");
             break;
 
@@ -142,8 +142,6 @@ export class NimbusRecipe implements NimbusRecipeType {
         console.warn("default hit");
         console.warn("branch.slug = ", branch.slug);
         console.warn("We don't support feature = ", feature);
-      //   JSON.stringify(branch.features),
-      // );
     }
 
     const proposedEndDate = getExperimentLookerDashboardDate(
@@ -156,7 +154,7 @@ export class NimbusRecipe implements NimbusRecipeType {
     }
 
     branchInfo.ctrDashboardLink = getAndroidDashboard(
-      branchInfo.surface as string,
+      branchInfo.template as string,
       branchInfo.id,
       undefined,
       branchInfo.nimbusExperiment.slug,
@@ -166,11 +164,14 @@ export class NimbusRecipe implements NimbusRecipeType {
       this._isCompleted,
     );
 
-    console.log("Android Dashboard:", branchInfo.ctrDashboardLink);
+    console.log("Android Dashboard: ", branchInfo.ctrDashboardLink);
 
     return branchInfo;
   }
 
+  /**
+   * @returns an array of BranchInfo objects, one per branch in this recipe
+   */
   getBranchInfo(branch: any): BranchInfo {
     switch (this._rawRecipe.appName) {
       case "fenix":

@@ -73,6 +73,10 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
       tagColor: "bg-pink-400",
       docs: "https://experimenter.info/messaging/desktop-messaging-surfaces/#multistage-spotlight",
     },
+    survey: {
+      surface: "Survey",
+      tagColor: "bg-cyan-400",
+    },
     update_action: {
       surface: "Moments Page",
       tagColor: "bg-rose-400",
@@ -113,10 +117,8 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
   return aboutWelcomeSurfaces.includes(template);
 }
 
-//mozilla.cloud.looker.com/dashboards/2191?Normalized+Channel=release&Submission+Date=2025%2F02%2F13+to+2025%2F03%2F13&Experiment+Slug=rootca-info-card-hcr1-fenix&Value+Branch=treatment-a&Sample+ID=%3C%3D10&Value=info%5E_card%5E_rootCA%5E_HCR1%25
-
 export function getAndroidDashboard(
-  surface: string,
+  template: string,
   msgIdPrefix: string,
   channel?: string,
   experiment?: string,
@@ -133,14 +135,14 @@ export function getAndroidDashboard(
     isCompleted,
   );
 
+  // XXX consider using a similar function like getDashboardIdForTemplate for
+  // android dashboards to get dashboardId
   const dashboardId = 2191; // messages/push notification
-  // XXXgetDashboardIdForTemplate(surface);
   let baseUrl = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}`;
   let paramObj;
 
   paramObj = {
     "Submission Date": submissionDate,
-    //"Messaging System Message Id": msgIdPrefix,
     "Normalized Channel": channel ? channel : "",
     "Normalized OS": "",
     "Client Info App Display Version": "",
@@ -152,9 +154,11 @@ export function getAndroidDashboard(
     // all the messages in the experiment. Will break
     // (in "no results" way) on experiment with messages not configured
     // like that.
-
     Value: msgIdPrefix.slice(0, -5) + "%", // XXX
   };
+
+  // XXX we really handle all messaging surfaces, at least in theory
+  if (template !== "survey") return undefined;
 
   if (paramObj) {
     const params = new URLSearchParams(Object.entries(paramObj));
