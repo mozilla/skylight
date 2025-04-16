@@ -320,36 +320,27 @@ describe("NimbusRecipe", () => {
         });
       });
 
-      it("returns a default BranchInfo object for `onboarding` featureIds", () => {
+      it("returns a default BranchInfo object for `juno-onboarding` featureIds", () => {
         // https://github.com/jsdom/jsdom/issues/3363 is why we're using
         // a JSON hack rather than structuredClone
         const ANDROID_RECIPE_ONBOARDING = JSON.parse(
           JSON.stringify(ANDROID_RECIPE),
         );
-        ANDROID_RECIPE_ONBOARDING.branches[0].features[0].value = {
-          messages: {
-            "android-msg-test-recipe-en-us": {
-              surface: "onboarding",
-            },
-          },
-        };
+        ANDROID_RECIPE_ONBOARDING.branches[0].features[0].featureId =
+          "juno-onboarding";
         const nimbusRecipe = new NimbusRecipe(ANDROID_RECIPE_ONBOARDING);
         const branch = ANDROID_RECIPE_ONBOARDING.branches[0];
 
         const branchInfo = nimbusRecipe.getBranchInfo(branch);
-        const branchInfoId = "android-msg-test-recipe-en-us";
 
         expect(branchInfo).toEqual({
           product: "Android",
-          id: branchInfoId,
+          id: branch.slug,
           isBranch: true,
           nimbusExperiment: ANDROID_RECIPE_ONBOARDING,
           slug: branch.slug,
-          surface: "onboarding",
-          template: "onboarding",
           screenshots: ["screenshotURI"],
           description: "control description",
-          ctrDashboardLink: undefined,
         });
       });
     });
