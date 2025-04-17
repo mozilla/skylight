@@ -1,7 +1,7 @@
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
 import { BranchInfo } from "@/app/columns.jsx";
-import { getDashboard, getDashboardIdForTemplate } from "@/lib/messageUtils";
+import { getAndroidDashboard, getDashboard } from "@/lib/messageUtils";
 import { getExperimentLookerDashboardDate } from "@/lib/lookerUtils";
 import { formatDate } from "@/lib/experimentUtils";
 
@@ -71,6 +71,52 @@ const AW_RECIPE = {
   ],
 };
 
+const ANDROID_RECIPE = {
+  id: "android-msg-test-recipe",
+  slug: "android-msg-test-recipe",
+  schemaVersion: "1.12.0",
+  appId: "org.mozilla.firefox",
+  appName: "fenix",
+  application: "org.mozilla.firefox",
+  channel: "nightly",
+  isEnrollmentPaused: false,
+  probeSets: [],
+  startDate: null,
+  endDate: null,
+  proposedEnrollment: 7,
+  referenceBranch: "control",
+  userFacingName: "Android Messaging Recipe",
+  userFacingDescription: "Android messaging surface recipe",
+  bucketConfig: {
+    namespace: "nimbus-test-utils",
+    randomizationUnit: "nimbus_id",
+    start: 0,
+    count: 100,
+    total: 1000,
+  },
+  branches: [
+    {
+      features: [
+        {
+          enabled: true,
+          featureId: "messaging",
+          value: {
+            messages: {
+              "android-msg-test-recipe-en-us": {
+                surface: "survey",
+              },
+            },
+          },
+        },
+      ],
+      ratio: 1,
+      slug: "control",
+      screenshots: ["screenshotURI"],
+      description: "control description",
+    },
+  ],
+};
+
 describe("NimbusRecipe", () => {
   it("creates a NimbusRecipe from a raw JS recipe object", () => {
     const rawRecipe = ExperimentFakes.recipe("test-recipe");
@@ -109,124 +155,193 @@ describe("NimbusRecipe", () => {
   });
 
   describe("getBranchInfo", () => {
-    it("returns a BranchInfo object", () => {
-      const rawRecipe = ExperimentFakes.recipe("test-recipe");
-      const nimbusRecipe = new NimbusRecipe(rawRecipe);
-      // XXX should add a method to NimbusRecipe and call the getter instead of
-      // violating encapsulation like this.  Or, alternately, should retrieve
-      // branch info by slug.
-      const branch = rawRecipe.branches[1];
+    describe("getDesktopBranchInfo", () => {
+      it("returns a BranchInfo object", () => {
+        const rawRecipe = ExperimentFakes.recipe("test-recipe");
+        const nimbusRecipe = new NimbusRecipe(rawRecipe);
+        // XXX should add a method to NimbusRecipe and call the getter instead of
+        // violating encapsulation like this.  Or, alternately, should retrieve
+        // branch info by slug.
+        const branch = rawRecipe.branches[1];
 
-      const branchInfo = nimbusRecipe.getBranchInfo(branch);
+        const branchInfo = nimbusRecipe.getBranchInfo(branch);
 
-      expect(branchInfo).toEqual({
-        product: "Desktop",
-        id: branch.slug,
-        isBranch: true,
-        nimbusExperiment: rawRecipe,
-        slug: branch.slug,
-        surface: "testTemplate",
-        template: "testTemplate",
-        screenshots: ["screenshotURI"],
-        description: "test description",
-        hasMicrosurvey: false,
+        expect(branchInfo).toEqual({
+          product: "Desktop",
+          id: branch.slug,
+          isBranch: true,
+          nimbusExperiment: rawRecipe,
+          slug: branch.slug,
+          surface: "testTemplate",
+          template: "testTemplate",
+          screenshots: ["screenshotURI"],
+          description: "test description",
+          hasMicrosurvey: false,
+        });
+      });
+
+      it("returns a specialized BranchInfo object if the recipe is from about:welcome and has screens", () => {
+        const nimbusRecipe = new NimbusRecipe(AW_RECIPE);
+        const branch = AW_RECIPE.branches[1];
+
+        const branchInfo = nimbusRecipe.getBranchInfo(branch);
+        const proposedEndDate = getExperimentLookerDashboardDate(
+          branchInfo.nimbusExperiment.startDate,
+          branchInfo.nimbusExperiment.proposedDuration,
+        );
+        const formattedEndDate = formatDate(
+          branchInfo.nimbusExperiment.endDate as string,
+          1,
+        );
+
+        const dashboardLink = getDashboard(
+          branchInfo.template as string,
+          branchInfo.id,
+          undefined,
+          branchInfo.nimbusExperiment.slug,
+          branch.slug,
+          branchInfo.nimbusExperiment.startDate,
+          branchInfo.nimbusExperiment.endDate
+            ? formattedEndDate
+            : proposedEndDate,
+          false, // default for isCompleted in constructor
+        );
+
+        // XXX getBranchInfo is actually going to return a previewLink, which
+        // makes this test kind of brittle. We could refactor this to no longer
+        // use deepEqual and check for the existence of object properties instead.
+        expect(branchInfo).toEqual({
+          product: "Desktop",
+          ctrDashboardLink: dashboardLink,
+          id: "feature_value_id:treatment-a",
+          isBranch: true,
+          nimbusExperiment: AW_RECIPE,
+          slug: branch.slug,
+          surface: "About:Welcome Page (1st screen)",
+          template: "aboutwelcome",
+          previewLink:
+            "about:messagepreview?json=ewAiAGkAZAAiADoAIgBhAGIAbwB1AHQAdwBlAGwAYwBvAG0AZQAtAHQAZQBzAHQALQByAGUAYwBpAHAAZQAiACwAIgB0AGUAbQBwAGwAYQB0AGUAIgA6ACIAcwBwAG8AdABsAGkAZwBoAHQAIgAsACIAdABhAHIAZwBlAHQAaQBuAGcAIgA6AHQAcgB1AGUALAAiAGMAbwBuAHQAZQBuAHQAIgA6AHsAIgBiAGEAYwBrAGQAcgBvAHAAIgA6ACIAdABlAHMAdAAtAGIAYQBjAGsAZAByAG8AcAAiACwAIgBpAGQAIgA6ACIAZgBlAGEAdAB1AHIAZQBfAHYAYQBsAHUAZQBfAGkAZAA6AHQAcgBlAGEAdABtAGUAbgB0AC0AYQAiACwAIgBzAGMAcgBlAGUAbgBzACIAOgBbAHsAIgBpAGQAIgA6ACIAVABFAFMAVABfAFMAQwBSAEUARQBOAF8ASQBEAF8AQQBfADAAIgB9AF0ALAAiAG0AbwBkAGEAbAAiADoAIgB0AGEAYgAiAH0AfQA%3D",
+          screenshots: ["screenshotURI"],
+          description: "treatment-a description",
+          hasMicrosurvey: false,
+        });
+      });
+
+      it("returns a BranchInfo that uses the message id if no screens exist", () => {
+        // https://github.com/jsdom/jsdom/issues/3363 is why we're using
+        // a JSON hack rather than structuredClone
+        const AW_RECIPE_NO_SCREENS = JSON.parse(JSON.stringify(AW_RECIPE));
+        AW_RECIPE_NO_SCREENS.branches[1].features[0].value = {
+          id: "feature_value_id:treatment-a",
+          backdrop: "XXX-no-msg-test-hack-deleteme-see-getBranchInfo",
+        };
+
+        const nimbusRecipe = new NimbusRecipe(AW_RECIPE_NO_SCREENS);
+        const branch = AW_RECIPE_NO_SCREENS.branches[1];
+
+        const branchInfo = nimbusRecipe.getBranchInfo(branch);
+        const proposedEndDate = getExperimentLookerDashboardDate(
+          branchInfo.nimbusExperiment.startDate,
+          branchInfo.nimbusExperiment.proposedDuration,
+        );
+        const formattedEndDate = formatDate(
+          branchInfo.nimbusExperiment.endDate as string,
+          1,
+        );
+
+        const dashboardLink = getDashboard(
+          branchInfo.template as string,
+          branchInfo.id,
+          undefined,
+          branchInfo.nimbusExperiment.slug,
+          branch.slug,
+          branchInfo.nimbusExperiment.startDate,
+          branchInfo.nimbusExperiment.endDate
+            ? formattedEndDate
+            : proposedEndDate,
+          false, // default for isCompleted in constructor
+        );
+
+        expect(branchInfo).toEqual({
+          product: "Desktop",
+          ctrDashboardLink: dashboardLink,
+          id: "feature_value_id:treatment-a",
+          isBranch: true,
+          nimbusExperiment: AW_RECIPE_NO_SCREENS,
+          slug: branch.slug,
+          surface: "About:Welcome Page (1st screen)",
+          template: "aboutwelcome",
+          screenshots: ["screenshotURI"],
+          description: "treatment-a description",
+          hasMicrosurvey: false,
+        });
       });
     });
 
-    it("returns a specialized BranchInfo object if the recipe is from about:welcome and has screens", () => {
-      const nimbusRecipe = new NimbusRecipe(AW_RECIPE);
-      const branch = AW_RECIPE.branches[1];
+    describe("getAndroidBranchInfo", () => {
+      it("returns a BranchInfo object for a `messaging` featureId", () => {
+        const nimbusRecipe = new NimbusRecipe(ANDROID_RECIPE);
+        const branch = ANDROID_RECIPE.branches[0];
 
-      const branchInfo = nimbusRecipe.getBranchInfo(branch);
-      const proposedEndDate = getExperimentLookerDashboardDate(
-        branchInfo.nimbusExperiment.startDate,
-        branchInfo.nimbusExperiment.proposedDuration,
-      );
-      const formattedEndDate = formatDate(
-        branchInfo.nimbusExperiment.endDate as string,
-        1,
-      );
+        const branchInfo = nimbusRecipe.getBranchInfo(branch);
+        const branchInfoId = "android-msg-test-recipe-en-us";
+        const proposedEndDate = getExperimentLookerDashboardDate(
+          branchInfo.nimbusExperiment.startDate,
+          branchInfo.nimbusExperiment.proposedDuration,
+        );
+        const formattedEndDate = formatDate(
+          branchInfo.nimbusExperiment.endDate as string,
+          1,
+        );
+        const dashboardLink = getAndroidDashboard(
+          branchInfo.template as string,
+          branchInfoId,
+          undefined,
+          branchInfo.nimbusExperiment.slug,
+          branch.slug,
+          branchInfo.nimbusExperiment.startDate,
+          branchInfo.nimbusExperiment.endDate
+            ? formattedEndDate
+            : proposedEndDate,
+          false,
+        );
 
-      const dashboardLink = getDashboard(
-        branchInfo.template as string,
-        branchInfo.id,
-        undefined,
-        branchInfo.nimbusExperiment.slug,
-        branch.slug,
-        branchInfo.nimbusExperiment.startDate,
-        branchInfo.nimbusExperiment.endDate
-          ? formattedEndDate
-          : proposedEndDate,
-        false, // default for isCompleted in constructor
-      );
-
-      // XXX getBranchInfo is actually going to return a previewLink, which
-      // makes this test kind of brittle. We could refactor this to no longer
-      // use deepEqual and check for the existence of object properties instead.
-      expect(branchInfo).toEqual({
-        product: "Desktop",
-        ctrDashboardLink: dashboardLink,
-        id: "feature_value_id:treatment-a",
-        isBranch: true,
-        nimbusExperiment: AW_RECIPE,
-        slug: branch.slug,
-        surface: "About:Welcome Page (1st screen)",
-        template: "aboutwelcome",
-        previewLink:
-          "about:messagepreview?json=ewAiAGkAZAAiADoAIgBhAGIAbwB1AHQAdwBlAGwAYwBvAG0AZQAtAHQAZQBzAHQALQByAGUAYwBpAHAAZQAiACwAIgB0AGUAbQBwAGwAYQB0AGUAIgA6ACIAcwBwAG8AdABsAGkAZwBoAHQAIgAsACIAdABhAHIAZwBlAHQAaQBuAGcAIgA6AHQAcgB1AGUALAAiAGMAbwBuAHQAZQBuAHQAIgA6AHsAIgBiAGEAYwBrAGQAcgBvAHAAIgA6ACIAdABlAHMAdAAtAGIAYQBjAGsAZAByAG8AcAAiACwAIgBpAGQAIgA6ACIAZgBlAGEAdAB1AHIAZQBfAHYAYQBsAHUAZQBfAGkAZAA6AHQAcgBlAGEAdABtAGUAbgB0AC0AYQAiACwAIgBzAGMAcgBlAGUAbgBzACIAOgBbAHsAIgBpAGQAIgA6ACIAVABFAFMAVABfAFMAQwBSAEUARQBOAF8ASQBEAF8AQQBfADAAIgB9AF0ALAAiAG0AbwBkAGEAbAAiADoAIgB0AGEAYgAiAH0AfQA%3D",
-        screenshots: ["screenshotURI"],
-        description: "treatment-a description",
-        hasMicrosurvey: false,
+        expect(branchInfo).toEqual({
+          product: "Android",
+          id: branchInfoId,
+          isBranch: true,
+          nimbusExperiment: ANDROID_RECIPE,
+          slug: branch.slug,
+          surface: "Survey",
+          template: "survey",
+          screenshots: ["screenshotURI"],
+          description: "control description",
+          ctrDashboardLink: dashboardLink,
+        });
       });
-    });
 
-    it("returns a BranchInfo that uses the message id if no screens exist", () => {
-      // https://github.com/jsdom/jsdom/issues/3363 is why we're using
-      // a JSON hack rather than structuredClone
-      const AW_RECIPE_NO_SCREENS = JSON.parse(JSON.stringify(AW_RECIPE));
-      AW_RECIPE_NO_SCREENS.branches[1].features[0].value = {
-        id: "feature_value_id:treatment-a",
-        backdrop: "XXX-no-msg-test-hack-deleteme-see-getBranchInfo",
-      };
+      it("returns a default BranchInfo object for `juno-onboarding` featureIds", () => {
+        // https://github.com/jsdom/jsdom/issues/3363 is why we're using
+        // a JSON hack rather than structuredClone
+        const ANDROID_RECIPE_ONBOARDING = JSON.parse(
+          JSON.stringify(ANDROID_RECIPE),
+        );
+        ANDROID_RECIPE_ONBOARDING.branches[0].features[0].featureId =
+          "juno-onboarding";
+        const nimbusRecipe = new NimbusRecipe(ANDROID_RECIPE_ONBOARDING);
+        const branch = ANDROID_RECIPE_ONBOARDING.branches[0];
 
-      const nimbusRecipe = new NimbusRecipe(AW_RECIPE_NO_SCREENS);
-      const branch = AW_RECIPE_NO_SCREENS.branches[1];
+        const branchInfo = nimbusRecipe.getBranchInfo(branch);
 
-      const branchInfo = nimbusRecipe.getBranchInfo(branch);
-      const proposedEndDate = getExperimentLookerDashboardDate(
-        branchInfo.nimbusExperiment.startDate,
-        branchInfo.nimbusExperiment.proposedDuration,
-      );
-      const formattedEndDate = formatDate(
-        branchInfo.nimbusExperiment.endDate as string,
-        1,
-      );
-
-      const dashboardLink = getDashboard(
-        branchInfo.template as string,
-        branchInfo.id,
-        undefined,
-        branchInfo.nimbusExperiment.slug,
-        branch.slug,
-        branchInfo.nimbusExperiment.startDate,
-        branchInfo.nimbusExperiment.endDate
-          ? formattedEndDate
-          : proposedEndDate,
-        false, // default for isCompleted in constructor
-      );
-
-      expect(branchInfo).toEqual({
-        product: "Desktop",
-        ctrDashboardLink: dashboardLink,
-        id: "feature_value_id:treatment-a",
-        isBranch: true,
-        nimbusExperiment: AW_RECIPE_NO_SCREENS,
-        slug: branch.slug,
-        surface: "About:Welcome Page (1st screen)",
-        template: "aboutwelcome",
-        screenshots: ["screenshotURI"],
-        description: "treatment-a description",
-        hasMicrosurvey: false,
+        expect(branchInfo).toEqual({
+          product: "Android",
+          id: branch.slug,
+          isBranch: true,
+          nimbusExperiment: ANDROID_RECIPE_ONBOARDING,
+          slug: branch.slug,
+          screenshots: ["screenshotURI"],
+          description: "control description",
+        });
       });
     });
   });

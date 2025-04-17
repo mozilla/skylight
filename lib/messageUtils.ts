@@ -73,6 +73,10 @@ export function getSurfaceDataForTemplate(template: string): SurfaceData {
       tagColor: "bg-pink-400",
       docs: "https://experimenter.info/messaging/desktop-messaging-surfaces/#multistage-spotlight",
     },
+    survey: {
+      surface: "Survey",
+      tagColor: "bg-cyan-400",
+    },
     update_action: {
       surface: "Moments Page",
       tagColor: "bg-rose-400",
@@ -111,6 +115,59 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
   ];
 
   return aboutWelcomeSurfaces.includes(template);
+}
+
+export function getAndroidDashboard(
+  template: string,
+  msgIdPrefix: string,
+  channel?: string,
+  experiment?: string,
+  branchSlug?: string,
+  startDate?: string | null,
+  endDate?: string | null,
+  isCompleted?: boolean,
+): string | undefined {
+  // The isCompleted value can be useful for messages that used to be in remote
+  // settings or old versions of Firefox.
+  const submissionDate = getLookerSubmissionTimestampDateFilter(
+    startDate,
+    endDate,
+    isCompleted,
+  );
+
+  // XXX consider using a similar function like getDashboardIdForTemplate for
+  // android dashboards to get dashboardId
+  const dashboardId = 2191; // messages/push notification
+  let baseUrl = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}`;
+  let paramObj;
+
+  paramObj = {
+    "Submission Date": submissionDate,
+    "Normalized Channel": channel ? channel : "",
+    "Normalized OS": "",
+    "Client Info App Display Version": "",
+    "Normalized Country Code": "",
+    "Experiment Slug": experiment ? experiment : "", // XXX
+    "Experiment Branch": branchSlug ? branchSlug : "",
+    // XXX assumes last part of message id is something like
+    // "-en-us" and chops that off, since we want to know about
+    // all the messages in the experiment. Will break
+    // (in "no results" way) on experiment with messages not configured
+    // like that.
+    Value: msgIdPrefix.slice(0, -5) + "%", // XXX
+  };
+
+  // XXX we really handle all messaging surfaces, at least in theory
+  if (template !== "survey") return undefined;
+
+  if (paramObj) {
+    const params = new URLSearchParams(Object.entries(paramObj));
+    let url = new URL(baseUrl);
+    url.search = params.toString();
+    return url.toString();
+  }
+
+  return undefined;
 }
 
 export function getDashboard(

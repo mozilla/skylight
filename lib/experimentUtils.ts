@@ -1,8 +1,9 @@
 /**
- * These are the Nimbus feature IDs that correspond to messaging experiments.
- * Other Nimbus features contain specific variables whose keys are enumerated in
- * FeatureManifest.yaml. Conversely, messaging experiment features contain
- * actual messages, with the usual message keys like `template` and `targeting`.
+ * This is a cross-platform list of Nimbus feature IDs that correspond to
+ * messaging experiments in both desktop and android. Other Nimbus features
+ * contain specific variables whose keys are enumerated in FeatureManifest.yaml.
+ * Conversely, messaging experiment features contain actual messages, with the
+ * usual message keys like `template` and `targeting`.
  * @see FeatureManifest.yaml
  *
  * Copied from @see https://searchfox.org/mozilla-central/source/browser/components/newtab/lib/MessagingExperimentConstants.sys.mjs
@@ -10,6 +11,7 @@
  * Should be manually update when that file changes.
  */
 export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES: string[] = [
+  // Desktop features
   "aboutwelcome",
   "backgroundTaskMessage", // XXX need to backport this to tree
   "cfr",
@@ -31,6 +33,13 @@ export const MESSAGING_EXPERIMENTS_DEFAULT_FEATURES: string[] = [
   "spotlight",
   "testFeature",
   "whatsNewPage",
+
+  // Android features
+  "cfr",
+  "encourage-search-cfr",
+  "messaging",
+  "juno-onboarding",
+  "set-to-default-prompt",
 ];
 
 /**

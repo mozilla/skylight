@@ -4,6 +4,7 @@ import {
   toBinary,
   getDashboardIdForTemplate,
   messageHasMicrosurvey,
+  getAndroidDashboard,
 } from "@/lib/messageUtils";
 
 describe("isAboutWelcomeTemplate", () => {
@@ -220,6 +221,39 @@ describe("getDashboard", () => {
     expect(params.get("Normalized Channel")).toBe("");
     expect(params.get("Experiment")).toBe("");
     expect(params.get("Branch")).toBe("");
+  });
+
+  it("returns a correct dashboard link for Android messaging experiments", () => {
+    const template = "survey";
+    const msgIdPrefix = "a:bc-en-us"; // weird chars to test URI encoding
+    const experiment = "experiment:test";
+    const branchSlug = "treatment:a";
+    const startDate = "2025-03-08";
+    const endDate = "2025-05-08";
+    const dashboardId = "2191";
+    const submissionDate = "2025-03-08 to today";
+
+    const result = getAndroidDashboard(
+      template,
+      msgIdPrefix,
+      undefined,
+      experiment,
+      branchSlug,
+      startDate,
+      endDate,
+    ) as string;
+    const url = new URL(result);
+    const params = url.searchParams;
+
+    expect(url.pathname.endsWith(dashboardId)).toBe(true);
+    expect(params.get("Submission Date")).toBe(submissionDate);
+    expect(params.get("Normalized Channel")).toBe("");
+    expect(params.get("Normalized OS")).toBe("");
+    expect(params.get("Client Info App Display Version")).toBe("");
+    expect(params.get("Normalized Country Code")).toBe("");
+    expect(params.get("Experiment Slug")).toBe(experiment);
+    expect(params.get("Experiment Branch")).toBe(branchSlug);
+    expect(params.get("Value")).toBe("a:bc-%");
   });
 });
 
