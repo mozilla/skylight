@@ -230,7 +230,7 @@ describe("getDashboard", () => {
     const branchSlug = "treatment:a";
     const startDate = "2025-03-08";
     const endDate = "2025-05-08";
-    const dashboardId = "2191";
+    const dashboardId = "2303";
     const submissionDate = "2025-03-08 to today";
 
     const result = getAndroidDashboard(
