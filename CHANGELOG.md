@@ -1,3 +1,9 @@
+## Thursday, April 17th, 2025
+
+### Updated
+
+- Updated the Looker dashboards for Android messaging experiments with a new tile to show total users profile impressed and the primary rate CTR
+
 ## Wednesday, April 16th, 2025
 
 ### Added
