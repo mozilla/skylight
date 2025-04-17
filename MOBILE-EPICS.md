@@ -18,7 +18,7 @@ Top-level bullets are user story epics, 2nd-level bullet are regular user storie
    1. Experimenter API client work (DONE) - landed on main
    2. Publish to web so they can test (DONE)
 
-   3. Env var changes - landed on branch
+   3. Env var changes - landed on branch (DONE)
       1. Draft plan; ask Emily to review
       2. Create PR for main for this one change
       3. Netlify deploy should be failing
@@ -26,15 +26,15 @@ Top-level bullets are user story epics, 2nd-level bullet are regular user storie
       5. Netlify deploy should start succeeding
       6. Update docs (README and .env\* and CONTRIBUTING?)
       7. Merge branch change
-   4. Feature ID list (DONE on branch)
+   4. Feature ID list (DONE)
       1. CLEAN UP slightly: Update comments in file & land eg "Cross-platform list of Nimbus feature IDs"
    5. Fix existing dashboard tests on branch
-   6. Nimbus.GetBranchInfo (5: DONE) - Write tests & review
-   7. Show experiments & rollouts for a few key surfaces (DONE on branch) - Tests?
-   8. Get simple dashboard links for messaging surface (DONE on branch) - Tests?
+   6. Nimbus.GetBranchInfo (DONE - tests added)
+   7. Get simple dashboard links for messaging surface (DONE - tests added)
+   8. Show experiments & rollouts for a few key surfaces (DONE on branch) - Tests?
 
 6. Onboarding dashboard - desktop-equivalent (WIP on branch)
-7. Add monthly Impressions/CTR chart to Looker `messaging` dashboard (2)
+7. Add monthly Impressions/CTR chart to Looker `messaging` dashboard (DONE on branch)
    1. Correctly label these "users impressed",
 8. Add Inline Impressions/CTR to Skylight `messaging` (8 - needs breakdown or SPIKE)
    \*\* TODO (Dan): draft checklist & plan for this
