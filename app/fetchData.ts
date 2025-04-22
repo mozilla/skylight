@@ -174,10 +174,12 @@ export async function getASRouterLocalColumnFromJSON(
   };
 
   const channel = "release";
+  const platform = "firefox-desktop";
 
   if (isLookerEnabled) {
     const ctrPercentData = await getCTRPercentData(
       fxmsMsgInfo.id,
+      platform,
       fxmsMsgInfo.template,
       channel,
     );

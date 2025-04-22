@@ -2,6 +2,7 @@ import { IDashboardElement, IWriteQuery } from "@looker/sdk";
 import { SDK } from "./sdk";
 import { getDashboardIdForTemplate } from "./messageUtils";
 import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
+import { Platform } from "./types";
 
 export type CTRData = {
   ctrPercent: number;
@@ -45,6 +46,7 @@ export async function runLookQuery(lookId: string): Promise<string> {
 }
 
 /**
+ * @param platform the message platform
  * @param template the message template
  * @param filters an object containing any filters used in the Looker query (eg. channel, templates, experiment, branch)
  * @param startDate the experiment start date
@@ -52,6 +54,7 @@ export async function runLookQuery(lookId: string): Promise<string> {
  * @returns the result of the query that is created by the given filters and filter_expression, and the appropriate template and submission timestamp
  */
 export async function runQueryForTemplate(
+  platform: Platform,
   template: string,
   filters: any,
   startDate?: string | null,
@@ -71,20 +74,30 @@ export async function runQueryForTemplate(
   );
 
   // override the filters
-  if (template === "infobar") {
-    newQueryBody.filters = Object.assign(
-      {
-        "messaging_system.submission_date": submission_timestamp_date,
-      },
-      filters,
-    );
-  } else {
-    newQueryBody.filters = Object.assign(
-      {
-        "event_counts.submission_timestamp_date": submission_timestamp_date,
-      },
-      filters,
-    );
+  switch (platform) {
+    case "fenix":
+      newQueryBody.filters = Object.assign(
+        {
+          "events.submission_date": submission_timestamp_date,
+        },
+        filters,
+      );
+    default:
+      if (template === "infobar") {
+        newQueryBody.filters = Object.assign(
+          {
+            "messaging_system.submission_date": submission_timestamp_date,
+          },
+          filters,
+        );
+      } else {
+        newQueryBody.filters = Object.assign(
+          {
+            "event_counts.submission_timestamp_date": submission_timestamp_date,
+          },
+          filters,
+        );
+      }
   }
 
   const newQuery = await SDK.ok(SDK.create_query(newQueryBody));
@@ -101,6 +114,7 @@ export async function runQueryForTemplate(
 /**
  * @param id the events_count.message_id required for running the looker
  * query to retrieve CTR metrics
+ * @param platform the message platform
  * @param template the message template
  * @param channel the normalized channel
  * @param experiment the experiment slug
@@ -112,6 +126,92 @@ export async function runQueryForTemplate(
  */
 export async function getCTRPercentData(
   id: string,
+  platform: Platform,
+  template: string,
+  channel?: string,
+  experiment?: string,
+  branch?: string,
+  startDate?: string | null,
+  endDate?: string | null,
+): Promise<CTRData | undefined> {
+  switch (platform) {
+    case "fenix":
+      return getAndroidCTRPercentData(
+        id,
+        platform,
+        template,
+        channel,
+        experiment,
+        branch,
+        startDate,
+        endDate,
+      );
+    default:
+      return getDesktopCTRPercentData(
+        id,
+        platform,
+        template,
+        channel,
+        experiment,
+        branch,
+        startDate,
+        endDate,
+      );
+  }
+}
+
+export async function getAndroidCTRPercentData(
+  id: string,
+  platform: Platform,
+  template: string,
+  channel?: string,
+  experiment?: string,
+  branch?: string,
+  startDate?: string | null,
+  endDate?: string | null,
+): Promise<CTRData | undefined> {
+  // XXX the filters are currently defined to match the filters in getDashboard.
+  // It would be more ideal to consider a different approach when definining
+  // those filters to sync up the data in both places. Non-trivial changes to
+  // this code are worth applying some manual performance checking.
+  let queryResult;
+  if (template === "survey") {
+    queryResult = await runQueryForTemplate(
+      platform,
+      template,
+      {
+        "events.normalized_channel": channel,
+        "events_unnested_table__ping_info__experiments.key": experiment,
+        "events_unnested_table__ping_info__experiments.value__branch": branch,
+        "events_unnested_table__event_extra.value": id,
+      },
+      startDate,
+      endDate,
+    );
+    if (queryResult.length > 0) {
+      // CTR percents will have 2 decimal places since this is what is expected
+      // from Experimenter analyses.
+      let impressions;
+      if (template === "survey") {
+        impressions =
+          queryResult[0]["events.client_count"]["events.event_name"][
+            "message_shown"
+          ];
+      }
+
+      return {
+        ctrPercent: Number(
+          Number(queryResult[0].primary_rate * 100).toFixed(2),
+        ),
+        impressions: impressions * 10, // We need to extrapolate real numbers for the 10% sample
+      };
+    }
+  }
+}
+
+export async function getDesktopCTRPercentData(
+  id: string,
+  platform: Platform,
   template: string,
   channel?: string,
   experiment?: string,
@@ -126,6 +226,7 @@ export async function getCTRPercentData(
   let queryResult;
   if (template === "infobar") {
     queryResult = await runQueryForTemplate(
+      platform,
       template,
       {
         "messaging_system.metrics__text2__messaging_system_message_id": id,
@@ -140,6 +241,7 @@ export async function getCTRPercentData(
     );
   } else {
     queryResult = await runQueryForTemplate(
+      platform,
       template,
       {
         "event_counts.message_id": "%" + id + "%",

@@ -17,17 +17,27 @@ describe("Looker", () => {
   });
 
   it("should return the query results", async () => {
+    const platform = "firefox-desktop";
     const template = "test_template";
-    const queryResult = await looker.runQueryForTemplate(template, fakeFilters);
+    const queryResult = await looker.runQueryForTemplate(
+      platform,
+      template,
+      fakeFilters,
+    );
 
     expect(queryResult).toEqual(fakeQueryResult);
   });
 
   it("should return the CTR percent of the primary rate", async () => {
     const id = "test_query_0";
+    const platform = "firefox-desktop";
     const template = "test_template";
 
-    const ctrPercentData = await looker.getCTRPercentData(id, template);
+    const ctrPercentData = await looker.getCTRPercentData(
+      id,
+      platform,
+      template,
+    );
 
     expect(ctrPercentData?.ctrPercent).toEqual(12.35);
     expect(ctrPercentData?.impressions).toEqual(12899);
