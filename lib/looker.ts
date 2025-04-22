@@ -8,7 +8,7 @@ export type CTRData = {
   impressions: number;
 };
 
-export async function getAWDashboardElement0(
+export async function getDashboardElement0(
   template: string,
 ): Promise<IDashboardElement> {
   const dashboardId = getDashboardIdForTemplate(template);
@@ -57,7 +57,7 @@ export async function runQueryForTemplate(
   startDate?: string | null,
   endDate?: string | null,
 ): Promise<any> {
-  const element0 = await getAWDashboardElement0(template);
+  const element0 = await getDashboardElement0(template);
 
   const origQuery = element0.query as IWriteQuery;
 
