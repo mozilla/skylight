@@ -23,7 +23,7 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
       .getBranchInfos()
       .map(async (branchInfo: BranchInfo): Promise<BranchInfo> => {
         if (branchInfo.nimbusExperiment.appName === "fenix") {
-          console.log(JSON.stringify(branchInfo));
+          console.log(branchInfo.id + ": " + branchInfo.template);
         }
         const proposedEndDate = getExperimentLookerDashboardDate(
           branchInfo.nimbusExperiment.startDate,
