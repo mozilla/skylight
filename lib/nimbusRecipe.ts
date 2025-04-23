@@ -2,7 +2,7 @@ import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "../app/columns.jsx";
 import {
   getAndroidDashboard,
   getDashboard,
-  getSurfaceDataForTemplate,
+  getSurfaceData,
   getPreviewLink,
   getTemplateFromMessage,
 } from "../lib/messageUtils.ts";
@@ -118,7 +118,7 @@ export class NimbusRecipe implements NimbusRecipeType {
         const surface = message0.surface;
         // XXX need to rename template & surface somehow
         branchInfo.template = surface;
-        branchInfo.surface = getSurfaceDataForTemplate(surface).surface;
+        branchInfo.surface = getSurfaceData(surface).surface;
 
         switch (surface) {
           case "messages":
@@ -228,7 +228,7 @@ export class NimbusRecipe implements NimbusRecipeType {
 
     branch.template = template;
     branchInfo.template = template;
-    branchInfo.surface = getSurfaceDataForTemplate(template).surface;
+    branchInfo.surface = getSurfaceData(template).surface;
     branchInfo.hasMicrosurvey = _branchInfoHasMicrosurvey(branchInfo);
 
     switch (template) {

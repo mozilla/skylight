@@ -3,7 +3,7 @@ import {
   compareSurfacesFn,
   getDashboard,
   getPreviewLink,
-  getSurfaceDataForTemplate,
+  getSurfaceData,
   getTemplateFromMessage,
   maybeCreateWelcomePreview,
   messageHasMicrosurvey,
@@ -161,8 +161,7 @@ export async function getASRouterLocalColumnFromJSON(
     product: "Desktop",
     id: messageDef.id,
     template: messageDef.template,
-    surface: getSurfaceDataForTemplate(getTemplateFromMessage(messageDef))
-      .surface,
+    surface: getSurfaceData(getTemplateFromMessage(messageDef)).surface,
     segment: "some segment",
     metrics: "some metrics",
     ctrPercent: undefined, // may be populated from Looker data
