@@ -11,7 +11,8 @@ jest.mock("../../lib/sdk");
 describe("Looker", () => {
   it("should return the first dashboard element", async () => {
     const template = "test_template";
-    const element = await looker.getDashboardElement0(template);
+    const platform = "firefox-desktop";
+    const element = await looker.getDashboardElement0(platform, template);
 
     expect(element).toEqual(fakeDashboardElements[0]);
   });

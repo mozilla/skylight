@@ -14,10 +14,12 @@ export async function getDashboardElement0(
   template: string,
 ): Promise<IDashboardElement> {
   let dashboardId;
-  if (platform === "fenix") {
-    dashboardId = "2303";
-  } else {
-    dashboardId = getDashboardIdForTemplate(template);
+  switch (platform) {
+    case "fenix":
+      dashboardId = "2303";
+      break;
+    default:
+      dashboardId = getDashboardIdForTemplate(template);
   }
 
   // XXX maybe switch this out for the more performant dashboard_element (see
@@ -88,6 +90,7 @@ export async function runQueryForTemplate(
         },
         filters,
       );
+      break;
     default:
       if (template === "infobar") {
         newQueryBody.filters = Object.assign(
@@ -182,7 +185,6 @@ export async function getAndroidCTRPercentData(
   // this code are worth applying some manual performance checking.
   let queryResult;
   if (template === "survey") {
-    console.log("[getAndroidCTRPercentData] platform: " + platform);
     queryResult = await runQueryForTemplate(
       platform,
       template,
@@ -192,7 +194,7 @@ export async function getAndroidCTRPercentData(
         "events_unnested_table__ping_info__experiments.value__branch": branch,
         "events.sample_id": "to 10", // Sample ID <= 10
         "events.event_category": "messaging", // XXX
-        "events_unnested_table__event_extra.value": id + "%",
+        "events_unnested_table__event_extra.value": id.slice(0, -5) + "%",
       },
       startDate,
       endDate,
@@ -233,7 +235,6 @@ export async function getDesktopCTRPercentData(
   // those filters to sync up the data in both places. Non-trivial changes to
   // this code are worth applying some manual performance checking.
   let queryResult;
-  console.log("[getDesktopCTRPercentData] platform: " + platform);
   if (template === "infobar") {
     queryResult = await runQueryForTemplate(
       platform,
