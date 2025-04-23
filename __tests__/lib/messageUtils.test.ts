@@ -2,7 +2,7 @@ import {
   getDashboard,
   _isAboutWelcomeTemplate,
   toBinary,
-  getDashboardIdForTemplate,
+  getDashboardIdForSurface,
   messageHasMicrosurvey,
   getAndroidDashboard,
 } from "@/lib/messageUtils";
@@ -72,7 +72,7 @@ describe("getDashboard", () => {
     const channel = "release";
     const experiment = "experiment:test";
     const branchSlug = "treatment:a";
-    const dashboardId = getDashboardIdForTemplate(template);
+    const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "30 day ago for 30 day";
 
     const result = getDashboard(
@@ -97,7 +97,7 @@ describe("getDashboard", () => {
   it("returns a correct featureCallout dashboard link", () => {
     const template = "feature_callout";
     const msgId = "a:bc"; // weird chars to test URI encoding
-    const dashboardId = getDashboardIdForTemplate(template);
+    const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "30 day ago for 30 day";
 
     const result = getDashboard(template, msgId) as string;
@@ -118,7 +118,7 @@ describe("getDashboard", () => {
     const msgId = "a:bc"; // weird chars to test URI encoding
     const experiment = "experiment:test";
     const branchSlug = "treatment:a";
-    const dashboardId = getDashboardIdForTemplate(template);
+    const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "30 day ago for 30 day";
 
     const result = getDashboard(
@@ -144,7 +144,7 @@ describe("getDashboard", () => {
     const msgId = "a:bc"; // weird chars to test URI encoding
     const startDate = "2024-03-08";
     const endDate = "3025-06-28";
-    const dashboardId = getDashboardIdForTemplate(template);
+    const dashboardId = getDashboardIdForSurface(template);
     // The end date should be today to avoid showing null data for dates in the future
     const submissionDate = "2024-03-08 to today";
 
@@ -173,7 +173,7 @@ describe("getDashboard", () => {
     const msgId = "a:bc"; // weird chars to test URI encoding
     const startDate = "2024-03-08";
     const endDate = "2024-05-28";
-    const dashboardId = getDashboardIdForTemplate(template);
+    const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "2024-03-08 to today";
 
     const result = getDashboard(
@@ -200,7 +200,7 @@ describe("getDashboard", () => {
     const template = "feature_callout";
     const msgId = "a:bc"; // weird chars to test URI encoding
     const startDate = "2024-03-08";
-    const dashboardId = getDashboardIdForTemplate(template);
+    const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "2024-03-08 to today";
 
     const result = getDashboard(
@@ -224,17 +224,17 @@ describe("getDashboard", () => {
   });
 
   it("returns a correct dashboard link for Android messaging experiments", () => {
-    const template = "survey";
+    const surface = "survey";
     const msgIdPrefix = "a:bc-en-us"; // weird chars to test URI encoding
     const experiment = "experiment:test";
     const branchSlug = "treatment:a";
     const startDate = "2025-03-08";
     const endDate = "2025-05-08";
-    const dashboardId = "2303";
+    const dashboardId = getDashboardIdForSurface(surface);
     const submissionDate = "2025-03-08 to today";
 
     const result = getAndroidDashboard(
-      template,
+      surface,
       msgIdPrefix,
       undefined,
       experiment,

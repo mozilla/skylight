@@ -1,6 +1,6 @@
 import { IDashboardElement, IWriteQuery } from "@looker/sdk";
 import { SDK } from "./sdk";
-import { getDashboardIdForTemplate } from "./messageUtils";
+import { getDashboardIdForSurface } from "./messageUtils";
 import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 import { Platform } from "./types";
 
@@ -19,7 +19,7 @@ export async function getDashboardElement0(
       dashboardId = "2303";
       break;
     default:
-      dashboardId = getDashboardIdForTemplate(template);
+      dashboardId = getDashboardIdForSurface(template);
   }
 
   // XXX maybe switch this out for the more performant dashboard_element (see

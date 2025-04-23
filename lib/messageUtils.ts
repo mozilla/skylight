@@ -203,7 +203,7 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
 }
 
 export function getAndroidDashboard(
-  template: string,
+  surface: string,
   msgIdPrefix: string,
   channel?: string,
   experiment?: string,
@@ -220,9 +220,7 @@ export function getAndroidDashboard(
     isCompleted,
   );
 
-  // XXX consider using a similar function like getDashboardIdForTemplate for
-  // android dashboards to get dashboardId
-  const dashboardId = 2303; // messages/push notification
+  const dashboardId = getSurfaceData(surface).lookerDashboardId; // messages/push notification
   let baseUrl = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}`;
   let paramObj;
 
@@ -243,7 +241,7 @@ export function getAndroidDashboard(
   };
 
   // XXX we really handle all messaging surfaces, at least in theory
-  if (template !== "survey") return undefined;
+  if (surface !== "survey") return undefined;
 
   if (paramObj) {
     const params = new URLSearchParams(Object.entries(paramObj));
@@ -272,7 +270,7 @@ export function getDashboard(
     endDate,
     isCompleted,
   );
-  const dashboardId = getDashboardIdForTemplate(template);
+  const dashboardId = getDashboardIdForSurface(template);
   let baseUrl = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}`;
   let paramObj;
 
@@ -354,14 +352,10 @@ export function getPreviewLink(message: any): string {
 
 /**
  * XXX consider moving this function inside looker.ts
- * @returns the Looker dashboard ID for a given message template
+ * @returns the Looker dashboard ID for a given desktop template or mobile surface
  */
-export function getDashboardIdForTemplate(template: string) {
-  if (template === "infobar") {
-    return "2267";
-  } else {
-    return "1818";
-  }
+export function getDashboardIdForSurface(surfaceOrTemplate: string) {
+  return getSurfaceData(surfaceOrTemplate).lookerDashboardId;
 }
 
 /**
