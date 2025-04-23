@@ -1,6 +1,6 @@
 import { IDashboardElement, IWriteQuery } from "@looker/sdk";
 import { SDK } from "./sdk";
-import { getDashboardIdForSurface } from "./messageUtils";
+import { getDashboardIdForSurface, getSurfaceData } from "./messageUtils";
 import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 import { Platform } from "./types";
 
@@ -61,7 +61,7 @@ export async function runLookQuery(lookId: string): Promise<string> {
  * @param endDate the experiment proposed end date
  * @returns the result of the query that is created by the given filters and filter_expression, and the appropriate template and submission timestamp
  */
-export async function runQueryForTemplate(
+export async function runQueryForSurface(
   platform: Platform,
   template: string,
   filters: any,
@@ -82,32 +82,13 @@ export async function runQueryForTemplate(
   );
 
   // override the filters
-  switch (platform) {
-    case "fenix":
-      newQueryBody.filters = Object.assign(
-        {
-          "events.submission_date": submission_timestamp_date,
-        },
-        filters,
-      );
-      break;
-    default:
-      if (template === "infobar") {
-        newQueryBody.filters = Object.assign(
-          {
-            "messaging_system.submission_date": submission_timestamp_date,
-          },
-          filters,
-        );
-      } else {
-        newQueryBody.filters = Object.assign(
-          {
-            "event_counts.submission_timestamp_date": submission_timestamp_date,
-          },
-          filters,
-        );
-      }
-  }
+  newQueryBody.filters = Object.assign(
+    {
+      [getSurfaceData(template).lookerDateFilterPropertyName]:
+        submission_timestamp_date,
+    },
+    filters,
+  );
 
   const newQuery = await SDK.ok(SDK.create_query(newQueryBody));
   const result = await SDK.ok(
@@ -185,7 +166,7 @@ export async function getAndroidCTRPercentData(
   // this code are worth applying some manual performance checking.
   let queryResult;
   if (template === "survey") {
-    queryResult = await runQueryForTemplate(
+    queryResult = await runQueryForSurface(
       platform,
       template,
       {
@@ -236,7 +217,7 @@ export async function getDesktopCTRPercentData(
   // this code are worth applying some manual performance checking.
   let queryResult;
   if (template === "infobar") {
-    queryResult = await runQueryForTemplate(
+    queryResult = await runQueryForSurface(
       platform,
       template,
       {
@@ -251,7 +232,7 @@ export async function getDesktopCTRPercentData(
       endDate,
     );
   } else {
-    queryResult = await runQueryForTemplate(
+    queryResult = await runQueryForSurface(
       platform,
       template,
       {

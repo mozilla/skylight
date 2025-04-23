@@ -20,7 +20,7 @@ describe("Looker", () => {
   it("should return the query results", async () => {
     const platform = "firefox-desktop";
     const template = "test_template";
-    const queryResult = await looker.runQueryForTemplate(
+    const queryResult = await looker.runQueryForSurface(
       platform,
       template,
       fakeFilters,
