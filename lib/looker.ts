@@ -10,9 +10,15 @@ export type CTRData = {
 };
 
 export async function getDashboardElement0(
+  platform: Platform,
   template: string,
 ): Promise<IDashboardElement> {
-  const dashboardId = getDashboardIdForTemplate(template);
+  let dashboardId;
+  if (platform === "fenix") {
+    dashboardId = "2303";
+  } else {
+    dashboardId = getDashboardIdForTemplate(template);
+  }
 
   // XXX maybe switch this out for the more performant dashboard_element (see
   // https://mozilla.cloud.looker.com/extensions/marketplace_extension_api_explorer::api-explorer/4.0/methods/Dashboard/dashboard_element
@@ -60,7 +66,7 @@ export async function runQueryForTemplate(
   startDate?: string | null,
   endDate?: string | null,
 ): Promise<any> {
-  const element0 = await getDashboardElement0(template);
+  const element0 = await getDashboardElement0(platform, template);
 
   const origQuery = element0.query as IWriteQuery;
 
@@ -176,6 +182,7 @@ export async function getAndroidCTRPercentData(
   // this code are worth applying some manual performance checking.
   let queryResult;
   if (template === "survey") {
+    console.log("[getAndroidCTRPercentData] platform: " + platform);
     queryResult = await runQueryForTemplate(
       platform,
       template,
@@ -183,7 +190,9 @@ export async function getAndroidCTRPercentData(
         "events.normalized_channel": channel,
         "events_unnested_table__ping_info__experiments.key": experiment,
         "events_unnested_table__ping_info__experiments.value__branch": branch,
-        "events_unnested_table__event_extra.value": id,
+        "events.sample_id": "to 10", // Sample ID <= 10
+        "events.event_category": "messaging", // XXX
+        "events_unnested_table__event_extra.value": id + "%",
       },
       startDate,
       endDate,
@@ -224,6 +233,7 @@ export async function getDesktopCTRPercentData(
   // those filters to sync up the data in both places. Non-trivial changes to
   // this code are worth applying some manual performance checking.
   let queryResult;
+  console.log("[getDesktopCTRPercentData] platform: " + platform);
   if (template === "infobar") {
     queryResult = await runQueryForTemplate(
       platform,
