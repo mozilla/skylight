@@ -202,7 +202,7 @@ export function _isAboutWelcomeTemplate(template: string): boolean {
   return aboutWelcomeSurfaces.includes(template);
 }
 
-export function getAndroidDashboard(
+export function getAndroidDashboardLink(
   surface: string,
   msgIdPrefix: string,
   channel?: string,
@@ -253,7 +253,7 @@ export function getAndroidDashboard(
   return undefined;
 }
 
-export function getDashboard(
+export function getDesktopDashboardLink(
   template: string,
   msgId: string,
   channel?: string,

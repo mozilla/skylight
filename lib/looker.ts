@@ -10,17 +10,9 @@ export type CTRData = {
 };
 
 export async function getDashboardElement0(
-  platform: Platform,
   template: string,
 ): Promise<IDashboardElement> {
-  let dashboardId;
-  switch (platform) {
-    case "fenix":
-      dashboardId = "2303";
-      break;
-    default:
-      dashboardId = getDashboardIdForSurface(template);
-  }
+  const dashboardId = getDashboardIdForSurface(template);
 
   // XXX maybe switch this out for the more performant dashboard_element (see
   // https://mozilla.cloud.looker.com/extensions/marketplace_extension_api_explorer::api-explorer/4.0/methods/Dashboard/dashboard_element
@@ -62,13 +54,12 @@ export async function runLookQuery(lookId: string): Promise<string> {
  * @returns the result of the query that is created by the given filters and filter_expression, and the appropriate template and submission timestamp
  */
 export async function runQueryForSurface(
-  platform: Platform,
   template: string,
   filters: any,
   startDate?: string | null,
   endDate?: string | null,
 ): Promise<any> {
-  const element0 = await getDashboardElement0(platform, template);
+  const element0 = await getDashboardElement0(template);
 
   const origQuery = element0.query as IWriteQuery;
 
@@ -128,7 +119,6 @@ export async function getCTRPercentData(
     case "fenix":
       return getAndroidCTRPercentData(
         id,
-        platform,
         template,
         channel,
         experiment,
@@ -139,7 +129,6 @@ export async function getCTRPercentData(
     default:
       return getDesktopCTRPercentData(
         id,
-        platform,
         template,
         channel,
         experiment,
@@ -152,7 +141,6 @@ export async function getCTRPercentData(
 
 export async function getAndroidCTRPercentData(
   id: string,
-  platform: Platform,
   template: string,
   channel?: string,
   experiment?: string,
@@ -167,7 +155,6 @@ export async function getAndroidCTRPercentData(
   let queryResult;
   if (template === "survey") {
     queryResult = await runQueryForSurface(
-      platform,
       template,
       {
         "events.normalized_channel": channel,
@@ -203,7 +190,6 @@ export async function getAndroidCTRPercentData(
 
 export async function getDesktopCTRPercentData(
   id: string,
-  platform: Platform,
   template: string,
   channel?: string,
   experiment?: string,
@@ -218,7 +204,6 @@ export async function getDesktopCTRPercentData(
   let queryResult;
   if (template === "infobar") {
     queryResult = await runQueryForSurface(
-      platform,
       template,
       {
         "messaging_system.metrics__text2__messaging_system_message_id": id,
@@ -233,7 +218,6 @@ export async function getDesktopCTRPercentData(
     );
   } else {
     queryResult = await runQueryForSurface(
-      platform,
       template,
       {
         "event_counts.message_id": "%" + id + "%",

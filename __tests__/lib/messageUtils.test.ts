@@ -1,10 +1,10 @@
 import {
-  getDashboard,
   _isAboutWelcomeTemplate,
   toBinary,
   getDashboardIdForSurface,
   messageHasMicrosurvey,
-  getAndroidDashboard,
+  getAndroidDashboardLink,
+  getDesktopDashboardLink,
 } from "@/lib/messageUtils";
 
 describe("isAboutWelcomeTemplate", () => {
@@ -75,7 +75,7 @@ describe("getDashboard", () => {
     const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "30 day ago for 30 day";
 
-    const result = getDashboard(
+    const result = getDesktopDashboardLink(
       template,
       msgId,
       channel,
@@ -100,7 +100,7 @@ describe("getDashboard", () => {
     const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "30 day ago for 30 day";
 
-    const result = getDashboard(template, msgId) as string;
+    const result = getDesktopDashboardLink(template, msgId) as string;
     const url = new URL(result);
     const params = url.searchParams;
 
@@ -121,7 +121,7 @@ describe("getDashboard", () => {
     const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "30 day ago for 30 day";
 
-    const result = getDashboard(
+    const result = getDesktopDashboardLink(
       template,
       msgId,
       undefined,
@@ -148,7 +148,7 @@ describe("getDashboard", () => {
     // The end date should be today to avoid showing null data for dates in the future
     const submissionDate = "2024-03-08 to today";
 
-    const result = getDashboard(
+    const result = getDesktopDashboardLink(
       template,
       msgId,
       undefined,
@@ -176,7 +176,7 @@ describe("getDashboard", () => {
     const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "2024-03-08 to today";
 
-    const result = getDashboard(
+    const result = getDesktopDashboardLink(
       template,
       msgId,
       undefined,
@@ -203,7 +203,7 @@ describe("getDashboard", () => {
     const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "2024-03-08 to today";
 
-    const result = getDashboard(
+    const result = getDesktopDashboardLink(
       template,
       msgId,
       undefined,
@@ -233,7 +233,7 @@ describe("getDashboard", () => {
     const dashboardId = getDashboardIdForSurface(surface);
     const submissionDate = "2025-03-08 to today";
 
-    const result = getAndroidDashboard(
+    const result = getAndroidDashboardLink(
       surface,
       msgIdPrefix,
       undefined,

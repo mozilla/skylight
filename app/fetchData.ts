@@ -1,7 +1,7 @@
 // XXX ultimately, this wants to live in lib/fetchData.ts, but we need to get rid of our dependency on columns.tsx first.
 import {
   compareSurfacesFn,
-  getDashboard,
+  getDesktopDashboardLink,
   getPreviewLink,
   getSurfaceData,
   getTemplateFromMessage,
@@ -188,7 +188,7 @@ export async function getASRouterLocalColumnFromJSON(
     }
   }
 
-  fxmsMsgInfo.ctrDashboardLink = getDashboard(
+  fxmsMsgInfo.ctrDashboardLink = getDesktopDashboardLink(
     fxmsMsgInfo.template,
     fxmsMsgInfo.id,
     channel,

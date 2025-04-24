@@ -1,10 +1,10 @@
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "../app/columns.jsx";
 import {
-  getAndroidDashboard,
-  getDashboard,
+  getAndroidDashboardLink,
   getSurfaceData,
   getPreviewLink,
   getTemplateFromMessage,
+  getDesktopDashboardLink,
 } from "../lib/messageUtils.ts";
 import {
   getProposedEndDate,
@@ -153,7 +153,7 @@ export class NimbusRecipe implements NimbusRecipeType {
       formattedEndDate = formatDate(branchInfo.nimbusExperiment.endDate, 1);
     }
 
-    branchInfo.ctrDashboardLink = getAndroidDashboard(
+    branchInfo.ctrDashboardLink = getAndroidDashboardLink(
       branchInfo.template as string,
       branchInfo.id,
       undefined,
@@ -364,7 +364,7 @@ export class NimbusRecipe implements NimbusRecipeType {
     if (branchInfo.nimbusExperiment.endDate) {
       formattedEndDate = formatDate(branchInfo.nimbusExperiment.endDate, 1);
     }
-    branchInfo.ctrDashboardLink = getDashboard(
+    branchInfo.ctrDashboardLink = getDesktopDashboardLink(
       branch.template,
       branchInfo.id,
       undefined,
