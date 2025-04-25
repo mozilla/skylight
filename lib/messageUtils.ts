@@ -13,7 +13,7 @@ export type SurfaceData = {
 
 /**
  * @param surfaceOrTemplate a desktop template or mobile surface
- * @returns data pertaining to hte given desktop template or mobile surface
+ * @returns data pertaining to the given desktop template or mobile surface
  * (ie. surface display name, platform, Looker date filter property name,
  * Looker dashboard ID, surface tag background colour)
  */
@@ -174,9 +174,9 @@ export function getSurfaceData(surfaceOrTemplate: string): SurfaceData {
 
   return {
     surface: surfaceOrTemplate,
-    platform: "firefox-desktop", // XXX
-    lookerDateFilterPropertyName: "event_counts.submission_timestamp_date", // XXX
-    lookerDashboardId: "1818", // XXX
+    platform: "firefox-desktop",
+    lookerDateFilterPropertyName: "event_counts.submission_timestamp_date",
+    lookerDashboardId: "1818",
   };
 }
 

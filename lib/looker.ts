@@ -46,7 +46,6 @@ export async function runLookQuery(lookId: string): Promise<string> {
 }
 
 /**
- * @param platform the message platform
  * @param template the message template
  * @param filters an object containing any filters used in the Looker query (eg. channel, templates, experiment, branch)
  * @param startDate the experiment start date
@@ -160,8 +159,8 @@ export async function getAndroidCTRPercentData(
         "events.normalized_channel": channel,
         "events_unnested_table__ping_info__experiments.key": experiment,
         "events_unnested_table__ping_info__experiments.value__branch": branch,
-        "events.sample_id": "to 10", // Sample ID <= 10
-        "events.event_category": "messaging", // XXX
+        "events.sample_id": "to 10", // XXX This is equal to Sample ID <= 10
+        "events.event_category": "messaging", // XXX this should be updated once we support more Android Looker dashboards
         "events_unnested_table__event_extra.value": id.slice(0, -5) + "%",
       },
       startDate,

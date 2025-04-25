@@ -11,27 +11,36 @@ jest.mock("../../lib/sdk");
 describe("Looker", () => {
   it("should return the first dashboard element", async () => {
     const template = "test_template";
-    const platform = "firefox-desktop";
-    const element = await looker.getDashboardElement0(platform, template);
+    const element = await looker.getDashboardElement0(template);
 
     expect(element).toEqual(fakeDashboardElements[0]);
   });
 
   it("should return the query results", async () => {
-    const platform = "firefox-desktop";
     const template = "test_template";
-    const queryResult = await looker.runQueryForSurface(
-      platform,
-      template,
-      fakeFilters,
-    );
+    const queryResult = await looker.runQueryForSurface(template, fakeFilters);
 
     expect(queryResult).toEqual(fakeQueryResult);
   });
 
-  it("should return the CTR percent of the primary rate", async () => {
+  it("should return the CTR percent of the primary rate of a desktop message", async () => {
     const id = "test_query_0";
     const platform = "firefox-desktop";
+    const template = "test_template";
+
+    const ctrPercentData = await looker.getCTRPercentData(
+      id,
+      platform,
+      template,
+    );
+
+    expect(ctrPercentData?.ctrPercent).toEqual(12.35);
+    expect(ctrPercentData?.impressions).toEqual(12899);
+  });
+
+  it("should return the CTR percent of the primary rate of an android message", async () => {
+    const id = "test_query_0";
+    const platform = "fenix";
     const template = "test_template";
 
     const ctrPercentData = await looker.getCTRPercentData(

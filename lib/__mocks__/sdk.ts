@@ -32,6 +32,17 @@ export const fakeQueryResult = [
     },
   },
 ];
+export const fakeAndroidQueryResult = [
+  {
+    primary_rate: 0.123456789,
+    "event.client_count": {
+      "events.event_name": {
+        message_shown: 12899,
+        message_clicked: 1592,
+      },
+    },
+  },
+];
 
 export function getLookerSDK(): any {
   return "mocked SDK";
