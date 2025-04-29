@@ -137,7 +137,7 @@ export function getAndroidDashboard(
 
   // XXX consider using a similar function like getDashboardIdForTemplate for
   // android dashboards to get dashboardId
-  const dashboardId = 2191; // messages/push notification
+  const dashboardId = 2303; // messages/push notification
   let baseUrl = `https://mozilla.cloud.looker.com/dashboards/${dashboardId}`;
   let paramObj;
 
