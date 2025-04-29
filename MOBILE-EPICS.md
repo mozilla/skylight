@@ -34,6 +34,15 @@ Top-level bullets are user story epics, 2nd-level bullet are regular user storie
    8. Show experiments & rollouts for a few key surfaces (DONE on branch) - Tests?
 
 6. Onboarding dashboard - desktop-equivalent (WIP on branch)
+   - Notes:
+      - [Link](https://mozilla.cloud.looker.com/explore/fenix/event_counts?qid=KV1MOvKpSSGkcvLOfpIxJX&origin_space=60&toggle=fil) to the in-progress dashboard
+      - `sequence_id`
+         - https://searchfox.org/mozilla-release/source/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/onboarding/view/OnboardingPageUiData.kt#51
+         - Seems to be a sequence of a card type as seen above, and determines the order in which these cards are shown in the onboarding sequence
+      - `element_type`
+         - element types of `onboarding_card` can have impression actions, while element types of `primary_button` or `secondary_button` can have click actions
+      - `sequence_position`
+         - The same card can be in different positions for different experiment or treatments (?)
 7. Add monthly Impressions/CTR chart to Looker `messaging` dashboard (DONE on branch)
    1. Correctly label these "users impressed",
 8. Add Inline Impressions/CTR to Skylight `messaging` (8 - needs breakdown or SPIKE)
