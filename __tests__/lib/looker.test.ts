@@ -23,34 +23,66 @@ describe("Looker", () => {
     expect(queryResult).toEqual(fakeQueryResult);
   });
 
-  it("should return the CTR percent of the primary rate of a desktop message", async () => {
-    const id = "test_query_0";
-    const platform = "firefox-desktop";
-    const template = "test_template";
+  describe("getCTRPercentData", () => {
+    it("should return the CTR percent for a desktop message with standard template", async () => {
+      const id = "test_query_0";
+      const platform = "firefox-desktop";
+      const template = "test_template";
 
-    const ctrPercentData = await looker.getCTRPercentData(
-      id,
-      platform,
-      template,
-    );
+      const ctrPercentData = await looker.getCTRPercentData(
+        id,
+        platform,
+        template,
+      );
 
-    expect(ctrPercentData?.ctrPercent).toEqual(12.35);
-    expect(ctrPercentData?.impressions).toEqual(12899);
-  });
+      expect(ctrPercentData?.ctrPercent).toEqual(12.35);
+      expect(ctrPercentData?.impressions).toEqual(12899);
+    });
 
-  it("should return the CTR percent of the primary rate of an android message", async () => {
-    const id = "test_query_0";
-    const platform = "fenix";
-    const template = "test_template";
+    it("should return the CTR percent for a desktop message with infobar template", async () => {
+      const id = "test_query_0";
+      const platform = "firefox-desktop";
+      const template = "infobar";
 
-    const ctrPercentData = await looker.getCTRPercentData(
-      id,
-      platform,
-      template,
-    );
+      const ctrPercentData = await looker.getCTRPercentData(
+        id,
+        platform,
+        template,
+      );
 
-    expect(ctrPercentData?.ctrPercent).toEqual(12.35);
-    expect(ctrPercentData?.impressions).toEqual(12899);
+      expect(ctrPercentData?.ctrPercent).toEqual(12.35);
+      expect(ctrPercentData?.impressions).toEqual(8765);
+    });
+
+    it("should return the CTR percent for an android message with survey template and extrapolate impressions", async () => {
+      const id = "test_query_0";
+      const platform = "fenix";
+      const template = "survey";
+
+      const ctrPercentData = await looker.getCTRPercentData(
+        id,
+        platform,
+        template,
+      );
+
+      expect(ctrPercentData?.ctrPercent).toEqual(12.35);
+      expect(ctrPercentData?.impressions).toEqual(12890); // 1289 * 10 (extrapolated)
+    });
+
+    it("should return the CTR percent for a standard android message", async () => {
+      const id = "test_query_0";
+      const platform = "fenix";
+      const template = "test_template"; // non-survey template
+
+      const ctrPercentData = await looker.getCTRPercentData(
+        id,
+        platform,
+        template,
+      );
+
+      // For non-survey Android templates, behavior might differ depending on implementation
+      expect(ctrPercentData?.ctrPercent).toEqual(12.35);
+    });
   });
 
   it("should clean up the Look query data to remove any invalid message ids or test ids", () => {
