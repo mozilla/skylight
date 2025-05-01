@@ -9,7 +9,8 @@ Some of our development happens on a case-sensitive filesystem. It is VERY IMPOR
 1. **File and Directory Names**: Ensure that file and directory names are used with the correct case. For example, `MyFile.ts` and `myfile.ts` are different files on a case-sensitive filesystem.
 2. **Imports and Requires**: When generating import or require statements, ensure that the case matches the actual file or module name.
 3. **Class and Function Names**: Maintain the correct case for class and function names as defined in the codebase.
-4. **Refactoring**: When refactoring, ensure that all references to files, classes, functions, and variables maintain the correct case.
+4. **Code Under Test**: When making changes to code that is covered by automated tests, NEVER change the code to return a different answer when it thinks it is running under test. Always fix the code that is the root cause of the test failure.
+5. **Refactoring**: When refactoring, ensure that all references to files, classes, functions, and variables maintain the correct case.
 
 ### Specific Instructions for Component Files
 
