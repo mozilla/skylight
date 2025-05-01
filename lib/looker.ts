@@ -169,13 +169,10 @@ export async function getAndroidCTRPercentData(
     if (queryResult.length > 0) {
       // CTR percents will have 2 decimal places since this is what is expected
       // from Experimenter analyses.
-      let impressions;
-      if (template === "survey") {
-        impressions =
-          queryResult[0]["events.client_count"]["events.event_name"][
-            "message_shown"
-          ];
-      }
+      let impressions =
+        queryResult[0]["events.client_count"]["events.event_name"][
+          "message_shown"
+        ];
 
       return {
         ctrPercent: Number(
@@ -184,7 +181,14 @@ export async function getAndroidCTRPercentData(
         impressions: impressions * 10, // We need to extrapolate real numbers for the 10% sample
       };
     }
+  } else {
+    // Log a warning when a non-supported surface is passed
+    console.warn(`Warning: Unsupported Android surface "${template}". Only "survey" is currently supported for Android.`);
   }
+  
+  // If we're not dealing with a survey template or if the queryResult is empty,
+  // return undefined
+  return undefined;
 }
 
 export async function getDesktopCTRPercentData(
