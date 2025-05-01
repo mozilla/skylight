@@ -151,43 +151,47 @@ export async function getAndroidCTRPercentData(
   // It would be more ideal to consider a different approach when definining
   // those filters to sync up the data in both places. Non-trivial changes to
   // this code are worth applying some manual performance checking.
-  let queryResult;
-  if (template === "survey") {
-    queryResult = await runQueryForSurface(
-      template,
-      {
-        "events.normalized_channel": channel,
-        "events_unnested_table__ping_info__experiments.key": experiment,
-        "events_unnested_table__ping_info__experiments.value__branch": branch,
-        "events.sample_id": "to 10", // XXX This is equal to Sample ID <= 10
-        "events.event_category": "messaging", // XXX this should be updated once we support more Android Looker dashboards
-        "events_unnested_table__event_extra.value": id.slice(0, -5) + "%",
-      },
-      startDate,
-      endDate,
-    );
-    if (queryResult.length > 0) {
-      // CTR percents will have 2 decimal places since this is what is expected
-      // from Experimenter analyses.
-      let impressions =
-        queryResult[0]["events.client_count"]["events.event_name"][
-          "message_shown"
-        ];
 
-      return {
-        ctrPercent: Number(
-          Number(queryResult[0].primary_rate * 100).toFixed(2),
-        ),
-        impressions: impressions * 10, // We need to extrapolate real numbers for the 10% sample
-      };
-    }
-  } else {
-    // Log a warning when a non-supported surface is passed
-    console.warn(`Warning: Unsupported Android surface "${template}". Only "survey" is currently supported for Android.`);
+  // If not using survey template, warn and return undefined since only survey is supported
+  if (template !== "survey") {
+    console.warn(
+      `Warning: Unsupported Android surface "${template}". Only "survey" is currently supported for Android.`,
+    );
+    return undefined;
   }
-  
-  // If we're not dealing with a survey template or if the queryResult is empty,
-  // return undefined
+
+  // Only proceed with the query for survey template
+  const queryResult = await runQueryForSurface(
+    template,
+    {
+      "events.normalized_channel": channel,
+      "events_unnested_table__ping_info__experiments.key": experiment,
+      "events_unnested_table__ping_info__experiments.value__branch": branch,
+      "events.sample_id": "to 10", // XXX This is equal to Sample ID <= 10
+      "events.event_category": "messaging", // XXX this should be updated once we support more Android Looker dashboards
+      "events_unnested_table__event_extra.value": id.slice(0, -5) + "%",
+    },
+    startDate,
+    endDate,
+  );
+
+  if (queryResult?.length > 0) {
+    // CTR percents will have 2 decimal places since this is what is expected
+    // from Experimenter analyses.
+    // Safely access nested properties
+    const clientCount = queryResult[0]?.["events.client_count"] || {};
+    const eventName = clientCount?.["events.event_name"] || {};
+    const impressions = eventName?.["message_shown"] || 0;
+
+    return {
+      ctrPercent: Number(
+        Number(queryResult[0]?.primary_rate * 100 || 0).toFixed(2),
+      ),
+      impressions: impressions * 10, // We need to extrapolate real numbers for the 10% sample
+    };
+  }
+
+  // Return undefined if no query results
   return undefined;
 }
 
@@ -233,25 +237,34 @@ export async function getDesktopCTRPercentData(
     );
   }
 
-  if (queryResult.length > 0) {
+  if (queryResult?.length > 0) {
     // CTR percents will have 2 decimal places since this is what is expected
     // from Experimenter analyses.
     let impressions;
     if (template === "infobar") {
-      impressions =
-        queryResult[0]["messaging_system.ping_count"][
+      // Safely access nested properties
+      const pingCount = queryResult[0]?.["messaging_system.ping_count"] || {};
+      const events =
+        pingCount?.[
           "messaging_system.metrics__string__messaging_system_event"
-        ]["IMPRESSION"];
+        ] || {};
+      impressions = events?.["IMPRESSION"] || 0;
     } else {
-      impressions =
-        queryResult[0]["event_counts.user_count"]["action"][" Impression"];
+      // Safely access nested properties
+      const userCount = queryResult[0]?.["event_counts.user_count"] || {};
+      const action = userCount?.["action"] || {};
+      impressions = action?.[" Impression"] || 0;
     }
 
     return {
-      ctrPercent: Number(Number(queryResult[0].primary_rate * 100).toFixed(2)),
+      ctrPercent: Number(
+        Number(queryResult[0]?.primary_rate * 100 || 0).toFixed(2),
+      ),
       impressions: impressions,
     };
   }
+
+  return undefined;
 }
 
 /**
