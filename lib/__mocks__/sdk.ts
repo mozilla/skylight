@@ -54,6 +54,24 @@ export const fakeAndroidQueryResult = [
   },
 ];
 
+// Mock state that tests can set
+let currentPlatform: string | null = null;
+let currentTemplate: string | null = null;
+
+// Helper functions to set the mock state
+export function setMockPlatform(platform: string | null) {
+  currentPlatform = platform;
+}
+
+export function setMockTemplate(template: string | null) {
+  currentTemplate = template;
+}
+
+export function resetMockState() {
+  currentPlatform = null;
+  currentTemplate = null;
+}
+
 export function getLookerSDK(): any {
   return "mocked SDK";
 }
@@ -62,27 +80,17 @@ export const SDK = {
   dashboard_dashboard_elements: () => fakeDashboardElements,
   search_dashboard_elements: () => fakeDashboardElements,
   create_query: () => fakeQuery,
-  run_query: (params: any) => {
-    const filters = params.filters || {};
-
-    // Test for Android survey query
-    if (
-      filters["events.event_category"] === "messaging" ||
-      filters["events.sample_id"] === "to 10"
-    ) {
+  run_query: () => {
+    // Choose the result based on the current mock state
+    if (currentPlatform === "fenix" && currentTemplate === "survey") {
       return fakeAndroidQueryResult;
     }
 
-    // Test for infobar template
-    if (
-      filters[
-        "messaging_system.metrics__string__messaging_system_ping_type"
-      ] === "infobar"
-    ) {
+    if (currentTemplate === "infobar") {
       return fakeInfobarQueryResult;
     }
 
-    // Default desktop query
+    // Default response
     return fakeQueryResult;
   },
   ok: (apiMethod: any) => {

@@ -2,6 +2,9 @@ import {
   fakeDashboardElements,
   fakeFilters,
   fakeQueryResult,
+  setMockPlatform,
+  setMockTemplate,
+  resetMockState,
 } from "@/lib/__mocks__/sdk";
 import * as looker from "@/lib/looker";
 import { ExperimentFakes } from "../ExperimentFakes.mjs";
@@ -9,6 +12,11 @@ import { ExperimentFakes } from "../ExperimentFakes.mjs";
 jest.mock("../../lib/sdk");
 
 describe("Looker", () => {
+  // Reset mock state after each test
+  afterEach(() => {
+    resetMockState();
+  });
+
   it("should return the first dashboard element", async () => {
     const template = "test_template";
     const element = await looker.getDashboardElement0(template);
@@ -25,6 +33,10 @@ describe("Looker", () => {
 
   describe("getCTRPercentData", () => {
     it("should return the CTR percent for a desktop message with standard template", async () => {
+      // Set mock state for standard desktop
+      setMockPlatform("firefox-desktop");
+      setMockTemplate("test_template");
+
       const id = "test_query_0";
       const platform = "firefox-desktop";
       const template = "test_template";
@@ -40,6 +52,10 @@ describe("Looker", () => {
     });
 
     it("should return the CTR percent for a desktop message with infobar template", async () => {
+      // Set mock state for infobar desktop
+      setMockPlatform("firefox-desktop");
+      setMockTemplate("infobar");
+
       const id = "test_query_0";
       const platform = "firefox-desktop";
       const template = "infobar";
@@ -55,6 +71,10 @@ describe("Looker", () => {
     });
 
     it("should return the CTR percent for an android message with survey template and extrapolate impressions", async () => {
+      // Set mock state for android survey
+      setMockPlatform("fenix");
+      setMockTemplate("survey");
+
       const id = "test_query_0";
       const platform = "fenix";
       const template = "survey";
@@ -70,6 +90,10 @@ describe("Looker", () => {
     });
 
     it("should return the CTR percent for a standard android message", async () => {
+      // Set mock state for standard android template
+      setMockPlatform("fenix");
+      setMockTemplate("test_template");
+
       const id = "test_query_0";
       const platform = "fenix";
       const template = "test_template"; // non-survey template
