@@ -58,19 +58,37 @@ export const fakeAndroidQueryResult = [
 let currentPlatform: string | null = null;
 let currentTemplate: string | null = null;
 
-// Helper functions to set the mock state
+//------------------------------------------------------------
+// TEST API: Functions for controlling mock behavior in tests
+//------------------------------------------------------------
+
+/**
+ * Test API: Sets the mock platform to control SDK behavior in tests
+ * @param platform The platform identifier to simulate responses for
+ */
 export function setMockPlatform(platform: string | null) {
   currentPlatform = platform;
 }
 
+/**
+ * Test API: Sets the mock template to control SDK behavior in tests
+ * @param template The template identifier to simulate responses for
+ */
 export function setMockTemplate(template: string | null) {
   currentTemplate = template;
 }
 
+/**
+ * Test API: Resets all mock state between tests to prevent test pollution
+ */
 export function resetMockState() {
   currentPlatform = null;
   currentTemplate = null;
 }
+
+//------------------------------------------------------------
+// SDK MOCK IMPLEMENTATION
+//------------------------------------------------------------
 
 export function getLookerSDK(): any {
   return "mocked SDK";

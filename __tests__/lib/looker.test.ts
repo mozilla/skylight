@@ -1,3 +1,6 @@
+// These  are part of the mock control API, so this rule doesn't make sense
+// here.
+// eslint-disable-next-line jest/no-mocks-import
 import {
   fakeDashboardElements,
   fakeFilters,
