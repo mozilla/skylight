@@ -10,7 +10,8 @@ Some of our development happens on a case-sensitive filesystem. It is VERY IMPOR
 2. **Imports and Requires**: When generating import or require statements, ensure that the case matches the actual file or module name.
 3. **Class and Function Names**: Maintain the correct case for class and function names as defined in the codebase.
 4. **Code Under Test**: THIS IS VERY IMPORTANT. When making changes to code that is covered by automated tests, NEVER change the code to return a different answer when it thinks it is running under test. Always fix the code that is the root cause of the test failure. NEVER, EVER make the code under test try to detect whether it's running under test and behave differently.
-5. **Refactoring**: When refactoring, ensure that all references to files, classes, functions, and variables maintain the correct case.
+5. **The `run_tests` tool**: THIS IS VERY IMPORTANT. The return values of the `run_tests` tool in some values of VS Code are EXTREMELY UNREALIABLE when used with Jest. So, NEVER EVER trust the return values of the `run_tests` tool; ALWAYS review the terminal output of the tests to understand what passed and what failed.
+6. **Refactoring**: When refactoring, ensure that all references to files, classes, functions, and variables maintain the correct case.
 
 ### Specific Instructions for Component Files
 
