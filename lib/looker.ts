@@ -178,12 +178,11 @@ export async function getAndroidCTRPercentData(
   if (queryResult?.length > 0) {
     // CTR percents will have 2 decimal places since this is what is expected
     // from Experimenter analyses.
-    // Safely access nested properties
-    const clientCount = queryResult[0]?.["events.client_count"] || {};
-    const eventName = clientCount?.["events.event_name"] || {};
-    const impressions = eventName?.["message_shown"] || 0;
+    const clientCount = queryResult[0]["events.client_count"];
+    const eventName = clientCount["events.event_name"];
+    const impressions = eventName["message_shown"];
 
-    const primaryRate = queryResult[0]?.primary_rate ?? 0;
+    const primaryRate = queryResult[0].primary_rate;
 
     // Using Math.round with multiplier/divisor instead of toFixed() to avoid floating-point
     // precision issues in JavaScript. This approach ensures consistent decimal precision
@@ -250,21 +249,17 @@ export async function getDesktopCTRPercentData(
     // from Experimenter analyses.
     let impressions;
     if (template === "infobar") {
-      // Safely access nested properties
-      const pingCount = queryResult[0]?.["messaging_system.ping_count"] || {};
+      const pingCount = queryResult[0]["messaging_system.ping_count"];
       const events =
-        pingCount?.[
-          "messaging_system.metrics__string__messaging_system_event"
-        ] || {};
-      impressions = events?.["IMPRESSION"] || 0;
+        pingCount["messaging_system.metrics__string__messaging_system_event"];
+      impressions = events["IMPRESSION"];
     } else {
-      // Safely access nested properties
-      const userCount = queryResult[0]?.["event_counts.user_count"] || {};
-      const action = userCount?.["action"] || {};
-      impressions = action?.[" Impression"] || 0;
+      const userCount = queryResult[0]["event_counts.user_count"];
+      const action = userCount.action;
+      impressions = action[" Impression"];
     }
 
-    const primaryRate = queryResult[0]?.primary_rate ?? 0;
+    const primaryRate = queryResult[0].primary_rate;
 
     // Using Math.round with multiplier/divisor instead of toFixed() to avoid floating-point
     // precision issues in JavaScript. This approach ensures consistent decimal precision
