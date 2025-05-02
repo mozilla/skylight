@@ -183,10 +183,18 @@ export async function getAndroidCTRPercentData(
     const eventName = clientCount?.["events.event_name"] || {};
     const impressions = eventName?.["message_shown"] || 0;
 
+    const primaryRate = queryResult[0]?.primary_rate ?? 0;
+
+    // Using Math.round with multiplier/divisor instead of toFixed() to avoid floating-point
+    // precision issues in JavaScript. This approach ensures consistent decimal precision
+    // without string conversion artifacts:
+    // 1. Multiply by 10000 to shift decimal point right by 4 places
+    // 2. Round to nearest integer to handle the 2-decimal precision we want
+    // 3. Divide by 100 to shift decimal point left by 2 places
+    const ctrPercent = Math.round(primaryRate * 10000) / 100;
+
     return {
-      ctrPercent: Number(
-        Number(queryResult[0]?.primary_rate * 100 || 0).toFixed(2),
-      ),
+      ctrPercent: ctrPercent,
       impressions: impressions * 10, // We need to extrapolate real numbers for the 10% sample
     };
   }
@@ -256,10 +264,18 @@ export async function getDesktopCTRPercentData(
       impressions = action?.[" Impression"] || 0;
     }
 
+    const primaryRate = queryResult[0]?.primary_rate ?? 0;
+
+    // Using Math.round with multiplier/divisor instead of toFixed() to avoid floating-point
+    // precision issues in JavaScript. This approach ensures consistent decimal precision
+    // without string conversion artifacts:
+    // 1. Multiply by 10000 to shift decimal point right by 4 places
+    // 2. Round to nearest integer to handle the 2-decimal precision we want
+    // 3. Divide by 100 to shift decimal point left by 2 places
+    const ctrPercent = Math.round(primaryRate * 10000) / 100;
+
     return {
-      ctrPercent: Number(
-        Number(queryResult[0]?.primary_rate * 100 || 0).toFixed(2),
-      ),
+      ctrPercent: ctrPercent,
       impressions: impressions,
     };
   }

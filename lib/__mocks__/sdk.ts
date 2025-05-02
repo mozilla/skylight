@@ -100,7 +100,7 @@ export const SDK = {
   create_query: () => fakeQuery,
   run_query: () => {
     // Choose the result based on the current mock state
-    if (currentPlatform === "fenix" && currentTemplate === "survey") {
+    if (currentPlatform === "fenix") {
       return fakeAndroidQueryResult;
     }
 

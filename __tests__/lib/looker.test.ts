@@ -92,7 +92,7 @@ describe("Looker", () => {
       expect(ctrPercentData?.impressions).toEqual(12890); // 1289 * 10 (extrapolated)
     });
 
-    it("should return the CTR percent for a standard android message", async () => {
+    it("should return undefined for a standard android message (non-survey template)", async () => {
       // Set mock state for standard android template
       setMockPlatform("fenix");
       setMockTemplate("test_template");
@@ -107,8 +107,8 @@ describe("Looker", () => {
         template,
       );
 
-      // For non-survey Android templates, behavior might differ depending on implementation
-      expect(ctrPercentData?.ctrPercent).toEqual(12.35);
+      // For non-survey Android templates, we expect undefined
+      expect(ctrPercentData).toBeUndefined();
     });
   });
 
