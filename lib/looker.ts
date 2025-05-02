@@ -9,6 +9,28 @@ export type CTRData = {
   impressions: number;
 };
 
+/**
+ * Safely formats a CTR percentage value with consistent decimal precision
+ *
+ * @param value - The raw CTR rate (typically between 0 and 1)
+ * @returns The formatted CTR percentage with 2 decimal places
+ *
+ * This function is used throughout the codebase to ensure consistent formatting
+ * of CTR percentages. It's necessary because we need consistent decimal
+ * precision for CTR percentages in the UI and tests.
+ *
+ * Using Math.round with multiplier/divisor instead of toFixed() to avoid
+ * floating-point precision issues in JavaScript. This approach ensures
+ * consistent decimal precision without string conversion artifacts:
+ *
+ * 1. Multiply by 10000 to shift decimal point right by 4 places
+ * 2. Round to nearest integer to handle the 2-decimal precision we want
+ * 3. Divide by 100 to shift decimal point left by 2 places
+ */
+export function getSafeCtrPercent(value: number): number {
+  return Math.round(value * 10000) / 100;
+}
+
 export async function getDashboardElement0(
   template: string,
 ): Promise<IDashboardElement> {
@@ -47,10 +69,12 @@ export async function runLookQuery(lookId: string): Promise<string> {
 
 /**
  * @param template the message template
- * @param filters an object containing any filters used in the Looker query (eg. channel, templates, experiment, branch)
+ * @param filters an object containing any filters used in the Looker query (eg.
+ * channel, templates, experiment, branch)
  * @param startDate the experiment start date
  * @param endDate the experiment proposed end date
- * @returns the result of the query that is created by the given filters and filter_expression, and the appropriate template and submission timestamp
+ * @returns the result of the query that is created by the given filters and
+ * filter_expression, and the appropriate template and submission timestamp
  */
 export async function runQueryForSurface(
   template: string,
@@ -184,13 +208,7 @@ export async function getAndroidCTRPercentData(
 
     const primaryRate = queryResult[0].primary_rate;
 
-    // Using Math.round with multiplier/divisor instead of toFixed() to avoid floating-point
-    // precision issues in JavaScript. This approach ensures consistent decimal precision
-    // without string conversion artifacts:
-    // 1. Multiply by 10000 to shift decimal point right by 4 places
-    // 2. Round to nearest integer to handle the 2-decimal precision we want
-    // 3. Divide by 100 to shift decimal point left by 2 places
-    const ctrPercent = Math.round(primaryRate * 10000) / 100;
+    const ctrPercent = getSafeCtrPercent(primaryRate);
 
     return {
       ctrPercent: ctrPercent,
@@ -261,13 +279,7 @@ export async function getDesktopCTRPercentData(
 
     const primaryRate = queryResult[0].primary_rate;
 
-    // Using Math.round with multiplier/divisor instead of toFixed() to avoid floating-point
-    // precision issues in JavaScript. This approach ensures consistent decimal precision
-    // without string conversion artifacts:
-    // 1. Multiply by 10000 to shift decimal point right by 4 places
-    // 2. Round to nearest integer to handle the 2-decimal precision we want
-    // 3. Divide by 100 to shift decimal point left by 2 places
-    const ctrPercent = Math.round(primaryRate * 10000) / 100;
+    const ctrPercent = getSafeCtrPercent(primaryRate);
 
     return {
       ctrPercent: ctrPercent,

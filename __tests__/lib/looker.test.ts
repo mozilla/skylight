@@ -34,6 +34,19 @@ describe("Looker", () => {
     expect(queryResult).toEqual(fakeQueryResult);
   });
 
+  describe("getSafeCtrPercent", () => {
+    it("should correctly format a CTR percentage to 2 decimal places", () => {
+      expect(looker.getSafeCtrPercent(0.123456789)).toEqual(12.35);
+      expect(looker.getSafeCtrPercent(0.1)).toEqual(10);
+      expect(looker.getSafeCtrPercent(0.123)).toEqual(12.3);
+      expect(looker.getSafeCtrPercent(0.1235)).toEqual(12.35);
+    });
+
+    it("should handle zero value", () => {
+      expect(looker.getSafeCtrPercent(0)).toEqual(0);
+    });
+  });
+
   describe("getCTRPercentData", () => {
     it("should return the CTR percent for a desktop message with standard template", async () => {
       // Set mock state for standard desktop
