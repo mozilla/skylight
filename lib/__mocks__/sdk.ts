@@ -38,6 +38,7 @@ export const fakeInfobarQueryResult = [
     "messaging_system.ping_count": {
       "messaging_system.metrics__string__messaging_system_event": {
         IMPRESSION: 8765,
+        CLICK: 1082,
       },
     },
   },
