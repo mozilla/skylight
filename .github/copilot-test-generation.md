@@ -11,7 +11,8 @@ Some of our development happens on a case-sensitive filesystem. It is VERY IMPOR
 3. **Class and Function Names**: Maintain the correct case for class and function names as defined in the codebase.
 4. **Code Under Test**: THIS IS VERY IMPORTANT. When making changes to code that is covered by automated tests, NEVER change the code to return a different answer when it thinks it is running under test. Always fix the code that is the root cause of the test failure. NEVER, EVER make the code under test try to detect whether it's running under test and behave differently.
 5. **Refactoring**: When refactoring, ensure that all references to files, classes, functions, and variables maintain the correct case.
-6. **Style**: When generating comments, try to wrap them at 80 columns whenever practical.
+6. **The `run_tests` tool**: THIS IS VERY IMPORTANT. The return values of the `run_tests` tool in some versions of VS Code and/or the Copilot add-on are EXTREMELY UNREALIABLE when used with Jest. So, NEVER EVER use `run_tests`. Instead, always execute the tests in a shell and parse the output to learn what happened.
+7. **Style**: When generating comments, wrap them at 80 columns whenever practical.
 
 ### Specific Instructions for Component Files
 
