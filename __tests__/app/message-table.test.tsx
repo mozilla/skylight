@@ -13,6 +13,9 @@ import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { compareSurfacesFn } from "@/lib/messageUtils";
 import userEvent from "@testing-library/user-event";
+
+// These are part of the mock control API
+// eslint-disable-next-line jest/no-mocks-import
 import { resetMockState, setMockPlatform } from "@/lib/__mocks__/sdk";
 
 jest.mock("../../lib/sdk");
