@@ -1,14 +1,18 @@
 * Fix handling of missing data to correctly through (later?) (DONE)
 * Make tests pass
   see if code or test is issue (DONE)
-  * Fix SDK mock multiple instantiation problem
+  * Fix SDK mock multiple instantiation problem (DONE)
     * Get basic fix working (DONE)
     * Cleanup types and comments) (DONE)
     * Fix remaining failing tests (DONE)
     * Comment out or SDK mock instance logging (DONE)
     * Make sure SDK mock changes are handled by other users of the mock (DONE)
-    * Test visually
-    * Run prettier
-* Fix remaining skipped tests
+* Research remaining skipped tests (DONE)
+** Revert broken fix attempts (DONE)
+** Add comments about next things to check when fixing (DONE)
+** Commit (DONE)
+* Merge from main
+* Test visually
+* Run prettier
 * Review
 * Land
