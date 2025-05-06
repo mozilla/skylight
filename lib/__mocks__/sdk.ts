@@ -111,26 +111,25 @@ export const SDK = {
   run_query: (...args: any[]) => {
     const state = getCurrentState();
 
-    let result;
+    switch (state.platform) {
+      case "fenix":
+        if (state.template === "survey") {
+          return fakeAndroidQueryResult;
+        }
+        return fakeAndroidQueryResult;
 
-    if (state.platform === "fenix" && state.template === "survey") {
-      result = fakeAndroidQueryResult;
-    } else if (
-      state.platform === "firefox-desktop" &&
-      state.template === "infobar"
-    ) {
-      result = fakeInfobarQueryResult;
-    } else if (state.platform === "firefox-desktop") {
-      result = fakeQueryResult;
-    } else if (state.platform === "fenix") {
-      result = fakeAndroidQueryResult;
-    } else if (state.template === "infobar") {
-      result = fakeInfobarQueryResult;
-    } else {
-      result = fakeQueryResult;
+      case "firefox-desktop":
+        if (state.template === "infobar") {
+          return fakeInfobarQueryResult;
+        }
+        return fakeQueryResult;
+
+      default:
+        if (state.template === "infobar") {
+          return fakeInfobarQueryResult;
+        }
+        return fakeQueryResult;
     }
-
-    return result;
   },
   ok: <T>(apiMethod: T): T => apiMethod,
 };
