@@ -1,11 +1,16 @@
-// This prevents multiple instantiations of the mock, which causes
-// confusing issues.
+// Add TypeScript declarations for global state variables
+declare global {
+  var __sdkMockInitialized: boolean;
+  var __sdkMockExports: any;
+}
+
+// Prevents multiple instantiations of the mock, which causes
+// confusing issues using a guarded IIFE.
 //
 // XXX We'd do better to refactor things to avoid the multiple instantiations
 // entirely. One option would be to pull the state out into a separate module
 // imported into the SDK mock file.
 
-// Ensure single initialiation with an IIFE
 (() => {
   if (global.__sdkMockInitialized) {
     return;
@@ -81,18 +86,18 @@ export const fakeAndroidQueryResult = [
 ];
 
 // Module level state variables
-let currentPlatform = null;
-let currentTemplate = null;
+let currentPlatform: string | null = null;
+let currentTemplate: string | null = null;
 
-export function setMockPlatform(platform) {
+export function setMockPlatform(platform: string | null): void {
   currentPlatform = platform;
 }
 
-export function setMockTemplate(template) {
+export function setMockTemplate(template: string | null): void {
   currentTemplate = template;
 }
 
-export function resetMockState() {
+export function resetMockState(): void {
   currentPlatform = null;
   currentTemplate = null;
 }
@@ -112,9 +117,12 @@ export const SDK = {
 
     return fakeQueryResult;
   },
-  ok: (apiMethod) => apiMethod,
+  ok: <T>(apiMethod: T): T => apiMethod,
 };
 
 export function getLookerSDK(): any {
   return "mocked SDK";
 }
+
+// Store exports in global for reuse in subsequent imports
+global.__sdkMockExports = module.exports;
