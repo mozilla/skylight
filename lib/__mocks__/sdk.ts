@@ -1,4 +1,3 @@
-// Add TypeScript declarations for global state variables
 declare global {
   var __sdkMockInitialized: boolean;
   var __sdkMockExports: any;
@@ -50,7 +49,6 @@ export const fakeQuery = {
   id: "test_query",
 };
 
-// Standard desktop query result with the correct structure
 export const fakeQueryResult = [
   {
     primary_rate: 0.123456789,
@@ -76,7 +74,6 @@ export const fakeInfobarQueryResult = [
   },
 ];
 
-// Fixed android query result to match the structure expected in looker.ts line 206
 export const fakeAndroidQueryResult = [
   {
     primary_rate: 0.123456789,
