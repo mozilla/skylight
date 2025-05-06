@@ -2,7 +2,7 @@
 
 ### Updated
 
-- Updated the messaging experiments feature list to include fxms-message-* features up to 15.
+- Updated the messaging experiments feature list to include fxms-message-\* features up to 15.
 
 ## Thursday, April 17th, 2025
 
