@@ -1,6 +1,4 @@
-console.log("before jest.mock");
 jest.mock("../../lib/sdk");
-console.log("after jest.mock");
 
 // These are part of the mock control API, so this rule doesn't make sense
 // here.
@@ -50,11 +48,7 @@ describe("Looker", () => {
   });
 
   describe("getCTRPercentData", () => {
-    console.log("in getCTRPercentData block");
-
     it("should return the CTR percent for a desktop message with standard template", async () => {
-      console.log("in getCTRPercentData test 1");
-
       // Set mock state for standard desktop
       setMockPlatform("firefox-desktop");
       setMockTemplate("test_template");
@@ -74,8 +68,6 @@ describe("Looker", () => {
     });
 
     it("should return the CTR percent for a desktop message with infobar template", async () => {
-      console.log("in getCTRPercentData test 1");
-
       // Set mock state for infobar desktop
       setMockPlatform("firefox-desktop");
       setMockTemplate("infobar");

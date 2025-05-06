@@ -2,15 +2,15 @@
 declare global {
   var __sdkMockInitialized: boolean;
   var __sdkMockExports: any;
+  var __sdkMockState: {
+    currentPlatform: string | null;
+    currentTemplate: string | null;
+  };
 }
 
-// Prevents multiple instantiations of the mock, which causes
-// confusing issues using a guarded IIFE.
-//
-// XXX We'd do better to refactor things to avoid the multiple instantiations
-// entirely. One option would be to pull the state out into a separate module
-// imported into the SDK mock file.
-
+// XXX This avoids multiple instantiations of the mock using global state,
+// which is icky. We should refactor to allow multiple instantiations to work
+// correctly
 (() => {
   if (global.__sdkMockInitialized) {
     return;
@@ -18,9 +18,11 @@ declare global {
 
   global.__sdkMockInitialized = true;
 
-  const t = Date.now();
-  console.log("sdk.ts mock instantiated");
-  console.log("t = " + t);
+  // Initialize the global state object
+  global.__sdkMockState = {
+    currentPlatform: null,
+    currentTemplate: null,
+  };
 })();
 
 export const fakeDashboardElements = [
@@ -48,6 +50,7 @@ export const fakeQuery = {
   id: "test_query",
 };
 
+// Standard desktop query result with the correct structure
 export const fakeQueryResult = [
   {
     primary_rate: 0.123456789,
@@ -73,6 +76,7 @@ export const fakeInfobarQueryResult = [
   },
 ];
 
+// Fixed android query result to match the structure expected in looker.ts line 206
 export const fakeAndroidQueryResult = [
   {
     primary_rate: 0.123456789,
@@ -85,37 +89,51 @@ export const fakeAndroidQueryResult = [
   },
 ];
 
-// Module level state variables
-let currentPlatform: string | null = null;
-let currentTemplate: string | null = null;
-
 export function setMockPlatform(platform: string | null): void {
-  currentPlatform = platform;
+  global.__sdkMockState.currentPlatform = platform;
 }
 
 export function setMockTemplate(template: string | null): void {
-  currentTemplate = template;
+  global.__sdkMockState.currentTemplate = template;
 }
 
 export function resetMockState(): void {
-  currentPlatform = null;
-  currentTemplate = null;
+  global.__sdkMockState.currentPlatform = null;
+  global.__sdkMockState.currentTemplate = null;
 }
+
+const getCurrentState = () => ({
+  platform: global.__sdkMockState.currentPlatform,
+  template: global.__sdkMockState.currentTemplate,
+});
 
 export const SDK = {
   dashboard_dashboard_elements: () => fakeDashboardElements,
   search_dashboard_elements: () => fakeDashboardElements,
   create_query: () => fakeQuery,
-  run_query: () => {
-    if (currentPlatform === "fenix") {
-      return fakeAndroidQueryResult;
+  run_query: (...args: any[]) => {
+    const state = getCurrentState();
+
+    let result;
+
+    if (state.platform === "fenix" && state.template === "survey") {
+      result = fakeAndroidQueryResult;
+    } else if (
+      state.platform === "firefox-desktop" &&
+      state.template === "infobar"
+    ) {
+      result = fakeInfobarQueryResult;
+    } else if (state.platform === "firefox-desktop") {
+      result = fakeQueryResult;
+    } else if (state.platform === "fenix") {
+      result = fakeAndroidQueryResult;
+    } else if (state.template === "infobar") {
+      result = fakeInfobarQueryResult;
+    } else {
+      result = fakeQueryResult;
     }
 
-    if (currentTemplate === "infobar") {
-      return fakeInfobarQueryResult;
-    }
-
-    return fakeQueryResult;
+    return result;
   },
   ok: <T>(apiMethod: T): T => apiMethod,
 };
