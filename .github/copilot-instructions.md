@@ -13,6 +13,7 @@ Some of our development happens on a case-sensitive filesystem. It is VERY IMPOR
 5. **Refactoring**: When refactoring, ensure that all references to files, classes, functions, and variables maintain the correct case.
 6. **The `run_tests` tool**: THIS IS VERY IMPORTANT. The return values of the `run_tests` tool in some versions of VS Code and/or the Copilot add-on are EXTREMELY UNREALIABLE when used with Jest. So, NEVER EVER use `run_tests`. Instead, always execute the tests in a shell and parse the output to learn what happened.
 7. **Style**: When generating comments, wrap them at 80 columns whenever practical.
+8. **Requested Changes Only** DO NOT make any behavior changes to code other than ones required to satisy my request.
 
 ### Specific Instructions for Component Files
 
