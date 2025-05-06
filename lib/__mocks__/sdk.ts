@@ -1,3 +1,7 @@
+const t = Date.now();
+console.log("sdk.ts mock instantiated");
+console.log("t = " + t);
+
 export const fakeDashboardElements = [
   {
     query: {
@@ -68,6 +72,7 @@ let currentTemplate: string | null = null;
  * @param platform The platform identifier to simulate responses for
  */
 export function setMockPlatform(platform: string | null) {
+  console.log("setMockPlatform called with: " + platform + "t = " + t);
   currentPlatform = platform;
 }
 
@@ -76,6 +81,7 @@ export function setMockPlatform(platform: string | null) {
  * @param template The template identifier to simulate responses for
  */
 export function setMockTemplate(template: string | null) {
+  console.log("setMockTemplate called with: " + template + "t = " + t);
   currentTemplate = template;
 }
 
@@ -83,6 +89,8 @@ export function setMockTemplate(template: string | null) {
  * Test API: Resets all mock state between tests to prevent test pollution
  */
 export function resetMockState() {
+  console.log("resetMockState: " + "t = " + t);
+
   currentPlatform = null;
   currentTemplate = null;
 }
@@ -92,6 +100,8 @@ export function resetMockState() {
 //------------------------------------------------------------
 
 export function getLookerSDK(): any {
+  console.log("getLookerSDK(), t = " + t);
+
   return "mocked SDK";
 }
 
@@ -100,6 +110,8 @@ export const SDK = {
   search_dashboard_elements: () => fakeDashboardElements,
   create_query: () => fakeQuery,
   run_query: () => {
+    console.log("run_query called" + "t = " + t);
+
     // Choose the result based on the current mock state
     if (currentPlatform === "fenix") {
       return fakeAndroidQueryResult;
