@@ -21,14 +21,18 @@ describe("Looker", () => {
   });
 
   it("should return the first dashboard element", async () => {
+    setMockPlatform("firefox-desktop");
     const template = "test_template";
+
     const element = await looker.getDashboardElement0(template);
 
     expect(element).toEqual(fakeDashboardElements[0]);
   });
 
   it("should return the query results", async () => {
+    setMockPlatform("firefox-desktop");
     const template = "test_template";
+
     const queryResult = await looker.runQueryForSurface(template, fakeFilters);
 
     expect(queryResult).toEqual(fakeQueryResult);
@@ -49,13 +53,11 @@ describe("Looker", () => {
 
   describe("getCTRPercentData", () => {
     it("should return the CTR percent for a desktop message with standard template", async () => {
-      // Set mock state for standard desktop
-      setMockPlatform("firefox-desktop");
-      setMockTemplate("test_template");
-
-      const id = "test_query_0";
-      const platform = "firefox-desktop";
       const template = "test_template";
+      const platform = "firefox-desktop";
+      const id = "test_query_0";
+      setMockPlatform(platform);
+      setMockTemplate(template);
 
       const ctrPercentData = await looker.getCTRPercentData(
         id,
@@ -68,13 +70,11 @@ describe("Looker", () => {
     });
 
     it("should return the CTR percent for a desktop message with infobar template", async () => {
-      // Set mock state for infobar desktop
-      setMockPlatform("firefox-desktop");
-      setMockTemplate("infobar");
-
       const id = "test_query_0";
       const platform = "firefox-desktop";
       const template = "infobar";
+      setMockPlatform(platform);
+      setMockTemplate(template);
 
       const ctrPercentData = await looker.getCTRPercentData(
         id,
@@ -87,13 +87,11 @@ describe("Looker", () => {
     });
 
     it("should return the CTR percent for an android message with survey template and extrapolate impressions", async () => {
-      // Set mock state for android survey
-      setMockPlatform("fenix");
-      setMockTemplate("survey");
-
       const id = "test_query_0";
       const platform = "fenix";
       const template = "survey";
+      setMockPlatform(platform);
+      setMockTemplate(template);
 
       const ctrPercentData = await looker.getCTRPercentData(
         id,
@@ -106,13 +104,11 @@ describe("Looker", () => {
     });
 
     it("should return undefined for a standard android message (non-survey template)", async () => {
-      // Set mock state for standard android template
-      setMockPlatform("fenix");
-      setMockTemplate("test_template");
-
       const id = "test_query_0";
       const platform = "fenix";
       const template = "test_template"; // non-survey template
+      setMockPlatform(platform);
+      setMockTemplate(template);
 
       const ctrPercentData = await looker.getCTRPercentData(
         id,
@@ -126,6 +122,7 @@ describe("Looker", () => {
   });
 
   it("should clean up the Look query data to remove any invalid message ids or test ids", () => {
+    setMockPlatform("firefox-desktop");
     const data = [
       {
         "messaging_system.metrics__text2__messaging_system_message_id":
@@ -220,6 +217,7 @@ describe("Looker", () => {
   });
 
   it("should merge the Looker data correctly by only appending non-duplicate ids and updating the correct templates", () => {
+    setMockPlatform("firefox-desktop");
     const rawRecipe1 = ExperimentFakes.recipe("MSG_1");
     const rawRecipe2 = ExperimentFakes.recipe("MSG_2");
     const rawRecipe3 = ExperimentFakes.recipe("MSG_3");

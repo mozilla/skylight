@@ -13,8 +13,13 @@ import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { compareSurfacesFn } from "@/lib/messageUtils";
 import userEvent from "@testing-library/user-event";
+import { resetMockState, setMockPlatform } from "@/lib/__mocks__/sdk";
 
 jest.mock("../../lib/sdk");
+
+afterEach(() => {
+  resetMockState();
+});
 
 describe("MessageTable", () => {
   describe("ExperimentColumns", () => {
@@ -178,6 +183,7 @@ describe("MessageTable", () => {
     });
 
     it("displays CTR percentages when Looker dashboard exists and CTR is defined", async () => {
+      setMockPlatform("firefox-desktop");
       const nimbusRecipeCollection = new NimbusRecipeCollection();
       nimbusRecipeCollection.recipes = [
         new NimbusRecipe(ExperimentFakes.recipe()),
@@ -186,6 +192,7 @@ describe("MessageTable", () => {
         (await nimbusRecipeCollection.getExperimentAndBranchInfos()) as RecipeInfo[];
       // Setting fake dashboard link in order to render in MessageTable
       recipeInfos[0].branches[0].ctrDashboardLink = "test link";
+
       render(<MessageTable columns={experimentColumns} data={recipeInfos} />);
 
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
