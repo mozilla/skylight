@@ -1,6 +1,22 @@
-const t = Date.now();
-console.log("sdk.ts mock instantiated");
-console.log("t = " + t);
+// This prevents multiple instantiations of the mock, which causes
+// confusing issues.
+//
+// XXX We'd do better to refactor things to avoid the multiple instantiations
+// entirely. One option would be to pull the state out into a separate module
+// imported into the SDK mock file.
+
+// Ensure single initialiation with an IIFE
+(() => {
+  if (global.__sdkMockInitialized) {
+    return;
+  }
+
+  global.__sdkMockInitialized = true;
+
+  const t = Date.now();
+  console.log("sdk.ts mock instantiated");
+  console.log("t = " + t);
+})();
 
 export const fakeDashboardElements = [
   {
@@ -20,10 +36,13 @@ export const fakeDashboardElements = [
     },
   },
 ];
+
 export const fakeFilters = { "event_counts.message_id": "%test_query_0%" };
+
 export const fakeQuery = {
   id: "test_query",
 };
+
 export const fakeQueryResult = [
   {
     primary_rate: 0.123456789,
@@ -36,6 +55,7 @@ export const fakeQueryResult = [
     },
   },
 ];
+
 export const fakeInfobarQueryResult = [
   {
     primary_rate: 0.123456789,
@@ -47,6 +67,7 @@ export const fakeInfobarQueryResult = [
     },
   },
 ];
+
 export const fakeAndroidQueryResult = [
   {
     primary_rate: 0.123456789,
@@ -59,50 +80,21 @@ export const fakeAndroidQueryResult = [
   },
 ];
 
-// Mock state that tests can set
-let currentPlatform: string | null = null;
-let currentTemplate: string | null = null;
+// Module level state variables
+let currentPlatform = null;
+let currentTemplate = null;
 
-//------------------------------------------------------------
-// TEST API: Functions for controlling mock behavior in tests
-//------------------------------------------------------------
-
-/**
- * Test API: Sets the mock platform to control SDK behavior in tests
- * @param platform The platform identifier to simulate responses for
- */
-export function setMockPlatform(platform: string | null) {
-  console.log("setMockPlatform called with: " + platform + "t = " + t);
+export function setMockPlatform(platform) {
   currentPlatform = platform;
 }
 
-/**
- * Test API: Sets the mock template to control SDK behavior in tests
- * @param template The template identifier to simulate responses for
- */
-export function setMockTemplate(template: string | null) {
-  console.log("setMockTemplate called with: " + template + "t = " + t);
+export function setMockTemplate(template) {
   currentTemplate = template;
 }
 
-/**
- * Test API: Resets all mock state between tests to prevent test pollution
- */
 export function resetMockState() {
-  console.log("resetMockState: " + "t = " + t);
-
   currentPlatform = null;
   currentTemplate = null;
-}
-
-//------------------------------------------------------------
-// SDK MOCK IMPLEMENTATION
-//------------------------------------------------------------
-
-export function getLookerSDK(): any {
-  console.log("getLookerSDK(), t = " + t);
-
-  return "mocked SDK";
 }
 
 export const SDK = {
@@ -110,9 +102,6 @@ export const SDK = {
   search_dashboard_elements: () => fakeDashboardElements,
   create_query: () => fakeQuery,
   run_query: () => {
-    console.log("run_query called" + "t = " + t);
-
-    // Choose the result based on the current mock state
     if (currentPlatform === "fenix") {
       return fakeAndroidQueryResult;
     }
@@ -121,10 +110,11 @@ export const SDK = {
       return fakeInfobarQueryResult;
     }
 
-    // Default response
     return fakeQueryResult;
   },
-  ok: (apiMethod: any) => {
-    return apiMethod;
-  },
+  ok: (apiMethod) => apiMethod,
 };
+
+export function getLookerSDK(): any {
+  return "mocked SDK";
+}
