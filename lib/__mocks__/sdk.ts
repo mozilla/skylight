@@ -117,13 +117,13 @@ export const SDK = {
           return fakeAndroidQueryResult;
         }
         return fakeAndroidQueryResult;
-      
+
       case "firefox-desktop":
         if (state.template === "infobar") {
           return fakeInfobarQueryResult;
         }
         return fakeQueryResult;
-      
+
       default:
         throw new Error(
           "SDK mock usage bug: run_query called without platform set",
