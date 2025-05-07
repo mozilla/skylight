@@ -15,8 +15,19 @@ global.fetch = jest.fn(() =>
 
 jest.mock("../../lib/sdk");
 
+// eslint-disable-next-line jest/no-mocks-import
+import { setMockPlatform, resetMockState } from "@/lib/__mocks__/sdk";
+
 describe("NimbusRecipeCollection", () => {
+  // Reset mock state after each test
+  afterEach(() => {
+    resetMockState();
+  });
+
   it("creates an empty NimbusRecipeCollection", () => {
+    // Set platform for this test
+    setMockPlatform("firefox-desktop");
+
     const nimbusRecipeCollection = new NimbusRecipeCollection();
 
     expect(nimbusRecipeCollection.recipes.length).toEqual(0);
@@ -24,6 +35,7 @@ describe("NimbusRecipeCollection", () => {
 
   describe("fetchRecipes", () => {
     it("fetches recipes from the server", async () => {
+      setMockPlatform("firefox-desktop");
       const nimbusRecipeCollection = new NimbusRecipeCollection();
 
       const recipes = await nimbusRecipeCollection.fetchRecipes();
@@ -32,6 +44,7 @@ describe("NimbusRecipeCollection", () => {
     });
 
     it("constructs the correct URL for live experiments", async () => {
+      setMockPlatform("firefox-desktop");
       const nimbusRecipeCollection = new NimbusRecipeCollection(
         false,
         platform,
@@ -45,6 +58,7 @@ describe("NimbusRecipeCollection", () => {
     });
 
     it("constructs the correct URL for completed experiments", async () => {
+      setMockPlatform("firefox-desktop");
       const nimbusRecipeCollection = new NimbusRecipeCollection(true);
       await nimbusRecipeCollection.fetchRecipes();
 
@@ -57,6 +71,7 @@ describe("NimbusRecipeCollection", () => {
 
   describe("getExperimentAndBranchInfos", () => {
     it("gets all the recipe infos with updated CTR percents", async () => {
+      setMockPlatform("firefox-desktop");
       const nimbusRecipeCollection = new NimbusRecipeCollection();
       nimbusRecipeCollection.recipes = [
         new NimbusRecipe(ExperimentFakes.recipe("test recipe")),

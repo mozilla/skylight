@@ -1,39 +1,128 @@
+jest.mock("../../lib/sdk");
+
+// These are part of the mock control API, so this rule doesn't make sense
+// here.
+// eslint-disable-next-line jest/no-mocks-import
 import {
   fakeDashboardElements,
   fakeFilters,
   fakeQueryResult,
+  setMockPlatform,
+  setMockTemplate,
+  resetMockState,
 } from "@/lib/__mocks__/sdk";
 import * as looker from "@/lib/looker";
 import { ExperimentFakes } from "../ExperimentFakes.mjs";
 
-jest.mock("../../lib/sdk");
-
 describe("Looker", () => {
+  // Reset mock state after each test
+  afterEach(() => {
+    resetMockState();
+  });
+
   it("should return the first dashboard element", async () => {
+    setMockPlatform("firefox-desktop");
     const template = "test_template";
-    const element = await looker.getAWDashboardElement0(template);
+
+    const element = await looker.getDashboardElement0(template);
 
     expect(element).toEqual(fakeDashboardElements[0]);
   });
 
   it("should return the query results", async () => {
+    setMockPlatform("firefox-desktop");
     const template = "test_template";
-    const queryResult = await looker.runQueryForTemplate(template, fakeFilters);
+
+    const queryResult = await looker.runQueryForSurface(template, fakeFilters);
 
     expect(queryResult).toEqual(fakeQueryResult);
   });
 
-  it("should return the CTR percent of the primary rate", async () => {
-    const id = "test_query_0";
-    const template = "test_template";
+  describe("getSafeCtrPercent", () => {
+    it("should correctly format a CTR percentage to 2 decimal places", () => {
+      expect(looker.getSafeCtrPercent(0.123456789)).toEqual(12.35);
+      expect(looker.getSafeCtrPercent(0.1)).toEqual(10);
+      expect(looker.getSafeCtrPercent(0.123)).toEqual(12.3);
+      expect(looker.getSafeCtrPercent(0.1235)).toEqual(12.35);
+    });
 
-    const ctrPercentData = await looker.getCTRPercentData(id, template);
+    it("should handle zero value", () => {
+      expect(looker.getSafeCtrPercent(0)).toEqual(0);
+    });
+  });
 
-    expect(ctrPercentData?.ctrPercent).toEqual(12.35);
-    expect(ctrPercentData?.impressions).toEqual(12899);
+  describe("getCTRPercentData", () => {
+    it("should return the CTR percent for a desktop message with standard template", async () => {
+      const template = "test_template";
+      const platform = "firefox-desktop";
+      const id = "test_query_0";
+      setMockPlatform(platform);
+      setMockTemplate(template);
+
+      const ctrPercentData = await looker.getCTRPercentData(
+        id,
+        platform,
+        template,
+      );
+
+      expect(ctrPercentData?.ctrPercent).toEqual(12.35);
+      expect(ctrPercentData?.impressions).toEqual(12899);
+    });
+
+    it("should return the CTR percent for a desktop message with infobar template", async () => {
+      const id = "test_query_0";
+      const platform = "firefox-desktop";
+      const template = "infobar";
+      setMockPlatform(platform);
+      setMockTemplate(template);
+
+      const ctrPercentData = await looker.getCTRPercentData(
+        id,
+        platform,
+        template,
+      );
+
+      expect(ctrPercentData?.ctrPercent).toEqual(12.35);
+      expect(ctrPercentData?.impressions).toEqual(8765);
+    });
+
+    it("should return the CTR percent for an android message with survey template and extrapolate impressions", async () => {
+      const id = "test_query_0";
+      const platform = "fenix";
+      const template = "survey";
+      setMockPlatform(platform);
+      setMockTemplate(template);
+
+      const ctrPercentData = await looker.getCTRPercentData(
+        id,
+        platform,
+        template,
+      );
+
+      expect(ctrPercentData?.ctrPercent).toEqual(12.35);
+      expect(ctrPercentData?.impressions).toEqual(12890); // 1289 * 10 (extrapolated)
+    });
+
+    it("should return undefined for a standard android message (non-survey template)", async () => {
+      const id = "test_query_0";
+      const platform = "fenix";
+      const template = "test_template"; // non-survey template
+      setMockPlatform(platform);
+      setMockTemplate(template);
+
+      const ctrPercentData = await looker.getCTRPercentData(
+        id,
+        platform,
+        template,
+      );
+
+      // For non-survey Android templates, we expect undefined
+      expect(ctrPercentData).toBeUndefined();
+    });
   });
 
   it("should clean up the Look query data to remove any invalid message ids or test ids", () => {
+    setMockPlatform("firefox-desktop");
     const data = [
       {
         "messaging_system.metrics__text2__messaging_system_message_id":
@@ -128,6 +217,7 @@ describe("Looker", () => {
   });
 
   it("should merge the Looker data correctly by only appending non-duplicate ids and updating the correct templates", () => {
+    setMockPlatform("firefox-desktop");
     const rawRecipe1 = ExperimentFakes.recipe("MSG_1");
     const rawRecipe2 = ExperimentFakes.recipe("MSG_2");
     const rawRecipe3 = ExperimentFakes.recipe("MSG_3");

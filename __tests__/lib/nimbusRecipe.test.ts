@@ -1,7 +1,10 @@
 import { NimbusRecipe } from "@/lib/nimbusRecipe";
 import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
 import { BranchInfo } from "@/app/columns.jsx";
-import { getAndroidDashboard, getDashboard } from "@/lib/messageUtils";
+import {
+  getAndroidDashboardLink,
+  getDesktopDashboardLink,
+} from "@/lib/messageUtils";
 import { getExperimentLookerDashboardDate } from "@/lib/lookerUtils";
 import { formatDate } from "@/lib/experimentUtils";
 
@@ -194,7 +197,7 @@ describe("NimbusRecipe", () => {
           1,
         );
 
-        const dashboardLink = getDashboard(
+        const dashboardLink = getDesktopDashboardLink(
           branchInfo.template as string,
           branchInfo.id,
           undefined,
@@ -249,7 +252,7 @@ describe("NimbusRecipe", () => {
           1,
         );
 
-        const dashboardLink = getDashboard(
+        const dashboardLink = getDesktopDashboardLink(
           branchInfo.template as string,
           branchInfo.id,
           undefined,
@@ -293,7 +296,7 @@ describe("NimbusRecipe", () => {
           branchInfo.nimbusExperiment.endDate as string,
           1,
         );
-        const dashboardLink = getAndroidDashboard(
+        const dashboardLink = getAndroidDashboardLink(
           branchInfo.template as string,
           branchInfoId,
           undefined,

@@ -22,6 +22,9 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
     recipe
       .getBranchInfos()
       .map(async (branchInfo: BranchInfo): Promise<BranchInfo> => {
+        if (branchInfo.nimbusExperiment.appName === "fenix") {
+          console.log(branchInfo.id + ": " + branchInfo.template);
+        }
         const proposedEndDate = getExperimentLookerDashboardDate(
           branchInfo.nimbusExperiment.startDate,
           branchInfo.nimbusExperiment.proposedDuration,
@@ -30,6 +33,7 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
         // Looker being case sensitive
         const ctrPercentData = await getCTRPercentData(
           branchInfo.id,
+          branchInfo.nimbusExperiment.appName,
           branchInfo.template!,
           undefined,
           branchInfo.nimbusExperiment.slug,

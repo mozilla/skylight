@@ -1,9 +1,9 @@
 // XXX ultimately, this wants to live in lib/fetchData.ts, but we need to get rid of our dependency on columns.tsx first.
 import {
   compareSurfacesFn,
-  getDashboard,
+  getDesktopDashboardLink,
   getPreviewLink,
-  getSurfaceDataForTemplate,
+  getSurfaceData,
   getTemplateFromMessage,
   maybeCreateWelcomePreview,
   messageHasMicrosurvey,
@@ -161,8 +161,7 @@ export async function getASRouterLocalColumnFromJSON(
     product: "Desktop",
     id: messageDef.id,
     template: messageDef.template,
-    surface: getSurfaceDataForTemplate(getTemplateFromMessage(messageDef))
-      .surface,
+    surface: getSurfaceData(getTemplateFromMessage(messageDef)).surface,
     segment: "some segment",
     metrics: "some metrics",
     ctrPercent: undefined, // may be populated from Looker data
@@ -174,10 +173,12 @@ export async function getASRouterLocalColumnFromJSON(
   };
 
   const channel = "release";
+  const platform = "firefox-desktop";
 
   if (isLookerEnabled) {
     const ctrPercentData = await getCTRPercentData(
       fxmsMsgInfo.id,
+      platform,
       fxmsMsgInfo.template,
       channel,
     );
@@ -187,7 +188,7 @@ export async function getASRouterLocalColumnFromJSON(
     }
   }
 
-  fxmsMsgInfo.ctrDashboardLink = getDashboard(
+  fxmsMsgInfo.ctrDashboardLink = getDesktopDashboardLink(
     fxmsMsgInfo.template,
     fxmsMsgInfo.id,
     channel,

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { PrettyDateRange } from "./dates";
 import { InfoPopover } from "@/components/ui/infopopover";
-import { getSurfaceDataForTemplate } from "@/lib/messageUtils";
+import { getSurfaceData } from "@/lib/messageUtils";
 import { HIDE_DASHBOARD_EXPERIMENTS } from "@/lib/experimentUtils";
 import {
   Tooltip,
@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/tooltip";
 
 function SurfaceTag(template: string, surface: string) {
-  const { tagColor, docs } = getSurfaceDataForTemplate(template);
+  const { tagColor, docs } = getSurfaceData(template);
   const anchorTagClassName =
     "text-primary visited:text-primary hover:text-secondary hover:bg-opacity-80 cursor-pointer hover:no-underline ";
   const surfaceTagClassName =

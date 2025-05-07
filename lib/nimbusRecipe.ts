@@ -1,10 +1,10 @@
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "../app/columns.jsx";
 import {
-  getAndroidDashboard,
-  getDashboard,
-  getSurfaceDataForTemplate,
+  getAndroidDashboardLink,
+  getSurfaceData,
   getPreviewLink,
   getTemplateFromMessage,
+  getDesktopDashboardLink,
 } from "../lib/messageUtils.ts";
 import {
   getProposedEndDate,
@@ -118,7 +118,7 @@ export class NimbusRecipe implements NimbusRecipeType {
         const surface = message0.surface;
         // XXX need to rename template & surface somehow
         branchInfo.template = surface;
-        branchInfo.surface = getSurfaceDataForTemplate(surface).surface;
+        branchInfo.surface = getSurfaceData(surface).surface;
 
         switch (surface) {
           case "messages":
@@ -153,7 +153,7 @@ export class NimbusRecipe implements NimbusRecipeType {
       formattedEndDate = formatDate(branchInfo.nimbusExperiment.endDate, 1);
     }
 
-    branchInfo.ctrDashboardLink = getAndroidDashboard(
+    branchInfo.ctrDashboardLink = getAndroidDashboardLink(
       branchInfo.template as string,
       branchInfo.id,
       undefined,
@@ -228,7 +228,7 @@ export class NimbusRecipe implements NimbusRecipeType {
 
     branch.template = template;
     branchInfo.template = template;
-    branchInfo.surface = getSurfaceDataForTemplate(template).surface;
+    branchInfo.surface = getSurfaceData(template).surface;
     branchInfo.hasMicrosurvey = _branchInfoHasMicrosurvey(branchInfo);
 
     switch (template) {
@@ -364,7 +364,7 @@ export class NimbusRecipe implements NimbusRecipeType {
     if (branchInfo.nimbusExperiment.endDate) {
       formattedEndDate = formatDate(branchInfo.nimbusExperiment.endDate, 1);
     }
-    branchInfo.ctrDashboardLink = getDashboard(
+    branchInfo.ctrDashboardLink = getDesktopDashboardLink(
       branch.template,
       branchInfo.id,
       undefined,

@@ -1,17 +1,40 @@
 import { IDashboardElement, IWriteQuery } from "@looker/sdk";
 import { SDK } from "./sdk";
-import { getDashboardIdForTemplate } from "./messageUtils";
+import { getDashboardIdForSurface, getSurfaceData } from "./messageUtils";
 import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
+import { Platform } from "./types";
 
 export type CTRData = {
   ctrPercent: number;
   impressions: number;
 };
 
-export async function getAWDashboardElement0(
+/**
+ * Safely formats a CTR percentage value with consistent decimal precision
+ *
+ * @param value - The raw CTR rate (typically between 0 and 1)
+ * @returns The formatted CTR percentage with 2 decimal places
+ *
+ * This function is used throughout the codebase to ensure consistent formatting
+ * of CTR percentages. It's necessary because we need consistent decimal
+ * precision for CTR percentages in the UI and tests.
+ *
+ * Using Math.round with multiplier/divisor instead of toFixed() to avoid
+ * floating-point precision issues in JavaScript. This approach ensures
+ * consistent decimal precision without string conversion artifacts:
+ *
+ * 1. Multiply by 10000 to shift decimal point right by 4 places
+ * 2. Round to nearest integer to handle the 2-decimal precision we want
+ * 3. Divide by 100 to shift decimal point left by 2 places
+ */
+export function getSafeCtrPercent(value: number): number {
+  return Math.round(value * 10000) / 100;
+}
+
+export async function getDashboardElement0(
   template: string,
 ): Promise<IDashboardElement> {
-  const dashboardId = getDashboardIdForTemplate(template);
+  const dashboardId = getDashboardIdForSurface(template);
 
   // XXX maybe switch this out for the more performant dashboard_element (see
   // https://mozilla.cloud.looker.com/extensions/marketplace_extension_api_explorer::api-explorer/4.0/methods/Dashboard/dashboard_element
@@ -46,18 +69,20 @@ export async function runLookQuery(lookId: string): Promise<string> {
 
 /**
  * @param template the message template
- * @param filters an object containing any filters used in the Looker query (eg. channel, templates, experiment, branch)
+ * @param filters an object containing any filters used in the Looker query (eg.
+ * channel, templates, experiment, branch)
  * @param startDate the experiment start date
  * @param endDate the experiment proposed end date
- * @returns the result of the query that is created by the given filters and filter_expression, and the appropriate template and submission timestamp
+ * @returns the result of the query that is created by the given filters and
+ * filter_expression, and the appropriate template and submission timestamp
  */
-export async function runQueryForTemplate(
+export async function runQueryForSurface(
   template: string,
   filters: any,
   startDate?: string | null,
   endDate?: string | null,
 ): Promise<any> {
-  const element0 = await getAWDashboardElement0(template);
+  const element0 = await getDashboardElement0(template);
 
   const origQuery = element0.query as IWriteQuery;
 
@@ -71,21 +96,13 @@ export async function runQueryForTemplate(
   );
 
   // override the filters
-  if (template === "infobar") {
-    newQueryBody.filters = Object.assign(
-      {
-        "messaging_system.submission_date": submission_timestamp_date,
-      },
-      filters,
-    );
-  } else {
-    newQueryBody.filters = Object.assign(
-      {
-        "event_counts.submission_timestamp_date": submission_timestamp_date,
-      },
-      filters,
-    );
-  }
+  newQueryBody.filters = Object.assign(
+    {
+      [getSurfaceData(template).lookerDateFilterPropertyName]:
+        submission_timestamp_date,
+    },
+    filters,
+  );
 
   const newQuery = await SDK.ok(SDK.create_query(newQueryBody));
   const result = await SDK.ok(
@@ -101,6 +118,7 @@ export async function runQueryForTemplate(
 /**
  * @param id the events_count.message_id required for running the looker
  * query to retrieve CTR metrics
+ * @param platform the message platform
  * @param template the message template
  * @param channel the normalized channel
  * @param experiment the experiment slug
@@ -111,6 +129,98 @@ export async function runQueryForTemplate(
  * defined
  */
 export async function getCTRPercentData(
+  id: string,
+  platform: Platform,
+  template: string,
+  channel?: string,
+  experiment?: string,
+  branch?: string,
+  startDate?: string | null,
+  endDate?: string | null,
+): Promise<CTRData | undefined> {
+  switch (platform) {
+    case "fenix":
+      return getAndroidCTRPercentData(
+        id,
+        template,
+        channel,
+        experiment,
+        branch,
+        startDate,
+        endDate,
+      );
+    default:
+      return getDesktopCTRPercentData(
+        id,
+        template,
+        channel,
+        experiment,
+        branch,
+        startDate,
+        endDate,
+      );
+  }
+}
+
+export async function getAndroidCTRPercentData(
+  id: string,
+  template: string,
+  channel?: string,
+  experiment?: string,
+  branch?: string,
+  startDate?: string | null,
+  endDate?: string | null,
+): Promise<CTRData | undefined> {
+  // XXX the filters are currently defined to match the filters in getDashboard.
+  // It would be more ideal to consider a different approach when definining
+  // those filters to sync up the data in both places. Non-trivial changes to
+  // this code are worth applying some manual performance checking.
+
+  // If not using survey template, warn and return undefined since only survey is supported
+  if (template !== "survey") {
+    console.warn(
+      `Warning: Unsupported Android surface "${template}". Only "survey" is currently supported for Android.`,
+    );
+    return undefined;
+  }
+
+  // Only proceed with the query for survey template
+  const queryResult = await runQueryForSurface(
+    template,
+    {
+      "events.normalized_channel": channel,
+      "events_unnested_table__ping_info__experiments.key": experiment,
+      "events_unnested_table__ping_info__experiments.value__branch": branch,
+      "events.sample_id": "to 10", // XXX This is equal to Sample ID <= 10
+      "events.event_category": "messaging", // XXX this should be updated once we support more Android Looker dashboards
+      "events_unnested_table__event_extra.value": id.slice(0, -5) + "%",
+    },
+    startDate,
+    endDate,
+  );
+
+  if (queryResult?.length > 0) {
+    // CTR percents will have 2 decimal places since this is what is expected
+    // from Experimenter analyses.
+    const clientCount = queryResult[0]["events.client_count"];
+    const eventName = clientCount["events.event_name"];
+    const impressions = eventName["message_shown"];
+
+    const primaryRate = queryResult[0].primary_rate;
+
+    const ctrPercent = getSafeCtrPercent(primaryRate);
+
+    return {
+      ctrPercent: ctrPercent,
+      impressions: impressions * 10, // We need to extrapolate real numbers for the 10% sample
+    };
+  }
+
+  // Return undefined if no query results
+  return undefined;
+}
+
+export async function getDesktopCTRPercentData(
   id: string,
   template: string,
   channel?: string,
@@ -125,7 +235,7 @@ export async function getCTRPercentData(
   // this code are worth applying some manual performance checking.
   let queryResult;
   if (template === "infobar") {
-    queryResult = await runQueryForTemplate(
+    queryResult = await runQueryForSurface(
       template,
       {
         "messaging_system.metrics__text2__messaging_system_message_id": id,
@@ -139,7 +249,7 @@ export async function getCTRPercentData(
       endDate,
     );
   } else {
-    queryResult = await runQueryForTemplate(
+    queryResult = await runQueryForSurface(
       template,
       {
         "event_counts.message_id": "%" + id + "%",
@@ -152,25 +262,32 @@ export async function getCTRPercentData(
     );
   }
 
-  if (queryResult.length > 0) {
+  if (queryResult?.length > 0) {
     // CTR percents will have 2 decimal places since this is what is expected
     // from Experimenter analyses.
     let impressions;
     if (template === "infobar") {
-      impressions =
-        queryResult[0]["messaging_system.ping_count"][
-          "messaging_system.metrics__string__messaging_system_event"
-        ]["IMPRESSION"];
+      const pingCount = queryResult[0]["messaging_system.ping_count"];
+      const events =
+        pingCount["messaging_system.metrics__string__messaging_system_event"];
+      impressions = events["IMPRESSION"];
     } else {
-      impressions =
-        queryResult[0]["event_counts.user_count"]["action"][" Impression"];
+      const userCount = queryResult[0]["event_counts.user_count"];
+      const action = userCount.action;
+      impressions = action[" Impression"];
     }
 
+    const primaryRate = queryResult[0].primary_rate;
+
+    const ctrPercent = getSafeCtrPercent(primaryRate);
+
     return {
-      ctrPercent: Number(Number(queryResult[0].primary_rate * 100).toFixed(2)),
+      ctrPercent: ctrPercent,
       impressions: impressions,
     };
   }
+
+  return undefined;
 }
 
 /**

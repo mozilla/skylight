@@ -1,5 +1,9 @@
 ## Tuesday, May 6th, 2025
 
+### Added
+
+- Implemented inline CTRs for the Android dashboard
+
 ### Updated
 
 - Updated the messaging experiments feature list to include fxms-message-\* features up to 15.

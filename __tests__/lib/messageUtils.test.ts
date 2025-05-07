@@ -1,10 +1,10 @@
 import {
-  getDashboard,
   _isAboutWelcomeTemplate,
   toBinary,
-  getDashboardIdForTemplate,
+  getDashboardIdForSurface,
   messageHasMicrosurvey,
-  getAndroidDashboard,
+  getAndroidDashboardLink,
+  getDesktopDashboardLink,
 } from "@/lib/messageUtils";
 
 describe("isAboutWelcomeTemplate", () => {
@@ -72,10 +72,10 @@ describe("getDashboard", () => {
     const channel = "release";
     const experiment = "experiment:test";
     const branchSlug = "treatment:a";
-    const dashboardId = getDashboardIdForTemplate(template);
+    const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "30 day ago for 30 day";
 
-    const result = getDashboard(
+    const result = getDesktopDashboardLink(
       template,
       msgId,
       channel,
@@ -97,10 +97,10 @@ describe("getDashboard", () => {
   it("returns a correct featureCallout dashboard link", () => {
     const template = "feature_callout";
     const msgId = "a:bc"; // weird chars to test URI encoding
-    const dashboardId = getDashboardIdForTemplate(template);
+    const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "30 day ago for 30 day";
 
-    const result = getDashboard(template, msgId) as string;
+    const result = getDesktopDashboardLink(template, msgId) as string;
     const url = new URL(result);
     const params = url.searchParams;
 
@@ -118,10 +118,10 @@ describe("getDashboard", () => {
     const msgId = "a:bc"; // weird chars to test URI encoding
     const experiment = "experiment:test";
     const branchSlug = "treatment:a";
-    const dashboardId = getDashboardIdForTemplate(template);
+    const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "30 day ago for 30 day";
 
-    const result = getDashboard(
+    const result = getDesktopDashboardLink(
       template,
       msgId,
       undefined,
@@ -144,11 +144,11 @@ describe("getDashboard", () => {
     const msgId = "a:bc"; // weird chars to test URI encoding
     const startDate = "2024-03-08";
     const endDate = "3025-06-28";
-    const dashboardId = getDashboardIdForTemplate(template);
+    const dashboardId = getDashboardIdForSurface(template);
     // The end date should be today to avoid showing null data for dates in the future
     const submissionDate = "2024-03-08 to today";
 
-    const result = getDashboard(
+    const result = getDesktopDashboardLink(
       template,
       msgId,
       undefined,
@@ -173,10 +173,10 @@ describe("getDashboard", () => {
     const msgId = "a:bc"; // weird chars to test URI encoding
     const startDate = "2024-03-08";
     const endDate = "2024-05-28";
-    const dashboardId = getDashboardIdForTemplate(template);
+    const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "2024-03-08 to today";
 
-    const result = getDashboard(
+    const result = getDesktopDashboardLink(
       template,
       msgId,
       undefined,
@@ -200,10 +200,10 @@ describe("getDashboard", () => {
     const template = "feature_callout";
     const msgId = "a:bc"; // weird chars to test URI encoding
     const startDate = "2024-03-08";
-    const dashboardId = getDashboardIdForTemplate(template);
+    const dashboardId = getDashboardIdForSurface(template);
     const submissionDate = "2024-03-08 to today";
 
-    const result = getDashboard(
+    const result = getDesktopDashboardLink(
       template,
       msgId,
       undefined,
@@ -224,17 +224,17 @@ describe("getDashboard", () => {
   });
 
   it("returns a correct dashboard link for Android messaging experiments", () => {
-    const template = "survey";
+    const surface = "survey";
     const msgIdPrefix = "a:bc-en-us"; // weird chars to test URI encoding
     const experiment = "experiment:test";
     const branchSlug = "treatment:a";
     const startDate = "2025-03-08";
     const endDate = "2025-05-08";
-    const dashboardId = "2303";
+    const dashboardId = getDashboardIdForSurface(surface);
     const submissionDate = "2025-03-08 to today";
 
-    const result = getAndroidDashboard(
-      template,
+    const result = getAndroidDashboardLink(
+      surface,
       msgIdPrefix,
       undefined,
       experiment,
