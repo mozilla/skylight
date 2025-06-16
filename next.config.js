@@ -33,7 +33,7 @@ const cspHeaderDev = `
 `;
 
 const nextConfig = {
-  staticPageGenerationTimeout: 240,
+  staticPageGenerationTimeout: 480,
   eslint: {
     dirs: ["pages", "app", "components", "lib", "src", "__tests__"],
   },
