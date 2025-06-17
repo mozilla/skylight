@@ -13,6 +13,7 @@ import {
   formatDate,
 } from "../lib/experimentUtils.ts";
 import { getExperimentLookerDashboardDate } from "./lookerUtils.ts";
+import { encapsulateMessageForBranchInfo } from "./messageEncapsulation";
 
 /**
  * Type aliasing is used here to convert the NimbusExperiment JSON schema for
@@ -318,28 +319,17 @@ export class NimbusRecipe implements NimbusRecipeType {
         branchInfo.previewLink = getPreviewLink(localizedSpotlight);
         break;
 
-      case "multi":
-        // XXX only does first messages
-        const firstMessage = feature.value.messages[0];
-        if (!("content" in firstMessage)) {
-          // console.warn(
-          //   'template "multi" first message does not contain content key details not rendered',
-          // );
-          return branchInfo;
-        }
-
-        // XXX only does first screen
-        branchInfo.id = firstMessage.content.screens[0].id;
-        // Localize the recipe if necessary.
-        let localizedMulti = _substituteLocalizations(
-          feature.value.messages[0],
-          this._rawRecipe.localizations?.[
-            Object.keys(this._rawRecipe.localizations)[0]
-          ],
-        );
-        // XXX assumes previewable message (spotight?)
-        branchInfo.previewLink = getPreviewLink(localizedMulti);
+      case "multi": {
+        // Use encapsulation layer to handle the first message and preview logic
+        const encapsulated = encapsulateMessageForBranchInfo({
+          message: feature.value,
+          rawRecipe: this._rawRecipe,
+          branch,
+        });
+        branchInfo.id = encapsulated.id;
+        branchInfo.previewLink = encapsulated.previewLink;
         break;
+      }
 
       case "momentsUpdate":
         console.warn(`we don't fully support moments messages yet`);
