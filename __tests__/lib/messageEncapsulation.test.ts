@@ -42,6 +42,24 @@ describe("encapsulateMessageForBranchInfo", () => {
     expect(result.id).toBe("fc-id");
   });
 
+  it("handles multi with infobar as first message", () => {
+    const message = {
+      messages: [
+        { id: "info-id", content: {}, template: "infobar" },
+        { id: "other-id", content: {}, template: "feature_callout" },
+      ],
+      template: "multi",
+    };
+    const result = encapsulateMessageForBranchInfo({
+      message,
+      rawRecipe,
+      branch,
+    });
+    expect(result.template).toBe("multi");
+    expect(result.id).toBe("info-id");
+    expect(result.previewLink).toBeDefined();
+  });
+
   it("handles unknown/default", () => {
     const message = { messages: [{ id: "default-id" }] };
     const result = encapsulateMessageForBranchInfo({ message, rawRecipe, branch });
