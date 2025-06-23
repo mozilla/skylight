@@ -328,6 +328,13 @@ export class NimbusRecipe implements NimbusRecipeType {
           return branchInfo;
         }
 
+        if (!("screens" in firstMessage.content)) {
+          console.warn(
+            "multis where the 1st message's content does not have `screens` member (like infobar) are not supported",
+          );
+          return branchInfo;
+        }
+
         // XXX only does first screen
         branchInfo.id = firstMessage.content.screens[0].id;
         // Localize the recipe if necessary.
