@@ -330,7 +330,7 @@ export class NimbusRecipe implements NimbusRecipeType {
 
         if (!("screens" in firstMessage.content)) {
           console.warn(
-            "multis where the 1st message's content does not have `screens` member (like infobar) are not support",
+            "multis where the 1st message's content does not have `screens` member (like infobar) are not supported",
           );
           return branchInfo;
         }
