@@ -7,14 +7,11 @@ Ultimately, I suspect it's six of one/half dozen of the other, and we may end up
 ### Looker
 
 - Set up credentials
-
   - Testing/Development: use developer API credentials (may need to talk to AScholz to get those creds, and definitely will need to do do so to get Looker-side dev privs)
   - Production: service account
 
 - Looker SDK
-
   - Learning how to use it:
-
     - The docs contained in the [API Explorer](https://cloud.google.com/looker/docs/api-explorer) Looker app for the REST API itself are decent, as is the built in query-runnner. Looker developer privs are required.
 
     - The [TypeScript SDK docs](https://developers.looker.com/api/getting-started?language=typescript) are pretty minimal. I mostly depended on [the examples](https://github.com/looker-open-source/sdk-codegen/tree/main/examples) pages linked from the API Explorer app including unit tests. We've now got some example code in this branch too, of course.
@@ -31,7 +28,6 @@ Ultimately, I suspect it's six of one/half dozen of the other, and we may end up
       - compute the CTR percentage from the expected properties in the results
 
 - How do we really want this to fit into the code?
-
   - Maybe just moving looker.ts to lib/lookerUtils.ts for now and objectify
     - later once our usage patterns become clearer.
   - Maybe create a lib/messageDashboiard.ts
@@ -44,9 +40,7 @@ Ultimately, I suspect it's six of one/half dozen of the other, and we may end up
   -
 
 - Risks
-
   - speed
-
     - optimize/structure https://www.googlecloudcommunity.com/gc/Technical-Tips-Tricks/Looker-API-Performance-Best-Practices/ta-p/591327
     - figure out how to make Looker SDK use NextJS fetch cache?
 
