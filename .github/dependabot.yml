@@ -44,3 +44,14 @@ updates:
           - "major"
           - "minor"
           - "patch"
+      jest:
+        applies-to: version-updates
+        patterns:
+          - "jest"
+          - "jest-environment-jsdom"
+          - "@types/jest"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
+
