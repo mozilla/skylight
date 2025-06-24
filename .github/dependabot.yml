@@ -44,3 +44,18 @@ updates:
           - "major"
           - "minor"
           - "patch"
+      # catch-all for all other npm packages
+      npm-other:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "*next*"
+          - "eslint-config-next"
+          - "react"
+          - "react-dom"
+          - "@radix-ui/*"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
