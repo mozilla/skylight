@@ -1,12 +1,14 @@
---
+---
 applyTo: "**"
 description: "Instructions for composing commit messages"
---
+---
 
 ## Motivation
+
 All commit messages in this repository must follow these guidelines to ensure clarity, consistency, and better automation (e.g., changelogs, semantic versioning).
 
 ## How to Write Commit Messages
+
 Commit messages must be structured as follows:
 
 ```
@@ -20,6 +22,7 @@ Commit messages must be structured as follows:
 ### Type
 
 The type of change. Common types include:
+
 - `feat`: A new feature
 - `fix`: A bug fix
 - `docs`: Documentation only changes
@@ -54,24 +57,31 @@ A short summary of the change (max 80 characters, no period at the end).
 ```
 feat(ui): add dark mode toggle
 ```
+
 ```
 fix(dashboard): correct total calculation bug
 ```
+
 ```
 docs: update README with setup instructions
 ```
+
 ```
 style: reformat code with Prettier
 ```
+
 ```
 refactor(looker): simplify query logic
 ```
+
 ```
 perf: improve dashboard load time
 ```
+
 ```
 test: add tests for message-table component
 ```
+
 ```
 chore: update dependencies
 ```
@@ -92,18 +102,23 @@ Closes #42
 ```
 update stuff
 ```
+
 ```
 fixed bug in code
 ```
+
 ```
 add new feature
 ```
+
 ```
 bugfix: something
 ```
+
 ```
 Refactored code
 ```
+
 ```
 chore update dependencies
 ```
@@ -111,6 +126,7 @@ chore update dependencies
 ---
 
 **Remember:**
+
 - Use the imperative mood in the description (e.g., "add" not "adds" or "added").
 - Do not capitalize the first letter of the description.
 - Do not end the description with a period.
