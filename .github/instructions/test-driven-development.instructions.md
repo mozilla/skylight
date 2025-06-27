@@ -17,19 +17,26 @@ This cycle is the heart of TDD. Each phase has a specific purpose:
 
 - **Goal**: To clearly define a new piece of functionality or an improvement.
 - **Action**: Write a single automated test case that describes a new feature or an enhancement.
+- **Execution Point**: After writing the test, immediately run it to confirm it fails.
 - **Condition for Success**: The test must fail. This is important because it proves that the test is actually testing something and that the feature doesn't already exist. If it doesn't fail, you should re-examine the test to ensure it's testing the right thing.
 
 ### 2. Green Phase: Make the Test Pass
 
 - **Goal**: To implement the feature as quickly as possible.
 - **Action**: Write the simplest possible production code to make the failing test pass. At this stage, you should not be concerned with code quality, just with passing the test.
+- **Execution Point**: After implementing the feature, run all tests to ensure your implementation works without breaking existing functionality.
 - **Condition for Success**: All tests, including the new one, should now pass.
 
 ### 3. Refactor Phase: Improve the Code
 
 - **Goal**: To clean up the code while keeping it working.
 - **Action**: Refactor the code you just wrote to improve its design, readability, and maintainability. This can include removing duplication, clarifying names, or simplifying the design.
+- **Execution Point**: Run all tests after each significant refactoring step to verify your changes don't introduce bugs.
 - **Condition for Success**: All tests must continue to pass after refactoring. This ensures that you haven't accidentally broken anything.
+
+## Final Validation
+
+Before committing your code, always run the complete test suite one final time to ensure everything works together correctly. Tests should be fast enough to run frequently without disrupting your workflow, as slow tests discourage frequent execution and can undermine the TDD process.
 
 ## Benefits of TDD
 
