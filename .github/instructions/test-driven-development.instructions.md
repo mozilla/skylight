@@ -11,13 +11,15 @@ Test-Driven Development is a software development process where you write tests 
 
 ## The Red-Green-Refactor Cycle
 
-This cycle is the heart of TDD. Each phase has a specific purpose:
+This cycle is the heart of TDD. Each phase has a specific purpose and focuses on a single test at a time:
+
+**Important: Each pass through the TDD cycle should involve only ONE test, not multiple tests.** This ensures that you stay focused on a single, specific functionality and can clearly identify the cause of any test failures.
 
 ### 1. Red Phase: Write a Failing Test
 
 - **Goal**: To clearly define a new piece of functionality or an improvement.
-- **Action**: Write a single automated test case that describes a new feature or an enhancement.
-- **Execution Point**: After writing the test, immediately run it to confirm it fails.
+- **Action**: Write a single automated test case that describes a new feature or an enhancement. Focus on only one test at this stage.
+- **Execution Point**: After writing the test, immediately run only this test to confirm it fails.
 - **Condition for Success**: The test must fail. This is important because it proves that the test is actually testing something and that the feature doesn't already exist. If it doesn't fail, you should re-examine the test to ensure it's testing the right thing.
 
 ### 2. Green Phase: Make the Test Pass
@@ -34,7 +36,19 @@ This cycle is the heart of TDD. Each phase has a specific purpose:
 - **Execution Point**: Run all tests after each significant refactoring step to verify your changes don't introduce bugs.
 - **Condition for Success**: All tests must continue to pass after refactoring. This ensures that you haven't accidentally broken anything.
 
-## Final Validation
+## Single Test Focus vs. Final Validation
+
+### Single Test Focus During the Cycle
+
+During the Red-Green-Refactor cycle, focus on one test at a time. This means:
+
+- Write only one failing test
+- Make only that test pass
+- Refactor with that specific test in mind
+
+After completing one cycle, you can move on to the next test and repeat the process.
+
+### Final Validation Before Committing
 
 Before committing your code, always run the complete test suite one final time to ensure everything works together correctly. Tests should be fast enough to run frequently without disrupting your workflow, as slow tests discourage frequent execution and can undermine the TDD process.
 
@@ -48,6 +62,7 @@ Before committing your code, always run the complete test suite one final time t
 ## Guidelines for Writing Good Tests
 
 - **Test One Thing at a Time**: Each test should focus on a single piece of functionality.
+- **One Test Per Cycle**: Work with only one test through a complete Red-Green-Refactor cycle before moving to the next test.
 - **Keep Tests Small and Fast**: Small, fast tests can be run frequently, providing rapid feedback.
 - **Use Descriptive Names**: Test names should clearly describe what they are testing.
 - **Isolate Tests**: Tests should not depend on each other. Each test should be able to run independently.
