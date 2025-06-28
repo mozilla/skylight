@@ -74,7 +74,7 @@ During the Red-Green-Refactor cycle, focus on one test at a time. This means:
 - Make only that test pass
 - Refactor with that specific test in mind
 
-After completing one cycle, you can move on to the next test and repeat the process.
+After completing one cycle, you must stop and wait for further instructions before starting the next cycle.
 
 ### Final Validation Before Committing
 
