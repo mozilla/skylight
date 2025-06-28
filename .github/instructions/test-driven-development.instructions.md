@@ -15,14 +15,21 @@ This cycle is the heart of TDD. Each phase has a specific purpose and focuses on
 
 **CRITICAL TDD RULE: ONE TEST AT A TIME. NO EXCEPTIONS.**
 
-This is the most important rule of TDD. You must strictly follow the Red-Green-Refactor cycle for a **single test** before moving to the next. This applies to all phases, including planning.
+This is the most important rule of TDD. You must strictly follow the Red-Green-Refactor cycle for a **single test** before moving to the next.
 
-**Your workflow for any change MUST be:**
+- **Step 1: Red — Write a Failing Test**
+  -   **Action:** Write a single automated test for one piece of functionality.
+  -   **Verification:** Immediately run the test suite. You **MUST** confirm that the new test fails and **MUST** state the result. This is non-negotiable.
 
-1.  **Plan/Write ONE failing test.**
-2.  **Plan/Write code to make ONLY that one test pass.**
-3.  **Plan/Execute refactoring.**
-4.  **THEN, and only then, can you begin the cycle for the next test.**
+- **Step 2: Green — Make the Test Pass**
+  -   **Action:** Write the simplest possible code to make the one failing test pass.
+  -   **Verification:** Immediately run the entire test suite. You **MUST** confirm that all tests now pass and **MUST** state the result.
+
+- **Step 3: Refactor — Improve the Code**
+  -   **Action:** Clean up the code you just wrote.
+  -   **Verification:** After refactoring, run the entire test suite again. You **MUST** confirm that all tests still pass and **MUST** state the result.
+
+**Only after completing all three steps for a single test can you begin the cycle for the next test.**
 
 When asked to create a plan, **do not** outline all the tests at once. Your plan must be a sequence of single Red-Green-Refactor cycles.
 
