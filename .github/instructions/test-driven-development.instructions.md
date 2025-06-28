@@ -13,7 +13,31 @@ Test-Driven Development is a software development process where you write tests 
 
 This cycle is the heart of TDD. Each phase has a specific purpose and focuses on a single test at a time:
 
-**Important: Each pass through the TDD cycle should involve only ONE test, not multiple tests.** This ensures that you stay focused on a single, specific functionality and can clearly identify the cause of any test failures.
+**CRITICAL TDD RULE: ONE TEST AT A TIME. NO EXCEPTIONS.**
+
+This is the most important rule of TDD. You must strictly follow the Red-Green-Refactor cycle for a **single test** before moving to the next. This applies to all phases, including planning.
+
+**Your workflow for any change MUST be:**
+
+1.  **Plan/Write ONE failing test.**
+2.  **Plan/Write code to make ONLY that one test pass.**
+3.  **Plan/Execute refactoring.**
+4.  **THEN, and only then, can you begin the cycle for the next test.**
+
+When asked to create a plan, **do not** outline all the tests at once. Your plan must be a sequence of single Red-Green-Refactor cycles.
+
+**Example of a Correct Plan:**
+
+- **Cycle 1: Test basic functionality**
+  1.  **Red:** Propose a failing test for the primary success case.
+  2.  **Green:** Propose the simplest code change to pass the test.
+  3.  **Refactor:** Propose any necessary code cleanup.
+- **Cycle 2: Test an edge case**
+  1.  **Red:** Propose a failing test for a specific edge case.
+  2.  **Green:** Propose code changes to handle this edge case.
+  3.  **Refactor:** Propose refactoring for the new code.
+
+This structure ensures that you never propose or write code for more than one test at a time.
 
 ### 1. Red Phase: Write a Failing Test
 
