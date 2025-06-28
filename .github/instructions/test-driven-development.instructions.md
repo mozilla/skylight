@@ -43,22 +43,19 @@ This structure ensures that you never propose or write code for more than one te
 
 - **Goal**: To clearly define a new piece of functionality or an improvement.
 - **Action**: Write a single automated test case that describes a new feature or an enhancement. Focus on only one test at this stage.
-- **Execution Point**: After writing the test, immediately run only this test to confirm it fails.
-- **Condition for Success**: The test must fail. This is important because it proves that the test is actually testing something and that the feature doesn't already exist. If it doesn't fail, you should re-examine the test to ensure it's testing the right thing.
+- **Verification**: After writing the test, you **MUST** run the test suite and state the result. The test **MUST** fail as expected. This proves that the test is valid and that the feature doesn't already exist. If it passes, the test is wrong.
 
 ### 2. Green Phase: Make the Test Pass
 
 - **Goal**: To implement the feature as quickly as possible.
 - **Action**: Write the simplest possible production code to make the failing test pass. At this stage, you should not be concerned with code quality, just with passing the test.
-- **Execution Point**: After implementing the feature, run all tests to ensure your implementation works without breaking existing functionality.
-- **Condition for Success**: All tests, including the new one, should now pass.
+- **Verification**: After writing the code, you **MUST** run the entire test suite and state the result. All tests, including the new one, **MUST** pass. This confirms your new code works and hasn't introduced any regressions.
 
 ### 3. Refactor Phase: Improve the Code
 
 - **Goal**: To clean up the code while keeping it working.
 - **Action**: Refactor the code you just wrote to improve its design, readability, and maintainability. This can include removing duplication, clarifying names, or simplifying the design.
-- **Execution Point**: Run all tests after each significant refactoring step to verify your changes don't introduce bugs.
-- **Condition for Success**: All tests must continue to pass after refactoring. This ensures that you haven't accidentally broken anything.
+- **Verification**: After each significant refactoring step, you **MUST** run the entire test suite and state the result. All tests **MUST** continue to pass. This ensures your refactoring has not introduced any bugs.
 
 ## Single Test Focus vs. Final Validation
 
