@@ -61,17 +61,17 @@ A comprehensive refactoring plan should cover:
 Let's say you're refactoring a `getPreviewLink` function. A good plan would consist of multiple TDD cycles:
 
 - **Cycle 1: Test the primary success case**
-    1.  **Red:** Write a failing test for generating a link with valid inputs.
-    2.  **Green:** Implement the simplest code to make the test pass.
-    3.  **Refactor:** Clean up the implementation.
+  1.  **Red:** Write a failing test for generating a link with valid inputs.
+  2.  **Green:** Implement the simplest code to make the test pass.
+  3.  **Refactor:** Clean up the implementation.
 - **Cycle 2: Test an edge case (e.g., a missing optional parameter)**
-    1.  **Red:** Write a failing test for when an optional parameter is `null` or `undefined`.
-    2.  **Green:** Modify the code to handle the missing parameter gracefully.
-    3.  **Refactor:** Improve the code.
+  1.  **Red:** Write a failing test for when an optional parameter is `null` or `undefined`.
+  2.  **Green:** Modify the code to handle the missing parameter gracefully.
+  3.  **Refactor:** Improve the code.
 - **Cycle 3: Test an error condition (e.g., a required parameter is missing)**
-    1.  **Red:** Write a failing test for when a required parameter is missing, expecting an error to be thrown.
-    2.  **Green:** Add the necessary validation to throw an error.
-    3.  **Refactor:** Clean up the validation logic.
+  1.  **Red:** Write a failing test for when a required parameter is missing, expecting an error to be thrown.
+  2.  **Green:** Add the necessary validation to throw an error.
+  3.  **Refactor:** Clean up the validation logic.
 
 By breaking down the refactoring of a single feature into multiple, focused TDD cycles, you ensure that all of its behaviors are tested and preserved.
 
