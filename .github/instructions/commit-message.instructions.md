@@ -132,3 +132,5 @@ chore update dependencies
 - Do not end the description with a period.
 - Keep the description concise (max 80 characters).
 - Use a relevant type and scope.
+- Always review the output of the `get_changed_files` tool before proposing a commit message.
+- Always review the chat history since the last commit before proposing a commit message.
