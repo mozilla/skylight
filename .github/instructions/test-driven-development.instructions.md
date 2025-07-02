@@ -75,6 +75,35 @@ Let's say you're refactoring a `getPreviewLink` function. A good plan would cons
 
 By breaking down the refactoring of a single feature into multiple, focused TDD cycles, you ensure that all of its behaviors are tested and preserved.
 
+### TDD for Refactoring
+
+When refactoring existing code, it's crucial to ensure that all behaviors of the functionality are preserved. This often requires a series of TDD cycles, each focused on a specific aspect of the functionality. Your plan should reflect this by breaking down the refactoring process into multiple Red-Green-Refactor cycles.
+
+A comprehensive refactoring plan should cover:
+
+1.  **The Primary Success Case**: The main functionality.
+2.  **Edge Cases**: Foreseeable alternative scenarios.
+3.  **Error Conditions**: How the code should behave on invalid input or in unexpected situations.
+
+**Example of a Refactoring Plan:**
+
+Let's say you're refactoring a `getPreviewLink` function. A good plan would consist of multiple TDD cycles:
+
+- **Cycle 1: Test the primary success case**
+    1.  **Red:** Write a failing test for generating a link with valid inputs.
+    2.  **Green:** Implement the simplest code to make the test pass.
+    3.  **Refactor:** Clean up the implementation.
+- **Cycle 2: Test an edge case (e.g., a missing optional parameter)**
+    1.  **Red:** Write a failing test for when an optional parameter is `null` or `undefined`.
+    2.  **Green:** Modify the code to handle the missing parameter gracefully.
+    3.  **Refactor:** Improve the code.
+- **Cycle 3: Test an error condition (e.g., a required parameter is missing)**
+    1.  **Red:** Write a failing test for when a required parameter is missing, expecting an error to be thrown.
+    2.  **Green:** Add the necessary validation to throw an error.
+    3.  **Refactor:** Clean up the validation logic.
+
+By breaking down the refactoring of a single feature into multiple, focused TDD cycles, you ensure that all of its behaviors are tested and preserved.
+
 ### 1. Red Phase: Write a Failing Test
 
 - **Goal**: To clearly define a new piece of functionality or an improvement.
