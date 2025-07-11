@@ -5,6 +5,11 @@ import { Platform } from "@/lib/types";
 const platform: Platform = "fenix";
 
 export default async function Page() {
+  // XXXdmose We're hitting Looker data limits. Ultimately, we may want an
+  // ErrorBoundary here for the general case, but for now, we'll just return an
+  // empty div to get things working again.
+  return <div />;
+
   const {
     localData,
     experimentAndBranchInfo,
