@@ -58,7 +58,7 @@ function OffsiteLink(href: string, linkText: any) {
 }
 
 // This type is used to define the shape of our data.
-// NOTE: ctrPercent is undefined by default until set using getCTRPercent. It is
+// NOTE: uctrPercent is undefined by default until set using getUCTRPercent. It is
 // made optional to help determine what's displayed in the Metrics column.
 export type FxMSMessageInfo = {
   product: "Desktop" | "Android";
@@ -66,9 +66,9 @@ export type FxMSMessageInfo = {
   template: string;
   surface: string;
   segment: string;
-  ctrPercent?: number;
-  ctrPercentChange?: number;
-  ctrDashboardLink?: string;
+  uctrPercent?: number;
+  uctrPercentChange?: number;
+  uctrDashboardLink?: string;
   previewLink?: string;
   metrics: string;
   impressions?: number;
@@ -85,9 +85,9 @@ export type RecipeInfo = {
   template?: string; // XXX template JSON name
   surface?: string; // XXX template display name
   segment?: string;
-  ctrPercent?: number;
-  ctrPercentChange?: number;
-  ctrDashboardLink?: string;
+  uctrPercent?: number;
+  uctrPercentChange?: number;
+  uctrDashboardLink?: string;
   previewLink?: string;
   metrics?: string;
   experimenterLink?: string;
@@ -107,9 +107,9 @@ export type BranchInfo = {
   slug: string;
   surface?: string;
   segment?: string;
-  ctrPercent?: number;
-  ctrPercentChange?: number;
-  ctrDashboardLink?: string;
+  uctrPercent?: number;
+  uctrPercentChange?: number;
+  uctrDashboardLink?: string;
   previewLink?: string;
   metrics?: string;
   experimenterLink?: string;
@@ -129,20 +129,20 @@ export type RecipeOrBranchInfo = RecipeInfo | BranchInfo;
 
 /**
  * @returns an OffsiteLink linking to the Looker dashboard link if it exists,
- * labelled with either the CTR percent or "Dashboard"
+ * labelled with either the UCTR percent or "Dashboard"
  */
-function showCTRMetrics(
-  ctrDashboardLink?: string,
-  ctrPercent?: number,
+function showUCTRMetrics(
+  uctrDashboardLink?: string,
+  uctrPercent?: number,
   impressions?: number,
 ) {
-  if (ctrDashboardLink && ctrPercent !== undefined && impressions) {
+  if (uctrDashboardLink && uctrPercent !== undefined && impressions) {
     return (
       <div>
         {OffsiteLink(
-          ctrDashboardLink,
+          uctrDashboardLink,
           <>
-            {ctrPercent + "% CTR"} <br />
+            {uctrPercent + "% UCTR"} <br />
             {impressions.toLocaleString() +
               " impression" +
               (impressions > 1 ? "s" : "")}
@@ -150,8 +150,8 @@ function showCTRMetrics(
         )}
       </div>
     );
-  } else if (ctrDashboardLink) {
-    return OffsiteLink(ctrDashboardLink, "Dashboard");
+  } else if (uctrDashboardLink) {
+    return OffsiteLink(uctrDashboardLink, "Dashboard");
   }
 }
 
@@ -280,9 +280,9 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         <InfoPopover
           content={
             <p>
-              The CTR and impressions metrics in this table are the primary
+              The UCTR and impressions metrics in this table are the primary
               button clickthrough rates calculated over the <b>last 30 days</b>.
-              Clicking into the CTR value will direct you to the Looker
+              Clicking into the UCTR value will direct you to the Looker
               dashboard displaying the data.
             </p>
           }
@@ -308,9 +308,9 @@ export const fxmsMessageColumns: ColumnDef<FxMSMessageInfo>[] = [
         return <></>;
       }
 
-      const metrics = showCTRMetrics(
-        props.row.original.ctrDashboardLink,
-        props.row.original.ctrPercent,
+      const metrics = showUCTRMetrics(
+        props.row.original.uctrDashboardLink,
+        props.row.original.uctrPercent,
         props.row.original.impressions,
       );
       if (metrics) {
@@ -481,9 +481,9 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         <InfoPopover
           content={
             <p>
-              The CTR and impressions metrics in this table are the primary
+              The UCTR and impressions metrics in this table are the primary
               button clickthrough rates calculated over the{" "}
-              <b>time that the experiment is live</b>. Clicking into the CTR
+              <b>time that the experiment is live</b>. Clicking into the UCTR
               value will direct you to the Looker dashboard displaying the data.
             </p>
           }
@@ -500,9 +500,9 @@ export const experimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         return <></>;
       }
 
-      const metrics = showCTRMetrics(
-        props.row.original.ctrDashboardLink,
-        props.row.original.ctrPercent,
+      const metrics = showUCTRMetrics(
+        props.row.original.uctrDashboardLink,
+        props.row.original.uctrPercent,
         props.row.original.impressions,
       );
       if (metrics) {
@@ -661,8 +661,8 @@ export const completedExperimentColumns: ColumnDef<RecipeOrBranchInfo>[] = [
         return <></>;
       }
 
-      if (props.row.original.ctrDashboardLink) {
-        return OffsiteLink(props.row.original.ctrDashboardLink, "Dashboard");
+      if (props.row.original.uctrDashboardLink) {
+        return OffsiteLink(props.row.original.uctrDashboardLink, "Dashboard");
       }
       return <></>;
     },

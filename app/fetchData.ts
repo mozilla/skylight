@@ -13,7 +13,7 @@ import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import { FxMSMessageInfo } from "./columns";
 import {
   cleanLookerData,
-  getCTRPercentData,
+  getUCTRPercentData,
   mergeLookerData,
   runLookQuery,
 } from "@/lib/looker.ts";
@@ -150,7 +150,7 @@ export async function getASRouterLocalMessageInfoFromFile(): Promise<
 /**
  * Given a message JSON, this function fetches the message data as an
  * FxMSMessageInfo object and populating it with surface data, preview links,
- * microsurvey tags, CTR data, and dashboard links when available.
+ * microsurvey tags, UCTR data, and dashboard links when available.
  * @param messageDef the JSON for a single message collected from local data
  * @returns the information in messageDef in FxMSMessageInfo type
  */
@@ -164,8 +164,8 @@ export async function getASRouterLocalColumnFromJSON(
     surface: getSurfaceData(getTemplateFromMessage(messageDef)).surface,
     segment: "some segment",
     metrics: "some metrics",
-    ctrPercent: undefined, // may be populated from Looker data
-    ctrPercentChange: undefined, // may be populated from Looker data
+    uctrPercent: undefined, // may be populated from Looker data
+    uctrPercentChange: undefined, // may be populated from Looker data
     previewLink: getPreviewLink(maybeCreateWelcomePreview(messageDef)),
     impressions: undefined, // may be populated from Looker data
     hasMicrosurvey: messageHasMicrosurvey(messageDef.id),
@@ -176,19 +176,19 @@ export async function getASRouterLocalColumnFromJSON(
   const platform = "firefox-desktop";
 
   if (isLookerEnabled) {
-    const ctrPercentData = await getCTRPercentData(
+    const uctrPercentData = await getUCTRPercentData(
       fxmsMsgInfo.id,
       platform,
       fxmsMsgInfo.template,
       channel,
     );
-    if (ctrPercentData) {
-      fxmsMsgInfo.ctrPercent = ctrPercentData.ctrPercent;
-      fxmsMsgInfo.impressions = ctrPercentData.impressions;
+    if (uctrPercentData) {
+      fxmsMsgInfo.uctrPercent = uctrPercentData.uctrPercent;
+      fxmsMsgInfo.impressions = uctrPercentData.impressions;
     }
   }
 
-  fxmsMsgInfo.ctrDashboardLink = getDesktopDashboardLink(
+  fxmsMsgInfo.uctrDashboardLink = getDesktopDashboardLink(
     fxmsMsgInfo.template,
     fxmsMsgInfo.id,
     channel,
