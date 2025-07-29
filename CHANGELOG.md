@@ -1,3 +1,9 @@
+## Tuesday, July 29th, 2025
+
+- Corrected the UX to change what we've been calling "CTR" to what it actually is: "UCTR". Meaning:
+  - Unique CTR (UCTR): Unique Users Who Clicked at Least Once / Unique Users Who Saw the Ad. Sometimes also referred to as User-level CTR.
+  - CTR: Clicks / Impressions
+
 ## Tuesday, May 6th, 2025
 
 ### Added
