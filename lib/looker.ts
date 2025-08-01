@@ -4,20 +4,20 @@ import { getDashboardIdForSurface, getSurfaceData } from "./messageUtils";
 import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 import { Platform } from "./types";
 
-export type CTRData = {
-  ctrPercent: number;
+export type UCTRData = {
+  uctrPercent: number;
   impressions: number;
 };
 
 /**
- * Safely formats a CTR percentage value with consistent decimal precision
+ * Safely formats a UCTR percentage value with consistent decimal precision
  *
- * @param value - The raw CTR rate (typically between 0 and 1)
- * @returns The formatted CTR percentage with 2 decimal places
+ * @param value - The raw UCTR rate (typically between 0 and 1)
+ * @returns The formatted UCTR percentage with 2 decimal places
  *
  * This function is used throughout the codebase to ensure consistent formatting
- * of CTR percentages. It's necessary because we need consistent decimal
- * precision for CTR percentages in the UI and tests.
+ * of UCTR percentages. It's necessary because we need consistent decimal
+ * precision for UCTR percentages in the UI and tests.
  *
  * Using Math.round with multiplier/divisor instead of toFixed() to avoid
  * floating-point precision issues in JavaScript. This approach ensures
@@ -27,7 +27,7 @@ export type CTRData = {
  * 2. Round to nearest integer to handle the 2-decimal precision we want
  * 3. Divide by 100 to shift decimal point left by 2 places
  */
-export function getSafeCtrPercent(value: number): number {
+export function getSafeUctrPercent(value: number): number {
   return Math.round(value * 10000) / 100;
 }
 
@@ -45,7 +45,7 @@ export async function getDashboardElement0(
     // clear, but the code is working, so I'm inclined to leave it alone for now.
     SDK.search_dashboard_elements({
       dashboard_id: dashboardId,
-      title: "CTR and User Profiles Impressed",
+      title: "UCTR and User Profiles Impressed",
       fields: "query",
     }),
   );
@@ -117,7 +117,7 @@ export async function runQueryForSurface(
 
 /**
  * @param id the events_count.message_id required for running the looker
- * query to retrieve CTR metrics
+ * query to retrieve UCTR metrics
  * @param platform the message platform
  * @param template the message template
  * @param channel the normalized channel
@@ -125,10 +125,10 @@ export async function runQueryForSurface(
  * @param branch the branch slug
  * @param startDate the experiment start date
  * @param endDate the experiment proposed end date
- * @returns a CTR percent value for a message if the Looker query results are
+ * @returns a UCTR percent value for a message if the Looker query results are
  * defined
  */
-export async function getCTRPercentData(
+export async function getUCTRPercentData(
   id: string,
   platform: Platform,
   template: string,
@@ -137,10 +137,10 @@ export async function getCTRPercentData(
   branch?: string,
   startDate?: string | null,
   endDate?: string | null,
-): Promise<CTRData | undefined> {
+): Promise<UCTRData | undefined> {
   switch (platform) {
     case "fenix":
-      return getAndroidCTRPercentData(
+      return getAndroidUCTRPercentData(
         id,
         template,
         channel,
@@ -150,7 +150,7 @@ export async function getCTRPercentData(
         endDate,
       );
     default:
-      return getDesktopCTRPercentData(
+      return getDesktopUCTRPercentData(
         id,
         template,
         channel,
@@ -162,7 +162,7 @@ export async function getCTRPercentData(
   }
 }
 
-export async function getAndroidCTRPercentData(
+export async function getAndroidUCTRPercentData(
   id: string,
   template: string,
   channel?: string,
@@ -170,7 +170,7 @@ export async function getAndroidCTRPercentData(
   branch?: string,
   startDate?: string | null,
   endDate?: string | null,
-): Promise<CTRData | undefined> {
+): Promise<UCTRData | undefined> {
   // XXX the filters are currently defined to match the filters in getDashboard.
   // It would be more ideal to consider a different approach when definining
   // those filters to sync up the data in both places. Non-trivial changes to
@@ -200,7 +200,7 @@ export async function getAndroidCTRPercentData(
   );
 
   if (queryResult?.length > 0) {
-    // CTR percents will have 2 decimal places since this is what is expected
+    // UCTR percents will have 2 decimal places since this is what is expected
     // from Experimenter analyses.
     const clientCount = queryResult[0]["events.client_count"];
     const eventName = clientCount["events.event_name"];
@@ -208,10 +208,10 @@ export async function getAndroidCTRPercentData(
 
     const primaryRate = queryResult[0].primary_rate;
 
-    const ctrPercent = getSafeCtrPercent(primaryRate);
+    const uctrPercent = getSafeUctrPercent(primaryRate);
 
     return {
-      ctrPercent: ctrPercent,
+      uctrPercent: uctrPercent,
       impressions: impressions * 10, // We need to extrapolate real numbers for the 10% sample
     };
   }
@@ -220,7 +220,7 @@ export async function getAndroidCTRPercentData(
   return undefined;
 }
 
-export async function getDesktopCTRPercentData(
+export async function getDesktopUCTRPercentData(
   id: string,
   template: string,
   channel?: string,
@@ -228,7 +228,7 @@ export async function getDesktopCTRPercentData(
   branch?: string,
   startDate?: string | null,
   endDate?: string | null,
-): Promise<CTRData | undefined> {
+): Promise<UCTRData | undefined> {
   // XXX the filters are currently defined to match the filters in getDashboard.
   // It would be more ideal to consider a different approach when definining
   // those filters to sync up the data in both places. Non-trivial changes to
@@ -263,7 +263,7 @@ export async function getDesktopCTRPercentData(
   }
 
   if (queryResult?.length > 0) {
-    // CTR percents will have 2 decimal places since this is what is expected
+    // UCTR percents will have 2 decimal places since this is what is expected
     // from Experimenter analyses.
     let impressions;
     if (template === "infobar") {
@@ -279,10 +279,10 @@ export async function getDesktopCTRPercentData(
 
     const primaryRate = queryResult[0].primary_rate;
 
-    const ctrPercent = getSafeCtrPercent(primaryRate);
+    const uctrPercent = getSafeUctrPercent(primaryRate);
 
     return {
-      ctrPercent: ctrPercent,
+      uctrPercent: uctrPercent,
       impressions: impressions,
     };
   }
