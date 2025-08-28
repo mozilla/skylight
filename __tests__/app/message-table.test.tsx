@@ -185,7 +185,7 @@ describe("MessageTable", () => {
       expect(previewButton).not.toBeInTheDocument();
     });
 
-    it("displays CTR percentages when Looker dashboard exists and CTR is defined", async () => {
+    it("displays UCTR percentages when Looker dashboard exists and UCTR is defined", async () => {
       setMockPlatform("firefox-desktop");
       const nimbusRecipeCollection = new NimbusRecipeCollection();
       nimbusRecipeCollection.recipes = [
@@ -194,38 +194,38 @@ describe("MessageTable", () => {
       const recipeInfos =
         (await nimbusRecipeCollection.getExperimentAndBranchInfos()) as RecipeInfo[];
       // Setting fake dashboard link in order to render in MessageTable
-      recipeInfos[0].branches[0].ctrDashboardLink = "test link";
+      recipeInfos[0].branches[0].uctrDashboardLink = "test link";
 
       render(<MessageTable columns={experimentColumns} data={recipeInfos} />);
 
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
       fireEvent.click(toggleButton);
-      const ctrMetrics = screen.getByText("12.35% CTR", {
+      const uctrMetrics = screen.getByText("12.35% UCTR", {
         exact: false,
       });
 
-      expect(recipeInfos[0].branches[0].ctrPercent).toBe(12.35);
-      expect(recipeInfos[0].branches[0].ctrDashboardLink).toBeDefined();
-      expect(ctrMetrics).toBeInTheDocument();
+      expect(recipeInfos[0].branches[0].uctrPercent).toBe(12.35);
+      expect(recipeInfos[0].branches[0].uctrDashboardLink).toBeDefined();
+      expect(uctrMetrics).toBeInTheDocument();
     });
 
-    it("displays 'Dashboard' when Looker dashboard exists but CTR is undefined", () => {
+    it("displays 'Dashboard' when Looker dashboard exists but UCTR is undefined", () => {
       const rawRecipe = ExperimentFakes.recipe("test-recipe");
       const nimbusRecipe = new NimbusRecipe(rawRecipe);
       let recipeInfo = nimbusRecipe.getRecipeInfo();
       // Setting fake dashboard link in order to render in MessageTable
-      recipeInfo.branches[0].ctrDashboardLink = "test link";
+      recipeInfo.branches[0].uctrDashboardLink = "test link";
       render(<MessageTable columns={experimentColumns} data={[recipeInfo]} />);
 
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
       fireEvent.click(toggleButton);
       const dashboardLink = screen.getByText("Dashboard");
-      const ctrMetrics = screen.queryByText("CTR");
+      const uctrMetrics = screen.queryByText("UCTR");
 
-      expect(recipeInfo.branches[0].ctrPercent).not.toBeDefined();
-      expect(recipeInfo.branches[0].ctrDashboardLink).toBeDefined();
+      expect(recipeInfo.branches[0].uctrPercent).not.toBeDefined();
+      expect(recipeInfo.branches[0].uctrDashboardLink).toBeDefined();
       expect(dashboardLink).toBeInTheDocument();
-      expect(ctrMetrics).not.toBeInTheDocument();
+      expect(uctrMetrics).not.toBeInTheDocument();
     });
 
     it("doesn't display any metric when Looker dashboard doesn't exist", () => {
@@ -238,14 +238,14 @@ describe("MessageTable", () => {
 
       const toggleButton = screen.getByTestId("toggleAllRowsButton");
       fireEvent.click(toggleButton);
-      const ctrMetrics = screen.queryByText("CTR");
+      const uctrMetrics = screen.queryByText("UCTR");
       const dashboardLink = screen.queryByText("Dashboard");
 
-      expect(messageTableData[0].branches[0].ctrPercent).not.toBeDefined();
+      expect(messageTableData[0].branches[0].uctrPercent).not.toBeDefined();
       expect(
-        messageTableData[0].branches[0].ctrDashboardLink,
+        messageTableData[0].branches[0].uctrDashboardLink,
       ).not.toBeDefined();
-      expect(ctrMetrics).not.toBeInTheDocument();
+      expect(uctrMetrics).not.toBeInTheDocument();
       expect(dashboardLink).not.toBeInTheDocument();
     });
 
@@ -340,7 +340,7 @@ describe("MessageTable", () => {
   });
 
   describe("MessageColumns", () => {
-    it("displays CTR percentages when Looker dashboard exists and CTR is defined", async () => {
+    it("displays UCTR percentages when Looker dashboard exists and UCTR is defined", async () => {
       const fakeMsgInfo: FxMSMessageInfo = {
         product: "Desktop",
         id: "test id",
@@ -348,23 +348,23 @@ describe("MessageTable", () => {
         surface: "test surface",
         segment: "test segment",
         metrics: "test metrics",
-        ctrPercent: 12.35,
-        ctrPercentChange: 2,
-        ctrDashboardLink: "test link",
+        uctrPercent: 12.35,
+        uctrPercentChange: 2,
+        uctrDashboardLink: "test link",
         impressions: 12899,
       };
       render(
         <MessageTable columns={fxmsMessageColumns} data={[fakeMsgInfo]} />,
       );
 
-      const ctrMetrics = screen.getByText("12.35% CTR", {
+      const uctrMetrics = screen.getByText("12.35% UCTR", {
         exact: false,
       });
 
-      expect(ctrMetrics).toBeInTheDocument();
+      expect(uctrMetrics).toBeInTheDocument();
     });
 
-    it("displays 'Dashboard' when Looker dashboard exists but CTR is undefined", () => {
+    it("displays 'Dashboard' when Looker dashboard exists but UCTR is undefined", () => {
       const fakeMsgInfo: FxMSMessageInfo = {
         product: "Desktop",
         id: "test id",
@@ -372,16 +372,16 @@ describe("MessageTable", () => {
         surface: "test surface",
         segment: "test segment",
         metrics: "test metrics",
-        ctrDashboardLink: "test link",
+        uctrDashboardLink: "test link",
       };
       render(
         <MessageTable columns={fxmsMessageColumns} data={[fakeMsgInfo]} />,
       );
 
-      const ctrMetrics = screen.queryByText("CTR");
+      const uctrMetrics = screen.queryByText("UCTR");
       const dashboardLink = screen.getByText("Dashboard");
 
-      expect(ctrMetrics).not.toBeInTheDocument();
+      expect(uctrMetrics).not.toBeInTheDocument();
       expect(dashboardLink).toBeInTheDocument();
     });
 
@@ -398,10 +398,10 @@ describe("MessageTable", () => {
         <MessageTable columns={fxmsMessageColumns} data={[fxmsMsgInfo]} />,
       );
 
-      const ctrMetrics = screen.queryByText("CTR");
+      const uctrMetrics = screen.queryByText("UCTR");
       const dashboardLink = screen.queryByText("Dashboard");
 
-      expect(ctrMetrics).not.toBeInTheDocument();
+      expect(uctrMetrics).not.toBeInTheDocument();
       expect(dashboardLink).not.toBeInTheDocument();
     });
 
@@ -434,7 +434,7 @@ describe("MessageTable", () => {
         surface: "test surface",
         segment: "test segment",
         metrics: "test metrics",
-        ctrPercent: 24.3,
+        uctrPercent: 24.3,
         impressions: parseInt(impressions!) + 100,
       };
       const fxmsMsgInfo2: FxMSMessageInfo = {
@@ -444,7 +444,7 @@ describe("MessageTable", () => {
         surface: "test surface",
         segment: "test segment",
         metrics: "test metrics",
-        ctrPercent: 24.3,
+        uctrPercent: 24.3,
         impressions: parseInt(impressions!) - 100,
       };
       const fxmsMsgInfo3: FxMSMessageInfo = {
@@ -454,7 +454,7 @@ describe("MessageTable", () => {
         surface: "test surface",
         segment: "test segment",
         metrics: "test metrics",
-        ctrPercent: 24.3,
+        uctrPercent: 24.3,
         impressions: parseInt(impressions!),
       };
       render(
@@ -485,7 +485,7 @@ describe("MessageTable", () => {
         surface: "Feature Callout (1st screen)",
         segment: "test segment",
         metrics: "test metrics",
-        ctrPercent: 24.3,
+        uctrPercent: 24.3,
         impressions: 1000,
       };
       const fxmsMsgInfo2: FxMSMessageInfo = {
@@ -495,7 +495,7 @@ describe("MessageTable", () => {
         surface: "Default About:Welcome Message (1st screen)",
         segment: "test segment",
         metrics: "test metrics",
-        ctrPercent: 24.3,
+        uctrPercent: 24.3,
         impressions: 1000,
       };
       const fxmsMsgInfo3: FxMSMessageInfo = {
@@ -505,7 +505,7 @@ describe("MessageTable", () => {
         surface: "Private Browsing New Tab",
         segment: "test segment",
         metrics: "test metrics",
-        ctrPercent: 24.3,
+        uctrPercent: 24.3,
         impressions: 1000,
       };
 
@@ -542,7 +542,7 @@ describe("MessageTable", () => {
           surface: "Feature Callout (1st screen)",
           segment: "test segment",
           metrics: "test metrics",
-          ctrPercent: 24.3,
+          uctrPercent: 24.3,
           impressions: 1000,
         };
         const fxmsMsgInfo2: FxMSMessageInfo = {
@@ -552,7 +552,7 @@ describe("MessageTable", () => {
           surface: "InfoBar",
           segment: "test segment",
           metrics: "test metrics",
-          ctrPercent: 24.3,
+          uctrPercent: 24.3,
           impressions: 1000,
         };
         const fxmsMsgInfo3: FxMSMessageInfo = {
@@ -562,7 +562,7 @@ describe("MessageTable", () => {
           surface: "Default About:Welcome Message (1st screen)",
           segment: "test segment",
           metrics: "test metrics",
-          ctrPercent: 24.3,
+          uctrPercent: 24.3,
           impressions: 1000,
         };
 
@@ -612,7 +612,7 @@ describe("MessageTable", () => {
         surface: "test surface",
         segment: "test segment",
         metrics: "test metrics",
-        ctrDashboardLink: "test link",
+        uctrDashboardLink: "test link",
       };
       render(
         <MessageTable columns={fxmsMessageColumns} data={[fakeMsgInfo]} />,

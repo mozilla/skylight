@@ -38,69 +38,69 @@ describe("Looker", () => {
     expect(queryResult).toEqual(fakeQueryResult);
   });
 
-  describe("getSafeCtrPercent", () => {
-    it("should correctly format a CTR percentage to 2 decimal places", () => {
-      expect(looker.getSafeCtrPercent(0.123456789)).toEqual(12.35);
-      expect(looker.getSafeCtrPercent(0.1)).toEqual(10);
-      expect(looker.getSafeCtrPercent(0.123)).toEqual(12.3);
-      expect(looker.getSafeCtrPercent(0.1235)).toEqual(12.35);
+  describe("getSafeUctrPercent", () => {
+    it("should correctly format a UCTR percentage to 2 decimal places", () => {
+      expect(looker.getSafeUctrPercent(0.123456789)).toEqual(12.35);
+      expect(looker.getSafeUctrPercent(0.1)).toEqual(10);
+      expect(looker.getSafeUctrPercent(0.123)).toEqual(12.3);
+      expect(looker.getSafeUctrPercent(0.1235)).toEqual(12.35);
     });
 
     it("should handle zero value", () => {
-      expect(looker.getSafeCtrPercent(0)).toEqual(0);
+      expect(looker.getSafeUctrPercent(0)).toEqual(0);
     });
   });
 
-  describe("getCTRPercentData", () => {
-    it("should return the CTR percent for a desktop message with standard template", async () => {
+  describe("getUCTRPercentData", () => {
+    it("should return the UCTR percent for a desktop message with standard template", async () => {
       const template = "test_template";
       const platform = "firefox-desktop";
       const id = "test_query_0";
       setMockPlatform(platform);
       setMockTemplate(template);
 
-      const ctrPercentData = await looker.getCTRPercentData(
+      const uctrPercentData = await looker.getUCTRPercentData(
         id,
         platform,
         template,
       );
 
-      expect(ctrPercentData?.ctrPercent).toEqual(12.35);
-      expect(ctrPercentData?.impressions).toEqual(12899);
+      expect(uctrPercentData?.uctrPercent).toEqual(12.35);
+      expect(uctrPercentData?.impressions).toEqual(12899);
     });
 
-    it("should return the CTR percent for a desktop message with infobar template", async () => {
+    it("should return the UCTR percent for a desktop message with infobar template", async () => {
       const id = "test_query_0";
       const platform = "firefox-desktop";
       const template = "infobar";
       setMockPlatform(platform);
       setMockTemplate(template);
 
-      const ctrPercentData = await looker.getCTRPercentData(
+      const uctrPercentData = await looker.getUCTRPercentData(
         id,
         platform,
         template,
       );
 
-      expect(ctrPercentData?.ctrPercent).toEqual(12.35);
-      expect(ctrPercentData?.impressions).toEqual(8765);
+      expect(uctrPercentData?.uctrPercent).toEqual(12.35);
+      expect(uctrPercentData?.impressions).toEqual(8765);
     });
 
-    it("should return the CTR percent for an android message with survey template and extrapolate impressions", async () => {
+    it("should return the UCTR percent for an android message with survey template and extrapolate impressions", async () => {
       const id = "test_query_0";
       const platform = "fenix";
       const template = "survey";
       setMockPlatform(platform);
       setMockTemplate(template);
 
-      const ctrPercentData = await looker.getCTRPercentData(
+      const uctrPercentData = await looker.getUCTRPercentData(
         id,
         platform,
         template,
       );
 
-      expect(ctrPercentData?.ctrPercent).toEqual(12.35);
-      expect(ctrPercentData?.impressions).toEqual(12890); // 1289 * 10 (extrapolated)
+      expect(uctrPercentData?.uctrPercent).toEqual(12.35);
+      expect(uctrPercentData?.impressions).toEqual(12890); // 1289 * 10 (extrapolated)
     });
 
     it("should return undefined for a standard android message (non-survey template)", async () => {
@@ -110,14 +110,14 @@ describe("Looker", () => {
       setMockPlatform(platform);
       setMockTemplate(template);
 
-      const ctrPercentData = await looker.getCTRPercentData(
+      const uctrPercentData = await looker.getUCTRPercentData(
         id,
         platform,
         template,
       );
 
       // For non-survey Android templates, we expect undefined
-      expect(ctrPercentData).toBeUndefined();
+      expect(uctrPercentData).toBeUndefined();
     });
   });
 
