@@ -30,9 +30,27 @@ function isMessagingFeature(featureId: string): boolean {
 // Get the first messaging feature object in a branch.
 // XXX should handle the cases where there are none
 function getFirstMessagingFeature(branch: any): any {
+  if (!branch || !Array.isArray(branch.features)) {
+    console.error(
+      "getFirstMessagingFeature: branch or branch.features is missing",
+      {
+        branch,
+        features: branch ? branch.features : undefined,
+      },
+    );
+    return undefined;
+  }
+
   const index = branch.features.findIndex((feature: any) =>
     isMessagingFeature(feature.featureId),
   );
+  if (index === -1) {
+    console.error("getFirstMessagingFeature: No messaging feature found", {
+      branch,
+      features: branch.features,
+    });
+    return undefined;
+  }
 
   return branch.features[index];
 }
@@ -197,6 +215,17 @@ export class NimbusRecipe implements NimbusRecipeType {
 
     // XXX right now we don't support more than one messaging feature
     const feature = getFirstMessagingFeature(branch);
+    if (!feature) {
+      console.error(
+        "getDesktopBranchInfo: No messaging feature found for branch",
+        {
+          branch,
+          experiment: this._rawRecipe,
+        },
+      );
+      // Early return to prevent property access errors and make logging effective
+      return branchInfo;
+    }
 
     // XXX in this case we're really passing a feature value. Hmm....
     // about:welcome is special and doesn't use the template property,
@@ -272,6 +301,22 @@ export class NimbusRecipe implements NimbusRecipeType {
         //
         // XXX consider pulling branch ids from somewhere else that is validated
         // by Experimenter, to avoid similar user errors in branch ids.
+        if (
+          !feature.value.content ||
+          !Array.isArray(feature.value.content.screens) ||
+          feature.value.content.screens.length === 0
+        ) {
+          console.error(
+            'getDesktopBranchInfo: "feature_callout" template but feature.value.content.screens is not a non-empty array',
+            {
+              branch,
+              feature,
+              content: feature.value.content,
+              experiment: this._rawRecipe,
+            },
+          );
+          return branchInfo;
+        }
         branchInfo.id = feature.value.content.screens[0].id.split(":")[0];
         // Localize the feature callout if necessary
         let localizedFeatureCallout = _substituteLocalizations(
@@ -319,22 +364,52 @@ export class NimbusRecipe implements NimbusRecipeType {
         break;
 
       case "multi":
-        // XXX only does first messages
+        if (!Array.isArray(feature.value.messages)) {
+          console.error(
+            'getDesktopBranchInfo: "multi" template but feature.value.messages is not an array',
+            {
+              branch,
+              feature,
+              messages: feature.value.messages,
+              experiment: this._rawRecipe,
+            },
+          );
+          return branchInfo;
+        }
         const firstMessage = feature.value.messages[0];
+        if (!firstMessage || typeof firstMessage !== "object") {
+          console.error(
+            'getDesktopBranchInfo: "multi" template but firstMessage is missing or not an object',
+            {
+              branch,
+              feature,
+              firstMessage,
+              experiment: this._rawRecipe,
+            },
+          );
+          return branchInfo;
+        }
         if (!("content" in firstMessage)) {
           // console.warn(
           //   'template "multi" first message does not contain content key details not rendered',
           // );
           return branchInfo;
         }
-
-        if (!("screens" in firstMessage.content)) {
+        if (
+          !firstMessage.content ||
+          !Array.isArray(firstMessage.content.screens)
+        ) {
           console.warn(
             "multis where the 1st message's content does not have `screens` member (like infobar) are not supported",
+            {
+              branch,
+              feature,
+              firstMessage,
+              experiment: this._rawRecipe,
+            },
           );
           return branchInfo;
         }
-
         // XXX only does first screen
         branchInfo.id = firstMessage.content.screens[0].id;
         // Localize the recipe if necessary.
