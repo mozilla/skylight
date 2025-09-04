@@ -317,7 +317,21 @@ export class NimbusRecipe implements NimbusRecipeType {
           );
           return branchInfo;
         }
-        branchInfo.id = feature.value.content.screens[0].id.split(":")[0];
+        const screenId = feature.value.content.screens[0].id;
+        if (typeof screenId !== "string" || !screenId) {
+          console.error(
+            'getDesktopBranchInfo: "feature_callout" template but screens[0].id is missing or not a string',
+            {
+              branch,
+              feature,
+              content: feature.value.content,
+              experiment: this._rawRecipe,
+              screens: feature.value.content.screens,
+            },
+          );
+          return branchInfo;
+        }
+        branchInfo.id = screenId.split(":")[0];
         // Localize the feature callout if necessary
         let localizedFeatureCallout = _substituteLocalizations(
           feature.value,
