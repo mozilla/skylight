@@ -435,7 +435,7 @@ export class NimbusRecipe implements NimbusRecipeType {
           !firstMsgScreens[0].id
         ) {
           console.error(
-            'getDesktopBranchInfo: "feature_callout" template but screens[0].id is missing or not a string',
+            'getDesktopBranchInfo: "multi" template but screens[0].id is missing or not a string',
             {
               branch,
               feature,
