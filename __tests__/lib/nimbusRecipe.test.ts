@@ -536,4 +536,66 @@ describe("NimbusRecipe", () => {
 
     expect(result).toBeUndefined();
   });
+
+  describe("getBranchInfo edge cases", () => {
+    it("should handle multi template with empty screens array without crashing", () => {
+      const MULTI_RECIPE_EMPTY_SCREENS = {
+        id: "multi-test-recipe",
+        slug: "multi-test-recipe",
+        schemaVersion: "1.12.0",
+        appId: "firefox-desktop",
+        appName: "firefox_desktop",
+        application: "firefox-desktop",
+        channel: "nightly",
+        isEnrollmentPaused: false,
+        probeSets: [],
+        startDate: null,
+        endDate: null,
+        proposedEnrollment: 7,
+        referenceBranch: "control",
+        userFacingName: "Multi Template Recipe",
+        userFacingDescription: "Multi template test recipe",
+        bucketConfig: {
+          namespace: "nimbus-test-utils",
+          randomizationUnit: "normandy_id",
+          start: 0,
+          count: 100,
+          total: 1000,
+        },
+        branches: [
+          {
+            features: [
+              {
+                enabled: true,
+                featureId: "fxms-message-1",
+                value: {
+                  template: "multi",
+                  messages: [
+                    {
+                      id: "test-message-id",
+                      content: {
+                        screens: [],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            ratio: 1,
+            slug: "treatment",
+            screenshots: [],
+            description: "treatment description",
+          },
+        ],
+      };
+
+      const nimbusRecipe = new NimbusRecipe(MULTI_RECIPE_EMPTY_SCREENS);
+      const branch = MULTI_RECIPE_EMPTY_SCREENS.branches[0];
+
+      // This should not throw an error when accessing screens[0]
+      expect(() => {
+        const branchInfo = nimbusRecipe.getBranchInfo(branch);
+      }).not.toThrow();
+    });
+  });
 });
