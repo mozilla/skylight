@@ -425,7 +425,29 @@ export class NimbusRecipe implements NimbusRecipeType {
           return branchInfo;
         }
         // XXX only does first screen
-        branchInfo.id = firstMessage.content.screens[0].id;
+        const firstMsgScreens = firstMessage.content.screens;
+        // XXXdmose we REALLY need to get in-tree schemas fixed up and used by Skylight too so
+        // we don't have to do this crazy manual validation.
+        if (
+          typeof firstMsgScreens[0] !== "object" ||
+          !("id" in firstMsgScreens[0]) ||
+          typeof firstMsgScreens[0].id !== "string" ||
+          !firstMsgScreens[0].id
+        ) {
+          console.error(
+            'getDesktopBranchInfo: "feature_callout" template but screens[0].id is missing or not a string',
+            {
+              branch,
+              feature,
+              content: firstMessage.content,
+              experiment: this._rawRecipe,
+              screens: firstMessage.content.screens,
+            },
+          );
+          return branchInfo;
+        }
+        branchInfo.id = firstMsgScreens[0].id;
+
         // Localize the recipe if necessary.
         let localizedMulti = _substituteLocalizations(
           feature.value.messages[0],
