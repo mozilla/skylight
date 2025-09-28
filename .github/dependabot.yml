@@ -6,14 +6,19 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    open-pull-requests-limit: 10
+  # Configuration for Next.js v14 maintenance updates (patch/minor)
+  - package-ecosystem: "npm"
+    directory: "/"
+    open-pull-requests-limit: 5
     schedule:
       interval: "daily"
+    ignore:
+      # Only ignore major versions for this update config
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-config-next"
+        update-types: ["version-update:semver-major"]
     groups:
-      # group the main nextjs packages for patch/minor updates to keep
-      # current within the same major version (e.g., 14.x updates)
       next-v14:
         applies-to: version-updates
         patterns:
@@ -22,8 +27,20 @@ updates:
         update-types:
           - "minor"
           - "patch"
-      # separate group for major version updates (e.g., 14.x -> 15.x)
-      # to allow separate evaluation of breaking changes
+
+  # Configuration for Next.js v15 major version updates
+  - package-ecosystem: "npm"
+    directory: "/"
+    open-pull-requests-limit: 5
+    schedule:
+      interval: "daily"
+    ignore:
+      # Only ignore patch/minor versions for this update config
+      - dependency-name: "next"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
+      - dependency-name: "eslint-config-next"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
+    groups:
       next-major:
         applies-to: version-updates
         patterns:
@@ -31,6 +48,18 @@ updates:
           - "eslint-config-next"
         update-types:
           - "major"
+
+  # Configuration for all other dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    open-pull-requests-limit: 10
+    schedule:
+      interval: "daily"
+    ignore:
+      # Ignore Next.js packages to avoid conflicts with dedicated configs above
+      - dependency-name: "next"
+      - dependency-name: "eslint-config-next"
+    groups:
       react:
         applies-to: version-updates
         patterns:
