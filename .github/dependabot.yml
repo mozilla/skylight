@@ -6,19 +6,13 @@
 
 version: 2
 updates:
-  # Configuration for Next.js v14 maintenance updates (patch/minor)
   - package-ecosystem: "npm"
     directory: "/"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 15
     schedule:
       interval: "daily"
-    ignore:
-      # Only ignore major versions for this update config
-      - dependency-name: "next"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "eslint-config-next"
-        update-types: ["version-update:semver-major"]
     groups:
+      # Group for Next.js v14 maintenance updates (patch/minor only)
       next-v14:
         applies-to: version-updates
         patterns:
@@ -27,20 +21,7 @@ updates:
         update-types:
           - "minor"
           - "patch"
-
-  # Configuration for Next.js v15 major version updates
-  - package-ecosystem: "npm"
-    directory: "/"
-    open-pull-requests-limit: 5
-    schedule:
-      interval: "daily"
-    ignore:
-      # Only ignore patch/minor versions for this update config
-      - dependency-name: "next"
-        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
-      - dependency-name: "eslint-config-next"
-        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
-    groups:
+      # Group for Next.js v15 major version updates only
       next-major:
         applies-to: version-updates
         patterns:
@@ -48,18 +29,6 @@ updates:
           - "eslint-config-next"
         update-types:
           - "major"
-
-  # Configuration for all other dependencies
-  - package-ecosystem: "npm"
-    directory: "/"
-    open-pull-requests-limit: 10
-    schedule:
-      interval: "daily"
-    ignore:
-      # Ignore Next.js packages to avoid conflicts with dedicated configs above
-      - dependency-name: "next"
-      - dependency-name: "eslint-config-next"
-    groups:
       react:
         applies-to: version-updates
         patterns:
