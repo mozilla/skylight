@@ -12,21 +12,25 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      # group the main nextjs packages group as one PR, since they're
-      # created together and are annoying to update separately.  Unfortunately,
-      # they're not scoped under @next, so we'll need to add anything
-      # from https://github.com/vercel/next.js/tree/canary/packages
-      # that's not captured by "*next*" and isn't a dep of an existing top-level
-      # package we use if we start using it.
-      next:
+      # group the main nextjs packages for patch/minor updates to keep
+      # current within the same major version (e.g., 14.x updates)
+      next-v14:
         applies-to: version-updates
         patterns:
-          - "*next*"
+          - "next"
+          - "eslint-config-next"
+        update-types:
+          - "minor"
+          - "patch"
+      # separate group for major version updates (e.g., 14.x -> 15.x)
+      # to allow separate evaluation of breaking changes
+      next-major:
+        applies-to: version-updates
+        patterns:
+          - "next"
           - "eslint-config-next"
         update-types:
           - "major"
-          - "minor"
-          - "patch"
       react:
         applies-to: version-updates
         patterns:
