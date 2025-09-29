@@ -145,8 +145,8 @@ describe("NimbusRecipe", () => {
         product: "Desktop",
         id: "test-recipe",
         segment: "some segment",
-        ctrPercent: 0.5,
-        ctrPercentChange: 2,
+        uctrPercent: 0.5,
+        uctrPercentChange: 2,
         metrics: "some metrics",
         experimenterLink: `https://experimenter.services.mozilla.com/nimbus/test-recipe`,
         userFacingName: rawRecipe.userFacingName,
@@ -215,7 +215,7 @@ describe("NimbusRecipe", () => {
         // use deepEqual and check for the existence of object properties instead.
         expect(branchInfo).toEqual({
           product: "Desktop",
-          ctrDashboardLink: dashboardLink,
+          uctrDashboardLink: dashboardLink,
           id: "feature_value_id:treatment-a",
           isBranch: true,
           nimbusExperiment: AW_RECIPE,
@@ -267,7 +267,7 @@ describe("NimbusRecipe", () => {
 
         expect(branchInfo).toEqual({
           product: "Desktop",
-          ctrDashboardLink: dashboardLink,
+          uctrDashboardLink: dashboardLink,
           id: "feature_value_id:treatment-a",
           isBranch: true,
           nimbusExperiment: AW_RECIPE_NO_SCREENS,
@@ -319,7 +319,7 @@ describe("NimbusRecipe", () => {
           template: "survey",
           screenshots: ["screenshotURI"],
           description: "control description",
-          ctrDashboardLink: dashboardLink,
+          uctrDashboardLink: dashboardLink,
         });
       });
 
