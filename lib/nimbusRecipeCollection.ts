@@ -1,6 +1,6 @@
 import { NimbusRecipe } from "../lib/nimbusRecipe";
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "@/app/columns";
-import { getCTRPercentData } from "./looker";
+import { getUCTRPercentData } from "./looker";
 import { getExperimentLookerDashboardDate } from "./lookerUtils";
 import { Platform } from "./types";
 
@@ -15,9 +15,9 @@ type NimbusRecipeCollectionType = {
 };
 
 /**
- * @returns an array of BranchInfo with updated CTR percents for the recipe
+ * @returns an array of BranchInfo with updated UCTR percents for the recipe
  */
-async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
+async function updateBranchesUCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
   return await Promise.all(
     recipe
       .getBranchInfos()
@@ -31,7 +31,7 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
         );
         // We are making all branch ids upper case to make up for
         // Looker being case sensitive
-        const ctrPercentData = await getCTRPercentData(
+        const uctrPercentData = await getUCTRPercentData(
           branchInfo.id,
           branchInfo.nimbusExperiment.appName,
           branchInfo.template!,
@@ -41,9 +41,9 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
           branchInfo.nimbusExperiment.startDate,
           proposedEndDate,
         );
-        if (ctrPercentData) {
-          branchInfo.ctrPercent = ctrPercentData.ctrPercent;
-          branchInfo.impressions = ctrPercentData.impressions;
+        if (uctrPercentData) {
+          branchInfo.uctrPercent = uctrPercentData.uctrPercent;
+          branchInfo.impressions = uctrPercentData.impressions;
         }
         return branchInfo;
       }),
@@ -92,15 +92,15 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
 
   /**
    * @returns a list of RecipeInfo of recipes in this collection with updated
-   * ctrPercent properties
+   * uctrPercent properties
    */
   async getExperimentAndBranchInfos(): Promise<RecipeOrBranchInfo[]> {
     return await Promise.all(
       this.recipes.map(async (recipe: NimbusRecipe): Promise<RecipeInfo> => {
         let updatedRecipe = recipe.getRecipeInfo();
 
-        // Update all branches with CTR data for the recipe
-        updatedRecipe.branches = await updateBranchesCTR(recipe);
+        // Update all branches with UCTR data for the recipe
+        updatedRecipe.branches = await updateBranchesUCTR(recipe);
 
         return updatedRecipe;
       }),

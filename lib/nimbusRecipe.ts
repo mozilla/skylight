@@ -171,7 +171,7 @@ export class NimbusRecipe implements NimbusRecipeType {
       formattedEndDate = formatDate(branchInfo.nimbusExperiment.endDate, 1);
     }
 
-    branchInfo.ctrDashboardLink = getAndroidDashboardLink(
+    branchInfo.uctrDashboardLink = getAndroidDashboardLink(
       branchInfo.template as string,
       branchInfo.id,
       undefined,
@@ -182,7 +182,7 @@ export class NimbusRecipe implements NimbusRecipeType {
       this._isCompleted,
     );
 
-    console.log("Android Dashboard: ", branchInfo.ctrDashboardLink);
+    console.log("Android Dashboard: ", branchInfo.uctrDashboardLink);
 
     return branchInfo;
   }
@@ -482,7 +482,7 @@ export class NimbusRecipe implements NimbusRecipeType {
     if (branchInfo.nimbusExperiment.endDate) {
       formattedEndDate = formatDate(branchInfo.nimbusExperiment.endDate, 1);
     }
-    branchInfo.ctrDashboardLink = getDesktopDashboardLink(
+    branchInfo.uctrDashboardLink = getDesktopDashboardLink(
       branch.template,
       branchInfo.id,
       undefined,
@@ -537,8 +537,8 @@ export class NimbusRecipe implements NimbusRecipeType {
       product: "Desktop",
       id: this._rawRecipe.slug,
       segment: "some segment",
-      ctrPercent: 0.5, // get me from BigQuery
-      ctrPercentChange: 2, // get me from BigQuery
+      uctrPercent: 0.5, // get me from BigQuery
+      uctrPercentChange: 2, // get me from BigQuery
       metrics: "some metrics",
       experimenterLink: `https://experimenter.services.mozilla.com/nimbus/${this._rawRecipe.slug}`,
       userFacingName: this._rawRecipe.userFacingName,

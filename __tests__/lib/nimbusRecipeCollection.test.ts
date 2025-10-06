@@ -70,7 +70,7 @@ describe("NimbusRecipeCollection", () => {
   });
 
   describe("getExperimentAndBranchInfos", () => {
-    it("gets all the recipe infos with updated CTR percents", async () => {
+    it("gets all the recipe infos with updated UCTR percents", async () => {
       setMockPlatform("firefox-desktop");
       const nimbusRecipeCollection = new NimbusRecipeCollection();
       nimbusRecipeCollection.recipes = [
@@ -80,8 +80,8 @@ describe("NimbusRecipeCollection", () => {
       const recipeInfos =
         (await nimbusRecipeCollection.getExperimentAndBranchInfos()) as RecipeInfo[];
 
-      expect(recipeInfos[0].branches[0].ctrPercent).toBe(12.35);
-      expect(recipeInfos[0].branches[1].ctrPercent).toBe(12.35);
+      expect(recipeInfos[0].branches[0].uctrPercent).toBe(12.35);
+      expect(recipeInfos[0].branches[1].uctrPercent).toBe(12.35);
     });
   });
 });
