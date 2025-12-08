@@ -4,6 +4,14 @@ import { getCTRPercentData } from "./looker";
 import { getExperimentLookerDashboardDate } from "./lookerUtils";
 import { Platform } from "./types";
 
+/**
+ * Experiments to skip when fetching CTR data from Looker.
+ * These experiments cause queries that exceed BigQuery's 10TB limit.
+ */
+const EXPERIMENT_CTR_BLOCKLIST: Set<string> = new Set([
+  "sidebar-button-feature-callout-vertical-tabs-users-existing-profiles",
+]);
+
 const nimbusExperimentV7Schema = require("@mozilla/nimbus-schemas/schemas/NimbusExperimentV7.schema.json");
 type NimbusExperiment = typeof nimbusExperimentV7Schema.properties;
 
@@ -22,6 +30,14 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
     recipe
       .getBranchInfos()
       .map(async (branchInfo: BranchInfo): Promise<BranchInfo> => {
+        // Skip blocklisted experiments that cause queries exceeding BigQuery limits
+        if (EXPERIMENT_CTR_BLOCKLIST.has(branchInfo.nimbusExperiment.slug)) {
+          console.log(
+            `[LOOKER] Skipping blocklisted experiment: ${branchInfo.nimbusExperiment.slug}`,
+          );
+          return branchInfo;
+        }
+
         if (branchInfo.nimbusExperiment.appName === "fenix") {
           console.log(branchInfo.id + ": " + branchInfo.template);
         }
