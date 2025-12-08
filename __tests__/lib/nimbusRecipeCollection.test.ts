@@ -83,5 +83,29 @@ describe("NimbusRecipeCollection", () => {
       expect(recipeInfos[0].branches[0].ctrPercent).toBe(12.35);
       expect(recipeInfos[0].branches[1].ctrPercent).toBe(12.35);
     });
+
+    it("skips CTR data fetching for blocklisted experiments", async () => {
+      setMockPlatform("firefox-desktop");
+      const nimbusRecipeCollection = new NimbusRecipeCollection();
+
+      // Create a blocklisted experiment and a normal experiment
+      const blocklistedSlug =
+        "sidebar-button-feature-callout-vertical-tabs-users-existing-profiles";
+      nimbusRecipeCollection.recipes = [
+        new NimbusRecipe(ExperimentFakes.recipe(blocklistedSlug)),
+        new NimbusRecipe(ExperimentFakes.recipe("normal-experiment")),
+      ];
+
+      const recipeInfos =
+        (await nimbusRecipeCollection.getExperimentAndBranchInfos()) as RecipeInfo[];
+
+      // Blocklisted experiment should not have CTR data
+      expect(recipeInfos[0].branches[0].ctrPercent).toBeUndefined();
+      expect(recipeInfos[0].branches[1].ctrPercent).toBeUndefined();
+
+      // Normal experiment should have CTR data
+      expect(recipeInfos[1].branches[0].ctrPercent).toBe(12.35);
+      expect(recipeInfos[1].branches[1].ctrPercent).toBe(12.35);
+    });
   });
 });
