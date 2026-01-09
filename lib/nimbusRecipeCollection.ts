@@ -47,20 +47,29 @@ async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
         );
         // We are making all branch ids upper case to make up for
         // Looker being case sensitive
-        const ctrPercentData = await getCTRPercentData(
-          branchInfo.id,
-          branchInfo.nimbusExperiment.appName,
-          branchInfo.template!,
-          undefined,
-          branchInfo.nimbusExperiment.slug,
-          branchInfo.slug,
-          branchInfo.nimbusExperiment.startDate,
-          proposedEndDate,
-        );
-        if (ctrPercentData) {
-          branchInfo.ctrPercent = ctrPercentData.ctrPercent;
-          branchInfo.impressions = ctrPercentData.impressions;
+        // XXX instead of using isRollout as criteria, do something better
+        // easiest: reenable hardcoded blocklist above
+        // best: handle data errors and back off in that case
+        //  remembering in blocklist
+
+        if (!branchInfo.nimbusExperiment.isRollout) {
+          const ctrPercentData = await getCTRPercentData(
+            branchInfo.id,
+            branchInfo.nimbusExperiment.appName,
+            branchInfo.template!,
+            undefined,
+            branchInfo.nimbusExperiment.slug,
+            branchInfo.slug,
+            branchInfo.nimbusExperiment.startDate,
+            proposedEndDate,
+          );
+
+          if (ctrPercentData) {
+            branchInfo.ctrPercent = ctrPercentData.ctrPercent;
+            branchInfo.impressions = ctrPercentData.impressions;
+          }
         }
+
         return branchInfo;
       }),
   );
