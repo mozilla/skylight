@@ -4,6 +4,68 @@ import { getDashboardIdForSurface, getSurfaceData } from "./messageUtils";
 import { getLookerSubmissionTimestampDateFilter } from "./lookerUtils";
 import { Platform } from "./types";
 
+/**
+ * Maximum number of concurrent Looker API calls per `mapWithConcurrency`
+ * invocation. Override via the `LOOKER_BATCH_SIZE` environment variable.
+ *
+ * ## How call sites use this value
+ *
+ * - **`getASRouterLocalMessageInfoFromFile`** — a single flat loop over
+ *   messages. At most `L` Looker calls run concurrently (where `L` is this
+ *   limit).
+ *
+ * - **`getExperimentAndBranchInfos`** — a nested loop: the outer loop
+ *   processes recipes with limit `L`, and each recipe's `updateBranchesCTR`
+ *   starts an inner loop over branches, also with limit `L`. The actual
+ *   concurrency is `L × min(L, B)` where `B` is branches per recipe.
+ *   Most experiments have 2–4 branches, so for typical workloads the
+ *   concurrent call count is much lower than the theoretical O(L²) max.
+ *
+ * These two call sites run sequentially (not in parallel), so the peak
+ * concurrent Looker load across the whole fetch is
+ * `max(L, L × min(L, B))`.
+ *
+ * ## Choosing a value
+ *
+ * | L  | Typical (B=3) | Worst case (L²) | Notes                     |
+ * |----|---------------|-----------------|---------------------------|
+ * | 1  | 1             | 1               | Fully serial, safest      |
+ * | 2  | 4             | 4               | Conservative default      |
+ * | 3  | 9             | 9               | Moderate                  |
+ * | 4  | 12            | 16              | Moderate-aggressive       |
+ * | 5  | 15            | 25              | Aggressive                |
+ * | 8  | 24            | 64              |                           |
+ * | 10 | 30            | 100             |                           |
+ * | 15 | 45            | 225             | Current default; fast but |
+ * |    |               |                 | risks 504s under load     |
+ * | 20 | 60            | 400             |                           |
+ *
+ * Higher values improve throughput (fewer sequential round-trips to Looker)
+ * but increase the risk of 504 Gateway Timeouts when Looker is under load.
+ * Lower values are gentler on Looker at the cost of slower page builds.
+ */
+const LOOKER_BATCH_SIZE_DEFAULT = 15;
+
+/**
+ * Parse the `LOOKER_BATCH_SIZE` env var into a positive integer, falling back
+ * to {@link LOOKER_BATCH_SIZE_DEFAULT} for missing, empty, non-numeric,
+ * zero, or negative values.
+ */
+export function parseLookerBatchSize(raw: string | undefined): number {
+  if (raw === undefined || raw === "") {
+    return LOOKER_BATCH_SIZE_DEFAULT;
+  }
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n < 1) {
+    return LOOKER_BATCH_SIZE_DEFAULT;
+  }
+  return Math.floor(n);
+}
+
+export const LOOKER_BATCH_SIZE = parseLookerBatchSize(
+  process.env.LOOKER_BATCH_SIZE,
+);
+
 export type CTRData = {
   ctrPercent: number;
   impressions: number;

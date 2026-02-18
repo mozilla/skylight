@@ -3,6 +3,7 @@ import { NimbusRecipeCollection } from "@/lib/nimbusRecipeCollection";
 import { ExperimentFakes } from "@/__tests__/ExperimentFakes.mjs";
 import { RecipeInfo } from "@/app/columns";
 import { Platform } from "@/lib/types";
+import { LOOKER_BATCH_SIZE } from "@/lib/looker";
 
 const platform: Platform = "firefox-desktop";
 
@@ -14,9 +15,17 @@ global.fetch = jest.fn(() =>
 ) as jest.Mock;
 
 jest.mock("../../lib/sdk");
+jest.mock("../../lib/looker", () => ({
+  ...jest.requireActual("../../lib/looker"),
+  LOOKER_BATCH_SIZE: 2,
+  getCTRPercentData: jest.fn((...args: any[]) =>
+    (jest.requireActual("../../lib/looker") as any).getCTRPercentData(...args),
+  ),
+}));
 
 // eslint-disable-next-line jest/no-mocks-import
 import { setMockPlatform, resetMockState } from "@/lib/__mocks__/sdk";
+import { getCTRPercentData } from "@/lib/looker";
 
 describe("NimbusRecipeCollection", () => {
   // Reset mock state after each test
@@ -106,6 +115,44 @@ describe("NimbusRecipeCollection", () => {
       // Normal experiment should have CTR data
       expect(recipeInfos[1].branches[0].ctrPercent).toBe(12.35);
       expect(recipeInfos[1].branches[1].ctrPercent).toBe(12.35);
+    });
+
+    it("respects LOOKER_BATCH_SIZE for Looker API calls", async () => {
+      setMockPlatform("firefox-desktop");
+      const nimbusRecipeCollection = new NimbusRecipeCollection();
+
+      // Create 4 recipes so we have enough parallel work to detect violations
+      nimbusRecipeCollection.recipes = [
+        new NimbusRecipe(ExperimentFakes.recipe("recipe-1")),
+        new NimbusRecipe(ExperimentFakes.recipe("recipe-2")),
+        new NimbusRecipe(ExperimentFakes.recipe("recipe-3")),
+        new NimbusRecipe(ExperimentFakes.recipe("recipe-4")),
+      ];
+
+      // Track concurrency of getCTRPercentData calls
+      let active = 0;
+      let maxActive = 0;
+
+      (getCTRPercentData as jest.Mock).mockImplementation(async () => {
+        active++;
+        maxActive = Math.max(maxActive, active);
+        await new Promise((r) => setTimeout(r, 10));
+        active--;
+        return { ctrPercent: 12.35, impressions: 100 };
+      });
+
+      await nimbusRecipeCollection.getExperimentAndBranchInfos();
+
+      // With 4 recipes x 2 branches = 8 getCTRPercentData calls.
+      // LOOKER_BATCH_SIZE is mocked to 2, so the outer loop processes
+      // 2 recipes at a time, each with an inner loop of 2 branches.
+      // Max concurrent should not exceed LOOKER_BATCH_SIZE² = 4.
+      expect(maxActive).toBeLessThanOrEqual(
+        LOOKER_BATCH_SIZE * LOOKER_BATCH_SIZE,
+      );
+      expect(maxActive).toBeGreaterThan(0);
+      // All 8 calls should have completed despite the concurrency limit
+      expect(getCTRPercentData).toHaveBeenCalledTimes(8);
     });
   });
 });
