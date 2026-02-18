@@ -1,7 +1,8 @@
 import { NimbusRecipe } from "../lib/nimbusRecipe";
 import { BranchInfo, RecipeInfo, RecipeOrBranchInfo } from "@/app/columns";
-import { getCTRPercentData } from "./looker";
+import { getCTRPercentData, LOOKER_BATCH_SIZE } from "./looker";
 import { getExperimentLookerDashboardDate } from "./lookerUtils";
+import { mapWithConcurrency } from "./mapWithConcurrency";
 import { Platform } from "./types";
 
 /**
@@ -26,52 +27,52 @@ type NimbusRecipeCollectionType = {
  * @returns an array of BranchInfo with updated CTR percents for the recipe
  */
 async function updateBranchesCTR(recipe: NimbusRecipe): Promise<BranchInfo[]> {
-  return await Promise.all(
-    recipe
-      .getBranchInfos()
-      .map(async (branchInfo: BranchInfo): Promise<BranchInfo> => {
-        // Skip blocklisted experiments that cause queries exceeding BigQuery limits
-        if (EXPERIMENT_CTR_BLOCKLIST.has(branchInfo.nimbusExperiment.slug)) {
-          console.log(
-            `[LOOKER] Skipping blocklisted experiment: ${branchInfo.nimbusExperiment.slug}`,
-          );
-          return branchInfo;
-        }
-
-        if (branchInfo.nimbusExperiment.appName === "fenix") {
-          console.log(branchInfo.id + ": " + branchInfo.template);
-        }
-        const proposedEndDate = getExperimentLookerDashboardDate(
-          branchInfo.nimbusExperiment.startDate,
-          branchInfo.nimbusExperiment.proposedDuration,
+  return await mapWithConcurrency(
+    recipe.getBranchInfos(),
+    LOOKER_BATCH_SIZE,
+    async (branchInfo: BranchInfo): Promise<BranchInfo> => {
+      // Skip blocklisted experiments that cause queries exceeding BigQuery limits
+      if (EXPERIMENT_CTR_BLOCKLIST.has(branchInfo.nimbusExperiment.slug)) {
+        console.log(
+          `[LOOKER] Skipping blocklisted experiment: ${branchInfo.nimbusExperiment.slug}`,
         );
-        // We are making all branch ids upper case to make up for
-        // Looker being case sensitive
-        // XXX instead of using isRollout as criteria, do something better
-        // easiest: reenable hardcoded blocklist above
-        // best: handle data errors and back off in that case
-        //  remembering in blocklist
-
-        if (!branchInfo.nimbusExperiment.isRollout) {
-          const ctrPercentData = await getCTRPercentData(
-            branchInfo.id,
-            branchInfo.nimbusExperiment.appName,
-            branchInfo.template!,
-            undefined,
-            branchInfo.nimbusExperiment.slug,
-            branchInfo.slug,
-            branchInfo.nimbusExperiment.startDate,
-            proposedEndDate,
-          );
-
-          if (ctrPercentData) {
-            branchInfo.ctrPercent = ctrPercentData.ctrPercent;
-            branchInfo.impressions = ctrPercentData.impressions;
-          }
-        }
-
         return branchInfo;
-      }),
+      }
+
+      if (branchInfo.nimbusExperiment.appName === "fenix") {
+        console.log(branchInfo.id + ": " + branchInfo.template);
+      }
+      const proposedEndDate = getExperimentLookerDashboardDate(
+        branchInfo.nimbusExperiment.startDate,
+        branchInfo.nimbusExperiment.proposedDuration,
+      );
+      // We are making all branch ids upper case to make up for
+      // Looker being case sensitive
+      // XXX instead of using isRollout as criteria, do something better
+      // easiest: reenable hardcoded blocklist above
+      // best: handle data errors and back off in that case
+      //  remembering in blocklist
+
+      if (!branchInfo.nimbusExperiment.isRollout) {
+        const ctrPercentData = await getCTRPercentData(
+          branchInfo.id,
+          branchInfo.nimbusExperiment.appName,
+          branchInfo.template!,
+          undefined,
+          branchInfo.nimbusExperiment.slug,
+          branchInfo.slug,
+          branchInfo.nimbusExperiment.startDate,
+          proposedEndDate,
+        );
+
+        if (ctrPercentData) {
+          branchInfo.ctrPercent = ctrPercentData.ctrPercent;
+          branchInfo.impressions = ctrPercentData.impressions;
+        }
+      }
+
+      return branchInfo;
+    },
   );
 }
 
@@ -120,15 +121,17 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
    * ctrPercent properties
    */
   async getExperimentAndBranchInfos(): Promise<RecipeOrBranchInfo[]> {
-    return await Promise.all(
-      this.recipes.map(async (recipe: NimbusRecipe): Promise<RecipeInfo> => {
+    return await mapWithConcurrency(
+      this.recipes,
+      LOOKER_BATCH_SIZE,
+      async (recipe: NimbusRecipe): Promise<RecipeInfo> => {
         let updatedRecipe = recipe.getRecipeInfo();
 
         // Update all branches with CTR data for the recipe
         updatedRecipe.branches = await updateBranchesCTR(recipe);
 
         return updatedRecipe;
-      }),
+      },
     );
   }
 }

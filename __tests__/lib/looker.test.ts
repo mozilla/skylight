@@ -12,6 +12,7 @@ import {
   resetMockState,
 } from "@/lib/__mocks__/sdk";
 import * as looker from "@/lib/looker";
+import { parseLookerBatchSize } from "@/lib/looker";
 import { ExperimentFakes } from "../ExperimentFakes.mjs";
 
 describe("Looker", () => {
@@ -36,6 +37,36 @@ describe("Looker", () => {
     const queryResult = await looker.runQueryForSurface(template, fakeFilters);
 
     expect(queryResult).toEqual(fakeQueryResult);
+  });
+
+  describe("parseLookerBatchSize", () => {
+    it("returns 15 when env var is undefined", () => {
+      expect(parseLookerBatchSize(undefined)).toBe(15);
+    });
+
+    it("returns 15 when env var is empty string", () => {
+      expect(parseLookerBatchSize("")).toBe(15);
+    });
+
+    it("returns 15 when env var is non-numeric", () => {
+      expect(parseLookerBatchSize("abc")).toBe(15);
+    });
+
+    it("returns 15 when env var is zero", () => {
+      expect(parseLookerBatchSize("0")).toBe(15);
+    });
+
+    it("returns 15 when env var is negative", () => {
+      expect(parseLookerBatchSize("-5")).toBe(15);
+    });
+
+    it("parses a valid positive integer", () => {
+      expect(parseLookerBatchSize("10")).toBe(10);
+    });
+
+    it("floors a decimal value", () => {
+      expect(parseLookerBatchSize("3.7")).toBe(3);
+    });
   });
 
   describe("getSafeCtrPercent", () => {

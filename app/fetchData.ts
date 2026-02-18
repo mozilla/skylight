@@ -14,9 +14,11 @@ import { FxMSMessageInfo } from "./columns";
 import {
   cleanLookerData,
   getCTRPercentData,
+  LOOKER_BATCH_SIZE,
   mergeLookerData,
   runLookQuery,
 } from "@/lib/looker.ts";
+import { mapWithConcurrency } from "@/lib/mapWithConcurrency";
 import { Platform } from "@/lib/types";
 
 const isLookerEnabled = process.env.IS_LOOKER_ENABLED === "true";
@@ -138,10 +140,12 @@ export async function getASRouterLocalMessageInfoFromFile(): Promise<
     json_data = await appendFxMSTelemetryData(json_data);
   }
 
-  let messages = await Promise.all(
-    json_data.map(async (messageDef: any): Promise<FxMSMessageInfo> => {
+  let messages = await mapWithConcurrency(
+    json_data,
+    LOOKER_BATCH_SIZE,
+    async (messageDef: any): Promise<FxMSMessageInfo> => {
       return await getASRouterLocalColumnFromJSON(messageDef);
-    }),
+    },
   );
 
   return messages;
