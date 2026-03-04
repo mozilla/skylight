@@ -103,6 +103,10 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
     // console.log("experimenterURL = ", experimenterUrl)
     const response = await fetch(experimenterUrl, {
       credentials: "omit",
+      // Ensure that we re-validate HTTP data at least once a day.
+      // If we ever switch to using the BigQuery views that are updated
+      // more frequently, we'll want to reduce this revalidation time.
+      next: { revalidate: 86400 },
     });
     // console.log("response = ", response)
     const experiments: NimbusExperiment[] = await response.json();

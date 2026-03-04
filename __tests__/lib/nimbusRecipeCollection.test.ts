@@ -62,7 +62,7 @@ describe("NimbusRecipeCollection", () => {
 
       expect(global.fetch).toHaveBeenCalledWith(
         `${process.env.EXPERIMENTER_API_PREFIX}?status=Live&application=${platform}`,
-        { credentials: "omit" },
+        { credentials: "omit", next: { revalidate: 86400 } },
       );
     });
 
@@ -73,7 +73,7 @@ describe("NimbusRecipeCollection", () => {
 
       expect(global.fetch).toHaveBeenCalledWith(
         `${process.env.EXPERIMENTER_API_PREFIX}?status=Complete&application=${platform}`,
-        { credentials: "omit" },
+        { credentials: "omit", next: { revalidate: 86400 } },
       );
     });
   });
