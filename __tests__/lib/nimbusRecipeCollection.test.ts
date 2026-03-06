@@ -10,6 +10,8 @@ const platform: Platform = "firefox-desktop";
 const fakeFetchData = [ExperimentFakes.recipe()];
 global.fetch = jest.fn(() =>
   Promise.resolve({
+    ok: true,
+    headers: new Headers({ "content-type": "application/json" }),
     json: () => Promise.resolve(fakeFetchData),
   }),
 ) as jest.Mock;

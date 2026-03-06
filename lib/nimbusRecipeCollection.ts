@@ -100,7 +100,7 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
       experimenterUrl = `${process.env.EXPERIMENTER_API_PREFIX}?status=Complete&application=${this.platform}`;
     }
 
-    // console.log("experimenterURL = ", experimenterUrl)
+    console.log(`[fetchRecipes] Fetching: ${experimenterUrl}`);
     const response = await fetch(experimenterUrl, {
       credentials: "omit",
       // Ensure that we re-validate HTTP data at least once a day.
@@ -108,7 +108,30 @@ export class NimbusRecipeCollection implements NimbusRecipeCollectionType {
       // more frequently, we'll want to reduce this revalidation time.
       next: { revalidate: 86400 },
     });
-    // console.log("response = ", response)
+
+    if (!response.ok) {
+      const body = await response.text();
+      console.error(
+        `[fetchRecipes] HTTP ${response.status} from ${experimenterUrl}:`,
+        body.slice(0, 500),
+      );
+      throw new Error(
+        `[fetchRecipes] HTTP ${response.status} from ${experimenterUrl}`,
+      );
+    }
+
+    const contentType = response.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      const body = await response.text();
+      console.error(
+        `[fetchRecipes] Unexpected content-type "${contentType}" from ${experimenterUrl}:`,
+        body.slice(0, 500),
+      );
+      throw new Error(
+        `[fetchRecipes] Expected JSON but got "${contentType}" from ${experimenterUrl}`,
+      );
+    }
+
     const experiments: NimbusExperiment[] = await response.json();
 
     // console.log('returned experiments', experiments)
